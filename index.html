@@ -4586,6 +4586,7 @@ function autoFetchXLS(){
   fetch("dados.xlsx?v="+Date.now())
     .then(function(r){if(!r.ok)throw new Error('not ok');return r.arrayBuffer();})
     .then(function(b){
+      _autoFetching=false;
       var w=XLSX.read(new Uint8Array(b),{type:"array",cellDates:true});
       var s=w.Sheets[w.SheetNames[0]];
       var rows=XLSX.utils.sheet_to_json(s,{defval:""});
@@ -4596,10 +4597,10 @@ function autoFetchXLS(){
       if(lbl)lbl.textContent='Sync '+hm;
     })
     .catch(function(){
+      _autoFetching=false;
       if(dot)dot.style.background='var(--danger)';
       if(lbl)lbl.textContent='Falha no sync';
-    })
-    .finally(function(){_autoFetching=false;});
+    });
 }
 setTimeout(autoFetchXLS, 600);
 setInterval(autoFetchXLS, 10 * 60 * 1000);
