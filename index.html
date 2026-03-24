@@ -47,7 +47,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-btn.op.on{background:var(--blue2)}
 .tb-btn.cli.on{background:var(--teal2)}
 .tb-btn.cs.on{background:linear-gradient(135deg,#7c3aed,#a855f7)}
-.tb-btn.bc.on{background:linear-gradient(135deg,#0f766e,#14b8a6)}
 
 /* ═══ CS VIEW STYLES ══════════════════════════════════════════ */
 .cs-header-strip{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 0;gap:12px;flex-wrap:wrap}
@@ -512,10 +511,6 @@ input[type=file]{display:none}
     <button class="tb-btn cs" id="btn-cs" onclick="setMode('cs')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Customer Success
-    </button>
-    <button class="tb-btn bc" id="btn-bc" onclick="setMode('bc')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z"/></svg>
-      Base Clientes
     </button>
   </div>
   <div class="tb-alerts" id="tb-alerts">
@@ -1132,42 +1127,6 @@ input[type=file]{display:none}
   </div>
 
 </div><!-- /view-cs -->
-<div id="view-bc" class="view">
-  <div class="sec on" id="s-bc">
-    <div style="padding:18px 0 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-size:15px;font-weight:700;color:var(--text)">Base de Clientes</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Referência semestral · Contratos ativos · Atualizado: Mar/2026</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" id="bc-filter-btns">
-        <button onclick="bcFilter('todos')" id="bcf-todos" style="padding:4px 12px;border-radius:5px;border:1px solid var(--border);background:var(--teal2);color:#fff;font-size:11px;cursor:pointer;font-family:var(--font)">Todos</button>
-        <button onclick="bcFilter('aberto')" id="bcf-aberto" style="padding:4px 12px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--font)">Em Aberto</button>
-        <button onclick="bcFilter('vencendo')" id="bcf-vencendo" style="padding:4px 12px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--font)">Vence em 90d</button>
-        <button onclick="bcFilter('pago')" id="bcf-pago" style="padding:4px 12px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--font)">Pagos</button>
-      </div>
-    </div>
-    <!-- KPI strip -->
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px" id="bc-kpis"></div>
-    <!-- Table -->
-    <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;font-size:12px" id="bc-table">
-        <thead>
-          <tr style="border-bottom:2px solid var(--border)">
-            <th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Cliente</th>
-            <th style="text-align:center;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Status</th>
-            <th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Tipo Contrato</th>
-            <th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Fim Contrato</th>
-            <th style="text-align:center;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Dias p/ Vencer</th>
-            <th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Últ. Pagamento</th>
-            <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Valor Líquido</th>
-            <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Em Aberto</th>
-          </tr>
-        </thead>
-        <tbody id="bc-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-</div><!-- /view-bc -->
 </main>
 </div>
 
@@ -1384,25 +1343,21 @@ function setMode(m){
   var isOp=m==='op';
   var isCli=m==='cli';
   var isCS=m==='cs';
-  var isBC=m==='bc';
   document.getElementById('view-op').classList.toggle('on',isOp);
   document.getElementById('view-cli').classList.toggle('on',isCli);
   document.getElementById('view-cs').classList.toggle('on',isCS);
-  document.getElementById('view-bc').classList.toggle('on',isBC);
   document.getElementById('nav-op').style.display=isOp?'block':'none';
   document.getElementById('nav-cli').style.display=isCli?'block':'none';
   document.getElementById('nav-cs').style.display=isCS?'block':'none';
   document.getElementById('btn-op').classList.toggle('on',isOp);
   document.getElementById('btn-cli').classList.toggle('on',isCli);
   document.getElementById('btn-cs').classList.toggle('on',isCS);
-  document.getElementById('btn-bc').classList.toggle('on',isBC);
   document.getElementById('tb-alerts').style.display=isOp?'flex':'none';
   document.getElementById('sb-import-btn').className='sb-import-btn'+(isOp?'':' cli-mode');
   document.getElementById('import-drop-zone').className='import-drop-zone'+(isOp?'':' cli-mode');
   document.getElementById('import-drop-icon').className='import-drop-icon'+(isOp?'':' cli-mode');
   if(isCli)initCli();
   if(isCS)initCS();
-  if(isBC)initBC();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -2562,8 +2517,6 @@ function rebuildAll(data){
           });
         }
         if(csCurrentKey&&EMPRESAS[csCurrentKey])loadCS(csCurrentKey);
-        // re-render BC
-        renderBC();
         // update meta
         var total=data.length;
         var dates=data.filter(function(d){return d.criado;}).map(function(d){return d.criado;}).sort(function(a,b){return a-b;});
@@ -4426,134 +4379,6 @@ function renderBacklogTable(rows) {
 
 </script>
 
-<!-- ═══════════════ BASE CLIENTES ═══════════════ -->
-<script>
-var BC_DATA = [
-  {nome:"ADM COMERCIO DE ALIMENTOS LTDA", contrato:"—", fim:null, ultimoPag:null, valorLiq:5399.83, emAberto:5399.83},
-  {nome:"AGROSUL", contrato:"Recorrente misto", fim:"2026-06-30", ultimoPag:"2026-03-16", valorLiq:3139.43, emAberto:0},
-  {nome:"ÁGUA VIVA CONTABILIDADE", contrato:"Banco de horas", fim:"2027-01-31", ultimoPag:null, valorLiq:705.73, emAberto:705.73},
-  {nome:"ATITUS", contrato:"Banco de horas", fim:"2027-02-28", ultimoPag:null, valorLiq:4651.86, emAberto:4651.86},
-  {nome:"AUMOVIO ADVANCED ANTENNA AUTOMOTIVA LTDA", contrato:"SSG", fim:"2027-02-28", ultimoPag:null, valorLiq:5205.13, emAberto:5205.13},
-  {nome:"AUTOZONE", contrato:"Outsourcing, SSG", fim:"2027-01-31", ultimoPag:null, valorLiq:205879.92, emAberto:205879.92},
-  {nome:"BRAVEO", contrato:"GWMS", fim:"2027-07-31", ultimoPag:null, valorLiq:24128.83, emAberto:24128.83},
-  {nome:"BUN-TECH", contrato:"Recorrente misto", fim:"2027-01-31", ultimoPag:null, valorLiq:7769.85, emAberto:7769.85},
-  {nome:"CAL NORTE NORDESTE S/A", contrato:"Banco de horas, SSG", fim:"2027-04-30", ultimoPag:null, valorLiq:2573.46, emAberto:2573.46},
-  {nome:"COMEXPORT TRADING COMERCIO EXTERIOR LTDA", contrato:"Banco de horas, Outsourcing", fim:"2027-09-30", ultimoPag:"2026-03-16", valorLiq:24215, emAberto:0},
-  {nome:"COMPANHIA BRASILEIRA DE EDUCACAO E SISTEMAS DE ENSINO S.A", contrato:"Banco de horas, GWMS, Outsourcing", fim:"2027-01-31", ultimoPag:null, valorLiq:170812.65, emAberto:170812.65},
-  {nome:"CSC AJ (ALMEIDA JUNIOR)", contrato:"SSG", fim:"2027-05-31", ultimoPag:null, valorLiq:11262, emAberto:11262},
-  {nome:"DKT DO BRASIL PRODUTOS DE USO PESSOAL LTDA", contrato:"Banco de horas, Outsourcing", fim:"2027-01-19", ultimoPag:null, valorLiq:22550.83, emAberto:22550.83},
-  {nome:"DUAL DUARTE", contrato:"Banco de horas", fim:"2027-07-31", ultimoPag:null, valorLiq:1783.15, emAberto:1783.15},
-  {nome:"ECAD", contrato:"Banco de horas", fim:"2026-12-30", ultimoPag:null, valorLiq:5167.5, emAberto:5167.5},
-  {nome:"FADEL TRANSPORTES", contrato:"Banco de horas, Infraestrutura e segurança, Recorrente misto", fim:"2027-05-31", ultimoPag:null, valorLiq:41050.2, emAberto:41050.2},
-  {nome:"FINPEC AGRONEGOCIOS LTDA", contrato:"SSG", fim:"2026-11-30", ultimoPag:"2026-03-13", valorLiq:4603.34, emAberto:0},
-  {nome:"GDBR INDUSTRIA E COMERCIO DE COMPONENTES QUIMICOS E DE BORRACHA LTDA", contrato:"Infraestrutura e segurança", fim:"2027-03-31", ultimoPag:"2026-03-17", valorLiq:1440.51, emAberto:0},
-  {nome:"HELM DO BRASIL MERCANTIL LTDA", contrato:"Banco de horas", fim:"2027-08-31", ultimoPag:null, valorLiq:2885.42, emAberto:2885.42},
-  {nome:"HUNTER DOUGLAS", contrato:"Outsourcing", fim:"2027-02-28", ultimoPag:null, valorLiq:11731.25, emAberto:11731.25},
-  {nome:"INOVALLI", contrato:"—", fim:"2026-12-31", ultimoPag:null, valorLiq:9212.63, emAberto:9212.63},
-  {nome:"INTEGRADA", contrato:"Recorrente misto", fim:"2026-10-31", ultimoPag:"2026-03-18", valorLiq:10483.16, emAberto:0},
-  {nome:"ITAGUACU INVESTIMENTOS S.A.", contrato:"Banco de horas", fim:"2027-04-30", ultimoPag:null, valorLiq:8226.32, emAberto:8226.32},
-  {nome:"JATOBÁ", contrato:"Banco de horas", fim:"2027-08-31", ultimoPag:null, valorLiq:1908.7, emAberto:1908.7},
-  {nome:"LATICINIOS PORTO ALEGRE", contrato:"Banco de horas", fim:"2026-08-25", ultimoPag:"2026-03-16", valorLiq:6782.54, emAberto:0},
-  {nome:"LINDSA Y AMERICA DO SUL LTDA", contrato:"Outsourcing", fim:"2026-10-30", ultimoPag:null, valorLiq:9975.2, emAberto:9975.2},
-  {nome:"METALNOX", contrato:"Banco de horas, SSG", fim:"2027-01-31", ultimoPag:null, valorLiq:17412.39, emAberto:17412.39},
-  {nome:"NSX BRASIL S.A.", contrato:"Banco de horas, Outsourcing", fim:"2026-12-31", ultimoPag:null, valorLiq:33270.43, emAberto:33270.43},
-  {nome:"PAM PLASTICOS", contrato:"Banco de horas, SSG", fim:"2027-04-30", ultimoPag:null, valorLiq:13603.89, emAberto:13603.89},
-  {nome:"PLASTIGLAS DE MEXICO", contrato:"Banco de horas", fim:"2026-10-31", ultimoPag:null, valorLiq:8621.52, emAberto:8621.52},
-  {nome:"RENNER SAYERLACK S/A", contrato:"Banco de horas", fim:"2026-07-31", ultimoPag:null, valorLiq:2133.93, emAberto:2133.93},
-  {nome:"TELETEX COMPUTADORES E SISTEMAS LTDA", contrato:"Recorrente misto", fim:"2027-02-28", ultimoPag:null, valorLiq:36550, emAberto:36550},
-  {nome:"TOTVS S/A", contrato:"GWMS", fim:null, ultimoPag:null, valorLiq:57248.5, emAberto:57248.5},
-  {nome:"VRENTAL", contrato:"Outsourcing", fim:"2027-01-31", ultimoPag:null, valorLiq:14415.36, emAberto:14415.36}
-];
-
-var _bcFilter = 'todos';
-var _bcInited = false;
-
-function bcStatus(d){
-  var hoje = new Date(); hoje.setHours(0,0,0,0);
-  var dias = null;
-  if(d.fim){ var f=new Date(d.fim); dias=Math.round((f-hoje)/(1000*60*60*24)); }
-  if(d.emAberto===0) return {label:'Pago',cor:'#10b981',bg:'rgba(16,185,129,0.12)',dias:dias};
-  if(dias!==null && dias<=90) return {label:'Vence em breve',cor:'#f59e0b',bg:'rgba(245,158,11,0.12)',dias:dias};
-  return {label:'Em Aberto',cor:'#ef4444',bg:'rgba(239,68,68,0.1)',dias:dias};
-}
-
-function bcFilter(f){
-  _bcFilter=f;
-  ['todos','aberto','vencendo','pago'].forEach(function(x){
-    var b=document.getElementById('bcf-'+x);
-    if(!b)return;
-    b.style.background = x===f ? 'var(--teal2)' : 'transparent';
-    b.style.color = x===f ? '#fff' : 'var(--muted)';
-  });
-  renderBC();
-}
-
-function fmtBRL(v){ return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-
-function renderBC(){
-  var hoje = new Date(); hoje.setHours(0,0,0,0);
-  var rows = BC_DATA.filter(function(d){
-    var s=bcStatus(d);
-    if(_bcFilter==='pago') return s.label==='Pago';
-    if(_bcFilter==='aberto') return s.label==='Em Aberto';
-    if(_bcFilter==='vencendo') return s.label==='Vence em breve';
-    return true;
-  });
-  var totalLiq=0,totalAberto=0,cntVencendo=0,cntPago=0;
-  BC_DATA.forEach(function(d){
-    totalLiq+=d.valorLiq; totalAberto+=d.emAberto;
-    var s=bcStatus(d);
-    if(s.label==='Vence em breve') cntVencendo++;
-    if(s.label==='Pago') cntPago++;
-  });
-  var kpiEl=document.getElementById('bc-kpis');
-  if(kpiEl){
-    var kpis=[
-      {label:'Total Contratos',val:BC_DATA.length,sub:'ativos'},
-      {label:'Carteira Total',val:fmtBRL(totalLiq),sub:'valor líquido'},
-      {label:'Em Aberto',val:fmtBRL(totalAberto),sub:'a receber',alert:totalAberto>0},
-      {label:'Vencendo em 90d',val:cntVencendo,sub:'contratos',alert:cntVencendo>0},
-      {label:'Pagos',val:cntPago,sub:'em dia'}
-    ];
-    kpiEl.innerHTML=kpis.map(function(k){
-      return '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;min-width:140px;flex:1">'
-        +'<div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:600;margin-bottom:4px">'+k.label+'</div>'
-        +'<div style="font-size:18px;font-weight:700;color:'+(k.alert?'#ef4444':'var(--text)')+'">'+k.val+'</div>'
-        +'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+k.sub+'</div>'
-        +'</div>';
-    }).join('');
-  }
-  var tbody=document.getElementById('bc-tbody');
-  if(!tbody)return;
-  if(rows.length===0){
-    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);font-size:12px">Nenhum registro encontrado.</td></tr>';
-    return;
-  }
-  tbody.innerHTML=rows.map(function(d,i){
-    var s=bcStatus(d);
-    var diasTxt = s.dias!==null ? s.dias+'d' : '—';
-    var diasCor = s.dias!==null && s.dias<=90 ? '#f59e0b' : (s.dias!==null && s.dias<=180 ? '#fb923c' : 'var(--text)');
-    var pagTxt = d.ultimoPag ? d.ultimoPag.split('T')[0].split('-').reverse().join('/') : '—';
-    var fimTxt = d.fim ? d.fim.split('-').reverse().join('/') : 'Indeterminado';
-    var bg = i%2===0?'transparent':'rgba(255,255,255,0.02)';
-    return '<tr style="border-bottom:1px solid var(--border);background:'+bg+'">'
-      +'<td style="padding:8px 10px;font-size:11px;color:var(--text);font-weight:500">'+d.nome+'</td>'
-      +'<td style="padding:8px 10px;text-align:center"><span style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;color:'+s.cor+';background:'+s.bg+'">'+s.label+'</span></td>'
-      +'<td style="padding:8px 10px;font-size:11px;color:var(--muted)">'+d.contrato+'</td>'
-      +'<td style="padding:8px 10px;font-size:11px;color:var(--text)">'+fimTxt+'</td>'
-      +'<td style="padding:8px 10px;text-align:center;font-size:11px;font-weight:600;color:'+diasCor+'">'+diasTxt+'</td>'
-      +'<td style="padding:8px 10px;font-size:11px;color:var(--muted)">'+pagTxt+'</td>'
-      +'<td style="padding:8px 10px;text-align:right;font-size:11px;color:var(--text)">'+fmtBRL(d.valorLiq)+'</td>'
-      +'<td style="padding:8px 10px;text-align:right;font-size:11px;font-weight:600;color:'+(d.emAberto>0?'#ef4444':'#10b981')+'">'+fmtBRL(d.emAberto)+'</td>'
-      +'</tr>';
-  }).join('');
-}
-
-function initBC(){
-  if(!_bcInited){ _bcInited=true; }
-  renderBC();
-}
-</script>
 
 <div id="at-modal-overlay" style="position:fixed;inset:0;z-index:700;background:rgba(8,11,16,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s" onclick="closeAtModal(event)">
   <div id="at-modal" style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r3);width:860px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;transform:scale(.95) translateY(14px);transition:transform .22s;overflow:hidden">
