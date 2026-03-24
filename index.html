@@ -2219,9 +2219,9 @@ function initCli(){
   if(rendered['cli-init'])return;rendered['cli-init']=true;
   var sel=document.getElementById('sel-empresa');
   while(sel.options.length>1)sel.remove(1);
-  var empIds=Object.keys(EMPRESAS).filter(function(k){return ENM2[k]&&k.indexOf('@')===-1&&EMPRESAS[k].total>0;});
+  var empIds=Object.keys(EMPRESAS).filter(function(k){return k&&k.indexOf('@')===-1&&EMPRESAS[k].total>0;});
   empIds.sort(function(a,b){return EMPRESAS[b].total-EMPRESAS[a].total;});
-  empIds.forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=EMPRESAS[k].nome;sel.appendChild(o);});
+  empIds.forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=ENM2[k]||k;sel.appendChild(o);});
   renderInf();
 }
 
@@ -2399,9 +2399,8 @@ function parseR(rows){
     var rm=C.resp_min?parseFloat(r[C.resp_min]):null,sm=C.sol_min?parseFloat(r[C.sol_min]):null;
     var eR=C.estado?String(r[C.estado]||'').toLowerCase().trim():'';
     var pR=C.prior?String(r[C.prior]||'').toLowerCase().trim():'';
-    var rawCid=C.cli_id?String(r[C.cli_id]||'').trim():'';
+    var rawCid=C.cli_id?String(r[C.cli_id]||'').trim():'';var cid=resolveCliId(rawCid);
     var cliNome=C.cli_nome?String(r[C.cli_nome]||'').trim():'';
-    var cid=cliNome||resolveCliId(rawCid);
     var fn=C.pnome?String(r[C.pnome]||'').trim():'',ln=C.unome?String(r[C.unome]||'').trim():'';
     var at=(fn+' '+ln).trim()||(C.atend?String(r[C.atend]||'').trim():'')||'—';
     var sv=C.servico?String(r[C.servico]||'').split('::').pop().trim()||'Outros':'Outros';
@@ -2505,10 +2504,10 @@ function rebuildAll(data){
       var buckets={};Object.keys(ENM2).forEach(function(k){buckets[k]=[];});
       // detect new companies
       data.forEach(function(d){if(!buckets[d.cli_id])buckets[d.cli_id]=[];buckets[d.cli_id].push(d);});
-      // add new companies to ENM2
-      Object.keys(buckets).forEach(function(id){if(!ENM2[id]&&buckets[id].length>=3){var nm=buckets[id].find(function(d){return d.cli_nome;});ENM2[id]=nm?nm.cli_nome:id;}});
+      // add new companies to ENM2 — use the company code itself as display name
+      Object.keys(buckets).forEach(function(id){if(id&&!ENM2[id]&&buckets[id].length>=1){ENM2[id]=id;}});
 
-      var empIds=Object.keys(ENM2).filter(function(id){return buckets[id]&&buckets[id].length>0;});
+      var empIds=Object.keys(buckets).filter(function(id){return id&&id.indexOf('@')===-1&&buckets[id].length>0;});
       empIds.forEach(function(id){
         var sub=buckets[id];if(!sub||!sub.length)return;
         var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
