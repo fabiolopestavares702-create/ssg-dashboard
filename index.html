@@ -2397,7 +2397,7 @@ function parseR(rows){
     var pR=C.prior?String(r[C.prior]||'').toLowerCase().trim():'';
     var rawCid=C.cli_id?String(r[C.cli_id]||'').trim():'';var cid=resolveCliId(rawCid);
     var fn=C.pnome?String(r[C.pnome]||'').trim():'',ln=C.unome?String(r[C.unome]||'').trim():'';
-    var at=C.atend?String(r[C.atend]||'').trim():(fn+' '+ln).trim()||'—';
+    var at=(fn+' '+ln).trim()||(C.atend?String(r[C.atend]||'').trim():'')||'—';
     var sv=C.servico?String(r[C.servico]||'').split('::').pop().trim()||'Outros':'Outros';
     return{num:C.num?String(r[C.num]||'#'+(i+1)):'#'+(i+1),criado:(cr&&!isNaN(cr))?cr:null,fechado:(fe&&!isNaN(fe))?fe:null,estado:EM2[eR]||eR||'Aberto',prior:PM2[pR]||pR||'Normal',atend:at,cli_id:cid,cli_nome:C.cli_nome?String(r[C.cli_nome]||'').trim():'',assunto:C.assunto?String(r[C.assunto]||'—').slice(0,70):'—',servico:sv,fila:C.fila?String(r[C.fila]||'').trim().toUpperCase():'',resp_min:(rm&&!isNaN(rm))?rm:null,sol_h:(sm&&!isNaN(sm))?Math.round(sm/60*10)/10:null};
   });
