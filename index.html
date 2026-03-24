@@ -2542,12 +2542,9 @@ function rebuildAll(data){
         buildMonthFilter();
         var sel=document.getElementById('sel-empresa');while(sel.options.length>1)sel.remove(1);
         initCli();
-        // sempre atualiza totalizadores do overview e alertas, independente da seção ativa
-        rendered['s-ov']=true;renderOv();
-        rendered['s-alertas']=true;renderAlertas();
-        // re-render active sections (se for outra seção, re-renderiza também)
-        var aOp=document.querySelector('#view-op .sec.on');if(aOp&&aOp.id!=='s-ov'&&aOp.id!=='s-alertas'){rendered[aOp.id]=true;renderSec(aOp.id);}
-        var aCli=document.querySelector('#view-cli .sec.on');if(aCli){rendered[aCli.id]=true;renderSec(aCli.id);}
+        // re-render active sections
+        var aOp=document.querySelector('#view-op .sec.on');
+        var aCli=document.querySelector('#view-cli .sec.on');
         // re-render CS: rebuild empresa selector + seção ativa
         var csSelEl=document.getElementById('cs-sel-empresa');
         if(csSelEl){
@@ -2674,6 +2671,11 @@ function rebuildAll(data){
         activeFilaCli = 'all';
         buildFilaBtns('fila-btns-op', 'all', setFilaOP);
         buildFilaBtns('fila-btns-cli', 'all', setFilaCli);
+        // sempre atualiza totalizadores do overview e alertas (após OP_FILAS e activeFilaOP prontos)
+        rendered['s-ov']=true;renderOv();
+        rendered['s-alertas']=true;renderAlertas();
+        if(aCli){rendered[aCli.id]=true;renderSec(aCli.id);}
+        if(aOp&&aOp.id!=='s-ov'&&aOp.id!=='s-alertas'){rendered[aOp.id]=true;renderSec(aOp.id);}
         setProgress(100,'✓ Importação concluída!');
         setTimeout(function(){setProgress(0,'');closeImport();},1500);
       },200);
