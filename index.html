@@ -4585,7 +4585,7 @@ function renderResumo(){
   H+='<div class="rg-kpi-val" style="color:var(--blue)">'+avgDaily+'</div>';
   H+='<div class="rg-kpi-sub">chamados/dia (média últimos 30 dias)</div></div>';
   H+='<div class="rg-kpi"><div class="rg-kpi-lbl">Previsão Semanal</div>';
-  H+='<div class="rg-kpi-val" style="color:var(--purple)">~'+weeklyForecast+'</div>';
+  H+='<div class="rg-kpi-val" style="color:var(--purple)">~'+Math.abs(weeklyForecast)+'</div>';
   H+='<div class="rg-kpi-sub">estimativa baseada no ritmo atual</div></div>';
   H+='</div>';
 
