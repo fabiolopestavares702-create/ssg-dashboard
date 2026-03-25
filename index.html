@@ -1184,6 +1184,17 @@ input[type=file]{display:none}
   </div>
 </div>
 
+<!-- ══════ RESUMO DE GESTÃO VIEW ══════ -->
+<div id="view-rg" class="view">
+  <div class="page-header">
+    <h1>Resumo de Gestão</h1>
+    <p>Visão simplificada da operação · sem termos técnicos · atualizada automaticamente</p>
+  </div>
+  <div class="page-body" id="rg-body">
+    <div style="color:var(--muted);font-size:13px;padding:24px 0">Carregando dados...</div>
+  </div>
+</div><!-- /view-rg -->
+
 <!-- ════════════════ IMPORT MODAL ════════════════ -->
 <div class="import-overlay" id="import-overlay" onclick="handleOverlayClick(event)">
   <div class="import-modal">
@@ -1371,21 +1382,26 @@ function setMode(m){
   var isOp=m==='op';
   var isCli=m==='cli';
   var isCS=m==='cs';
+  var isRG=m==='rg';
   document.getElementById('view-op').classList.toggle('on',isOp);
   document.getElementById('view-cli').classList.toggle('on',isCli);
   document.getElementById('view-cs').classList.toggle('on',isCS);
+  document.getElementById('view-rg').classList.toggle('on',isRG);
   document.getElementById('nav-op').style.display=isOp?'block':'none';
   document.getElementById('nav-cli').style.display=isCli?'block':'none';
   document.getElementById('nav-cs').style.display=isCS?'block':'none';
+  document.getElementById('nav-rg').style.display=isRG?'block':'none';
   document.getElementById('btn-op').classList.toggle('on',isOp);
   document.getElementById('btn-cli').classList.toggle('on',isCli);
   document.getElementById('btn-cs').classList.toggle('on',isCS);
+  document.getElementById('btn-rg').classList.toggle('on',isRG);
   document.getElementById('tb-alerts').style.display=isOp?'flex':'none';
   document.getElementById('sb-import-btn').className='sb-import-btn'+(isOp?'':' cli-mode');
   document.getElementById('import-drop-zone').className='import-drop-zone'+(isOp?'':' cli-mode');
   document.getElementById('import-drop-icon').className='import-drop-icon'+(isOp?'':' cli-mode');
   if(isCli)initCli();
   if(isCS)initCS();
+  if(isRG)renderResumo();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -4429,6 +4445,127 @@ function renderBacklogTable(rows) {
   </div>
 </div>
 <script>
+// ════════════════════════════════════════════════════════════
+// RESUMO DE GESTÃO
+// ════════════════════════════════════════════════════════════
+function renderResumo(){
+  var op=getActiveOP();
+  var total=op.total||OP.total||0;
+  var fechados=op.fechados!=null?op.fechados:(OP.fechados||0);
+  var abertos=op.abertos!=null?op.abertos:(OP.abertos||0);
+  var solMed=op.sol_med!=null?op.sol_med:(OP.sol_med||0);
+  var respMed=op.resp_med!=null?op.resp_med:(OP.resp_med||0);
+  var prior=op.prior||OP.prior||{};
+  var estado=op.estado||OP.estado||{};
+  var bloqData=BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[];
+  var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
+  var aguardCli=estado['Aguardando Cliente']||0;
+  var aguardInt=estado['Aguardando Interno']||0;
+  var emAtend=estado['Em Atendimento']||0;
+  var prioMA=prior['Muito Alta']||0;
+  var taxaConc=total>0?Math.round(fechados/total*100):0;
+  var pctAbertos=total>0?Math.round(abertos/total*100):0;
+  var pctMA=total>0?Math.round(prioMA/total*100):0;
+  var numCrit=(OP.criticos||[]).length;
+
+  // Status geral
+  var statusLevel=0;var statusReasons=[];
+  if(totalBloq>20){statusLevel=Math.max(statusLevel,2);statusReasons.push('bloqueados em nível crítico');}
+  else if(totalBloq>10){statusLevel=Math.max(statusLevel,1);statusReasons.push('bloqueados acima do normal');}
+  if(pctMA>40){statusLevel=Math.max(statusLevel,2);statusReasons.push('prioridades críticas em nível crítico');}
+  else if(pctMA>30){statusLevel=Math.max(statusLevel,1);statusReasons.push('prioridades críticas elevadas');}
+  if(solMed>60){statusLevel=Math.max(statusLevel,2);statusReasons.push('tempo de solução muito elevado');}
+  else if(solMed>40){statusLevel=Math.max(statusLevel,1);statusReasons.push('tempo de solução acima do ideal');}
+  if(pctAbertos>30){statusLevel=Math.max(statusLevel,2);statusReasons.push('muitos chamados em aberto');}
+  else if(pctAbertos>20){statusLevel=Math.max(statusLevel,1);statusReasons.push('chamados em aberto acima do normal');}
+
+  var statusEmoji=['🟢','🟡','🔴'][statusLevel];
+  var statusLabel=['Saudável','Atenção','Crítico'][statusLevel];
+  var statusColor=['var(--ok)','var(--warn)','var(--danger)'][statusLevel];
+  var statusMsg=statusLevel===0
+    ?'Todos os indicadores estão dentro dos parâmetros normais.'
+    :'Pontos que requerem atenção: '+statusReasons.join(', ')+'.';
+
+  // Texto resumo
+  var p1='Neste período foram registrados <strong>'+total+' chamados</strong>. A taxa de conclusão foi de <strong>'+taxaConc+'%</strong>, ';
+  if(taxaConc>=80)p1+='considerada <strong>excelente</strong>.';
+  else if(taxaConc>=65)p1+='considerada <strong>boa</strong>.';
+  else if(taxaConc>=50)p1+='considerada <strong>regular</strong> — há espaço para melhoria.';
+  else p1+='<strong>abaixo do esperado</strong> — requer atenção imediata.';
+
+  var p2='';
+  if(abertos>0)p2+='Existem atualmente <strong>'+abertos+' chamados em aberto</strong> ('+pctAbertos+'% do volume). ';
+  if(totalBloq>20)p2+='O número de chamados bloqueados está em <strong>'+totalBloq+'</strong>, o que é <strong>crítico e exige ação imediata</strong>.';
+  else if(totalBloq>10)p2+='Existem <strong>'+totalBloq+' chamados bloqueados</strong>, o que <strong>exige atenção</strong>.';
+  else if(totalBloq>0)p2+='Há <strong>'+totalBloq+' chamados bloqueados</strong>, dentro de um nível aceitável.';
+
+  var p3='';
+  if(respMed>0){var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':Math.round(respMed)+' min';p3+='O tempo médio de <strong>primeira resposta</strong> foi de <strong>'+respH+'</strong>'+(respMed<=30?', dentro da meta de 30 minutos.':', acima da meta de 30 minutos.')+' ';}
+  if(solMed>0){p3+='O tempo médio de <strong>solução</strong> foi de <strong>'+solMed+'h</strong>'+(solMed<=24?', considerado <strong>bom</strong>.':solMed<=40?', dentro de um nível aceitável.':',' +' <strong>acima do ideal</strong> — recomenda-se revisar chamados antigos.');}
+
+  var p4='';
+  if(prioMA>0){p4+='O volume de chamados de <strong>prioridade muito alta</strong> é de <strong>'+prioMA+'</strong> ('+pctMA+'% do total). ';if(pctMA>40)p4+='Este percentual é <strong>crítico</strong> e requer atenção urgente.';else if(pctMA>30)p4+='Este percentual está <strong>elevado</strong>.';else p4+='Este percentual está dentro do normal.';}
+
+  // Build HTML
+  var H='';
+
+  // Card de status
+  H+='<div class="rg-status-card">';
+  H+='<div class="rg-status-dot" style="background:'+statusColor+';box-shadow:0 0 12px '+statusColor+'66"></div>';
+  H+='<div><div class="rg-status-label" style="color:'+statusColor+'">'+statusEmoji+' '+statusLabel+'</div>';
+  H+='<div class="rg-status-sub">'+statusMsg+'</div></div></div>';
+
+  // KPIs
+  H+='<div class="rg-kpi-grid">';
+  var kArr=[
+    {l:'Total de Chamados',v:total,s:'no período',c:'var(--blue)'},
+    {l:'Chamados Fechados',v:fechados,s:taxaConc+'% de conclusão',c:'var(--ok)'},
+    {l:'Em Aberto',v:abertos,s:pctAbertos+'% do volume',c:pctAbertos>30?'var(--danger)':pctAbertos>20?'var(--warn)':'var(--sub)'},
+    {l:'Bloqueados',v:totalBloq,s:'aguardando alguma ação',c:totalBloq>20?'var(--danger)':totalBloq>10?'var(--warn)':'var(--sub)'},
+    {l:'1ª Resposta',v:respMed>=60?(Math.round(respMed/60*10)/10)+'h':Math.round(respMed)+'min',s:'tempo mediano',c:respMed<=30?'var(--ok)':'var(--warn)'},
+    {l:'Tempo de Solução',v:solMed+'h',s:'média dos encerrados',c:solMed<=40?'var(--ok)':solMed<=60?'var(--warn)':'var(--danger)'},
+    {l:'Prioridade Muito Alta',v:prioMA,s:pctMA+'% do volume',c:pctMA>40?'var(--danger)':pctMA>30?'var(--warn)':'var(--sub)'},
+    {l:'Críticos em Aberto',v:numCrit,s:'mais antigos sem solução',c:numCrit>20?'var(--danger)':numCrit>5?'var(--warn)':'var(--sub)'}
+  ];
+  kArr.forEach(function(k){H+='<div class="rg-kpi"><div class="rg-kpi-lbl">'+k.l+'</div><div class="rg-kpi-val" style="color:'+k.c+'">'+k.v+'</div><div class="rg-kpi-sub">'+k.s+'</div></div>';});
+  H+='</div>';
+
+  // Resumo em texto
+  H+='<div class="rg-section-title">Resumo Automático</div>';
+  H+='<div class="rg-resumo-card">';
+  if(p1)H+='<p>'+p1+'</p>';
+  if(p2)H+='<p>'+p2+'</p>';
+  if(p3)H+='<p>'+p3+'</p>';
+  if(p4)H+='<p>'+p4+'</p>';
+  H+='</div>';
+
+  // Chamados em espera
+  var items=[];
+  if(aguardCli>0)items.push({i:'⏳',t:'<strong>'+aguardCli+'</strong> chamado(s) aguardando retorno do <strong>cliente</strong> — o cliente precisa responder para avançar.'});
+  if(aguardInt>0)items.push({i:'🔄',t:'<strong>'+aguardInt+'</strong> chamado(s) aguardando ação <strong>interna</strong> — a equipe precisa dar continuidade.'});
+  if(emAtend>0)items.push({i:'🔧',t:'<strong>'+emAtend+'</strong> chamado(s) <strong>em atendimento</strong> ativo no momento.'});
+  if(items.length>0){
+    H+='<div class="rg-section-title">Chamados em Espera</div><div class="rg-resumo-card">';
+    items.forEach(function(it){H+='<div class="rg-item-row"><div class="rg-item-icon">'+it.i+'</div><div class="rg-item-txt">'+it.t+'</div></div>';});
+    H+='</div>';
+  }
+
+  // Volume por prioridade
+  var priorOrder=['Muito Alta','Alta','Normal','Baixa','Muito Baixa'];
+  var priorColors={'Muito Alta':'var(--danger)','Alta':'var(--warn)','Normal':'var(--blue)','Baixa':'var(--sub)','Muito Baixa':'var(--muted)'};
+  H+='<div class="rg-section-title">Volume por Prioridade</div><div class="rg-resumo-card">';
+  priorOrder.forEach(function(p){
+    var n=prior[p]||0; if(!n)return;
+    var pct2=total>0?Math.round(n/total*100):0;
+    var col=priorColors[p]||'var(--sub)';
+    H+='<div class="rg-item-row"><div class="rg-item-icon" style="color:'+col+'">■</div><div class="rg-item-txt"><strong>'+p+'</strong> — '+n+' chamados ('+pct2+'%)</div><div style="font-family:var(--mono);font-size:11px;color:'+col+'">'+pct2+'%</div></div>';
+  });
+  H+='</div>';
+
+  var el=document.getElementById('rg-body');
+  if(el)el.innerHTML=H;
+}
+
 var _autoFetching=false;
 function autoFetchXLS(){
   if(_autoFetching)return;
