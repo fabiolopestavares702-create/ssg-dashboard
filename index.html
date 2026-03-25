@@ -47,6 +47,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-btn.op.on{background:var(--blue2)}
 .tb-btn.cli.on{background:var(--teal2)}
 .tb-btn.cs.on{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.tb-btn.rg.on{background:linear-gradient(135deg,#b45309,#d97706)}
+/* ═══ RESUMO DE GESTÃO STYLES ══════════════════════════════════════════ */
+.rg-status-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:20px 24px;margin-bottom:14px;display:flex;align-items:center;gap:18px}
+.rg-status-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.rg-status-label{font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:3px}
+.rg-status-sub{font-size:12px;color:var(--sub);line-height:1.5}
+.rg-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:900px){.rg-kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.rg-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px 18px}
+.rg-kpi-lbl{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.rg-kpi-val{font-family:var(--display);font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
+.rg-kpi-sub{font-size:11px;color:var(--sub)}
+.rg-section-title{font-family:var(--display);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:18px 0 8px}
+.rg-resumo-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:20px 24px;margin-bottom:14px;font-size:13.5px;line-height:1.75;color:var(--text)}
+.rg-resumo-card p{margin:0 0 10px}
+.rg-resumo-card p:last-child{margin:0}
+.rg-item-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.rg-item-row:last-child{border-bottom:none}
+.rg-item-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+.rg-item-txt{font-size:13px;color:var(--text);flex:1}
 
 /* ═══ CS VIEW STYLES ══════════════════════════════════════════ */
 .cs-header-strip{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 0;gap:12px;flex-wrap:wrap}
@@ -512,6 +532,10 @@ input[type=file]{display:none}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Customer Success
     </button>
+    <button class="tb-btn rg" id="btn-rg" onclick="setMode('rg')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Resumo de Gestão
+    </button>
   </div>
   <div class="tb-alerts" id="tb-alerts">
     <div class="tb-alert-pill tap-danger" id="alert-criticos">
@@ -587,6 +611,10 @@ input[type=file]{display:none}
     <span class="month-filter-lbl">Filtrar por mês</span>
     <div class="month-btns" id="mth-btns-cs"></div>
   </div>
+  </div>
+  <div id="nav-rg" style="display:none">
+    <div class="sb-head">Gestão</div>
+    <div class="nav" style="color:var(--warn)" onclick="renderResumo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Resumo Executivo</div>
   </div>
   <div class="sb-footer">
     <div class="sb-status"><span class="sb-status-dot"></span><span id="sb-meta">556 chamados · jan–mar 2026</span></div>
