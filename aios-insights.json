@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-03-25T14:32:00",
+  "version": "1.0",
+  "resumo_gestao": {
+    "narrativa": "A operação apresenta um <strong>padrão de concentração de chamados críticos às segundas-feiras entre 9h–11h</strong>, representando 34% do volume semanal. Isso indica um gargalo de retomada pós-fim de semana que pode ser mitigado com escalonamento preventivo de equipe nesse intervalo.<br><br>O cliente <strong>Groundwork</strong> representa 28% dos chamados com SLA vencido. A reincidência nos módulos Fiscal e NF-e sugere necessidade de uma sessão de capacitação técnica agendada — estimativa de redução de 12% no volume após a intervenção.<br><br>O índice de bloqueio atual está <strong>acima da média histórica</strong> para o período, com chamados acumulando mais de 15 dias sem movimentação. Recomenda-se triagem imediata nos próximos 2 dias úteis.",
+    "kpis": [
+      { "label": "Score Operacional", "value": "72", "sub": "nível atenção · meta: >80", "color": "var(--warn)" },
+      { "label": "Risco de SLA", "value": "Alto", "sub": "3 contas em risco de vencimento", "color": "var(--danger)" },
+      { "label": "Oportunidade", "value": "-12%", "sub": "redução estimada com capacitação NF-e", "color": "var(--teal)" },
+      { "label": "Previsão 7 dias", "value": "~47/dia", "sub": "pico esperado: quarta 10h", "color": "var(--purple)" }
+    ],
+    "risco_principal": { "label": "SLA Groundwork", "desc": "3 chamados abertos há mais de 30 dias" },
+    "oportunidade": { "label": "-12% com capacitação", "desc": "treinamento NF-e recomendado" },
+    "previsao": { "label": "~47 chamados/dia", "desc": "pico esperado: quarta 10h" }
+  },
+  "riscos_operacionais": [
+    {
+      "titulo": "Reincidência em módulo Fiscal",
+      "desc": "3 chamados com o mesmo erro de validação de NF-e nos últimos 7 dias — padrão não aleatório, indica problema sistêmico não resolvido",
+      "nivel": "high",
+      "confianca": 85
+    },
+    {
+      "titulo": "Tempo médio de resposta subindo",
+      "desc": "+22% nas últimas 2 semanas · tendência de deterioração contínua se não houver intervenção na distribuição de carga",
+      "nivel": "medium",
+      "confianca": 71
+    },
+    {
+      "titulo": "Concentração de volume nas segundas-feiras",
+      "desc": "34% do volume semanal chega entre 9h–11h de segunda — a equipe não está dimensionada para absorver esse pico",
+      "nivel": "medium",
+      "confianca": 78
+    },
+    {
+      "titulo": "Chamados sem movimentação há mais de 15 dias",
+      "desc": "14 chamados acumulados sem qualquer atualização — risco de escalonamento pelos clientes e impacto no health score",
+      "nivel": "medium",
+      "confianca": 68
+    },
+    {
+      "titulo": "Volume Muito Alta acima da média histórica",
+      "desc": "Média histórica de março é 28% em prioridade crítica · atual: 36% — tendência de alta que pode indicar instabilidade sistêmica",
+      "nivel": "low",
+      "confianca": 52
+    }
+  ],
+  "riscos_clientes": [
+    {
+      "cliente": "Groundwork",
+      "narrativa": "Conta com <strong>maior concentração de risco</strong> no período. O padrão de chamados indica problemas recorrentes no módulo Fiscal e NF-e, com 3 ocorrências do mesmo erro em 7 dias. Recomenda-se agendamento de capacitação técnica antes do fechamento do mês.",
+      "riscos": [
+        { "titulo": "SLA vencido em 3 chamados críticos", "desc": "Chamados abertos há mais de 30 dias sem resolução — risco de insatisfação imediata", "nivel": "high", "confianca": 92 },
+        { "titulo": "Reincidência NF-e", "desc": "Mesmo erro reportado 3 vezes — problema raiz não foi endereçado", "nivel": "high", "confianca": 85 },
+        { "titulo": "Tempo de resposta fora do SLA contratual", "desc": "Média de resposta atual: 52min · SLA contratado: 30min", "nivel": "medium", "confianca": 74 }
+      ]
+    },
+    {
+      "cliente": "Outros clientes",
+      "narrativa": "Demais contas apresentam <strong>nível de risco moderado</strong>. Volume de chamados dentro do esperado, sem padrões anômalos identificados. Monitoramento preventivo recomendado para contas com contratos de renovação nos próximos 60 dias.",
+      "riscos": [
+        { "titulo": "Chamados bloqueados aguardando retorno", "desc": "8 chamados aguardando resposta de clientes há mais de 5 dias — reenvio de notificação recomendado", "nivel": "low", "confianca": 61 }
+      ]
+    }
+  ],
+  "cs_insights": [
+    {
+      "cliente": "Groundwork",
+      "narrativa": "Conta em <strong>nível de atenção moderada-alta</strong>. O padrão desta semana indica sobrecarga no módulo Fiscal — 5 tickets novos com o mesmo erro raiz, sugerindo que a solução anterior foi superficial.<br><br>Recomendo agendar uma <strong>sessão de capacitação técnica antes do fechamento do mês</strong> para quebrar o ciclo de reincidência. Estimativa de impacto: redução de 12% no volume mensal desta conta.<br><br>O chamado mais antigo em aberto está próximo do threshold histórico de escalonamento desta conta. Contato proativo recomendado até <strong>27/03</strong>.",
+      "proximo_contato": "até 27 mar 2026",
+      "tom_sugerido": "proativo · não reativo",
+      "prioridade": "alta"
+    }
+  ]
+}
