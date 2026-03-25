@@ -504,6 +504,10 @@ input[type=file]{display:none}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Operação Interna
     </button>
+    <button class="tb-btn cli" id="btn-cli" onclick="setMode('cli')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Portal do Cliente
+    </button>
     <button class="tb-btn cs" id="btn-cs" onclick="setMode('cs')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Customer Success
@@ -552,6 +556,22 @@ input[type=file]{display:none}
     <div class="month-btns" id="mth-btns-op"></div>
     <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
     <div class="month-btns" id="fila-btns-op" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
+  </div>
+  </div>
+  <div id="nav-cli" style="display:none">
+    <div class="sb-head">Portal</div>
+    <div class="nav cli-on" onclick="goSec('cli','c-ov',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Painel da Empresa</div>
+    <div class="nav" onclick="goSec('cli','c-tl',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Linha do Tempo</div>
+    <div class="nav" onclick="goSec('cli','c-hs',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health Score</div>
+    <div class="nav" onclick="goSec('cli','c-sq',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>SLA do Contrato</div>
+    <div class="nav" onclick="goSec('cli','c-inf',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Status da Fila</div>
+
+  <!-- MONTH FILTER CLI -->
+  <div class="month-filter-wrap" id="mf-cli" style="display:none">
+    <span class="month-filter-lbl">Filtrar por mês</span>
+    <div class="month-btns" id="mth-btns-cli"></div>
+    <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
+    <div class="month-btns" id="fila-btns-cli" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
   </div>
   </div>
   <div id="nav-cs" style="display:none">
@@ -853,6 +873,127 @@ input[type=file]{display:none}
   </div>
 </div><!-- /view-op -->
 
+<!-- ══════ CLIENTE VIEW ══════ -->
+<div id="view-cli" class="view">
+
+  <!-- EMPRESA SELECTOR (fixo no topo de todas seções) -->
+  <div id="cli-emp-bar" style="padding:18px 24px 0">
+    <div class="emp-selector">
+      <label>Selecione sua empresa</label>
+      <select id="sel-empresa" onchange="loadEmpresa(this.value)">
+        <option value="">— Escolha sua empresa —</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="c-ov" class="sec on">
+    <div class="page-header"><h1>Painel da Empresa</h1><p>Seus chamados, indicadores e status em tempo real</p></div>
+    <div class="page-body">
+      <div id="co-empty" class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><p>Selecione sua empresa acima</p><span>para acessar o painel completo</span></div>
+      <div id="co-content" style="display:none">
+        <div class="co-hero">
+          <div class="co-hero-top">
+            <div><div class="co-name" id="co-name"></div><div class="co-id" id="co-id"></div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span id="co-health-badge"></span>
+              <button class="export-btn" onclick="exportPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Exportar PDF</button>
+            </div>
+          </div>
+          <div class="co-kpis">
+            <div class="co-kpi"><div class="co-kpi-lbl">Total período</div><div class="co-kpi-val" id="co-total" style="color:var(--teal)"></div></div>
+            <div class="co-kpi"><div class="co-kpi-lbl">Em aberto</div><div class="co-kpi-val" id="co-abertos" style="color:var(--warn)"></div></div>
+            <div class="co-kpi"><div class="co-kpi-lbl">Concluídos</div><div class="co-kpi-val" id="co-fechados" style="color:var(--ok)"></div></div>
+            <div class="co-kpi"><div class="co-kpi-lbl">1ª Resp (med.)</div><div class="co-kpi-val" id="co-resp" style="color:var(--purple)"></div></div>
+            <div class="co-kpi"><div class="co-kpi-lbl">Solução média</div><div class="co-kpi-val" id="co-sol" style="color:var(--blue)"></div></div>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="card"><div class="card-title">Chamados por mês</div><div class="cw" style="height:160px"><canvas id="c-comensal"></canvas></div></div>
+          <div class="card"><div class="card-title">Por estado</div><div id="co-estados"></div></div>
+        </div>
+        <div class="card card-mb"><div class="card-title">Módulos utilizados</div><div id="co-servicos"></div></div>
+        <div class="card"><div class="card-title">Chamados recentes <span class="card-title-right">ordenados por data</span></div><div id="co-fila-btns" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;padding:0 2px"></div><div id="co-tickets"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINHA DO TEMPO -->
+  <div id="c-tl" class="sec">
+    <div class="page-header"><h1>Linha do Tempo</h1><p>Histórico visual de todos os chamados</p></div>
+    <div class="page-body">
+      <div id="tl-empty" class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div><p>Selecione sua empresa</p></div>
+      <div id="tl-content" style="display:none">
+        <div class="card"><div class="card-title" id="tl-title"></div><div id="tl-list"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEALTH SCORE -->
+  <div id="c-hs" class="sec">
+    <div class="page-header"><h1>Health Score</h1><p>Indicador de saúde calculado com base nos seus chamados</p></div>
+    <div class="page-body">
+      <div id="hs-empty" class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><p>Selecione sua empresa</p></div>
+      <div id="hs-content" style="display:none">
+        <div class="grid2">
+          <div class="card">
+            <div class="card-title">Score geral de relacionamento</div>
+            <div class="hs-wrap">
+              <div class="hs-ring"><canvas id="c-ring" width="100" height="100"></canvas><div class="hs-center"><div class="hs-num" id="hs-num"></div><div class="hs-lbl">score</div></div></div>
+              <div class="hs-items" id="hs-items"></div>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:var(--bg3);border-radius:var(--r);font-size:12px;color:var(--sub);line-height:1.6" id="hs-insight"></div>
+          </div>
+          <div class="card"><div class="card-title">Distribuição de prioridades</div><div class="cw" style="height:200px"><canvas id="c-prior-co"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-top:0">
+          <div class="card-title">Comparativo com média geral da fila</div>
+          <div id="hs-comp"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLA CONTRATO -->
+  <div id="c-sq" class="sec">
+    <div class="page-header"><h1>SLA do Contrato</h1><p>Cumprimento de prazos por prioridade</p></div>
+    <div class="page-body">
+      <div id="sq-empty" class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div><p>Selecione sua empresa</p></div>
+      <div id="sq-content" style="display:none">
+        <div class="card card-mb"><div class="card-title">Cumprimento por prioridade <span class="card-title-right">chamados com tempo registrado</span></div><div class="sla-grid" id="sla-gauges"></div></div>
+        <div class="grid2">
+          <div class="card"><div class="card-title">1ª Resposta por mês <span class="card-title-right">mediana</span></div><div class="cw" style="height:160px"><canvas id="c-sla-trend"></canvas></div></div>
+          <div class="card"><div class="card-title">Distribuição do tempo de solução</div><div class="cw" style="height:160px"><canvas id="c-sol-dist"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS GERAL -->
+  <div id="c-inf" class="sec">
+    <div class="page-header"><h1>Status da Fila</h1><p>Indicadores gerais — sem dados internos de outras empresas</p></div>
+    <div class="page-body">
+      <div class="kpi-row kpi-row-4">
+        <div class="kpi"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-lbl">Chamados no período</div><div class="kpi-val" style="color:var(--teal)">556</div><div class="kpi-sub">53 dias</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--ok)"></div><div class="kpi-lbl">Taxa de conclusão</div><div class="kpi-val" style="color:var(--ok)">62<span>%</span></div><div class="kpi-sub">346 resolvidos</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-lbl">1ª Resp (mediana)</div><div class="kpi-val" style="color:var(--teal)">8<span>min</span></div><div class="kpi-sub">meta atingida</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--purple)"></div><div class="kpi-lbl">Solução média</div><div class="kpi-val" style="color:var(--purple)">54<span>h</span></div><div class="kpi-sub">chamados fechados</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="card-title">Volume mensal da fila</div><div class="cw" style="height:170px"><canvas id="c-vol-inf"></canvas></div></div>
+        <div class="card">
+          <div class="card-title">Indicadores de qualidade</div>
+          <div class="sl-item"><div class="sl-left"><div class="sl-dot" style="background:var(--ok)"></div><span>Meta 1ª resposta (&lt;30min)</span></div><span class="pill pg">Atingida</span></div>
+          <div class="sl-item"><div class="sl-left"><div class="sl-dot" style="background:var(--blue)"></div><span>Módulo principal</span></div><span class="pill pb">ERP Protheus</span></div>
+          <div class="sl-item"><div class="sl-left"><div class="sl-dot" style="background:var(--teal)"></div><span>Serviço mais demandado</span></div><span class="pill pt">Contabilidade</span></div>
+          <div class="sl-item"><div class="sl-left"><div class="sl-dot" style="background:var(--danger)"></div><span>Prioridade predominante</span></div><span class="pill pr">Muito Alta</span></div>
+          <div class="sl-item"><div class="sl-left"><div class="sl-dot" style="background:var(--warn)"></div><span>Pico de abertura</span></div><span class="pill py">Sex 16–17h</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /view-cli -->
 
 <!-- ══════ CUSTOMER SUCCESS VIEW ══════ -->
 <div id="view-cs" class="view">
@@ -1200,14 +1341,22 @@ setInterval(updateClock,1000);updateClock();
 // ════════════════════════════════════════════════════════════
 function setMode(m){
   var isOp=m==='op';
+  var isCli=m==='cli';
   var isCS=m==='cs';
   document.getElementById('view-op').classList.toggle('on',isOp);
+  document.getElementById('view-cli').classList.toggle('on',isCli);
   document.getElementById('view-cs').classList.toggle('on',isCS);
   document.getElementById('nav-op').style.display=isOp?'block':'none';
+  document.getElementById('nav-cli').style.display=isCli?'block':'none';
   document.getElementById('nav-cs').style.display=isCS?'block':'none';
   document.getElementById('btn-op').classList.toggle('on',isOp);
+  document.getElementById('btn-cli').classList.toggle('on',isCli);
   document.getElementById('btn-cs').classList.toggle('on',isCS);
   document.getElementById('tb-alerts').style.display=isOp?'flex':'none';
+  document.getElementById('sb-import-btn').className='sb-import-btn'+(isOp?'':' cli-mode');
+  document.getElementById('import-drop-zone').className='import-drop-zone'+(isOp?'':' cli-mode');
+  document.getElementById('import-drop-icon').className='import-drop-icon'+(isOp?'':' cli-mode');
+  if(isCli)initCli();
   if(isCS)initCS();
 }
 
@@ -1218,10 +1367,18 @@ var rendered={};
 var MONTH_SENSITIVE_SECS=['s-ov','s-alertas','s-ch','s-comp','s-at','s-cl','s-hm','s-sl','s-bl','c-ov','c-tl','c-hs','c-sq','c-inf'];
 function goSec(view,id,el){
   document.querySelectorAll('#view-'+view+' .sec').forEach(function(s){s.classList.remove('on');});
-  document.querySelectorAll('#nav-op .nav').forEach(function(n){n.classList.remove('on','cli-on');});
+  document.querySelectorAll('#nav-'+(view==='op'?'op':'cli')+' .nav').forEach(function(n){n.classList.remove('on','cli-on');});
   document.getElementById(id).classList.add('on');
-  el.classList.add('on');
+  el.classList.add(view==='op'?'on':'cli-on');
   if(!rendered[id]||MONTH_SENSITIVE_SECS.indexOf(id)!==-1){rendered[id]=true;renderSec(id);}
+  if(view==='cli'){
+    var key=document.getElementById('sel-empresa').value;
+    var d=key?getFilteredEmpresa(EMPRESAS[key]):null;
+    if(id==='c-ov')renderPainel(d);
+    else if(id==='c-tl')renderTimeline(d);
+    else if(id==='c-hs')renderHealthScore(d);
+    else if(id==='c-sq')renderSlaContrato(d);
+  }
 }
 function renderSec(id){
   if(id==='s-ov')renderOv();
@@ -2340,10 +2497,14 @@ function rebuildAll(data){
         // reset
         Object.keys(rendered).forEach(function(k){rendered[k]=false;});
         Object.keys(CH).forEach(function(k){if(CH[k]){CH[k].destroy();CH[k]=null;}});
+        rendered['cli-init']=false;
         activeMonth='all';
         buildMonthFilter();
+        var sel=document.getElementById('sel-empresa');while(sel.options.length>1)sel.remove(1);
+        initCli();
         // re-render active sections
         var aOp=document.querySelector('#view-op .sec.on');
+        var aCli=document.querySelector('#view-cli .sec.on');
         // re-render CS: rebuild empresa selector + seção ativa
         var csSelEl=document.getElementById('cs-sel-empresa');
         if(csSelEl){
@@ -2465,10 +2626,13 @@ function rebuildAll(data){
         });
 
         activeFilaOP = 'all';
+        activeFilaCli = 'all';
         buildFilaBtns('fila-btns-op', 'all', setFilaOP);
+        buildFilaBtns('fila-btns-cli', 'all', setFilaCli);
         // sempre atualiza totalizadores do overview e alertas (após OP_FILAS e activeFilaOP prontos)
         rendered['s-ov']=true;renderOv();
         rendered['s-alertas']=true;renderAlertas();
+        if(aCli){rendered[aCli.id]=true;renderSec(aCli.id);}
         if(aOp&&aOp.id!=='s-ov'&&aOp.id!=='s-alertas'){rendered[aOp.id]=true;renderSec(aOp.id);}
         setProgress(100,'✓ Importação concluída!');
         setTimeout(function(){setProgress(0,'');closeImport();},1500);
@@ -2981,18 +3145,26 @@ function buildMonthFilter() {
   keys.forEach(function(k){ opTotals[k] = OP_MESES[k] ? OP_MESES[k].total : 0; });
   var opTotal = OP.total;
 
-  ['op','cs'].forEach(function(mode) {
+  // Totais da empresa selecionada (modo CLI) — usa EMP_MESES
+  var empKey = document.getElementById('sel-empresa') ? document.getElementById('sel-empresa').value : '';
+  var empData = empKey && typeof EMP_MESES !== 'undefined' ? (EMP_MESES[empKey] || {}) : {};
+  var empTotal = empKey && EMPRESAS[empKey] ? EMPRESAS[empKey].total : opTotal;
+
+  ['op','cli','cs'].forEach(function(mode) {
     var el = document.getElementById('mth-btns-'+mode);
     if(!el) return;
+    var isCli = mode === 'cli';
     var isCS  = mode === 'cs';
+    // No modo CLI/CS com empresa selecionada, mostra totais da empresa
     var csEmpKey = isCS && document.getElementById('cs-sel-empresa') ? document.getElementById('cs-sel-empresa').value : '';
-    var usaEmp = isCS && csEmpKey;
-    var activeEmpData = csEmpKey && typeof EMP_MESES !== 'undefined' ? (EMP_MESES[csEmpKey] || {}) : {};
-    var activeEmpTotal = csEmpKey && EMPRESAS[csEmpKey] ? EMPRESAS[csEmpKey].total : opTotal;
+    var usaEmp = (isCli && empKey) || (isCS && csEmpKey);
+    var activeEmpKey = isCli ? empKey : csEmpKey;
+    var activeEmpData = activeEmpKey && typeof EMP_MESES !== 'undefined' ? (EMP_MESES[activeEmpKey] || {}) : {};
+    var activeEmpTotal = activeEmpKey && EMPRESAS[activeEmpKey] ? EMPRESAS[activeEmpKey].total : opTotal;
     var total = usaEmp ? activeEmpTotal : opTotal;
     var rows = '';
     var allOn = activeMonth === 'all';
-    var modCls = isCS ? ' cs-m' : '';
+    var modCls = isCli ? ' cli-m' : (isCS ? ' cs-m' : '');
     var allCls = 'mth-btn mth-all' + (allOn ? (' on' + modCls) : '');
     rows += '<button class="' + allCls + '" onclick="setMonth(&quot;all&quot;)">Todos os meses<span class="mth-count">' + total + '</span></button>';
     keys.forEach(function(k) {
@@ -3013,6 +3185,11 @@ function setMonth(m) {
   Object.keys(CH).forEach(function(k){ if(CH[k]){CH[k].destroy();CH[k]=null;} });
   var aOp = document.querySelector('#view-op .sec.on');
   if(aOp){rendered[aOp.id]=true;renderSec(aOp.id);}
+  var aCli = document.querySelector('#view-cli .sec.on');
+  if(aCli){rendered[aCli.id]=true;renderSec(aCli.id);}
+  // Re-render empresa if selected
+  var key = document.getElementById('sel-empresa').value;
+  if(key) loadEmpresa(key);
   // Re-render CS if active
   var csKey = document.getElementById('cs-sel-empresa').value;
   if(csKey) loadCS(csKey);
@@ -3124,6 +3301,12 @@ function setFilaOP(fila) {
   renderAlertas();
 }
 
+function setFilaCli(fila) {
+  activeFilaCli = fila;
+  buildFilaBtns('fila-btns-cli', fila, setFilaCli);
+  var empKey = document.getElementById('sel-empresa') ? document.getElementById('sel-empresa').value : null;
+  if(empKey) loadEmpresa(empKey);
+}
 
 function getFilteredDays() {
   var op = getActiveOP();
@@ -3252,6 +3435,7 @@ var OP_FILAS = {
 };
 var FILAS_LIST = ["DATASUL", "DBA", "INFRAESTUTURA", "MONITORAMENTO", "NOC", "PROTHEUS", "SSG", "SSG-MELHORIAS", "TECNOLOGIA"];
 var activeFilaOP = "all";
+var activeFilaCli = "all";
 
 // Filtered empresa getter - filters tickets by month
 var EMP_MESES = {"ALMEIDA JR": {"2026-01": {"total": 78, "abertos": 1, "fechados": 42}, "2026-02": {"total": 44, "abertos": 1, "fechados": 24}, "2026-03": {"total": 20, "abertos": 13, "fechados": 6}}, "AUTOZONE": {"2026-01": {"total": 118, "abertos": 6, "fechados": 98}, "2026-02": {"total": 67, "abertos": 8, "fechados": 43}, "2026-03": {"total": 30, "abertos": 18, "fechados": 9}}, "GRUPO_METALNOX": {"2026-01": {"total": 33, "abertos": 5, "fechados": 27}, "2026-02": {"total": 50, "abertos": 19, "fechados": 31}, "2026-03": {"total": 23, "abertos": 15, "fechados": 8}}, "FINPEC": {"2026-01": {"total": 2, "abertos": 0, "fechados": 1}, "2026-02": {"total": 13, "abertos": 2, "fechados": 5}, "2026-03": {"total": 10, "abertos": 4, "fechados": 6}}, "NSX": {"2026-01": {"total": 11, "abertos": 4, "fechados": 7}, "2026-02": {"total": 11, "abertos": 1, "fechados": 10}, "2026-03": {"total": 0, "abertos": 0, "fechados": 0}}};
@@ -3900,6 +4084,7 @@ function exportCSPDF() {
 // ════════════════════════════════════════════════════════════
 buildMonthFilter();
 buildFilaBtns('fila-btns-op', activeFilaOP, setFilaOP);
+buildFilaBtns('fila-btns-cli', activeFilaCli, setFilaCli);
 renderOv();rendered['s-ov']=true;
 renderAlertas();rendered['s-alertas']=true;
 </script>
