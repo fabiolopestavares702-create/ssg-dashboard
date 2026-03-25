@@ -1050,6 +1050,7 @@ input[type=file]{display:none}
   <div id="cs-overview" class="sec on">
     <div class="page-header"><h1>Visão Geral da Conta</h1><p>Resumo executivo Customer Success · SSG / Groundwork</p></div>
     <div class="page-body">
+      <div id="cs-all-health" style="margin-bottom:14px"></div>
       <div id="cs-ov-empty" class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><p>Selecione uma conta acima</p><span>para ver o painel Customer Success</span></div>
       <div id="cs-ov-content" style="display:none">
         <!-- Account card -->
@@ -3903,6 +3904,7 @@ function initCS() {
   document.querySelectorAll('#view-cs .sec').forEach(function(s){ s.classList.remove('on'); });
   var firstSec = document.getElementById('cs-overview');
   if (firstSec) firstSec.classList.add('on');
+  renderCSHealthList();
   if (csCurrentKey) loadCS(csCurrentKey);
 }
 
@@ -3911,6 +3913,7 @@ function goSecCS(id, el) {
   document.querySelectorAll('#nav-cs .nav').forEach(function(n){ n.classList.remove('on'); });
   document.getElementById(id).classList.add('on');
   el.classList.add('on');
+  if(id==='cs-overview') renderCSHealthList();
   if (csCurrentKey) renderCSSection(id, EMPRESAS[csCurrentKey]);
 }
 
@@ -3944,6 +3947,62 @@ function csPriorColor(p) {
   return m[p] || 'var(--muted)';
 }
 
+function renderCSHealthList() {
+  var el = document.getElementById('cs-all-health');
+  if(!el) return;
+  var empIds = Object.keys(EMPRESAS).filter(function(k){
+    return k && k.indexOf('@')===-1 && EMPRESAS[k].total>0;
+  }).sort(function(a,b){ return EMPRESAS[b].total - EMPRESAS[a].total; });
+  if(!empIds.length){ el.innerHTML=''; return; }
+
+  var rows = empIds.map(function(k){
+    var d = getFilteredEmpresa(EMPRESAS[k]);
+    var score = d ? calcCSScore(d) : 0;
+    var total = d ? (d.total||0) : 0;
+    var abertos = d ? (d.abertos||0) : 0;
+    var fechados = d ? (d.fechados||0) : 0;
+    var taxa = total>0 ? Math.round(fechados/total*100) : 0;
+    var ma = (d && d.prior) ? (d.prior['Muito Alta']||0) : 0;
+    var aguard = (d && d.estados) ? (d.estados['Aguardando Cliente']||0) : 0;
+    var sol = d ? (d.sol_med||d.solucao_med_h||0) : 0;
+
+    var emoji = score>=70?'🟢':score>=50?'🟡':'🔴';
+    var scoreColor = score>=70?'var(--ok)':score>=50?'var(--warn)':'var(--danger)';
+    var status = score>=70?'Saudável':score>=50?'Atenção':'Crítico';
+    var barW = score;
+    var barColor = scoreColor;
+    var isSel = k===csCurrentKey;
+    var rowBg = isSel ? 'background:var(--bg3);' : '';
+
+    return '<tr style="cursor:pointer;'+rowBg+'border-bottom:1px solid var(--border)" onclick="document.getElementById(\'cs-sel-empresa\').value=\''+k+'\';loadCS(\''+k+'\')" onmouseover="this.style.background=\'var(--bg3)\'" onmouseout="this.style.background=\''+(isSel?'var(--bg3)':'')+'\'">'+
+      '<td style="padding:9px 12px;font-size:12px;font-weight:600;color:var(--text);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(EMPRESAS[k].nome||k)+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-size:16px">'+emoji+'</td>'+
+      '<td style="padding:9px 12px;min-width:90px">'+
+        '<div style="display:flex;align-items:center;gap:6px">'+
+          '<div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+barW+'%;background:'+barColor+';border-radius:3px"></div></div>'+
+          '<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+scoreColor+';min-width:28px;text-align:right">'+score+'</span>'+
+        '</div>'+
+      '</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-size:10px;color:'+scoreColor+';font-family:var(--mono);font-weight:600">'+status+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--sub)">'+total+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:'+(abertos>0?'var(--warn)':'var(--sub)')+'">'+abertos+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:'+(taxa>=70?'var(--ok)':taxa>=50?'var(--warn)':'var(--danger)')+'">'+taxa+'%</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:'+(ma>0?'var(--danger)':'var(--sub)')+'">'+ma+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:'+(aguard>0?'var(--warn)':'var(--sub)')+'">'+aguard+'</td>'+
+      '<td style="padding:9px 12px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--sub)">'+(sol?sol+'h':'—')+'</td>'+
+    '</tr>';
+  }).join('');
+
+  var th = function(t){ return '<th style="padding:6px 12px;text-align:center;font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-weight:600;white-space:nowrap">'+t+'</th>'; };
+  el.innerHTML = '<div class="card">'+
+    '<div class="card-title">Health Score — Todos os Clientes<span class="card-title-right" style="font-size:10px;color:var(--muted)">clique para detalhar</span></div>'+
+    '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">'+
+    '<thead><tr style="border-bottom:1px solid var(--border)">'+
+    '<th style="padding:6px 12px;text-align:left;font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Cliente</th>'+
+    th('Status')+th('Score')+th('Saúde')+th('Total')+th('Abertos')+th('Resolução')+th('Muito Alta')+th('Ag. Cliente')+th('Sol. Média')+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
 function loadCS(key) {
   csCurrentKey = key;
   var d = EMPRESAS[key];
@@ -3955,6 +4014,7 @@ function loadCS(key) {
     if (empty) empty.style.display = d ? 'none' : '';
     if (content) content.style.display = d ? '' : 'none';
   });
+  renderCSHealthList();
   if (!d) return;
   // Render a seção ativa
   var activeSecEl = document.querySelector('#view-cs .sec.on');
