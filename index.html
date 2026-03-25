@@ -3413,27 +3413,44 @@ function getActiveOP() {
   if(activeCliente && EMPRESAS[activeCliente]) {
     var emp = getFilteredEmpresa(EMPRESAS[activeCliente]);
     if(emp) {
-      // Reconstrói prior dos tickets filtrados (aproximação)
-      var priorEmp = {};
-      (emp.tickets || []).forEach(function(t){ if(t.prior) priorEmp[t.prior]=(priorEmp[t.prior]||0)+1; });
-      if(!Object.keys(priorEmp).length) priorEmp = emp.prior || {};
-      // Filtra criticos globais para só os do cliente
+      // Aplica filtro de fila sobre os tickets do cliente (quando fila selecionada)
+      var empTks = emp.tickets || [];
+      if(activeFilaOP !== 'all') {
+        empTks = empTks.filter(function(t){ return t.fila === activeFilaOP; });
+      }
+      // Reconstrói métricas a partir dos tickets filtrados por fila
+      var isAb2=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+      var isFe2=function(e){return e==='Fechado'||e==='Resolvido';};
+      var priorEmp={}, estadoEmp={}, svcEmp={};
+      empTks.forEach(function(t){
+        if(t.prior)  priorEmp[t.prior]=(priorEmp[t.prior]||0)+1;
+        if(t.estado) estadoEmp[t.estado]=(estadoEmp[t.estado]||0)+1;
+        var s=t.servico||t.svc; if(s) svcEmp[s]=(svcEmp[s]||0)+1;
+      });
+      // Totais: usa filas do cliente quando fila ativa, senão usa emp agregado
+      var filaTotal = activeFilaOP !== 'all' && emp.filas ? (emp.filas[activeFilaOP]||empTks.length) : (emp.total||0);
+      var filaAb    = activeFilaOP !== 'all' ? empTks.filter(function(t){return isAb2(t.estado);}).length : (emp.abertos||0);
+      var filaFe    = activeFilaOP !== 'all' ? empTks.filter(function(t){return isFe2(t.estado);}).length : (emp.fechados||0);
+      if(activeFilaOP === 'all' && !Object.keys(priorEmp).length) priorEmp = emp.prior || {};
+      if(activeFilaOP === 'all' && !Object.keys(estadoEmp).length) estadoEmp = emp.estado || emp.estados || {};
+      if(activeFilaOP === 'all' && !Object.keys(svcEmp).length)   svcEmp   = emp.svc   || emp.servicos || {};
+      // Filtra criticos pelo mesmo conjunto de tickets
       var crit = (OP.criticos||[]).filter(function(c){
-        return (emp.tickets||[]).some(function(t){ return t.num===c.num; });
+        return empTks.some(function(t){ return t.num===c.num; });
       });
       var rawAtendEmp = emp.atend || emp.atendentes || [];
       var atendEmp = rawAtendEmp.map(function(a){
         return {n:a.n||'',t:a.t!=null?a.t:(a.total||0),f:a.f!=null?a.f:(a.fe||0),ab:a.ab||0,tm:a.tm||null,rm:a.rm||null,est:{}};
       });
       return {
-        total:    emp.total    || 0,
-        abertos:  emp.abertos  || 0,
-        fechados: emp.fechados || 0,
+        total:    filaTotal,
+        abertos:  filaAb,
+        fechados: filaFe,
         resp_med: emp.resp_med || 0,
         sol_med:  emp.sol_med  || emp.solucao_med_h || 0,
-        estado:   emp.estado   || emp.estados || {},
+        estado:   estadoEmp,
         prior:    priorEmp,
-        svc:      emp.svc      || emp.servicos || {},
+        svc:      svcEmp,
         cli:      emp.cli      || {},
         heat:     emp.heat     || {},
         volMes:   emp.volMes   || emp.by_mes   || {},
