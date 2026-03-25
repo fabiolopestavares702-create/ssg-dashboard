@@ -4584,12 +4584,19 @@ function renderResumo(){
   var atendData=op.atend||OP.atend||[];
   var criticos=OP.criticos||[];
 
-  // ── Tendência semana vs semana ────────────────────────────
-  var today=new Date();
+  // ── Referência de data: última data com dados no dataset filtrado ──
+  // Não usa new Date() pois os dados podem ter defasagem em relação à data atual
+  var refDate=new Date();
+  if(byDay.length>0){
+    var parsedLast=new Date(byDay[byDay.length-1].d+'T12:00:00');
+    if(!isNaN(parsedLast))refDate=parsedLast;
+  }
+
+  // ── Tendência semana vs semana (relativa à última data dos dados) ──
   var thisWeek=0,prevWeek=0;
   byDay.forEach(function(d){
     var dt=new Date(d.d+'T12:00:00');
-    var daysAgo=Math.floor((today-dt)/(1000*60*60*24));
+    var daysAgo=Math.floor((refDate-dt)/(1000*60*60*24));
     if(daysAgo>=0&&daysAgo<7)thisWeek+=d.n;
     else if(daysAgo>=7&&daysAgo<14)prevWeek+=d.n;
   });
@@ -4597,10 +4604,11 @@ function renderResumo(){
   var trendDir=trendPct>0?'↑':trendPct<0?'↓':'→';
   var trendColor=trendPct>15?'var(--danger)':trendPct>5?'var(--warn)':trendPct<-10?'var(--ok)':'var(--sub)';
 
-  // ── Ritmo diário e previsão ───────────────────────────────
-  var last30=byDay.filter(function(d){var dt=new Date(d.d+'T12:00:00');return Math.floor((today-dt)/(1000*60*60*24))<30;});
-  var avgDaily=last30.length>0?Math.round(last30.reduce(function(a,b){return a+b.n;},0)/last30.length):0;
-  var weeklyForecast=avgDaily*7;
+  // ── Ritmo diário: média por dia com dados no período filtrado ──
+  var totalPeriodo=byDay.reduce(function(a,b){return a+b.n;},0);
+  var avgDaily=byDay.length>0?Math.round(totalPeriodo/byDay.length):0;
+  // Previsão baseada em semana de 5 dias úteis
+  var weeklyForecast=avgDaily*5;
 
   // ── Aging do backlog (OP.criticos = top 40 mais antigos) ──
   var age0_2=0,age3_7=0,age8_30=0,age30p=0;
