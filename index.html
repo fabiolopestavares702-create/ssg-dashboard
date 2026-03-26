@@ -5283,6 +5283,21 @@ function autoFetchXLS(){
       var hm=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       if(dot)dot.style.background='var(--ok)';
       if(lbl)lbl.textContent='Sync '+hm;
+      // Busca validation.json para confirmar paridade xlsx ↔ DB
+      fetch("validation.json?v="+Date.now())
+        .then(function(rv){return rv.ok?rv.json():null;})
+        .then(function(vd){
+          if(!vd||vd.status==='skip')return;
+          if(vd.status==='ok'){
+            if(lbl)lbl.textContent='Sync '+hm+' · DB ✓ '+vd.total_db;
+          } else if(vd.status==='divergencia'){
+            if(dot)dot.style.background='var(--warn)';
+            var nd=vd.divergencias?vd.divergencias.length:0;
+            if(lbl)lbl.textContent='Sync '+hm+' · DB ⚠ '+nd+' div.';
+            if(lbl)lbl.title='xlsx='+vd.total_xlsx+' db='+vd.total_db+' ('+vd.diff_total+')';
+          }
+        })
+        .catch(function(){/* validation.json ausente — não altera status */});
     })
     .catch(function(e){
       _autoFetching=false;
