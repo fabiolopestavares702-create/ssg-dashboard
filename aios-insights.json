@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-26T16:41:09.325475",
+  "generated_at": "2026-03-26T17:01:05.710331",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 80%</strong>, considerada excelente.<br><br>O volume de <strong>104 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 80%</strong>, considerada excelente.<br><br>O volume de <strong>102 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -51,7 +51,7 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "104 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "102 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -94,6 +94,24 @@
       ]
     },
     {
+      "cliente": "Yuri Oliveira",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 82 chamados (4% do total). O módulo <strong>VDI</strong> concentra 99% dos chamados desta conta — possível reincidência.",
+      "riscos": [
+        {
+          "titulo": "Volume acima da média do período",
+          "desc": "82 chamados (4% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "nivel": "medium",
+          "confianca": 78
+        },
+        {
+          "titulo": "Reincidência no módulo VDI",
+          "desc": "99% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "nivel": "medium",
+          "confianca": 75
+        }
+      ]
+    },
+    {
       "cliente": "Brendo Maia",
       "narrativa": "Conta com <strong>volume acima da média</strong> — 82 chamados (4% do total). O módulo <strong>Serviço de Sustentação Groundwork</strong> concentra 72% dos chamados desta conta — possível reincidência.",
       "riscos": [
@@ -106,24 +124,6 @@
         {
           "titulo": "Reincidência no módulo Serviço de Sustentação Groundwork",
           "desc": "72% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
-          "nivel": "medium",
-          "confianca": 75
-        }
-      ]
-    },
-    {
-      "cliente": "Yuri Oliveira",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 81 chamados (3% do total). O módulo <strong>VDI</strong> concentra 99% dos chamados desta conta — possível reincidência.",
-      "riscos": [
-        {
-          "titulo": "Volume acima da média do período",
-          "desc": "81 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
-          "nivel": "medium",
-          "confianca": 78
-        },
-        {
-          "titulo": "Reincidência no módulo VDI",
-          "desc": "99% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
@@ -187,15 +187,15 @@
       "prioridade": "alta"
     },
     {
-      "cliente": "Brendo Maia",
-      "narrativa": "O módulo <strong>Serviço de Sustentação Groundwork</strong> representa 72% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
+      "cliente": "Yuri Oliveira",
+      "narrativa": "O módulo <strong>VDI</strong> representa 99% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "média"
     },
     {
-      "cliente": "Yuri Oliveira",
-      "narrativa": "O módulo <strong>VDI</strong> representa 99% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
+      "cliente": "Brendo Maia",
+      "narrativa": "O módulo <strong>Serviço de Sustentação Groundwork</strong> representa 72% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "média"
