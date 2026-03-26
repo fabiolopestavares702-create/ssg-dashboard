@@ -5158,6 +5158,14 @@ function renderResumo(){
 var _autoFetching=false;
 function autoFetchXLS(){
   if(_autoFetching)return;
+  // Detecta acesso via file:// — fetch() é bloqueado pelo browser nesse protocolo
+  if(location.protocol==='file:'){
+    var dot=document.getElementById('auto-sync-dot');
+    var lbl=document.getElementById('auto-sync-lbl');
+    if(dot)dot.style.background='var(--warn)';
+    if(lbl)lbl.textContent='Abrir via GitHub Pages para sync automático';
+    return;
+  }
   _autoFetching=true;
   var dot=document.getElementById('auto-sync-dot');
   var lbl=document.getElementById('auto-sync-lbl');
@@ -5176,10 +5184,10 @@ function autoFetchXLS(){
       if(dot)dot.style.background='var(--ok)';
       if(lbl)lbl.textContent='Sync '+hm;
     })
-    .catch(function(){
+    .catch(function(e){
       _autoFetching=false;
       if(dot)dot.style.background='var(--danger)';
-      if(lbl)lbl.textContent='Falha no sync';
+      if(lbl)lbl.textContent='Falha no sync — tentando em 10min';
     });
 }
 setTimeout(autoFetchXLS, 600);
