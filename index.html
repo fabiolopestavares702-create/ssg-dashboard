@@ -4232,7 +4232,7 @@ function goSecCS(id, el) {
   document.getElementById(id).classList.add('on');
   el.classList.add('on');
   if(id==='cs-overview') renderCSHealthList();
-  if (csCurrentKey) renderCSSection(id, EMPRESAS[csCurrentKey]);
+  if (csCurrentKey) renderCSSection(id, getCSData(csCurrentKey));
 }
 
 function calcCSScore(d) {
@@ -4321,19 +4321,51 @@ function renderCSHealthList() {
     '</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
 }
 
+// Retorna dados do cliente filtrados pelo activeMonth via RAW_DATA
+function getCSData(key) {
+  var base = EMPRESAS[key];
+  if (!base) return null;
+  if (activeMonth === 'all' || typeof RAW_DATA === 'undefined' || !RAW_DATA.length) return base;
+  var isAb = function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+  var isFe = function(e){return e==='Fechado'||e==='Resolvido';};
+  var rows = RAW_DATA.filter(function(r){
+    return r.cli_id === key && r.criado && r.criado.toISOString().slice(0,7) === activeMonth;
+  });
+  if (!rows.length) return Object.assign({},base,{total:0,abertos:0,fechados:0,resp_med:0,solucao_med_h:0,estados:{},prior:{},servicos:{},tickets:[]});
+  var estados={},prior={},servicos={};
+  rows.forEach(function(r){
+    if(r.estado)  estados[r.estado]  =(estados[r.estado] ||0)+1;
+    if(r.prior)   prior[r.prior]     =(prior[r.prior]    ||0)+1;
+    if(r.servico) servicos[r.servico]=(servicos[r.servico]||0)+1;
+  });
+  var abertos  = rows.filter(function(r){return isAb(r.estado);}).length;
+  var fechados = rows.filter(function(r){return isFe(r.estado);}).length;
+  var respArr  = rows.filter(function(r){return r.resp_min!=null;}).map(function(r){return r.resp_min;}).sort(function(a,b){return a-b;});
+  var resp_med = respArr.length ? Math.round(respArr[Math.floor(respArr.length/2)]*10)/10 : 0;
+  var solArr   = rows.filter(function(r){return r.sol_h;}).map(function(r){return r.sol_h;});
+  var solucao_med_h = solArr.length ? Math.round(solArr.reduce(function(a,b){return a+b;},0)/solArr.length*10)/10 : 0;
+  var tickets  = rows.slice(0,100).map(function(r){
+    return {num:r.num,assunto:r.assunto||'',estado:r.estado||'',prioridade:r.prior||'',servico:r.servico||'',
+            criado:r.criado?r.criado.toISOString().slice(0,10):'',resp_min:r.resp_min,sol:r.sol_h};
+  });
+  return Object.assign({},base,{total:rows.length,abertos:abertos,fechados:fechados,
+    resp_med:resp_med,solucao_med_h:solucao_med_h,estados:estados,prior:prior,servicos:servicos,tickets:tickets});
+}
+
 function loadCS(key) {
   csCurrentKey = key;
-  var d = EMPRESAS[key];
+  var base = EMPRESAS[key];
   // mostrar/esconder empty states
   var secs = ['ov','hs','risk','tl','act'];
   secs.forEach(function(s) {
     var empty = document.getElementById('cs-'+s+'-empty');
     var content = document.getElementById('cs-'+s+'-content');
-    if (empty) empty.style.display = d ? 'none' : '';
-    if (content) content.style.display = d ? '' : 'none';
+    if (empty) empty.style.display = base ? 'none' : '';
+    if (content) content.style.display = base ? '' : 'none';
   });
   renderCSHealthList();
-  if (!d) return;
+  if (!base) return;
+  var d = getCSData(key);
   // Render a seção ativa
   var activeSecEl = document.querySelector('#view-cs .sec.on');
   if (activeSecEl) renderCSSection(activeSecEl.id, d);
@@ -4355,7 +4387,10 @@ function renderCSOverview(d) {
   var initials = d.nome.split(' ').slice(0,2).map(function(w){return w[0];}).join('');
   document.getElementById('cs-avatar').textContent = initials;
   document.getElementById('cs-account-name').textContent = d.nome;
-  document.getElementById('cs-account-id').textContent = 'ID: ' + d.id + ' · jan–mar 2026';
+  var _mn={'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
+  var _mKeys=Object.keys(typeof OP_MESES!=='undefined'?OP_MESES:{}).filter(function(k){return k!=='all';}).sort();
+  var _periodLabel=activeMonth==='all'?(_mKeys.length?_mKeys.map(function(k){var p=k.split('-');return _mn[p[1]]+'/'+(p[0].slice(2));}).join('–'):'todos os meses'):(function(){var p=activeMonth.split('-');return _mn[p[1]]+'/'+(p[0].slice(2));})();
+  document.getElementById('cs-account-id').textContent = 'ID: ' + d.id + ' · ' + _periodLabel;
   document.getElementById('cs-ov-score').textContent = score;
   document.getElementById('cs-ov-score').style.color = sl.color;
   document.getElementById('cs-ov-score-lbl').textContent = sl.label;
@@ -4374,7 +4409,7 @@ function renderCSOverview(d) {
   var aguard = (d.estados && d.estados['Aguardando Cliente']) || 0;
   var alta = (d.prior && d.prior['Muito Alta']) || 0;
   document.getElementById('cs-kpi-total').textContent = total;
-  document.getElementById('cs-kpi-total-sub').textContent = 'jan–mar 2026';
+  document.getElementById('cs-kpi-total-sub').textContent = _periodLabel;
   document.getElementById('cs-kpi-abertos').textContent = d.abertos || 0;
   document.getElementById('cs-kpi-abertos-sub').textContent = Math.round((d.abertos||0)/total*100)+'% do total';
   document.getElementById('cs-kpi-taxa').textContent = taxa + '%';
