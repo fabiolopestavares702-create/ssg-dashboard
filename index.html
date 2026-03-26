@@ -3830,18 +3830,17 @@ function getFilteredEmpresa(d) {
   var mKey = mNames2[mParts[1]]+'/'+(mParts[0].slice(2));
   var mNum = mParts[1]; // '01','02','03' etc
 
-  // Use pre-calculated per-month data for accurate totals
+  // Totais precisos via EMP_MESES
   var empMes = EMP_MESES[d.id] && EMP_MESES[d.id][activeMonth];
-  var total   = empMes ? empMes.total   : (d.by_mes[mKey]||0);
-  var abertos = empMes ? empMes.abertos : 0;
+  var total    = empMes ? empMes.total   : (d.by_mes[mKey]||0);
+  var abertos  = empMes ? empMes.abertos : 0;
   var fechados = empMes ? empMes.fechados : 0;
 
-  // If no data for this month, return empty
   if(total === 0 && !d.by_mes[mKey]) {
-    return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},by_mes:{}});
+    return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},prior:{},by_mes:{},by_day:[],byDay:[]});
   }
 
-  // Filter the sample tickets we have by month for the timeline
+  // Filtra a amostra de tickets (25 mais recentes) pelo mês
   var filteredTickets = d.tickets.filter(function(t){
     if(!t.criado||t.criado==='—') return false;
     var parts = t.criado.split('/');
@@ -3849,28 +3848,48 @@ function getFilteredEmpresa(d) {
     return parts[1].split(' ')[0] === mNum;
   });
 
-  // Rebuild estados from filtered tickets (approximate)
-  var estados = {};
+  // ── Usa RAW_DATA (todos os tickets do xlsx) quando disponível ──
+  // Isso garante by_day, prior e estados precisos para o mês+empresa
+  var rawRows = [];
+  if(typeof RAW_DATA !== 'undefined' && RAW_DATA.length) {
+    rawRows = RAW_DATA.filter(function(r){
+      return r.cli_id === d.id && r.criado && r.criado.toISOString &&
+             r.criado.toISOString().slice(0,7) === activeMonth;
+    });
+  }
+
+  // by_day: calcula do RAW_DATA → fallback: OP_MESES do mês
+  var filteredByDay = [];
+  if(rawRows.length) {
+    var dm = {};
+    rawRows.forEach(function(r){ var k=r.criado.toISOString().slice(0,10); dm[k]=(dm[k]||0)+1; });
+    filteredByDay = Object.keys(dm).sort().map(function(k){ return{d:k,n:dm[k]}; });
+  } else {
+    filteredByDay = (OP_MESES[activeMonth] && OP_MESES[activeMonth].by_day) || [];
+  }
+
+  // prior: calcula do RAW_DATA → fallback: amostra → fallback: tudo
+  var prior = {};
+  if(rawRows.length) {
+    rawRows.forEach(function(r){ if(r.prior) prior[r.prior]=(prior[r.prior]||0)+1; });
+  } else {
+    filteredTickets.forEach(function(t){ var p=t.prioridade||t.prior; if(p) prior[p]=(prior[p]||0)+1; });
+  }
+  if(!Object.keys(prior).length) prior = d.prior || {};
+
+  // estados: calcula do RAW_DATA → fallback: amostra → fallback: tudo
   var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
   var isFe=function(e){return e==='Fechado'||e==='Resolvido';};
-  filteredTickets.forEach(function(t){
-    estados[t.estado]=(estados[t.estado]||0)+1;
-  });
+  var estados = {};
+  if(rawRows.length) {
+    rawRows.forEach(function(r){ if(r.estado) estados[r.estado]=(estados[r.estado]||0)+1; });
+  } else {
+    filteredTickets.forEach(function(t){ if(t.estado) estados[t.estado]=(estados[t.estado]||0)+1; });
+  }
+  if(!Object.keys(estados).length) estados = d.estados || d.estado || {};
 
   var newByMes = {};
   if(d.by_mes[mKey]) newByMes[mKey] = d.by_mes[mKey];
-
-  // Filtra by_day ao mês selecionado (corrige Volume Diário)
-  var filteredByDay = (d.by_day||[]).filter(function(e){ return e.d && e.d.startsWith(activeMonth); });
-
-  // Reconstrói prioridade a partir dos tickets filtrados por mês
-  var prior = {};
-  filteredTickets.forEach(function(t){
-    var p = t.prioridade || t.prior;
-    if(p) prior[p] = (prior[p]||0)+1;
-  });
-  // Se amostra vazia mas temos by_mes, mantém prior original (sem distorção)
-  if(!Object.keys(prior).length) prior = d.prior || {};
 
   return Object.assign({},d,{
     total:    total,
