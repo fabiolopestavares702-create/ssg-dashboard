@@ -5256,9 +5256,24 @@ function renderResumo(){
 }
 
 var _autoFetching=false;
+var _lastSyncMs=0;
+var _lastDeployTs='';
+
+// Staleness guard — se passou 20min sem sync verde, avisa
+setInterval(function(){
+  if(!_lastSyncMs)return;
+  var dot=document.getElementById('auto-sync-dot');
+  var lbl=document.getElementById('auto-sync-lbl');
+  if(!dot||dot.style.background==='var(--danger)')return;
+  var mins=Math.round((Date.now()-_lastSyncMs)/60000);
+  if(mins>=20){
+    dot.style.background='var(--warn)';
+    if(lbl)lbl.title='Pipeline sem atualizar há '+mins+'min — verifique o watchdog';
+  }
+},60*1000);
+
 function autoFetchXLS(){
   if(_autoFetching)return;
-  // Detecta acesso via file:// — fetch() é bloqueado pelo browser nesse protocolo
   if(location.protocol==='file:'){
     var dot=document.getElementById('auto-sync-dot');
     var lbl=document.getElementById('auto-sync-lbl');
@@ -5271,38 +5286,54 @@ function autoFetchXLS(){
   var lbl=document.getElementById('auto-sync-lbl');
   if(dot)dot.style.background='var(--warn)';
   if(lbl)lbl.textContent='Sincronizando…';
+  // Verifica meta.json primeiro — se deploy_ts não mudou, dados são os mesmos
+  fetch("meta.json?v="+Date.now())
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(meta){
+      var deployTs=meta&&meta.deploy_ts?meta.deploy_ts:'';
+      if(deployTs&&deployTs===_lastDeployTs){
+        _autoFetching=false;
+        var hm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        if(dot)dot.style.background='var(--ok)';
+        if(lbl)lbl.textContent='Sync '+hm+' · sem mudanças';
+        return;
+      }
+      _lastDeployTs=deployTs;
+      _fetchXlsxData(dot,lbl);
+    })
+    .catch(function(){_fetchXlsxData(dot,lbl);});
+}
+
+function _fetchXlsxData(dot,lbl){
   fetch("dados.xlsx?v="+Date.now())
-    .then(function(r){if(!r.ok)throw new Error('not ok');return r.arrayBuffer();})
+    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.arrayBuffer();})
     .then(function(b){
       _autoFetching=false;
+      _lastSyncMs=Date.now();
       var w=XLSX.read(new Uint8Array(b),{type:"array",cellDates:true});
       var s=w.Sheets[w.SheetNames[0]];
       var rows=XLSX.utils.sheet_to_json(s,{defval:""});
       rebuildAll(parseR(rows));
-      var now=new Date();
-      var hm=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      // Mostra data do ticket mais recente nos dados (frescor real)
+      var maxTs=0;
+      rows.forEach(function(r){
+        var v=r['Criado']||r['criado']||r['Data de Abertura']||'';
+        if(v){var t=new Date(v).getTime();if(t>maxTs)maxTs=t;}
+      });
+      var hm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      var totalTickets=rows.length;
+      var frescor='';
+      if(maxTs){
+        var d=new Date(maxTs);
+        frescor=' · dados de '+d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      }
       if(dot)dot.style.background='var(--ok)';
-      if(lbl)lbl.textContent='Sync '+hm;
-      // Busca validation.json para confirmar paridade xlsx ↔ DB
-      fetch("validation.json?v="+Date.now())
-        .then(function(rv){return rv.ok?rv.json():null;})
-        .then(function(vd){
-          if(!vd||vd.status==='skip')return;
-          if(vd.status==='ok'){
-            if(lbl)lbl.textContent='Sync '+hm+' · DB ✓ '+vd.total_db;
-          } else if(vd.status==='divergencia'){
-            if(dot)dot.style.background='var(--warn)';
-            var nd=vd.divergencias?vd.divergencias.length:0;
-            if(lbl)lbl.textContent='Sync '+hm+' · DB ⚠ '+nd+' div.';
-            if(lbl)lbl.title='xlsx='+vd.total_xlsx+' db='+vd.total_db+' ('+vd.diff_total+')';
-          }
-        })
-        .catch(function(){/* validation.json ausente — não altera status */});
+      if(lbl){lbl.textContent='Sync '+hm+' · '+totalTickets.toLocaleString('pt-BR')+' tickets'+frescor;lbl.title='Total de chamados carregados do xlsx';}
     })
     .catch(function(e){
       _autoFetching=false;
       if(dot)dot.style.background='var(--danger)';
-      var cause=e&&e.message?e.message.replace('not ok','HTTP error').slice(0,35):'erro de rede';
+      var cause=e&&e.message?e.message.slice(0,40):'erro de rede';
       if(lbl)lbl.textContent='Sync falhou: '+cause;
     });
 }
