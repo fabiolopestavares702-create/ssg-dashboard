@@ -1,10 +1,10 @@
 {
-  "ts": "2026-03-26T16:41:24.608185",
+  "ts": "2026-03-26T17:02:01.767799",
   "mes": "2026-03",
   "status": "ok",
-  "total_xlsx": 635,
-  "total_db": 635,
+  "total_xlsx": 636,
+  "total_db": 636,
   "diff_total": 0,
   "divergencias": [],
-  "xlsx_file": "ticket_search_2026-03-26_16-41.xlsx"
+  "xlsx_file": "ticket_search_2026-03-26_17-01.xlsx"
 }
