@@ -565,6 +565,18 @@ input[type=file]{display:none}
 .fsb-clear:hover{color:var(--text)}
 .filter-status-bar.visible~.main .page-header{padding-top:38px}
 
+/* ─── FILTER ONBOARDING TOOLTIPS ──────────────────────────── */
+.ftip-wrap{position:relative;display:inline-flex;align-items:center}
+.ftip-btn{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--muted);font-size:8px;font-family:var(--mono);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;transition:all .15s;flex-shrink:0}
+.ftip-btn:hover,.ftip-btn.open{background:rgba(79,142,247,.2);border-color:rgba(79,142,247,.4);color:var(--blue)}
+.ftip-bubble{display:none;position:absolute;left:18px;top:-4px;z-index:900;width:220px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.5);pointer-events:none}
+.ftip-bubble.open{display:block}
+.ftip-bubble::before{content:'';position:absolute;left:-5px;top:10px;width:8px;height:8px;background:var(--bg3);border-left:1px solid var(--border);border-bottom:1px solid var(--border);transform:rotate(45deg)}
+#tip-cli-global::before{top:auto;bottom:10px}
+.ftip-title{font-size:10px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:var(--font)}
+.ftip-body{font-size:10.5px;color:var(--sub);line-height:1.5;font-family:var(--font)}
+.ftip-tag{display:inline-block;margin-top:6px;font-size:9px;font-family:var(--mono);color:var(--blue);background:rgba(79,142,247,.1);border-radius:3px;padding:1px 5px}
+
 /* ═══ CHURN RISK BADGE ═══════════════════════════════════════ */
 .churn-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;font-family:var(--mono)}
 .churn-badge.alto{background:rgba(244,63,94,.12);color:var(--danger);border:1px solid rgba(244,63,94,.2)}
@@ -699,9 +711,9 @@ input[type=file]{display:none}
 
   <!-- MONTH FILTER OP -->
   <div class="month-filter-wrap" id="mf-op">
-    <span class="month-filter-lbl">Filtrar por mês</span>
+    <span class="month-filter-lbl" style="display:flex;align-items:center;gap:5px">Filtrar por mês <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-op-mes',this)" type="button">?</button><div class="ftip-bubble" id="tip-op-mes"><div class="ftip-title">Filtro de mês</div><div class="ftip-body">Selecione um mês para ver apenas os tickets daquele período. Clique em <strong>Todos</strong> para remover o filtro.</div><span class="ftip-tag">aplica em toda a view Operacional</span></div></span></span>
     <div class="month-btns" id="mth-btns-op"></div>
-    <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
+    <span class="month-filter-lbl" style="margin-top:8px;display:flex;align-items:center;gap:5px">Filtrar por fila <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-op-fila',this)" type="button">?</button><div class="ftip-bubble" id="tip-op-fila"><div class="ftip-title">Filtro de fila</div><div class="ftip-body">Restringe os dados a uma fila específica (ex: PROTHEUS, DBA, NOC). Combina com o filtro de mês acima.</div><span class="ftip-tag">clique novamente para remover</span></div></span></span>
     <div class="month-btns" id="fila-btns-op" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
   </div>
   </div>
@@ -715,9 +727,9 @@ input[type=file]{display:none}
 
   <!-- MONTH FILTER CLI -->
   <div class="month-filter-wrap" id="mf-cli" style="display:none">
-    <span class="month-filter-lbl">Filtrar por mês</span>
+    <span class="month-filter-lbl" style="display:flex;align-items:center;gap:5px">Filtrar por mês <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-cli-mes',this)" type="button">?</button><div class="ftip-bubble" id="tip-cli-mes"><div class="ftip-title">Filtro de mês</div><div class="ftip-body">Filtra os dados do portal do cliente pelo mês selecionado. Clique em <strong>Todos</strong> para remover o filtro.</div><span class="ftip-tag">aplica em toda a view do cliente</span></div></span></span>
     <div class="month-btns" id="mth-btns-cli"></div>
-    <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
+    <span class="month-filter-lbl" style="margin-top:8px;display:flex;align-items:center;gap:5px">Filtrar por fila <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-cli-fila',this)" type="button">?</button><div class="ftip-bubble" id="tip-cli-fila"><div class="ftip-title">Filtro de fila</div><div class="ftip-body">Mostra apenas tickets de uma fila específica deste cliente. Funciona junto com o filtro de mês.</div><span class="ftip-tag">clique novamente para remover</span></div></span></span>
     <div class="month-btns" id="fila-btns-cli" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
   </div>
   </div>
@@ -731,7 +743,7 @@ input[type=file]{display:none}
 
   <!-- MONTH FILTER CS -->
   <div class="month-filter-wrap" id="mf-cs" style="display:none">
-    <span class="month-filter-lbl">Filtrar por mês</span>
+    <span class="month-filter-lbl" style="display:flex;align-items:center;gap:5px">Filtrar por mês <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-cs-mes',this)" type="button">?</button><div class="ftip-bubble" id="tip-cs-mes"><div class="ftip-title">Filtro de mês — Customer Success</div><div class="ftip-body">Filtra todos os totalizadores e gráficos do CS pelo mês selecionado. Clique em <strong>Todos</strong> para ver o acumulado.</div><span class="ftip-tag">aplica em toda a view CS</span></div></span></span>
     <div class="month-btns" id="mth-btns-cs"></div>
   </div>
   </div>
@@ -748,7 +760,7 @@ input[type=file]{display:none}
   </div>
   <div class="sb-footer">
     <div style="margin-bottom:8px">
-      <div style="font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Cliente</div>
+      <div style="font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;display:flex;align-items:center;gap:5px">Cliente <span class="ftip-wrap"><button class="ftip-btn" onclick="toggleTip('tip-cli-global',this)" type="button">?</button><div class="ftip-bubble" id="tip-cli-global" style="left:18px;bottom:18px;top:auto"><div class="ftip-title">Filtro de cliente</div><div class="ftip-body">Filtra todo o dashboard por empresa. Os filtros de mês e fila continuam ativos simultaneamente.</div><span class="ftip-tag">filtra todas as views</span></div></span></div>
       <select id="sel-cliente-global" onchange="setClienteGlobal(this.value)" style="width:100%;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:10px;font-family:var(--font);cursor:pointer">
         <option value="">Todos os clientes</option>
       </select>
@@ -5292,9 +5304,10 @@ function renderResumo(){
 
 var _autoFetching=false;
 var _lastSyncMs=0;
+var _lastSyncLbl='';
 var _lastDeployTs='';
 
-// Staleness guard — se passou 20min sem sync verde, avisa
+// Staleness guard — se passou 20min sem sync verde, avisa no label
 setInterval(function(){
   if(!_lastSyncMs)return;
   var dot=document.getElementById('auto-sync-dot');
@@ -5303,7 +5316,10 @@ setInterval(function(){
   var mins=Math.round((Date.now()-_lastSyncMs)/60000);
   if(mins>=20){
     dot.style.background='var(--warn)';
-    if(lbl)lbl.title='Pipeline sem atualizar há '+mins+'min — verifique o watchdog';
+    if(lbl){
+      lbl.textContent=(_lastSyncLbl||'Sync')+' · ⚠ dados com '+mins+'min';
+      lbl.title='Pipeline sem atualizar há '+mins+'min — verifique o watchdog';
+    }
   }
 },60*1000);
 
@@ -5328,9 +5344,12 @@ function autoFetchXLS(){
       var deployTs=meta&&meta.deploy_ts?meta.deploy_ts:'';
       if(deployTs&&deployTs===_lastDeployTs){
         _autoFetching=false;
+        _lastSyncMs=Date.now(); // atualiza staleness mesmo sem dados novos
         var hm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        var _lt2='Sync '+hm+' · sem mudanças';
+        _lastSyncLbl=_lt2;
         if(dot)dot.style.background='var(--ok)';
-        if(lbl)lbl.textContent='Sync '+hm+' · sem mudanças';
+        if(lbl)lbl.textContent=_lt2;
         return;
       }
       _lastDeployTs=deployTs;
@@ -5363,7 +5382,7 @@ function _fetchXlsxData(dot,lbl){
         frescor=' · dados de '+d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       }
       if(dot)dot.style.background='var(--ok)';
-      if(lbl){lbl.textContent='Sync '+hm+' · '+totalTickets.toLocaleString('pt-BR')+' tickets'+frescor;lbl.title='Total de chamados carregados do xlsx';}
+      if(lbl){var _lt='Sync '+hm+' · '+totalTickets.toLocaleString('pt-BR')+' tickets'+frescor;_lastSyncLbl=_lt;lbl.textContent=_lt;lbl.title='Total de chamados carregados do xlsx';}
     })
     .catch(function(e){
       _autoFetching=false;
@@ -5694,6 +5713,30 @@ function clearAllFilters(){
   setClienteGlobal('');
   setMonth('all');
   setFilaOP('all');
+}
+
+// ─── Tooltip de onboarding nos filtros ─────────────────────
+function toggleTip(id, btn) {
+  var bubble = document.getElementById(id);
+  if (!bubble) return;
+  var isOpen = bubble.classList.contains('open');
+  // Fecha todos os outros
+  document.querySelectorAll('.ftip-bubble.open').forEach(function(el){ el.classList.remove('open'); });
+  document.querySelectorAll('.ftip-btn.open').forEach(function(el){ el.classList.remove('open'); });
+  if (!isOpen) {
+    bubble.classList.add('open');
+    btn.classList.add('open');
+    // Fecha ao clicar fora
+    setTimeout(function(){
+      document.addEventListener('click', function _close(e){
+        if (!e.target.closest('.ftip-wrap')) {
+          document.querySelectorAll('.ftip-bubble.open').forEach(function(el){ el.classList.remove('open'); });
+          document.querySelectorAll('.ftip-btn.open').forEach(function(el){ el.classList.remove('open'); });
+        }
+        document.removeEventListener('click', _close);
+      });
+    }, 10);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
