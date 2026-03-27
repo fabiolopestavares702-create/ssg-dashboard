@@ -5047,6 +5047,11 @@ function renderBacklogTable(rows) {
 // ════════════════════════════════════════════════════════════
 // GESTÃO — navegação entre sub-seções
 // ════════════════════════════════════════════════════════════
+function setRelMes(mes){
+  activeMonth=mes;
+  renderRelatorio();
+}
+
 function activateRgNav(sec){
   document.querySelectorAll('#nav-rg .nav').forEach(function(n){n.classList.remove('on');});
   var navEl=document.getElementById('rg-nav-'+sec);
@@ -5157,6 +5162,9 @@ function renderRelatorio(){
   // Hex logo SVG
   var logoSVG='<svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,2 28,9 28,23 16,30 4,23 4,9" fill="#E8541A"/><polygon points="16,7 24,11.5 24,20.5 16,25 8,20.5 8,11.5" fill="rgba(0,0,0,.2)"/><text x="16" y="20" font-family="monospace" font-size="9" font-weight="700" fill="white" text-anchor="middle">SSG</text></svg>';
 
+  // Botões de mês disponíveis
+  var mesesDisp=Object.keys(OP_MESES||{}).filter(function(k){return k!=='all'&&(OP_MESES[k]||0)>0;}).sort();
+
   var H='<div class="rel-wrap">';
 
   // Header
@@ -5166,6 +5174,21 @@ function renderRelatorio(){
   H+='<div class="rel-title">Relatório Executivo — '+mesLabel+'</div>';
   H+='<div class="rel-subtitle">Período: '+periodoLabel+' · Gerado em '+geradoEm+'</div>';
   H+='</div></div>';
+
+  // Filtro de mês inline
+  if(mesesDisp.length>0){
+    var mNames=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    H+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+    H+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Período:</span>';
+    var btnStyle=function(active){return 'padding:4px 12px;border-radius:20px;font-size:10px;font-family:var(--mono);cursor:pointer;border:1px solid '+(active?'#E8541A;background:#E8541A;color:#fff':'var(--border);background:transparent;color:var(--sub)')+';';};
+    H+='<button style="'+btnStyle(activeMonth==='all')+'" onclick="setRelMes(\'all\')">Todos</button>';
+    mesesDisp.forEach(function(m){
+      var parts=m.split('-');
+      var lbl=mNames[parseInt(parts[1],10)-1]+'/'+parts[0].slice(2);
+      H+='<button style="'+btnStyle(activeMonth===m)+'" onclick="setRelMes(\''+m+'\')">'+lbl+'</button>';
+    });
+    H+='</div>';
+  }
 
   // Intro
   H+='<div class="rel-intro">'+introText+'</div>';
