@@ -5108,9 +5108,9 @@ function renderRelatorio(){
     return{nome:d.nome||ENM2[k]||k,score:sc,total:d.total,abertos:d.abertos||0,resolucao:txRes+'%'};
   }).sort(function(a,b){return a.score-b.score;});
 
-  // SLA / conformidade aproximada
-  var slaOk=typeof RESP30_MESES!=='undefined'?(RESP30_MESES[activeMonth]||RESP30_MESES['all']||null):null;
-  var slaVal=slaOk!=null?Math.round(slaOk):(respMed<=30?90:respMed<=60?75:respMed<=90?60:45);
+  // SLA: RESP30_MESES = qtd que NÃO respondeu em 30min → conformidade = (1 - semResp/total)*100
+  var semResp30=typeof RESP30_MESES!=='undefined'?(RESP30_MESES[activeMonth]!=null?RESP30_MESES[activeMonth]:RESP30_MESES['all']):null;
+  var slaVal=semResp30!=null&&total>0?Math.max(0,Math.round((1-semResp30/total)*100)):(respMed<=30?90:respMed<=60?75:respMed<=90?60:45);
   var slaStatus=slaVal>=85?'OK':slaVal>=70?'ATENÇÃO':'CRÍTICO';
   var slaColor=slaVal>=85?'#1D9E75':slaVal>=70?'#EF9F27':'#E24B4A';
 
