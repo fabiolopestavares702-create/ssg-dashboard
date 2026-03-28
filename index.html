@@ -2,7 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080b10">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SSG Ops">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>SSG · Operations Center</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -687,6 +694,129 @@ input[type=file]{display:none}
 .rg-hero-card-val{font-family:var(--display);font-size:26px;font-weight:700;line-height:1}
 @media(max-width:900px){.rg-hero{grid-template-columns:1fr 1fr}}
 
+/* ═══ MOBILE HAMBURGER (hidden on desktop) ══════════════════ */
+.mob-ham{display:none}
+.mob-overlay{display:none;position:fixed;inset:52px 0 0 0;background:rgba(0,0,0,.65);z-index:250;backdrop-filter:blur(3px)}
+.mob-overlay.on{display:block}
+.mob-tabs{display:none}
+
+/* ═══ MOBILE LAYOUT ≤767px ═══════════════════════════════════ */
+@media(max-width:767px){
+  /* Topbar: esconde mode switcher e alerts, mostra hamburger */
+  .tb-mode{display:none!important}
+  .tb-alerts{display:none!important}
+  .tb-divider{display:none!important}
+  .tb-brand{min-width:unset;flex:1}
+  .tb-name{font-size:13px}
+  .tb-sub{display:none}
+
+  /* Hamburger */
+  .mob-ham{
+    display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;
+    background:var(--bg3);border:1px solid var(--border2);
+    border-radius:9px;cursor:pointer;flex-shrink:0;
+    color:var(--text);
+  }
+
+  /* Sidebar vira drawer deslizante */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    z-index:300;width:270px;
+    box-shadow:none;
+  }
+  .sidebar.mob-open{
+    transform:translateX(0);
+    box-shadow:6px 0 40px rgba(0,0,0,.6);
+  }
+
+  /* Main: sem margem lateral, espaço para bottom bar */
+  .main{margin-left:0;padding-bottom:68px}
+  .page-header{padding:14px 14px 0}
+  .page-header h1{font-size:17px}
+  .page-body{padding:0 12px 20px}
+
+  /* KPI grids: 2 colunas */
+  .kpi-row-4{grid-template-columns:repeat(2,1fr)}
+  .kpi-row-3{grid-template-columns:repeat(2,1fr)}
+  .kpi-row-2{grid-template-columns:1fr 1fr}
+  .kpi{padding:12px 13px}
+  .kpi-val{font-size:22px}
+  .cs-kpi-row{grid-template-columns:repeat(2,1fr)!important}
+  .ai-kpi-grid{grid-template-columns:repeat(2,1fr)!important}
+  .rg-kpi-grid{grid-template-columns:repeat(2,1fr)!important}
+
+  /* Layouts de conteúdo: 1 coluna */
+  .grid2,.grid3,.grid3r{grid-template-columns:1fr!important}
+  .ai-3col{grid-template-columns:1fr!important}
+  .rg-hero{grid-template-columns:1fr 1fr!important}
+
+  /* Tabelas: scroll horizontal */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl{font-size:11px}
+  .tbl th,.tbl td{padding:7px 8px}
+
+  /* Cards */
+  .card{padding:14px 14px}
+  .card-title{font-size:10px}
+
+  /* CS header */
+  .cs-header-strip{padding:12px 12px 0;gap:8px}
+  .cs-export-btn span{display:none}
+
+  /* Notif bar */
+  .notif-bar{margin:0 12px 14px;font-size:11px}
+
+  /* AI view */
+  .ai-view-header{padding:14px 12px 0}
+
+  /* Relatório */
+  .rel-wrap{padding:12px!important}
+  .rel-header{padding:14px!important;flex-direction:column;gap:8px;align-items:flex-start}
+
+  /* Filter status bar */
+  .filter-status-bar{font-size:10px}
+  .fsb-item{display:none}
+  .fsb-item.fsb-main{display:flex}
+
+  /* Bottom tab bar */
+  .mob-tabs{
+    display:flex;
+    position:fixed;bottom:0;left:0;right:0;
+    height:60px;
+    background:rgba(8,11,16,0.97);
+    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    border-top:1px solid var(--border2);
+    z-index:200;
+    padding:0 4px env(safe-area-inset-bottom,0);
+  }
+  .mob-tab{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:3px;cursor:pointer;border:none;
+    background:transparent;color:var(--muted);
+    font-size:9px;font-family:var(--font);font-weight:500;
+    padding:6px 2px;border-radius:10px;
+    transition:color .18s,background .18s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-tab svg{width:19px;height:19px;stroke-width:1.8}
+  .mob-tab.on{background:rgba(255,255,255,.04)}
+  .mob-tab.op.on{color:var(--blue)}
+  .mob-tab.cli.on{color:var(--teal)}
+  .mob-tab.cs.on{color:#a855f7}
+  .mob-tab.rg.on{color:#d97706}
+  .mob-tab.ia.on{color:#8b5cf6}
+  .mob-tab-lbl{font-size:9px;line-height:1}
+
+  /* Scrollbar maior para touch */
+  ::-webkit-scrollbar{width:2px;height:2px}
+
+  /* Heatmap responsivo */
+  .hm-wrap{overflow-x:auto}
+}
+
 </style>
 </head>
 <body>
@@ -703,6 +833,9 @@ input[type=file]{display:none}
       <div class="tb-sub">Groundwork ERP Center</div>
     </div>
   </div>
+  <button class="mob-ham" id="mob-ham" onclick="toggleMobDrawer()" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
   <div class="tb-divider"></div>
   <div class="tb-mode">
     <button class="tb-btn op on" id="btn-op" onclick="setMode('op')">
@@ -750,7 +883,33 @@ input[type=file]{display:none}
   </div>
 </div>
 
+<div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
+
 <div class="app">
+
+<!-- ════════ BOTTOM TAB BAR (mobile only) ════════ -->
+<nav class="mob-tabs" id="mob-tabs">
+  <button class="mob-tab op on" id="mtab-op" onclick="setMode('op')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span class="mob-tab-lbl">Operação</span>
+  </button>
+  <button class="mob-tab cli" id="mtab-cli" onclick="setMode('cli')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <span class="mob-tab-lbl">Clientes</span>
+  </button>
+  <button class="mob-tab cs" id="mtab-cs" onclick="setMode('cs')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    <span class="mob-tab-lbl">CS</span>
+  </button>
+  <button class="mob-tab rg" id="mtab-rg" onclick="setMode('rg')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    <span class="mob-tab-lbl">Gestão</span>
+  </button>
+  <button class="mob-tab ia" id="mtab-ia" onclick="setMode('ia')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span class="mob-tab-lbl">✦ IA</span>
+  </button>
+</nav>
 
 <!-- ════════════════ SIDEBAR ════════════════ -->
 <aside class="sidebar" id="sidebar">
@@ -6118,6 +6277,47 @@ function renderAgingFaixas(){
   }
   H+='</div></div></div>';
   return H;
+}
+</script>
+
+<script>
+// ═══ MOBILE DRAWER ════════════════════════════════════════════
+function toggleMobDrawer(){
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('mob-overlay');
+  var open=sb.classList.toggle('mob-open');
+  ov.classList.toggle('on',open);
+}
+function closeMobDrawer(){
+  document.getElementById('sidebar').classList.remove('mob-open');
+  document.getElementById('mob-overlay').classList.remove('on');
+}
+
+// Patch setMode para atualizar bottom tabs e fechar drawer no mobile
+var _origSetMode=setMode;
+setMode=function(m){
+  _origSetMode(m);
+  // Atualiza bottom tabs
+  ['op','cli','cs','rg','ia'].forEach(function(t){
+    var el=document.getElementById('mtab-'+t);
+    if(el) el.classList.toggle('on',t===m);
+  });
+  // Fecha drawer se mobile
+  if(window.innerWidth<=767) closeMobDrawer();
+};
+
+// Fecha drawer ao clicar num item de nav no mobile
+document.querySelectorAll('.nav').forEach(function(n){
+  n.addEventListener('click',function(){
+    if(window.innerWidth<=767) closeMobDrawer();
+  });
+});
+
+// Registra service worker (PWA)
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
 }
 </script>
 </body>
