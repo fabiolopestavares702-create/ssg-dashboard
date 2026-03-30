@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-30T14:21:15.333628",
+  "generated_at": "2026-03-30T14:54:04.161256",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>88 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>88 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -25,7 +25,7 @@
       {
         "label": "Previsão 7 dias",
         "value": "~225/semana",
-        "sub": "pico: terça-feira 9h",
+        "sub": "pico: segunda-feira 9h",
         "color": "var(--purple)"
       }
     ],
@@ -39,7 +39,7 @@
     },
     "previsao": {
       "label": "~45/dia",
-      "desc": "pico: terça-feira 9h"
+      "desc": "pico: segunda-feira 9h"
     }
   },
   "riscos_operacionais": [
@@ -62,7 +62,7 @@
       "confianca": 95
     },
     {
-      "titulo": "Pico de volume na terça-feira às 9h",
+      "titulo": "Pico de volume na segunda-feira às 9h",
       "desc": "Concentração identificada neste intervalo. Sem escalonamento preventivo, a equipe absorve o pico com capacidade regular, elevando o tempo de resposta.",
       "nivel": "low",
       "confianca": 65
