@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-30T18:07:51.001945",
+  "generated_at": "2026-03-30T20:08:20.050000",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>93 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (59.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>92 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -13,7 +13,7 @@
       {
         "label": "Risco de SLA",
         "value": "Médio",
-        "sub": "1ª resposta: 59.0 min",
+        "sub": "1ª resposta: 58.0 min",
         "color": "var(--warn)"
       },
       {
@@ -45,13 +45,13 @@
   "riscos_operacionais": [
     {
       "titulo": "Tempo de primeira resposta acima da meta",
-      "desc": "Mediana de 59.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
+      "desc": "Mediana de 58.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
       "nivel": "medium",
       "confianca": 78
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "93 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "92 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -131,11 +131,11 @@
     },
     {
       "cliente": "Renato Ferreira",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 65 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 85% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 66 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 85% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "65 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "66 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
