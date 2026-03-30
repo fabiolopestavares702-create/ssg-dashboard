@@ -40,7 +40,15 @@ def upload(path, content, msg):
     r = requests.put(f"{API}/repos/{REPO}/contents/{path}",
         headers={"Authorization": f"token {GITHUB_TOKEN}", "Content-Type": "application/json"},
         data=json.dumps(payload), timeout=60)
-    return r.status_code in [200, 201]
+    if r.status_code not in [200, 201]:
+        # Melhoria #3: loga HTTP status + corpo para diagnóstico imediato
+        try:
+            detail = r.json().get("message", r.text[:200])
+        except Exception:
+            detail = r.text[:200]
+        log(f"  upload falhou — HTTP {r.status_code}: {detail}")
+        return False
+    return True
 
 def ultimo_xlsx():
     arquivos = glob.glob(os.path.join(PASTA, "ticket_search_*.xlsx"))
@@ -79,7 +87,7 @@ def deploy():
         else:
             log("AVISO: falha ao enviar aios-insights.json")
 
-    # meta.json — timestamp do deploy para o dashboard detectar dados novos
+    # meta.json
     meta = json.dumps({
         "deploy_ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "xlsx_file": os.path.basename(xlsx_path) if xlsx_path else ""
