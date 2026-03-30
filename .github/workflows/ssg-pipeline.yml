@@ -22,6 +22,42 @@ jobs:
       - name: Instalar dependências
         run: pip install requests urllib3 openpyxl
 
+      # ── FASE 1: Fail fast — valida credenciais antes de qualquer trabalho
+      - name: Validar secrets obrigatórios
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          OTRS_USER: ${{ secrets.OTRS_USER }}
+          OTRS_PASS: ${{ secrets.OTRS_PASS }}
+          OTRS_URL: ${{ secrets.OTRS_URL }}
+          GH_REPO: ${{ secrets.GH_REPO }}
+        run: |
+          echo "Verificando secrets..."
+          MISSING=""
+          [ -z "$DEPLOY_TOKEN" ] && MISSING="$MISSING DEPLOY_TOKEN"
+          [ -z "$OTRS_USER" ]    && MISSING="$MISSING OTRS_USER"
+          [ -z "$OTRS_PASS" ]    && MISSING="$MISSING OTRS_PASS"
+          [ -z "$OTRS_URL" ]     && MISSING="$MISSING OTRS_URL"
+          [ -z "$GH_REPO" ]      && MISSING="$MISSING GH_REPO"
+          if [ -n "$MISSING" ]; then
+            echo "ERRO: secrets ausentes:$MISSING"
+            exit 1
+          fi
+          echo "Secrets presentes. OK"
+
+      - name: Validar token GitHub (autenticação)
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_REPO: ${{ secrets.GH_REPO }}
+        run: |
+          HTTP=$(curl -s -o /tmp/gh_auth.json -w "%{http_code}"             -H "Authorization: token $DEPLOY_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/$GH_REPO")
+          if [ "$HTTP" != "200" ]; then
+            echo "ERRO: token inválido ou sem acesso ao repo (HTTP $HTTP)"
+            cat /tmp/gh_auth.json
+            exit 1
+          fi
+          LOGIN=$(python3 -c "import json; d=json.load(open('/tmp/gh_auth.json')); print(d.get('full_name','?'))")
+          echo "Token OK — repo acessível: $LOGIN"
+
       # Cache dos xlsx mensais (evita re-buscar meses fechados a cada run)
       - name: Restaurar cache de meses
         uses: actions/cache@v4
@@ -68,9 +104,22 @@ jobs:
           WORK_DIR: ${{ github.workspace }}/output
         run: python scripts/github_deploy.py
 
+      # ── Healthcheck: confirma que pipeline terminou com sucesso
+      - name: Healthcheck ping (sucesso)
+        if: success()
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_URL }}
+        run: |
+          if [ -n "$HC_URL" ]; then
+            curl -s --retry 3 --max-time 5 "$HC_URL" > /dev/null
+            echo "Healthcheck pingado."
+          fi
+
+      # ── Alerta de falha: email + fallback via GitHub Issue
       - name: Notificar falha por email
         if: failure()
         uses: dawidd6/action-send-mail@v3
+        continue-on-error: true          # não deixa o alerta de email travar o fallback
         with:
           server_address: smtp.office365.com
           server_port: 587
@@ -86,3 +135,20 @@ jobs:
             https://github.com/${{ secrets.GH_REPO }}/actions
 
             Horário: ${{ github.run_started_at }}
+
+      - name: Fallback — abrir GitHub Issue se email falhar
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_REPO: ${{ secrets.GH_REPO }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_TS: ${{ github.run_started_at }}
+        run: |
+          BODY="Pipeline SSG falhou em $RUN_TS.\n\nLogs: https://github.com/$GH_REPO/actions/runs/$RUN_ID"
+          curl -s -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GH_REPO/issues" \
+            -d "{\"title\":\"⚠️ Pipeline falhou — $(date -u +%Y-%m-%d)\"，\"body\":\"$BODY\",\"labels\":[\"pipeline-failure\"]}" \
+            > /dev/null
+          echo "Issue aberta em $GH_REPO como fallback de alerta."
