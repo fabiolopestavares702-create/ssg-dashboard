@@ -727,21 +727,20 @@
 
 <!-- ══════ RESUMO DE GESTÃO VIEW ══════ -->
 <div id="view-rg" class="view">
-  <div class="page-header">
-    <h1>Resumo de Gestão</h1>
-    <p>Visão simplificada da operação · sem termos técnicos · atualizada automaticamente</p>
-  </div>
-  <!-- Tab switcher inline — sempre visível independente do sidebar -->
-  <div style="display:flex;gap:6px;padding:0 0 16px 0;border-bottom:1px solid var(--border);margin:0 0 20px 0">
-    <button id="rg-tab-resumo" onclick="activateRgNav('resumo')"
-      style="padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-1px;margin-right:5px"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Resumo Executivo</button>
-    <button id="rg-tab-relatorio" onclick="activateRgNav('relatorio')"
-      style="padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-1px;margin-right:5px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Relatório Mensal</button>
+  <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+    <div>
+      <h1>Resumo de Gestão</h1>
+      <p>Visão unificada da operação · sem termos técnicos · atualizada automaticamente</p>
+    </div>
+    <button onclick="exportRgPDF()" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;font-family:var(--font);white-space:nowrap;flex-shrink:0">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Exportar PDF
+    </button>
   </div>
   <div class="page-body" id="rg-body">
-    <div style="color:var(--muted);font-size:13px;padding:24px 0">Carregando dados...</div>
+    <div id="rg-resumo-content"><div style="color:var(--muted);font-size:13px;padding:24px 0">Carregando dados...</div></div>
+    <div id="rg-sep" style="border-top:2px solid var(--border);margin:36px 0 32px 0"></div>
+    <div id="rg-relatorio-content"></div>
   </div>
 </div><!-- /view-rg -->
 
@@ -1005,7 +1004,7 @@ function setMode(m){
   document.getElementById('import-drop-icon').className='import-drop-icon'+(isOp?'':' cli-mode');
   if(isCli)initCli();
   if(isCS)initCS();
-  if(isRG)activateRgNav('resumo');
+  if(isRG)renderRG();
   if(isIA)renderIA();
 }
 function goSecIA(id,el){
@@ -2955,7 +2954,7 @@ function setMonth(m) {
   if(csKey) loadCS(csKey);
   // Re-render Resumo se estiver ativo
   var vRg = document.getElementById('view-rg');
-  if(vRg && vRg.classList.contains('on')){ if(activeRgSec==='relatorio')renderRelatorio(); else renderResumo(); }
+  if(vRg && vRg.classList.contains('on')){ renderRG(); }
   // Re-render IA se estiver ativo
   var vIA = document.getElementById('view-ia');
   if(vIA && vIA.classList.contains('on')) renderIA();
@@ -3183,7 +3182,7 @@ function setFilaOP(fila) {
   if(empKey) loadEmpresa(empKey);
   // Re-render Resumo se estiver ativo
   var vRg = document.getElementById('view-rg');
-  if(vRg && vRg.classList.contains('on')){ if(activeRgSec==='relatorio')renderRelatorio(); else renderResumo(); }
+  if(vRg && vRg.classList.contains('on')){ renderRG(); }
   // Re-render IA se estiver ativo
   var vIA = document.getElementById('view-ia');
   if(vIA && vIA.classList.contains('on')) renderIA();
@@ -3368,7 +3367,7 @@ function setClienteGlobal(key) {
   buildMonthFilter();
   // Re-render Resumo se estiver ativo
   var vRg = document.getElementById('view-rg');
-  if(vRg && vRg.classList.contains('on')){ if(activeRgSec==='relatorio')renderRelatorio(); else renderResumo(); }
+  if(vRg && vRg.classList.contains('on')){ renderRG(); }
   // Re-render IA se estiver ativo
   var vIA = document.getElementById('view-ia');
   if(vIA && vIA.classList.contains('on')) renderIA();
@@ -4475,22 +4474,303 @@ function setRelMes(mes){
   renderRelatorio();
 }
 
-function activateRgNav(sec){
-  activeRgSec = sec;
-  // Tab inline — ativo: azul sólido / inativo: borda + texto muted
-  var tabR=document.getElementById('rg-tab-resumo');
-  var tabM=document.getElementById('rg-tab-relatorio');
-  if(tabR&&tabM){
-    if(sec==='resumo'){
-      tabR.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s';
-      tabM.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s';
-    } else {
-      tabM.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s';
-      tabR.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s';
+function renderRG(){
+  renderResumo();
+  renderRelatorio();
+}
+// mantido por compatibilidade com chamadas antigas
+function activateRgNav(){ renderRG(); }
+
+// ════════════════════════════════════════════════════════════
+// EXPORTAR PDF — RESUMO DE GESTÃO
+// ════════════════════════════════════════════════════════════
+function exportRgPDF(){
+  // ── Dados ──────────────────────────────────────────────────
+  var op=getActiveOP();
+  var total=op.total||OP.total||0;
+  var fechados=op.fechados!=null?op.fechados:(OP.fechados||0);
+  var abertos=op.abertos!=null?op.abertos:(OP.abertos||0);
+  var respMed=op.resp_med!=null?op.resp_med:(OP.resp_med||0);
+  var solMed=op.sol_med!=null?op.sol_med:(OP.sol_med||0);
+  var prior=op.prior||OP.prior||{};
+  var estado=op.estado||OP.estado||{};
+  var bloqData=BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[];
+  var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
+  var aguardInt=estado['Aguardando Interno']||0;
+  var prioMA=prior['Muito Alta']||0;
+  var atendData=op.atend||OP.atend||[];
+  var criticos=OP.criticos||[];
+  var taxaConc=total>0?Math.round(fechados/total*100):0;
+  var pctAbertos=total>0?Math.round(abertos/total*100):0;
+  var pctMA=total>0?Math.round(prioMA/total*100):0;
+  var _pct=function(a,b){return b>0?Math.round(a/b*100):0;};
+
+  var mesLabel=activeMonth==='all'?'Período completo':(function(){
+    var parts=activeMonth.split('-');
+    var meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    return meses[parseInt(parts[1],10)-1]+' '+parts[0];
+  })();
+
+  // ── Scores ─────────────────────────────────────────────────
+  var slaResp=respMed<=30?100:respMed<=60?Math.round(100-(respMed-30)/30*40):Math.max(10,Math.round(60-(respMed-60)/60*40));
+  var slaSol=solMed<=48?100:solMed<=72?85:solMed<=96?65:solMed<=120?45:25;
+  var slaGeral=Math.round(slaResp*0.5+slaSol*0.5);
+  var scoreResp=respMed<=30?100:respMed<=45?85:respMed<=60?70:respMed<=90?50:30;
+  var scoreSol=solMed<=24?100:solMed<=48?85:solMed<=60?70:solMed<=80?50:30;
+  var scoreBloq=totalBloq===0?100:totalBloq<=5?90:totalBloq<=10?75:totalBloq<=20?55:totalBloq<=40?35:15;
+  var scoreAberto=pctAbertos<=5?100:pctAbertos<=10?85:pctAbertos<=20?70:pctAbertos<=30?50:30;
+  var healthScore=Math.round(scoreResp*0.30+scoreSol*0.25+scoreBloq*0.25+scoreAberto*0.20);
+  var healthLabel=healthScore>=80?'Saudável':healthScore>=60?'Atenção':'Crítico';
+  var healthColor=healthScore>=80?'#10b981':healthScore>=60?'#f59e0b':'#f43f5e';
+
+  // ── Semáforo ───────────────────────────────────────────────
+  var semResp30=(typeof RESP30_MESES!=='undefined'&&RESP30_MESES[activeMonth]!=null)?RESP30_MESES[activeMonth]:null;
+  var slaIcon=semResp30!=null?(semResp30>=90?'✅':semResp30>=70?'⚠️':'❌'):(slaGeral>=85?'✅':slaGeral>=70?'⚠️':'❌');
+  var slaVal=semResp30!=null?semResp30+'%':slaGeral+'%';
+  var slaLbl=semResp30!=null?(semResp30>=90?'DENTRO DA META':semResp30>=70?'ATENÇÃO':'CRÍTICO'):(slaGeral>=85?'DENTRO DA META':slaGeral>=70?'ATENÇÃO':'CRÍTICO');
+  var saúdeIcon=healthScore>=80?'✅':healthScore>=60?'⚠️':'❌';
+  var saúdeLbl=healthScore>=80?'ESTÁVEL':healthScore>=60?'ATENÇÃO':'CRÍTICO';
+  var empIds=Object.keys(EMPRESAS).filter(function(k){return k&&k.indexOf('@')===-1&&EMPRESAS[k].total>0;});
+  var clientesRG=empIds.map(function(k){var dRaw=EMPRESAS[k];var d=getFilteredEmpresa(dRaw)||dRaw;if(!d||!d.total)return null;return calcScore(d);}).filter(function(v){return v!==null;});
+  var cliAbaixo75=clientesRG.filter(function(s){return s<75;}).length;
+  var dispIcon=cliAbaixo75>=3?'❌':cliAbaixo75>=1?'⚠️':'✅';
+  var dispLbl=cliAbaixo75>=3?'CRÍTICO':cliAbaixo75>=1?'ATENÇÃO':'OK';
+  var dispVal=empIds.length+' ativos';
+
+  // ── COO Actions ────────────────────────────────────────────
+  var age30p=0; criticos.forEach(function(c){var m=String(c.idade||'').match(/(\d+)/);if(m&&parseInt(m[1])>30)age30p++;});
+  var trendPct=0;
+  var byDay=op.by_day||OP.by_day||[];
+  var refDate=new Date(); if(byDay.length>0){var pl=new Date(byDay[byDay.length-1].d+'T12:00:00');if(!isNaN(pl))refDate=pl;}
+  var tw=0,pw=0; byDay.forEach(function(d){var dt=new Date(d.d+'T12:00:00');var da=Math.floor((refDate-dt)/(864e5));if(da>=0&&da<7)tw+=d.n;else if(da>=7&&da<14)pw+=d.n;});
+  trendPct=pw>0?Math.round((tw-pw)/pw*100):0;
+  var avgDaily=byDay.length>0?Math.round(byDay.reduce(function(a,b){return a+b.n;},0)/byDay.length):0;
+  var cooActions=[];
+  if(age30p>0)cooActions.push({p:'P1',area:'Operações',titulo:'Chamados envelhecidos (+30 dias)',oque:'Revisar os '+age30p+' chamados sem solução há mais de 30 dias. Escalar, redistribuir ou encerrar.',resp:'Coordenação + Liderança Técnica',prazo:'Hoje'});
+  if(respMed>60)cooActions.push({p:'P1',area:'Operações',titulo:'SLA de primeira resposta crítico ('+respMed+'min)',oque:'Revisar distribuição da fila no turno de maior volume.',resp:'Liderança Técnica',prazo:'Hoje'});
+  if(totalBloq>20&&!age30p&&respMed<=60)cooActions.push({p:'P1',area:'Operações',titulo:'Volume crítico de bloqueados ('+totalBloq+')',oque:'Mutirão de desbloqueio: ag.interno → escalar; ag.cliente → ligar ou encerrar.',resp:'Coordenação',prazo:'Hoje'});
+  if(aguardInt>5)cooActions.push({p:'P2',area:'Equipe',titulo:'Fila interna represada ('+aguardInt+' chamados)',oque:'Identificar gargalo e definir prazo de resposta ou reatribuir.',resp:'Gestor de Fila',prazo:'Esta semana'});
+  if(solMed>72)cooActions.push({p:'P2',area:'Processo',titulo:'Tempo de solução acima do SLA ('+solMed+'h)',oque:'Mapear chamados acima de 48h. Identificar causa: skill, dependência externa ou volume.',resp:'Liderança Técnica + CS',prazo:'Esta semana'});
+  if(trendPct>15)cooActions.push({p:'P2',area:'Operações',titulo:'Volume crescendo '+trendPct+'% vs semana anterior',oque:'Verificar se aumento é de cliente específico ou sistêmico. Avaliar reforço temporário.',resp:'Coordenação',prazo:'Esta semana'});
+  if(respMed>30&&respMed<=60)cooActions.push({p:'P2',area:'Operações',titulo:'1ª resposta acima da meta ('+respMed+'min)',oque:'Auditar horários de pico e ajustar escala.',resp:'Liderança Técnica',prazo:'Esta semana'});
+  if(taxaConc<70&&taxaConc>0)cooActions.push({p:'P3',area:'Processo',titulo:'Taxa de conclusão abaixo da meta ('+taxaConc+'%)',oque:'Revisar backlog em aberto. Identificar chamados que podem ser encerrados.',resp:'Coordenação',prazo:'Próximas 2 semanas'});
+  if(pctMA>25)cooActions.push({p:'P3',area:'Operações',titulo:'Alta concentração de prioridade Muito Alta ('+pctMA+'%)',oque:'Avaliar calibração de prioridades. Checar se clientes estão abrindo tudo como crítico.',resp:'Coordenação + CS',prazo:'Próximas 2 semanas'});
+  var p1Count=cooActions.filter(function(a){return a.p==='P1';}).length;
+  var p2Count=cooActions.filter(function(a){return a.p==='P2';}).length;
+
+  // ── Atendentes top 8 ───────────────────────────────────────
+  var atendTop=(atendData||[]).slice(0,8);
+
+  // ── Narrativa ──────────────────────────────────────────────
+  var nar1='Neste período foram registrados <strong>'+total+' chamados</strong>. Taxa de conclusão: <strong>'+taxaConc+'%</strong>'+(taxaConc>=80?' (excelente)':taxaConc>=65?' (boa)':taxaConc>=50?' (regular)':' (abaixo do esperado — requer atenção)')+'.';
+  var nar2=abertos>0?'Existem <strong>'+abertos+' chamados em aberto</strong> ('+pctAbertos+'% do volume). '+(totalBloq>20?'Bloqueados em nível crítico: <strong>'+totalBloq+'</strong>.':totalBloq>10?totalBloq+' chamados bloqueados — requer atenção.':totalBloq>0?totalBloq+' chamados bloqueados (nível aceitável).':'Nenhum chamado bloqueado.'):'';
+  var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':respMed+'min';
+  var nar3=respMed>0?'Tempo médio de <strong>primeira resposta</strong>: <strong>'+respH+'</strong>'+(respMed<=30?' (dentro da meta).':' (acima da meta de 30min).')+' Tempo médio de <strong>solução</strong>: <strong>'+solMed+'h</strong>'+(solMed<=24?' (ótimo).':solMed<=40?' (aceitável).':' (acima do ideal).'):'';
+
+  // ── Ritmo ──────────────────────────────────────────────────
+  var trendTxt=trendPct>5?'↑ +'+trendPct+'% vs semana anterior':trendPct<-5?'↓ '+Math.abs(trendPct)+'% vs semana anterior':'→ estável vs semana anterior';
+
+  // ── Geração ────────────────────────────────────────────────
+  var hoje=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  // ── CSS ────────────────────────────────────────────────────
+  var css='*{margin:0;padding:0;box-sizing:border-box}'
+    +'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:11px;color:#111827;background:#fff;padding:0}'
+    +'@page{size:A4;margin:18mm 16mm}'
+    +'@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
+    +'.page{max-width:720px;margin:0 auto;padding:0}'
+    +'.cover{display:flex;flex-direction:column;gap:0;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1d4ed8}'
+    +'.cover-title{font-size:22px;font-weight:700;color:#1d4ed8;letter-spacing:-.5px;margin-bottom:4px}'
+    +'.cover-sub{font-size:12px;color:#6b7280;margin-bottom:14px}'
+    +'.cover-pills{display:flex;gap:8px;flex-wrap:wrap}'
+    +'.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.03em}'
+    +'.pill-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}'
+    +'.pill-gray{background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb}'
+    +'.section{margin-bottom:24px}'
+    +'.sec-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid #e5e7eb;padding-bottom:6px;margin-bottom:12px}'
+    +'.sem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:0}'
+    +'.sem-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px}'
+    +'.sem-label{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:6px}'
+    +'.sem-val{font-size:20px;font-weight:700;color:#111827;margin-bottom:2px}'
+    +'.sem-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.05em}'
+    +'.badge-ok{background:#d1fae5;color:#065f46}'
+    +'.badge-warn{background:#fef3c7;color:#92400e}'
+    +'.badge-crit{background:#fee2e2;color:#991b1b}'
+    +'.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}'
+    +'.metric-card{border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;text-align:center}'
+    +'.metric-val{font-size:22px;font-weight:700;color:#1d4ed8;line-height:1}'
+    +'.metric-lbl{font-size:9px;color:#6b7280;margin-top:3px}'
+    +'.metric-sub{font-size:9px;color:#9ca3af;margin-top:2px}'
+    +'.coo-item{border-left:3px solid #e5e7eb;padding:8px 12px;margin-bottom:8px;border-radius:0 6px 6px 0;background:#fafafa}'
+    +'.coo-p1{border-color:#ef4444;background:#fff5f5}'
+    +'.coo-p2{border-color:#f59e0b;background:#fffbeb}'
+    +'.coo-p3{border-color:#6b7280;background:#f9fafb}'
+    +'.coo-badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;margin-right:6px}'
+    +'.coo-badge-p1{background:#fecaca;color:#991b1b}'
+    +'.coo-badge-p2{background:#fde68a;color:#92400e}'
+    +'.coo-badge-p3{background:#e5e7eb;color:#374151}'
+    +'.coo-title{font-size:11px;font-weight:600;color:#111827}'
+    +'.coo-meta{font-size:9px;color:#6b7280;margin-top:3px}'
+    +'.coo-area{font-size:9px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}'
+    +'.nar-p{font-size:11px;color:#374151;line-height:1.65;margin-bottom:8px}'
+    +'.atend-table{width:100%;border-collapse:collapse;font-size:10px}'
+    +'.atend-table th{text-align:left;padding:5px 8px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;border-bottom:2px solid #e5e7eb}'
+    +'.atend-table td{padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151}'
+    +'.bar-wrap{width:80px;height:5px;background:#f3f4f6;border-radius:3px;display:inline-block;vertical-align:middle}'
+    +'.bar-fill{height:100%;border-radius:3px}'
+    +'.prior-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}'
+    +'.prior-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}'
+    +'.prior-bar{flex:1;height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden}'
+    +'.prior-fill{height:100%;border-radius:3px}'
+    +'.footer{margin-top:32px;padding-top:12px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;font-size:9px;color:#9ca3af}'
+    +'.pagebreak{page-break-before:always}';
+
+  // ── HTML ───────────────────────────────────────────────────
+  var H='<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Resumo de Gestão · '+mesLabel+'</title><style>'+css+'</style></head><body><div class="page">';
+
+  // CAPA
+  H+='<div class="cover">';
+  H+='<div class="cover-title">Resumo de Gestão Operacional</div>';
+  H+='<div class="cover-sub">Groundwork · '+mesLabel+' · Gerado em '+hoje+'</div>';
+  H+='<div class="cover-pills">';
+  H+='<span class="pill pill-blue">'+total+' chamados</span>';
+  H+='<span class="pill '+(taxaConc>=70?'pill-blue':'pill-gray')+'">'+taxaConc+'% concluídos</span>';
+  var hpill=healthScore>=80?'badge-ok':healthScore>=60?'badge-warn':'badge-crit';
+  H+='<span class="pill"><span class="sem-badge '+hpill+'">SAÚDE '+healthScore+'/100</span></span>';
+  if(p1Count>0)H+='<span class="pill" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5">'+p1Count+' ação'+(p1Count>1?'ões':'')+' P1 urgente'+(p1Count>1?'s':'')+'</span>';
+  H+='</div>';
+  H+='</div>';
+
+  // SEMÁFORO
+  H+='<div class="section">';
+  H+='<div class="sec-title">Status Operacional</div>';
+  H+='<div class="sem-grid">';
+  // SLA
+  var slaBadgeCls=slaLbl==='DENTRO DA META'?'badge-ok':slaLbl==='ATENÇÃO'?'badge-warn':'badge-crit';
+  H+='<div class="sem-card"><div class="sem-label">Acordo de Nível de Serviço</div><div class="sem-val">'+slaIcon+' '+slaVal+'</div><div><span class="sem-badge '+slaBadgeCls+'">'+slaLbl+'</span></div></div>';
+  // Saúde
+  var saudeBadgeCls=saúdeLbl==='ESTÁVEL'?'badge-ok':saúdeLbl==='ATENÇÃO'?'badge-warn':'badge-crit';
+  H+='<div class="sem-card"><div class="sem-label">Saúde Operacional</div><div class="sem-val">'+saúdeIcon+' '+healthScore+'/100</div><div><span class="sem-badge '+saudeBadgeCls+'">'+saúdeLbl+'</span></div></div>';
+  // Disponibilidade
+  var dispBadgeCls=dispLbl==='OK'?'badge-ok':dispLbl==='ATENÇÃO'?'badge-warn':'badge-crit';
+  H+='<div class="sem-card"><div class="sem-label">Disponibilidade de Clientes</div><div class="sem-val">'+dispIcon+' '+dispVal+'</div><div><span class="sem-badge '+dispBadgeCls+'">'+dispLbl+'</span></div></div>';
+  H+='</div>';
+  H+='</div>';
+
+  // MÉTRICAS
+  H+='<div class="section">';
+  H+='<div class="sec-title">Métricas do Período</div>';
+  H+='<div class="metrics-grid">';
+  H+='<div class="metric-card"><div class="metric-val">'+total+'</div><div class="metric-lbl">Total de Chamados</div><div class="metric-sub">'+trendTxt+'</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(taxaConc>=70?'#10b981':taxaConc>=50?'#f59e0b':'#ef4444')+'">'+taxaConc+'%</div><div class="metric-lbl">Taxa de Conclusão</div><div class="metric-sub">meta: 70%</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(respMed<=30?'#10b981':respMed<=60?'#f59e0b':'#ef4444')+'">'+(respMed>=60?(Math.round(respMed/60*10)/10)+'h':respMed+'min')+'</div><div class="metric-lbl">1ª Resposta (med.)</div><div class="metric-sub">meta: 30min</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(solMed<=48?'#10b981':solMed<=72?'#f59e0b':'#ef4444')+'">'+solMed+'h</div><div class="metric-lbl">Tempo de Solução (med.)</div><div class="metric-sub">meta: 48h</div></div>';
+  H+='</div>';
+  H+='<div class="metrics-grid" style="margin-top:10px">';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(abertos===0?'#10b981':pctAbertos<=15?'#f59e0b':'#ef4444')+'">'+abertos+'</div><div class="metric-lbl">Em Aberto</div><div class="metric-sub">'+pctAbertos+'% do volume</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(totalBloq===0?'#10b981':totalBloq<=10?'#f59e0b':'#ef4444')+'">'+totalBloq+'</div><div class="metric-lbl">Bloqueados</div><div class="metric-sub">'+(totalBloq===0?'nenhum':'aguardando ação')+'</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(prioMA===0?'#10b981':pctMA<=30?'#f59e0b':'#ef4444')+'">'+prioMA+'</div><div class="metric-lbl">Prioridade Muito Alta</div><div class="metric-sub">'+pctMA+'% do volume</div></div>';
+  H+='<div class="metric-card"><div class="metric-val">'+avgDaily+'</div><div class="metric-lbl">Ritmo Diário</div><div class="metric-sub">média por dia útil</div></div>';
+  H+='</div>';
+  H+='</div>';
+
+  // PLANO DE AÇÃO COO
+  if(cooActions.length>0){
+    H+='<div class="section pagebreak">';
+    H+='<div class="sec-title">Plano de Ação COO — '+mesLabel+'</div>';
+    cooActions.forEach(function(a){
+      var cls=a.p==='P1'?'coo-p1':a.p==='P2'?'coo-p2':'coo-p3';
+      var bcls=a.p==='P1'?'coo-badge-p1':a.p==='P2'?'coo-badge-p2':'coo-badge-p3';
+      H+='<div class="coo-item '+cls+'">';
+      H+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">';
+      H+='<span class="coo-badge '+bcls+'">'+a.p+'</span>';
+      H+='<span class="coo-area">'+a.area+'</span>';
+      H+='<span style="font-size:9px;color:#9ca3af;margin-left:auto">Prazo: '+a.prazo+'</span>';
+      H+='</div>';
+      H+='<div class="coo-title">'+a.titulo+'</div>';
+      H+='<div class="coo-meta">'+a.oque+'</div>';
+      H+='<div class="coo-meta" style="margin-top:2px">Responsável: <strong>'+a.resp+'</strong></div>';
+      H+='</div>';
+    });
+    H+='</div>';
+  }
+
+  // RESUMO NARRATIVO
+  H+='<div class="section">';
+  H+='<div class="sec-title">Análise do Período</div>';
+  if(nar1)H+='<p class="nar-p">'+nar1+'</p>';
+  if(nar2)H+='<p class="nar-p">'+nar2+'</p>';
+  if(nar3)H+='<p class="nar-p">'+nar3+'</p>';
+  H+='</div>';
+
+  // PRIORIDADES
+  var priorKeys=['Muito Alta','Alta','Normal','Baixa','Muito Baixa'];
+  var priorColors={'Muito Alta':'#ef4444','Alta':'#f59e0b','Normal':'#3b82f6','Baixa':'#10b981','Muito Baixa':'#6b7280'};
+  var priorVals=priorKeys.map(function(k){return prior[k]||0;});
+  var priorMax=Math.max.apply(null,priorVals)||1;
+  if(priorVals.some(function(v){return v>0;})){
+    H+='<div class="section" style="display:inline-block;width:48%;vertical-align:top;margin-right:4%">';
+    H+='<div class="sec-title">Distribuição por Prioridade</div>';
+    priorKeys.forEach(function(k,i){
+      var v=priorVals[i]; if(!v)return;
+      var w=Math.round(v/priorMax*100);
+      H+='<div class="prior-row"><div class="prior-dot" style="background:'+priorColors[k]+'"></div>';
+      H+='<span style="flex:0 0 90px;font-size:10px;color:#374151">'+k+'</span>';
+      H+='<div class="prior-bar"><div class="prior-fill" style="width:'+w+'%;background:'+priorColors[k]+'"></div></div>';
+      H+='<span style="font-size:10px;color:#374151;min-width:24px;text-align:right">'+v+'</span>';
+      H+='</div>';
+    });
+    H+='</div>';
+
+    // ESTADOS
+    var estadoKeys=Object.keys(estado).filter(function(k){return estado[k]>0;}).sort(function(a,b){return estado[b]-estado[a];}).slice(0,6);
+    var estMax=estadoKeys.length>0?Math.max.apply(null,estadoKeys.map(function(k){return estado[k];})):1;
+    if(estadoKeys.length>0){
+      H+='<div class="section" style="display:inline-block;width:48%;vertical-align:top">';
+      H+='<div class="sec-title">Distribuição por Estado</div>';
+      estadoKeys.forEach(function(k){
+        var v=estado[k]; var w=Math.round(v/estMax*100);
+        H+='<div class="prior-row"><span style="flex:0 0 120px;font-size:10px;color:#374151">'+k+'</span>';
+        H+='<div class="prior-bar"><div class="prior-fill" style="width:'+w+'%;background:#3b82f6"></div></div>';
+        H+='<span style="font-size:10px;color:#374151;min-width:24px;text-align:right">'+v+'</span>';
+        H+='</div>';
+      });
+      H+='</div>';
     }
   }
-  if(sec==='resumo')renderResumo();
-  else if(sec==='relatorio')renderRelatorio();
+
+  // ATENDENTES
+  if(atendTop.length>0){
+    H+='<div class="section" style="clear:both;margin-top:20px">';
+    H+='<div class="sec-title">Performance por Atendente</div>';
+    H+='<table class="atend-table"><thead><tr>';
+    H+='<th>#</th><th>Atendente</th><th>Total</th><th>Fechados</th><th>Taxa</th><th>1ª Resp.</th><th>Sol. Média</th>';
+    H+='</tr></thead><tbody>';
+    atendTop.forEach(function(a,i){
+      var tx=_pct(a.f,a.t);
+      var txColor=tx>=70?'#10b981':tx>=50?'#f59e0b':'#ef4444';
+      H+='<tr>';
+      H+='<td style="color:#9ca3af">'+(i+1)+'</td>';
+      H+='<td style="font-weight:600">'+a.n+'</td>';
+      H+='<td style="text-align:center">'+a.t+'</td>';
+      H+='<td style="text-align:center">'+a.f+'</td>';
+      H+='<td><div style="display:flex;align-items:center;gap:6px"><div class="bar-wrap"><div class="bar-fill" style="width:'+Math.min(tx,100)+'%;background:'+txColor+'"></div></div><span style="color:'+txColor+';font-weight:600">'+tx+'%</span></div></td>';
+      H+='<td style="text-align:center">'+(a.rm!=null?a.rm+'min':'—')+'</td>';
+      H+='<td style="text-align:center">'+(a.sm!=null?a.sm+'h':'—')+'</td>';
+      H+='</tr>';
+    });
+    H+='</tbody></table>';
+    H+='</div>';
+  }
+
+  // RODAPÉ
+  H+='<div class="footer"><span>Groundwork Operations Center</span><span>'+mesLabel+' · '+hoje+'</span></div>';
+  H+='</div></body></html>';
+
+  var w=window.open('','_blank');
+  w.document.write(H);
+  w.document.close();
+  setTimeout(function(){w.print();},600);
 }
 
 // ════════════════════════════════════════════════════════════
@@ -4690,7 +4970,8 @@ function renderRelatorio(){
   H+='<div class="rel-footer">Groundwork MSP · Gerado em '+geradoEm+' · Fonte: SSG Operations Center</div>';
   H+='</div>';
 
-  document.getElementById('rg-body').innerHTML=H;
+  var _elRel=document.getElementById('rg-relatorio-content')||document.getElementById('rg-body');
+  _elRel.innerHTML=H;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -5110,7 +5391,7 @@ function renderResumo(){
     }
   }
 
-  var el=document.getElementById('rg-body');
+  var el=document.getElementById('rg-resumo-content')||document.getElementById('rg-body');
   if(el)el.innerHTML=H;
 }
 
