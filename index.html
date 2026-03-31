@@ -3134,12 +3134,21 @@ function rebuildAll(data){
   },100);
 }
 
+function ssgSaveCache(rows,fileName){
+  try{localStorage.setItem('ssg_cache',JSON.stringify({rows:rows,fn:fileName,ts:Date.now()}));}catch(e){}
+}
+function ssgUpdateCacheLabel(fileName,ts){
+  var el=document.getElementById('import-last-time');
+  if(el){var dt=new Date(ts);el.textContent=(ts?'Cache '+dt.toLocaleDateString('pt-BR')+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'');}
+  var sp=document.querySelector('#import-last span');
+  if(sp&&fileName)sp.textContent='Em cache: '+fileName;
+}
 function handleFileImport(e){
   var file=e.target.files[0];if(!file)return;
   setProgress(10,'Lendo '+file.name+'...');
   var reader=new FileReader();
   reader.onload=function(ev){
-    try{var wb=XLSX.read(ev.target.result,{type:'binary',cellDates:true});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{defval:''});rebuildAll(parseR(rows));}
+    try{var wb=XLSX.read(ev.target.result,{type:'binary',cellDates:true});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{defval:''});ssgSaveCache(rows,file.name);rebuildAll(parseR(rows));ssgUpdateCacheLabel(file.name,Date.now());}
     catch(err){setProgress(0,'');alert('Erro ao ler arquivo: '+err.message);}
     document.getElementById('imp-file').value='';
   };
@@ -3150,7 +3159,7 @@ function handleDrop(e){
   var file=e.dataTransfer.files[0];if(!file)return;
   setProgress(10,'Lendo '+file.name+'...');
   var reader=new FileReader();
-  reader.onload=function(ev){try{var wb=XLSX.read(ev.target.result,{type:'binary',cellDates:true});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{defval:''});rebuildAll(parseR(rows));}catch(err){setProgress(0,'');alert('Erro: '+err.message);}};
+  reader.onload=function(ev){try{var wb=XLSX.read(ev.target.result,{type:'binary',cellDates:true});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{defval:''});ssgSaveCache(rows,file.name);rebuildAll(parseR(rows));ssgUpdateCacheLabel(file.name,Date.now());}catch(err){setProgress(0,'');alert('Erro: '+err.message);}};
   reader.readAsBinaryString(file);
 }
 function openImport(){document.getElementById('import-overlay').classList.add('open');}
@@ -6312,6 +6321,21 @@ document.querySelectorAll('.nav').forEach(function(n){
     if(window.innerWidth<=767) closeMobDrawer();
   });
 });
+
+// Auto-restaurar dados do cache ao abrir o dash
+(function(){
+  try{
+    var c=localStorage.getItem('ssg_cache');
+    if(!c)return;
+    var d=JSON.parse(c);
+    if(!d||!d.rows||!d.rows.length)return;
+    var parsed=parseR(d.rows);
+    if(parsed&&parsed.length){
+      rebuildAll(parsed);
+      ssgUpdateCacheLabel(d.fn,d.ts);
+    }
+  }catch(e){}
+})();
 
 // Registra service worker (PWA)
 if('serviceWorker' in navigator){
