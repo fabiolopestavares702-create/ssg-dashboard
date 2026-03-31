@@ -1578,13 +1578,13 @@ input[type=file]{display:none}
 </div>
 
 <!-- ════════════════ ESTADO MODAL ════════════════ -->
-<div class="estado-overlay" id="estado-overlay" onclick="handleEstadoOverlay(event)">
-  <div class="estado-modal" id="estado-modal">
+<div class="estado-overlay" id="estado-overlay" onclick="handleEstadoOverlay(event)" role="presentation">
+  <div class="estado-modal" id="estado-modal" role="dialog" aria-modal="true" aria-labelledby="estado-modal-title">
     <div class="estado-modal-head">
       <div class="estado-modal-dot" id="estado-modal-dot"></div>
       <div class="estado-modal-title" id="estado-modal-title">Chamados</div>
       <div class="estado-modal-count" id="estado-modal-count">0 chamados</div>
-      <button class="estado-modal-close" onclick="closeEstadoModal()">×</button>
+      <button class="estado-modal-close" onclick="closeEstadoModal()" aria-label="Fechar modal">×</button>
     </div>
     <div class="estado-modal-body">
       <div class="estado-modal-filter">
@@ -1604,10 +1604,10 @@ input[type=file]{display:none}
 </div>
 
 <!-- ════════════════ IMPORT MODAL ════════════════ -->
-<div class="import-overlay" id="import-overlay" onclick="handleOverlayClick(event)">
-  <div class="import-modal">
-    <button class="import-close-btn" onclick="closeImport()">×</button>
-    <div class="import-modal-title">Importar nova exportação</div>
+<div class="import-overlay" id="import-overlay" onclick="handleOverlayClick(event)" role="presentation">
+  <div class="import-modal" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+    <button class="import-close-btn" onclick="closeImport()" aria-label="Fechar modal">×</button>
+    <div class="import-modal-title" id="import-modal-title">Importar nova exportação</div>
     <div class="import-modal-sub">Selecione o arquivo .xlsx exportado do Znuny para atualizar todos os dados do portal.</div>
     <div class="import-drop-zone" id="import-drop-zone"
          onclick="document.getElementById('imp-file').click()"
@@ -5191,8 +5191,8 @@ function renderBacklogTable(rows) {
 </script>
 
 
-<div id="at-modal-overlay" style="position:fixed;inset:0;z-index:700;background:rgba(8,11,16,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s" onclick="closeAtModal(event)">
-  <div id="at-modal" style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r3);width:860px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;transform:scale(.95) translateY(14px);transition:transform .22s;overflow:hidden">
+<div id="at-modal-overlay" role="presentation" style="position:fixed;inset:0;z-index:700;background:rgba(8,11,16,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s" onclick="closeAtModal(event)">
+  <div id="at-modal" role="dialog" aria-modal="true" aria-labelledby="at-modal-name" style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r3);width:860px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;transform:scale(.95) translateY(14px);transition:transform .22s;overflow:hidden">
     <div style="display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0">
       <div id="at-modal-avatar" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0"></div>
       <div style="flex:1;min-width:0">
@@ -5200,7 +5200,7 @@ function renderBacklogTable(rows) {
         <div id="at-modal-sub" style="font-size:11px;color:var(--muted);margin-top:2px"></div>
       </div>
       <div id="at-modal-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-      <button onclick="closeAtModalBtn()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:2px 6px;border-radius:6px;margin-left:8px;transition:all .15s" onmouseenter="this.style.color='var(--text)';this.style.background='rgba(255,255,255,.06)'" onmouseleave="this.style.color='var(--muted)';this.style.background='none'">×</button>
+      <button onclick="closeAtModalBtn()" aria-label="Fechar modal" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:2px 6px;border-radius:6px;margin-left:8px;transition:all .15s" onmouseenter="this.style.color='var(--text)';this.style.background='rgba(255,255,255,.06)'" onmouseleave="this.style.color='var(--muted)';this.style.background='none'">×</button>
     </div>
     <div style="padding:12px 24px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:8px;align-items:center">
       <input id="at-modal-search" type="text" placeholder="Buscar por número ou assunto…" oninput="filterAtModal()"
