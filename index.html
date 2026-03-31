@@ -735,6 +735,15 @@
     <h1>Resumo de Gestão</h1>
     <p>Visão simplificada da operação · sem termos técnicos · atualizada automaticamente</p>
   </div>
+  <!-- Tab switcher inline — sempre visível independente do sidebar -->
+  <div style="display:flex;gap:6px;padding:0 0 16px 0;border-bottom:1px solid var(--border);margin:0 0 20px 0">
+    <button id="rg-tab-resumo" onclick="activateRgNav('resumo')"
+      style="padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-1px;margin-right:5px"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Resumo Executivo</button>
+    <button id="rg-tab-relatorio" onclick="activateRgNav('relatorio')"
+      style="padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-1px;margin-right:5px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Relatório Mensal</button>
+  </div>
   <div class="page-body" id="rg-body">
     <div style="color:var(--muted);font-size:13px;padding:24px 0">Carregando dados...</div>
   </div>
@@ -4467,9 +4476,22 @@ function setRelMes(mes){
 }
 
 function activateRgNav(sec){
+  // Sidebar nav
   document.querySelectorAll('#nav-rg .nav').forEach(function(n){n.classList.remove('on');});
   var navEl=document.getElementById('rg-nav-'+sec);
   if(navEl)navEl.classList.add('on');
+  // Tab inline — ativo: azul sólido / inativo: borda + texto muted
+  var tabR=document.getElementById('rg-tab-resumo');
+  var tabM=document.getElementById('rg-tab-relatorio');
+  if(tabR&&tabM){
+    if(sec==='resumo'){
+      tabR.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s';
+      tabM.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s';
+    } else {
+      tabM.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff;transition:all .15s';
+      tabR.style.cssText='padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .15s';
+    }
+  }
   if(sec==='resumo')renderResumo();
   else if(sec==='relatorio')renderRelatorio();
 }
