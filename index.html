@@ -2681,7 +2681,10 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   H+='</div>';
   H+='<div class="cover-score">';
   H+='<div class="cover-score-num">'+score+'</div>';
-  H+='<div class="cover-score-info"><div class="cover-score-label">Health Score</div><div class="cover-score-pill">'+scoreLabel+'</div></div>';
+  H+='<div class="cover-score-info"><div class="cover-score-label">Health Score</div><div class="cover-score-pill">'+scoreLabel+'</div>';
+  if(efic<80)H+='<div style="margin-top:8px;padding:4px 10px;border-radius:6px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.3);font-size:10px;font-weight:700;color:#dc2626">⚠ Eficiência SLA: '+efic+'% · meta 90%</div>';
+  else H+='<div style="margin-top:8px;padding:4px 10px;border-radius:6px;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.25);font-size:10px;font-weight:700;color:#16a34a">✓ Eficiência SLA: '+efic+'%</div>';
+  H+='</div>';
   H+='</div>';
   H+='</div>';
   H+='<div class="cover-deco"></div><div class="cover-deco2"></div>';
@@ -2802,11 +2805,67 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   H+='</div>';
   H+='</div>';
 
-  // ── SE\u00c7\u00c3O 8: CONSIDERA\u00c7\u00d5ES FINAIS
-  H+='<div class="section">';
-  H+='<div class="sec-header"><div class="sec-num">8</div><div class="sec-title">Considera\u00e7\u00f5es Finais</div></div>';
-  H+='<div class="consider">Com base nas informa\u00e7\u00f5es demonstradas acima, nosso objetivo \u00e9 produzir dados e indicadores que permitam avaliar de maneira simples, segura e confi\u00e1vel o atendimento prestado. Contamos com o retorno de todos para continuar aprimorando a qualidade dos servi\u00e7os.<br><br>Contamos com voc\u00eas.<br><br><strong>EQUIPE ERP</strong><br>GROUNDWORK</div>';
-  H+='</div>';
+  // ── SE\u00c7\u00c3O 8: CARTA DO GESTOR ────────────────────────────────
+  (function(){
+    var pontoForte='', pontoAtencao='';
+    if(d.resp_med<=15) pontoForte='Nossa equipe manteve um tempo de primeira resposta mediano de <strong>'+d.resp_med+' minutos</strong> — muito acima da meta contratual de 30 minutos, refletindo o comprometimento do time em tratar cada solicitação com agilidade.';
+    else if(taxaConc>=80) pontoForte='Encerramos <strong>'+d.fechados+' de '+d.total+' chamados</strong> ('+taxaConc+'%) com sucesso no período — resultado que demonstra a capacidade de entrega da equipe mesmo em meses de volume elevado.';
+    else if(efic>=90) pontoForte='Atingimos <strong>'+efic+'% de eficiência SLA</strong> no período, superando a meta contratual de 90%. Os chamados prioritários foram tratados dentro do prazo acordado.';
+    else pontoForte='Mantivemos comunicação ativa em todos os chamados do período, com <strong>primeira resposta mediana de '+d.resp_med+' min</strong> e acompanhamento contínuo de cada solicitação.';
+    if(efic<70) pontoAtencao='Por outro lado, nossa eficiência SLA no período foi de <strong>'+efic+'%</strong> — abaixo da meta de 90%. '+violados+' chamado(s) ultrapassaram o prazo de 48h úteis. Reconhecemos o impacto na experiência de atendimento e já estamos endereçando as causas para o próximo período.';
+    else if(d.solucao_med_h>48) pontoAtencao='O tempo médio de solução ficou em <strong>'+d.solucao_med_h+'h</strong>, acima da meta de 48h úteis. Parte dos casos demandou análise mais aprofundada e dependência de outros ambientes — estamos tomando ações para reduzir esse indicador a partir do próximo mês.';
+    else if(d.abertos>0) pontoAtencao='Encerramos o período com <strong>'+d.abertos+' chamado(s) em aberto</strong>. Nossa equipe acompanha cada um deles e trabalhará para resolução prioritária nas próximas semanas.';
+    var volTend='';
+    var mesAtual=histVals[histVals.length-1]||d.total;
+    var mesAnterior=histVals.length>=2?histVals[histVals.length-2]:0;
+    if(mesAnterior>0){var varVol=Math.round((mesAtual-mesAnterior)/mesAnterior*100);if(varVol<=-15)volTend='O volume de chamados reduziu <strong>'+Math.abs(varVol)+'%</strong> em relação ao mês anterior — sinal positivo de estabilização do ambiente.';else if(varVol>=15)volTend='O volume de chamados cresceu <strong>'+varVol+'%</strong> em relação ao mês anterior. Esse aumento foi absorvido pela equipe e está sendo monitorado de perto.';}
+    var proxMesLabel=({'2026-01':'fevereiro','2026-02':'março','2026-03':'abril','2026-04':'maio','2026-05':'junho','2026-06':'julho','2026-07':'agosto','2026-08':'setembro','2026-09':'outubro','2026-10':'novembro','2026-11':'dezembro','2026-12':'janeiro'})[activeMonth==='all'?'2026-03':activeMonth]||'próximo mês';
+    H+='<div class="section">';
+    H+='<div class="sec-header"><div class="sec-num">8</div><div class="sec-title">Carta do Gestor</div></div>';
+    H+='<div class="consider">';
+    H+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#E8622A;margin-bottom:14px">Mensagem da Equipe ERP · Groundwork</div>';
+    H+='<p style="margin-bottom:12px;line-height:1.8">Prezado(a) <strong>'+d.nome+'</strong>,</p>';
+    H+='<p style="margin-bottom:12px;line-height:1.8">Este relatório consolida os atendimentos de <strong>'+mesLabel+'</strong>. '+pontoForte+'</p>';
+    if(pontoAtencao)H+='<p style="margin-bottom:12px;line-height:1.8">'+pontoAtencao+'</p>';
+    if(volTend)H+='<p style="margin-bottom:12px;line-height:1.8">'+volTend+'</p>';
+    H+='<p style="margin-bottom:16px;line-height:1.8">Em '+proxMesLabel+', nosso foco será manter a agilidade na primeira resposta e reduzir o tempo médio de solução. Os compromissos detalhados estão na próxima seção.</p>';
+    H+='<p style="line-height:1.8">Estamos à disposição para qualquer dúvida ou alinhamento.<br><br><strong>Equipe ERP</strong><br><span style="color:#9ca3af">Groundwork · ERP Center · Rua Amália de Noronha, 151 – São Paulo/SP</span></p>';
+    H+='</div>';
+    H+='</div>';
+  })();
+
+  // ── SE\u00c7\u00c3O 9: COMPROMISSOS DO PR\u00d3XIMO M\u00caS ──────────────────────
+  (function(){
+    var proxMesNome=({'2026-01':'Fevereiro/26','2026-02':'Março/26','2026-03':'Abril/26','2026-04':'Maio/26','2026-05':'Junho/26','2026-06':'Julho/26','2026-07':'Agosto/26','2026-08':'Setembro/26','2026-09':'Outubro/26','2026-10':'Novembro/26','2026-11':'Dezembro/26','2026-12':'Janeiro/27'})[activeMonth==='all'?'2026-03':activeMonth]||'Próximo Mês';
+    var items=[];
+    items.push({num:'01',titulo:'Manter 1ª resposta ≤ 30 min',desc:'Garantir que todos os chamados recebam primeira resposta dentro de 30 minutos úteis, independente do volume diário.',resp:'Coordenação ERP',meta:'≤30min',atual:d.resp_med+'min',ok:d.resp_med<=30});
+    if(d.solucao_med_h>48) items.push({num:'02',titulo:'Reduzir tempo de solução para ≤ 48h',desc:'Priorizar triagem dos chamados represados. Redistribuir casos acima de 48h e acionar gestor para desbloqueio.',resp:'Liderança Técnica ERP',meta:'≤48h',atual:d.solucao_med_h+'h',ok:false});
+    else items.push({num:'02',titulo:'Manter solução média ≤ 48h',desc:'Sustentar o nível de resolução atual com foco em chamados de prioridade Muito Alta e Alta.',resp:'Liderança Técnica ERP',meta:'≤48h',atual:d.solucao_med_h+'h ✓',ok:true});
+    if(efic<90) items.push({num:'03',titulo:'Atingir ≥ 90% de eficiência SLA',desc:'Reduzir violações do prazo de 48h com acompanhamento diário da fila. Alerta proativo ao cliente quando chamado crítico se aproximar do limite.',resp:'Coordenação ERP + CS',meta:'≥90%',atual:efic+'%',ok:false});
+    else items.push({num:'03',titulo:'Sustentar eficiência SLA ≥ 90%',desc:'Manter o nível atual de cumprimento com monitoramento semanal e revisão dos casos limítrofes.',resp:'Coordenação ERP',meta:'≥90%',atual:efic+'% ✓',ok:true});
+    if(d.abertos>0) items.push({num:'04',titulo:'Encerrar '+d.abertos+' chamado(s) em aberto',desc:'Concluir os chamados herdados deste período. Chamados sem resposta por mais de 5 dias úteis serão escalados ao gestor de conta.',resp:'Equipe ERP',meta:'0 abertos',atual:d.abertos+' pendentes',ok:false});
+    H+='<div class="section">';
+    H+='<div class="sec-header"><div class="sec-num">9</div><div class="sec-title">Compromissos para '+proxMesNome+'</div><div class="sec-sub">Groundwork → '+d.nome+'</div></div>';
+    items.forEach(function(c){
+      var bg=c.ok?'#f0fdf4':'#fff7ed';
+      var border=c.ok?'#86efac':'#fdba74';
+      var dot=c.ok?'#16a34a':'#ea580c';
+      var lbl=c.ok?'No prazo':'Prioridade';
+      H+='<div style="border:1px solid '+border+';border-radius:8px;padding:14px 16px;margin-bottom:10px;background:'+bg+'">';
+      H+='<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">';
+      H+='<div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:50%;background:'+dot+';color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+c.num+'</div>';
+      H+='<div style="font-size:13px;font-weight:700;color:#1a2744">'+c.titulo+'</div></div>';
+      H+='<div style="display:flex;align-items:center;gap:4px;flex-shrink:0"><div style="width:7px;height:7px;border-radius:50%;background:'+dot+'"></div><span style="font-size:9px;font-weight:700;color:'+dot+';font-family:monospace;text-transform:uppercase;white-space:nowrap">'+lbl+'</span></div>';
+      H+='</div>';
+      H+='<div style="font-size:12px;color:#374151;line-height:1.6;margin-bottom:8px;padding-left:30px">'+c.desc+'</div>';
+      H+='<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:10px;color:#6b7280;padding-left:30px;font-family:monospace">';
+      H+='<span>👤 '+c.resp+'</span><span style="color:#e5e7eb">|</span>';
+      H+='<span>🎯 Meta: '+c.meta+'</span><span style="color:#e5e7eb">|</span>';
+      H+='<span style="color:'+dot+';font-weight:700">Atual: '+c.atual+'</span>';
+      H+='</div></div>';
+    });
+    H+='</div>';
+  })();
 
   H+='</div>'; // /body
 
