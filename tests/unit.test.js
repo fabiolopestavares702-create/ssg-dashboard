@@ -78,6 +78,15 @@ test('Normal → classe pb (azul)', ()        => assert(pPill('Normal').includes
 test('Muito Baixa → classe px (cinza)', ()  => assert(pPill('Muito Baixa').includes('class="pill px"')));
 test('contém o texto da prioridade', ()     => assert(pPill('Alta').includes('Alta')));
 
+console.log('\n📋 normalizaFila() — typos vindos do Znuny');
+const FILA_FIX = {'INFRAESTUTURA':'INFRAESTRUTURA','INFRA ESTRUTURA':'INFRAESTRUTURA','INFRA-ESTRUTURA':'INFRAESTRUTURA'};
+function normalizaFila(raw) { var f = raw.trim().toUpperCase(); return FILA_FIX[f] || f; }
+test('INFRAESTUTURA → INFRAESTRUTURA',  () => assertEqual(normalizaFila('INFRAESTUTURA'), 'INFRAESTRUTURA'));
+test('INFRA ESTRUTURA → INFRAESTRUTURA',() => assertEqual(normalizaFila('INFRA ESTRUTURA'), 'INFRAESTRUTURA'));
+test('INFRA-ESTRUTURA → INFRAESTRUTURA',() => assertEqual(normalizaFila('INFRA-ESTRUTURA'), 'INFRAESTRUTURA'));
+test('SSG sem alteração',                () => assertEqual(normalizaFila('SSG'), 'SSG'));
+test('DBA sem alteração',                () => assertEqual(normalizaFila('DBA'), 'DBA'));
+
 // ─── Resultado ───────────────────────────────────────────────────────────────
 console.log('\n' + '─'.repeat(40));
 console.log(`  ${passed} passaram · ${failed} falharam`);
