@@ -5025,6 +5025,76 @@ setInterval(autoFetchXLS, 10 * 60 * 1000);
 var AI_DATA = null;
 var AI_LIVE = null;
 
+// ── Gera riscos_clientes e cs_insights a partir de EMPRESAS (live, sem pipeline) ──
+function computeCliDataFromEMPRESAS(filterCli){
+  var keys=Object.keys(EMPRESAS||{});
+  if(filterCli)keys=keys.filter(function(k){
+    var n=(EMPRESAS[k].nome||k).toUpperCase();
+    return k.toUpperCase().indexOf(filterCli.toUpperCase())!==-1||n.indexOf(filterCli.toUpperCase())!==-1;
+  });
+  if(!keys.length)return{riscos_clientes:[],cs_insights:[]};
+  var rCli=[],csIns=[];
+  keys.forEach(function(k){
+    var e=EMPRESAS[k];
+    var nome=e.nome||k;
+    var total=e.total||1;
+    var fechados=e.fechados||0;
+    var abertos=e.abertos||0;
+    var resp_med=e.resp_med||0;
+    var sol_h=e.solucao_med_h||e.sol_med||0;
+    var prior=e.prior||{};
+    var estados=e.estados||{};
+    var prioMA=prior['Muito Alta']||0;
+    var aguCli=estados['Aguardando Cliente']||0;
+    var aguInt=estados['Aguardando Interno']||0;
+    var aguExt=estados['Aguardando Externo']||0;
+    var bloq=aguCli+aguInt+aguExt;
+    var taxa=Math.round(fechados/total*100);
+    var pctAbertos=Math.round(abertos/total*100);
+    var pctCrit=Math.round(prioMA/total*100);
+    var pctBloq=Math.round(bloq/total*100);
+    var churn=calcChurnRisk(k);
+    var csScore=calcCSScore(e);
+    var csLbl=csScoreLabel(csScore);
+    // ── Riscos ──
+    var riscos=[],nivelGeral='low';
+    if(taxa<50){riscos.push({titulo:'Taxa de conclusão crítica ('+taxa+'%)',desc:'Menos de 50% dos chamados encerrados. Backlog em expansão.',nivel:'high',confianca:90});nivelGeral='high';}
+    else if(taxa<70){riscos.push({titulo:'Taxa de conclusão abaixo da meta ('+taxa+'%)',desc:'Meta de 70% não atingida. Revisar prioridades com a equipe.',nivel:'medium',confianca:80});if(nivelGeral!=='high')nivelGeral='medium';}
+    if(sol_h>72){riscos.push({titulo:'Tempo médio de solução crítico ('+sol_h+'h)',desc:'SLA de 48h ultrapassado. Risco de escalação e insatisfação.',nivel:'high',confianca:88});nivelGeral='high';}
+    else if(sol_h>48){riscos.push({titulo:'Tempo médio de solução acima do SLA ('+sol_h+'h)',desc:'SLA de 48h em risco. Monitorar abertura de novos chamados.',nivel:'medium',confianca:82});if(nivelGeral!=='high')nivelGeral='medium';}
+    if(pctCrit>30){riscos.push({titulo:pctCrit+'% dos chamados com prioridade Muito Alta',desc:prioMA+' chamados críticos — concentração acima do limite aceitável.',nivel:'high',confianca:85});nivelGeral='high';}
+    else if(pctCrit>15){riscos.push({titulo:'Volume elevado de prioridade Muito Alta ('+pctCrit+'%)',desc:prioMA+' chamados críticos — atenção à capacidade de atendimento.',nivel:'medium',confianca:78});if(nivelGeral!=='high')nivelGeral='medium';}
+    if(pctBloq>20){riscos.push({titulo:pctBloq+'% dos chamados bloqueados',desc:bloq+' parados — Ag.Cliente: '+aguCli+', Ag.Interno: '+aguInt+', Ag.Externo: '+aguExt+'.',nivel:'high',confianca:92});nivelGeral='high';}
+    else if(pctBloq>8){riscos.push({titulo:bloq+' chamados aguardando ação ('+pctBloq+'%)',desc:'Ag.Cliente: '+aguCli+', Ag.Interno: '+aguInt+', Ag.Externo: '+aguExt+'.',nivel:'medium',confianca:85});if(nivelGeral!=='high')nivelGeral='medium';}
+    if(!riscos.length)riscos.push({titulo:'Conta dentro dos parâmetros normais',desc:'Score CS '+csScore+'/100 ('+csLbl.label+'). Sem desvios críticos identificados.',nivel:'low',confianca:85});
+    // ── Narrativa ──
+    var narr='<strong>'+nome+'</strong>: conclusão <strong>'+taxa+'%</strong>';
+    if(abertos>0)narr+=', '+abertos+' em aberto ('+pctAbertos+'%)';
+    if(prioMA>0)narr+=', '+prioMA+' Muito Alta';
+    if(bloq>0)narr+=', '+bloq+' bloqueados';
+    narr+='. Solução: '+sol_h+'h · Score CS: <strong>'+csScore+'</strong>/100 ('+csLbl.label+').';
+    if(churn.fatores.length)narr+=' Risco churn: '+churn.fatores.join(', ')+'.';
+    rCli.push({cliente:nome,narrativa:narr,riscos:riscos,_nivel:nivelGeral,_score:csScore});
+    // ── CS Insights ──
+    var csNarr,tom,prox,prio;
+    if(nivelGeral==='high'||csScore<50){
+      csNarr='<strong>'+nome+'</strong> requer intervenção imediata. '+narr;
+      tom='Urgente — abrir alerta com gestor de conta';prox='Hoje ou amanhã';prio='Alta';
+    }else if(nivelGeral==='medium'||csScore<70){
+      csNarr='<strong>'+nome+'</strong> com indicadores abaixo da meta. '+narr;
+      tom='Consultivo — revisão de SLA e backlog';prox='Esta semana';prio='Média';
+    }else{
+      csNarr='<strong>'+nome+'</strong> com performance saudável. '+narr;
+      tom='Relacionamento — explorar satisfação ou expansão';prox='Próximas 2 semanas';prio='Monitoramento';
+    }
+    csIns.push({cliente:nome,narrativa:csNarr,proximo_contato:prox,tom_sugerido:tom,prioridade:prio,_score:csScore});
+  });
+  var ord={high:0,medium:1,low:2};
+  rCli.sort(function(a,b){return(ord[a._nivel]||2)-(ord[b._nivel]||2);});
+  csIns.sort(function(a,b){return(a._score||0)-(b._score||0);});
+  return{riscos_clientes:rCli.slice(0,12),cs_insights:csIns.slice(0,12)};
+}
+
 function computeIAData(op){
   var total    = op.total    ||0;
   var fechados = op.fechados ||0;
@@ -5068,10 +5138,11 @@ function computeIAData(op){
   if(aging30>0)riscos.push({titulo:aging30+' chamados abertos há mais de 30 dias',desc:'Risco de escalonamento pelo cliente.',nivel:'high',confianca:95});
   if(total>0&&prioMA/total>.10)riscos.push({titulo:'Alto percentual de prioridade Muito Alta ('+Math.round(prioMA/total*100)+'%)',desc:'Concentração acima de 10% indica possível instabilidade.',nivel:'medium',confianca:70});
   if(!riscos.length)riscos.push({titulo:'Operação dentro dos parâmetros normais',desc:'Nenhum risco crítico detectado com os filtros selecionados.',nivel:'low',confianca:80});
-  // Filtra riscos/insights de cliente pelo filtro ativo
-  var rCli=AI_DATA&&AI_DATA.riscos_clientes?AI_DATA.riscos_clientes:[];
-  var csIns=AI_DATA&&AI_DATA.cs_insights?AI_DATA.cs_insights:[];
-  if(activeCliente){
+  // Riscos/insights de cliente: pipeline JSON quando disponível, senão computa de EMPRESAS (live)
+  var _cliLive=computeCliDataFromEMPRESAS(activeCliente||null);
+  var rCli=(AI_DATA&&AI_DATA.riscos_clientes&&AI_DATA.riscos_clientes.length)?AI_DATA.riscos_clientes:_cliLive.riscos_clientes;
+  var csIns=(AI_DATA&&AI_DATA.cs_insights&&AI_DATA.cs_insights.length)?AI_DATA.cs_insights:_cliLive.cs_insights;
+  if(activeCliente&&AI_DATA&&AI_DATA.riscos_clientes&&AI_DATA.riscos_clientes.length){
     rCli=rCli.filter(function(r){return(r.cliente||'').toUpperCase().indexOf(activeCliente.toUpperCase())!==-1;});
     csIns=csIns.filter(function(r){return(r.cliente||'').toUpperCase().indexOf(activeCliente.toUpperCase())!==-1;});
   }
@@ -5121,7 +5192,7 @@ function aiCardHeader(title,meta){
   return '<div class="ai-card-header"><div class="ai-card-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'+title+'</div><div class="ai-card-meta">'+(meta||'')+'</div></div>';
 }
 function aiNoData(){
-  return '<div class="ai-no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Execute o AIOS skill para gerar esta análise: <code>npx aiox-core install</code> e selecione a skill <strong>status-report</strong> ou <strong>risk-assessment</strong></span></div>';
+  return '<div class="ai-no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Nenhum dado disponível. Importe um arquivo <strong>XLSX</strong> para que a análise seja gerada automaticamente.</span></div>';
 }
 function aiMeta(data){
   if(!data||!data.generated_at)return '';
@@ -5301,7 +5372,7 @@ function renderIA(){
     }else{
       var ref=AI_DATA&&AI_DATA.generated_at?AI_DATA:AI_LIVE;
       if(ref&&ref.generated_at){var d=new Date(ref.generated_at);sub.textContent='Análise gerada em '+d.toLocaleDateString('pt-BR')+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+' · modelo AIOS';}
-      else sub.textContent='Nenhuma análise disponível ainda · execute o AIOS skill para gerar';
+      else sub.textContent='Análise gerada em tempo real · importe um XLSX para atualizar';
     }
   }
 }
