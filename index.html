@@ -1584,6 +1584,7 @@ function renderAt(){
   if(activeMonth!=='all'&&curI3>0){var pk3=mO3[curI3-1];if(OP_MESES[pk3]&&OP_MESES[pk3].atend)OP_MESES[pk3].atend.forEach(function(a){prevAtend[a.n]=a;});}
 
   var META_TAXA=70,META_RESP=30;
+  var pct=function(a,b){return b>0?Math.round(a/b*100):0;};
   var hasTend=Object.keys(prevAtend).length>0;
   // Calcular mediana de taxa de fechamento para destacar outliers
   var taxas=atendFiltrado.map(function(a){return a.t>0?Math.round(a.f/a.t*100):0;});
@@ -1917,9 +1918,10 @@ function renderTimeline(d){
 
 function calcScore(d){
   if(!d)return 0;
-  var s1=pct(d.fechados,d.total);
+  var _pct=function(a,b){return b>0?Math.round(a/b*100):0;};
+  var s1=_pct(d.fechados,d.total);
   var s2=d.resp_med<=15?100:d.resp_med<=30?80:d.resp_med<=60?60:35;
-  var ap=pct(d.abertos,d.total);
+  var ap=_pct(d.abertos,d.total);
   var s3=ap<=10?100:ap<=20?75:ap<=35?55:35;
   var s4=d.solucao_med_h&&d.solucao_med_h<=48?100:d.solucao_med_h<=96?75:55;
   return Math.round(s1*.35+s2*.25+s3*.25+s4*.15);
@@ -1929,6 +1931,7 @@ function renderHealthScore(d){
   var empty=document.getElementById('hs-empty'),content=document.getElementById('hs-content');
   if(!d){empty.style.display='block';content.style.display='none';return;}
   empty.style.display='none';content.style.display='block';
+  var _pct=function(a,b){return b>0?Math.round(a/b*100):0;};
   var score=calcScore(d);
   var col=score>=80?'#10b981':score>=65?'#4f8ef7':score>=50?'#f59e0b':'#f43f5e';
   document.getElementById('hs-num').textContent=score;
@@ -1936,9 +1939,9 @@ function renderHealthScore(d){
   if(CH['c-ring']){CH['c-ring'].destroy();CH['c-ring']=null;}
   var ctx=document.getElementById('c-ring');
   if(ctx)CH['c-ring']=new Chart(ctx,{type:'doughnut',data:{labels:['Score',''],datasets:[{data:[score,100-score],backgroundColor:[col,'rgba(255,255,255,.04)'],borderWidth:0}]},options:{responsive:false,cutout:'78%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
-  var ap=pct(d.abertos,d.total);
+  var ap=_pct(d.abertos,d.total);
   var rows=[
-    {l:'Taxa de resolução',v:pct(d.fechados,d.total)+'%',c:pct(d.fechados,d.total)>=80?'var(--ok)':pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
+    {l:'Taxa de resolução',v:_pct(d.fechados,d.total)+'%',c:_pct(d.fechados,d.total)>=80?'var(--ok)':_pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
     {l:'1ª Resposta (med.)',v:(d.resp_med||'—')+'min',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
     {l:'Chamados em aberto',v:d.abertos+' ('+ap+'%)',c:ap<=10?'var(--ok)':ap<=25?'var(--warn)':'var(--danger)'},
     {l:'Tempo médio solução',v:(d.solucao_med_h||'—')+'h',c:d.solucao_med_h<=48?'var(--ok)':d.solucao_med_h<=96?'var(--warn)':'var(--danger)'}
@@ -1950,7 +1953,7 @@ function renderHealthScore(d){
   var pC={'Muito Alta':'#f43f5e','Alta':'#f59e0b','Normal':'#4f8ef7','Baixa':'#00d4a8','Muito Baixa':'#5a6278'};
   mkChart('c-prior-co','doughnut',pK,[{data:pV,backgroundColor:pK.map(function(k){return pC[k]||TK;}),borderWidth:0}],{cutout:'62%',plugins:{legend:{display:true,position:'right',labels:{color:'#8892a4',font:{size:10},boxWidth:8,padding:6}}}});
   // Comparativo com média geral
-  var mediaGeral={taxa:62,resp:8,sol:54};var taxa=pct(d.fechados,d.total);
+  var mediaGeral={taxa:62,resp:8,sol:54};var taxa=_pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
     {l:'1ª Resposta mediana',emp:(d.resp_med||'—')+'min',geral:mediaGeral.resp+'min',melhor:d.resp_med<=mediaGeral.resp},
@@ -4695,6 +4698,7 @@ function renderRelatorio(){
 // ════════════════════════════════════════════════════════════
 function renderResumo(){
   // ── Dados base ────────────────────────────────────────────
+  var mesLabel=activeMonth==='all'?'Período completo':(function(){var parts=activeMonth.split('-');var meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];return meses[parseInt(parts[1],10)-1]+'/'+parts[0].slice(2);})();
   var op=getActiveOP();
   var total=op.total||OP.total||0;
   var fechados=op.fechados!=null?op.fechados:(OP.fechados||0);
