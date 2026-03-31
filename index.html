@@ -4740,16 +4740,82 @@ function renderResumo(){
   var p4='';
   if(prioMA>0){p4+='O volume de chamados de <strong>prioridade muito alta</strong> é de <strong>'+prioMA+'</strong> ('+pctMA+'% do total). ';if(pctMA>40)p4+='Este percentual é <strong>crítico</strong> e requer atenção urgente.';else if(pctMA>30)p4+='Este percentual está <strong>elevado</strong>.';else p4+='Este percentual está dentro do normal.';}
 
-  // ── Itens de ação ─────────────────────────────────────────
-  var actions=[];
+  // ── Plano de Ação COO ──────────────────────────────────────
   var critOld=criticos.filter(function(c){var m=String(c.idade||'').match(/(\d+)/);return m&&parseInt(m[1])>5;});
-  if(critOld.length>0)actions.push({i:'🚨',t:'<strong>'+critOld.length+' chamados críticos</strong> abertos há mais de 5 dias sem solução — prioridade máxima.'});
-  if(aguardInt>0)actions.push({i:'🔄',t:'<strong>'+aguardInt+' chamados</strong> aguardando ação interna — equipe precisa dar continuidade.'});
-  if(trendPct>15)actions.push({i:'📈',t:'Volume de chamados <strong>'+trendPct+'% maior</strong> que a semana passada — monitorar capacidade.'});
-  if(solMed>48)actions.push({i:'⏱️',t:'Tempo médio de solução em <strong>'+solMed+'h</strong> — revisar e redistribuir chamados antigos.'});
-  if(pctAbertos>20)actions.push({i:'📂',t:'<strong>'+pctAbertos+'%</strong> do volume ainda em aberto — realizar triagem e fechamento de pendências.'});
-  if(age30p>0)actions.push({i:'⚠️',t:'<strong>'+age30p+' chamados</strong> com mais de 30 dias em aberto — risco de insatisfação do cliente.'});
-  if(actions.length===0)actions.push({i:'✅',t:'Nenhuma ação urgente identificada no momento. Operação dentro dos parâmetros.'});
+  var cooActions=[];
+  // ── P1: Crítico — resolver hoje ──
+  if(age30p>0)cooActions.push({p:'p1',area:'Operações',
+    titulo:'Triagem de chamados envelhecidos (+30 dias)',
+    oque:'Revisar individualmente os '+age30p+' chamados sem solução há mais de 30 dias. Escalar, redistribuir ou encerrar com justificativa.',
+    resp:'Coordenação + Liderança Técnica',prazo:'Hoje',
+    justif:age30p+' chamados = risco direto de churn. Cada dia parado aumenta a probabilidade de escalação.'});
+  if(respMed>60)cooActions.push({p:'p1',area:'Operações',
+    titulo:'SLA de primeira resposta em estado crítico',
+    oque:'Revisar distribuição da fila no turno de maior volume. Considerar plantão de triagem para o pico.',
+    resp:'Liderança Técnica',prazo:'Hoje',
+    justif:'Mediana de '+respMed+'min — '+Math.round(respMed/30*10)/10+'× acima do contrato. Cada violação é passivo contratual.'});
+  if(totalBloq>20&&!age30p&&respMed<=60)cooActions.push({p:'p1',area:'Operações',
+    titulo:'Volume crítico de chamados bloqueados ('+totalBloq+')',
+    oque:'Realizar mutirão de desbloqueio: ag.interno → escalar para o responsável; ag.cliente → ligar ou encerrar.',
+    resp:'Coordenação',prazo:'Hoje',
+    justif:totalBloq+' chamados parados representam '+Math.round(totalBloq/Math.max(total,1)*100)+'% do volume. Aging silencioso.'});
+  // ── P2: Urgente — esta semana ──
+  if(aguardInt>5)cooActions.push({p:'p2',area:'Equipe',
+    titulo:'Desbloqueio de fila interna ('+aguardInt+' chamados)',
+    oque:'Identificar o(s) gargalo(s) responsáveis. Para cada chamado: definir prazo de resposta interno ou reatribuir.',
+    resp:'Gestor de Fila',prazo:'Em 2 dias',
+    justif:aguardInt+' chamados aguardando ação da própria equipe — dependência interna que o cliente não controla.'});
+  if(solMed>72)cooActions.push({p:'p2',area:'Processo',
+    titulo:'Tempo de solução acima do SLA ('+solMed+'h)',
+    oque:'Mapear os chamados acima de 48h em aberto. Identificar se é falta de skill, dependência externa ou volume.',
+    resp:'Liderança Técnica + CS',prazo:'Esta semana',
+    justif:'Meta: 48h. Atual: '+solMed+'h. Desvio de '+Math.round((solMed-48)/48*100)+'%. Penalidade contratual em risco.'});
+  if(trendPct>15)cooActions.push({p:'p2',area:'Operações',
+    titulo:'Volume crescendo '+trendPct+'% em relação à semana anterior',
+    oque:'Verificar se o aumento é de um cliente específico ou sistêmico. Avaliar necessidade de reforço temporário.',
+    resp:'Coordenação',prazo:'Esta semana',
+    justif:'Tendência de alta sustentada compromete o SLA nas próximas semanas se não houver ação preventiva.'});
+  var cliChurnAlto=(!activeCliente)?Object.keys(EMPRESAS).filter(function(k){return calcChurnRisk(k).nivel==='alto';}).map(function(k){return EMPRESAS[k].nome||k;}):[];
+  if(cliChurnAlto.length>0)cooActions.push({p:'p2',area:'Customer Success',
+    titulo:cliChurnAlto.length+' cliente(s) em risco de churn',
+    oque:'CS deve contatar cada conta com risco alto nesta semana. Apresentar plano de melhoria com prazo e métricas.',
+    resp:'Customer Success',prazo:'Esta semana',
+    justif:'Clientes: '+cliChurnAlto.slice(0,4).join(', ')+(cliChurnAlto.length>4?' e outros':'')+'.'});
+  if(respMed>30&&respMed<=60)cooActions.push({p:'p2',area:'Operações',
+    titulo:'1ª resposta acima da meta ('+respMed+'min)',
+    oque:'Auditar os horários de pico da fila. Ajustar escala ou priorizar atendimentos de "Aberto" no início do turno.',
+    resp:'Liderança Técnica',prazo:'Esta semana',
+    justif:'Meta: 30min. Desvio de '+Math.round(respMed-30)+'min. Impacto direto na percepção de SLA pelo cliente.'});
+  // ── P3: Relevante — próximas 2 semanas ──
+  if(taxaConc<70&&taxaConc>0)cooActions.push({p:'p3',area:'Processo',
+    titulo:'Taxa de conclusão abaixo da meta ('+taxaConc+'%)',
+    oque:'Revisar backlog em aberto com gestor de fila. Identificar chamados que podem ser encerrados sem ação adicional.',
+    resp:'Coordenação',prazo:'Próximas 2 semanas',
+    justif:'Meta: 70%. Atual: '+taxaConc+'%. '+abertos+' chamados em aberto que reduzem o índice.'});
+  var cliAbaixo65=clientes.filter(function(c){return c.score<65;});
+  if(cliAbaixo65.length>0)cooActions.push({p:'p3',area:'Customer Success',
+    titulo:cliAbaixo65.length+' cliente(s) com índice de qualidade baixo',
+    oque:'Agendar revisita consultiva ou QBR antecipado com as contas críticas. Apresentar tendência e plano de recuperação.',
+    resp:'Customer Success',prazo:'Próximas 2 semanas',
+    justif:'Clientes abaixo de 65/100: '+cliAbaixo65.map(function(c){return c.nome+' ('+c.score+')';}).join(', ')+'.'});
+  if(pctMA>25)cooActions.push({p:'p3',area:'Operações',
+    titulo:'Concentração elevada de prioridade Muito Alta ('+pctMA+'%)',
+    oque:'Avaliar se a classificação de prioridades está calibrada. Checar se clientes estão abrindo tudo como crítico.',
+    resp:'Coordenação + CS',prazo:'Próximas 2 semanas',
+    justif:prioMA+' de '+total+' chamados marcados como Muito Alta. Pode indicar problema de triagem ou insatisfação.'});
+  var maxAtend=atendData.length>0?Math.max.apply(null,atendData.map(function(a){return a.t||0;})):0;
+  var avgAtendT=atendData.length>0?Math.round(total/atendData.length):0;
+  if(avgAtendT>0&&maxAtend>avgAtendT*2.2)cooActions.push({p:'p3',area:'Equipe',
+    titulo:'Distribuição de carga desequilibrada',
+    oque:'Revisar regras de atribuição da fila. Redistribuir chamados do(s) atendente(s) acima de '+Math.round(avgAtendT*2.2)+' chamados.',
+    resp:'Liderança Técnica',prazo:'Próximas 2 semanas',
+    justif:'Atendente mais sobrecarregado: '+maxAtend+' chamados vs média de '+avgAtendT+'. Risco de burnout e queda de qualidade.'});
+  // Diagnóstico executivo (1 linha)
+  var p1Count=cooActions.filter(function(a){return a.p==='p1';}).length;
+  var p2Count=cooActions.filter(function(a){return a.p==='p2';}).length;
+  var p3Count=cooActions.filter(function(a){return a.p==='p3';}).length;
+  var cooStatus=p1Count>0?'Operação requer intervenção imediata.':p2Count>0?'Operação com pontos de atenção — ação esta semana.':'Operação estável. Focar em melhoria contínua.';
+  var cooStatusColor=p1Count>0?'var(--danger)':p2Count>0?'var(--warn)':'var(--ok)';
 
   // ── HTML ──────────────────────────────────────────────────
   var H='';
@@ -4826,11 +4892,43 @@ function renderResumo(){
   kArr.forEach(function(k){H+='<div class="rg-kpi"><div class="rg-kpi-lbl">'+k.l+'</div><div class="rg-kpi-val" style="color:'+k.c+'">'+k.v+'</div><div class="rg-kpi-sub">'+k.s+'</div></div>';});
   H+='</div>';
 
-  // O que precisa de ação agora
-  H+='<div class="rg-section-title">⚡ O Que Precisa de Ação Agora</div>';
-  H+='<div class="rg-resumo-card">';
-  actions.forEach(function(a){H+='<div class="rg-item-row"><div class="rg-item-icon">'+a.i+'</div><div class="rg-item-txt">'+a.t+'</div></div>';});
-  H+='</div>';
+  // ── Plano de Ação COO — HTML ──────────────────────────────
+  var prioCfg={
+    p1:{lbl:'P1 · CRÍTICO',bg:'rgba(244,63,94,.12)',border:'#f43f5e',badge:'#f43f5e',badgeTxt:'#fff',icon:'🚨',prazoColor:'#f43f5e'},
+    p2:{lbl:'P2 · URGENTE', bg:'rgba(245,158,11,.10)',border:'#f59e0b',badge:'#f59e0b',badgeTxt:'#fff',icon:'⚠️',prazoColor:'#f59e0b'},
+    p3:{lbl:'P3 · RELEVANTE',bg:'rgba(79,142,247,.08)',border:'#4f8ef7',badge:'#4f8ef7',badgeTxt:'#fff',icon:'📋',prazoColor:'#4f8ef7'}
+  };
+  H+='<div class="rg-section-title">🧭 Plano de Ação COO — '+mesLabel+'</div>';
+  H+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border-radius:var(--r);margin-bottom:14px;border-left:3px solid '+cooStatusColor+'">';
+  H+='<div style="font-size:18px">'+(p1Count>0?'🔴':p2Count>0?'🟡':'🟢')+'</div>';
+  H+='<div><div style="font-size:12px;font-weight:600;color:'+cooStatusColor+'">'+cooStatus+'</div>';
+  H+='<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p1Count+' crítico'+( p1Count!==1?'s':'')+' · '+p2Count+' urgente'+(p2Count!==1?'s':'')+' · '+p3Count+' relevante'+(p3Count!==1?'s':'')+'</div></div></div>';
+  if(cooActions.length===0){
+    H+='<div class="rg-resumo-card"><div class="rg-item-row"><div class="rg-item-icon">✅</div><div class="rg-item-txt">Nenhuma ação urgente identificada. Operação dentro dos parâmetros — manter monitoramento semanal.</div></div></div>';
+  }else{
+    ['p1','p2','p3'].forEach(function(prio){
+      var items=cooActions.filter(function(a){return a.p===prio;});
+      if(!items.length)return;
+      var cfg=prioCfg[prio];
+      items.forEach(function(a){
+        H+='<div style="border:1px solid '+cfg.border+';border-radius:var(--r);padding:14px 16px;margin-bottom:10px;background:'+cfg.bg+'">';
+        H+='<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px">';
+        H+='<div style="display:flex;align-items:center;gap:8px">';
+        H+='<span style="background:'+cfg.badge+';color:'+cfg.badgeTxt+';font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:var(--mono);letter-spacing:.05em">'+cfg.lbl+'</span>';
+        H+='<span style="font-size:10px;background:var(--bg3);color:var(--muted);padding:2px 8px;border-radius:4px;font-family:var(--mono)">'+a.area+'</span>';
+        H+='</div>';
+        H+='<span style="font-size:10px;color:'+cfg.prazoColor+';font-weight:600;white-space:nowrap;font-family:var(--mono)">⏱ '+a.prazo+'</span>';
+        H+='</div>';
+        H+='<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px">'+cfg.icon+' '+a.titulo+'</div>';
+        H+='<div style="font-size:12px;color:var(--sub);line-height:1.55;margin-bottom:8px">'+a.oque+'</div>';
+        H+='<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:10px;color:var(--muted);font-family:var(--mono)">';
+        H+='<span>👤 '+a.resp+'</span>';
+        H+='<span style="color:var(--bg4)">|</span>';
+        H+='<span style="color:var(--warn)">📊 '+a.justif+'</span>';
+        H+='</div></div>';
+      });
+    });
+  }
 
   // Resumo automático em texto
   H+='<div class="rg-section-title">Resumo Automático</div>';
