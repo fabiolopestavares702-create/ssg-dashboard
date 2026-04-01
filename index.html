@@ -1127,7 +1127,7 @@ function renderAlertas(){
   var critFiltrados = filaAtiva==='all' ? critTodos : critTodos.filter(function(c){return c.fila===filaAtiva;});
   _alertState = {criticos:critFiltrados, filtroAtend:'all', filtroFila:filaAtiva};
   var totalCrit = critFiltrados.length;
-  var totalBloq = (BLOQ_MESES[mes]||BLOQ_MESES['all']).reduce(function(a,b){return a+b.n;},0);
+  var totalBloq = (BLOQ_MESES[mes]||buildBloqEntry(getActiveOP().estado||{})).reduce(function(a,b){return a+b.n;},0);
   var semResp = RESP30_MESES[mes]||0;
   var estadosBloq=['Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
   var bloqExato=critFiltrados.filter(function(c){return estadosBloq.indexOf(c.estado)!==-1&&c.idade!=='hoje';}).length;
@@ -1182,7 +1182,7 @@ function renderAlertas(){
   }
 
   // Distribuição bloqueados com barras
-  var bloqData=BLOQ_MESES[mes]||BLOQ_MESES['all'];
+  var bloqData=BLOQ_MESES[mes]||buildBloqEntry(getActiveOP().estado||{});
   var maxB=Math.max.apply(null,bloqData.map(function(s){return s.n;}));
   document.getElementById('bloq-dist').innerHTML=bloqData.filter(function(s){return s.n>0;}).map(function(s){
     var p=Math.round(s.n/(maxB||1)*100);
@@ -1459,6 +1459,15 @@ function renderComp(){
   var mOrder=Object.keys(OP_MESES).filter(function(k){return k!=='all';}).sort();
   var mLabels=mOrder.map(function(k){return mLbl(k);});
 
+  // A: badge GLOBAL quando filtro de fila ou cliente está ativo (seção não filtra por eles)
+  var compSubEl=document.querySelector('#s-comp .page-header p');
+  if(compSubEl){
+    var _hasFilter=(activeFilaOP!=='all')||(activeCliente&&activeCliente!=='');
+    compSubEl.innerHTML=_hasFilter
+      ?'Evolução mês a mês · <span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;background:rgba(245,158,11,.15);color:var(--warn);vertical-align:middle">VISÃO GLOBAL</span> <span style="font-size:10px;color:var(--muted)">não filtra por '+(_hasFilter?[(activeFilaOP!=='all'?'fila':''),((activeCliente&&activeCliente!=='')?'cliente':'')].filter(Boolean).join(' e '):'')+' </span>'
+      :'Evolução dos indicadores mês a mês';
+  }
+
   // ── KPIs dinâmicos — um por mês com volume e variação
   var PAL_ACC=['var(--blue)','var(--teal)','var(--purple)','var(--orange)','var(--ok)','var(--danger)','var(--warn)'];
   var kpisEl=document.getElementById('comp-kpis');
@@ -1601,7 +1610,7 @@ function renderAt(){
     +'<th style="width:160px">Taxa <span style="font-weight:400;opacity:.5;font-size:9px">meta '+META_TAXA+'%</span></th>'
     +'<th style="text-align:center;width:84px">Sol. média</th>'
     +'<th style="text-align:center;width:84px">1ª Resp <span style="font-weight:400;opacity:.5;font-size:9px">meta '+META_RESP+'min</span></th>'
-    +(hasTend?'<th style="width:110px">vs mês ant.</th>':'')
+    +(hasTend?'<th style="width:110px">vs mês ant. <span style="font-size:8px;font-weight:600;padding:1px 4px;border-radius:2px;background:rgba(245,158,11,.15);color:var(--warn)" title="Comparativo usa dados globais, sem filtro de cliente ou fila">GLOBAL</span></th>':'')
     +'</tr></thead>';
 
   // ── Rows ────────────────────────────────────────────────────
@@ -1735,7 +1744,8 @@ function renderCl(){
   var evoEl=document.getElementById('cli-evolucao');if(!evoEl)return;
   var mNames5={'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
   var mL5={};mO5.forEach(function(k){var p=k.split('-');mL5[k]=mNames5[p[1]]+'/'+(p[0].slice(2));});
-  var topCli=Object.keys(OP.cli||{}).filter(function(k){return(Object.values(ENM2).indexOf(k)!==-1||ENM2[k])&&k.indexOf('@')===-1;}).sort(function(a,b){return(OP.cli[b]||0)-(OP.cli[a]||0);}).slice(0,5);
+  var _cliSrc=_opc.cli||OP.cli||{};
+  var topCli=Object.keys(_cliSrc).filter(function(k){return(Object.values(ENM2).indexOf(k)!==-1||ENM2[k])&&k.indexOf('@')===-1;}).sort(function(a,b){return(_cliSrc[b]||0)-(_cliSrc[a]||0);}).slice(0,5);
   if(!topCli.length){evoEl.innerHTML='';return;}
   var html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="text-align:left;padding:8px 10px;font-size:9.5px;font-weight:600;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Empresa</th>';
   mO5.forEach(function(k){html+='<th style="text-align:right;padding:8px 10px;font-size:9.5px;font-weight:600;color:'+(activeMonth===k?'var(--teal)':'var(--muted)')+';text-transform:uppercase;border-bottom:1px solid var(--border)">'+mL5[k]+'</th>';});
@@ -1820,7 +1830,7 @@ function renderBl(){
   } else {
     bloqData=BLOQ_MESES[activeMonth];
     if(!bloqData&&activeMonth!=='all'&&OP_MESES[activeMonth])bloqData=buildBloqEntry(OP_MESES[activeMonth].estado||{});
-    bloqData=bloqData||BLOQ_MESES['all']||buildBloqEntry(OP.estado||{});
+    bloqData=bloqData||buildBloqEntry(getActiveOP().estado||{});
   }
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var totalGeral=_opBl.total||OP.total;
@@ -3481,7 +3491,7 @@ function updateKPIs(op) {
   var taxa=total>0?Math.round(fe/total*100):0;
   var bloqE=['Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
   var bloq=bloqE.reduce(function(s,e){return s+(op.estado&&op.estado[e]||0);},0);
-  if(!bloq)bloq=(BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[]).reduce(function(a,b){return a+b.n;},0);
+  if(!bloq)bloq=(BLOQ_MESES[activeMonth]||buildBloqEntry(getActiveOP().estado||{})).reduce(function(a,b){return a+b.n;},0);
   var rm=op.resp_med!=null?op.resp_med:8,sm=op.sol_med!=null?op.sol_med:54.1;
   var vals=[total,ab,fe,maTotal,rm+'<span>min</span>',sm+'<span>h</span>',bloq,14];
   var colors=['var(--text)','var(--warn)','var(--ok)','var(--danger)','var(--teal)','var(--purple)','var(--orange)','var(--blue)'];
@@ -4494,12 +4504,18 @@ function exportRgPDF(){
   var solMed=op.sol_med!=null?op.sol_med:(OP.sol_med||0);
   var prior=op.prior||OP.prior||{};
   var estado=op.estado||OP.estado||{};
-  var bloqData=BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[];
+  var bloqData=BLOQ_MESES[activeMonth]||buildBloqEntry(op.estado||{});
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var aguardInt=estado['Aguardando Interno']||0;
   var prioMA=prior['Muito Alta']||0;
   var atendData=op.atend||OP.atend||[];
-  var criticos=OP.criticos||[];
+  // D: filtra criticos pelo cliente ativo usando tickets da empresa
+  var criticos=(function(){
+    var all=OP.criticos||[];
+    if(!activeCliente)return all;
+    var empTks=EMPRESAS[activeCliente]&&EMPRESAS[activeCliente].tickets?EMPRESAS[activeCliente].tickets.map(function(t){return t.num;}):[];
+    return empTks.length?all.filter(function(c){return empTks.indexOf(c.num)!==-1;}):all;
+  })();
   var taxaConc=total>0?Math.round(fechados/total*100):0;
   var pctAbertos=total>0?Math.round(abertos/total*100):0;
   var pctMA=total>0?Math.round(prioMA/total*100):0;
@@ -4785,7 +4801,7 @@ function renderRelatorio(){
   var solMed=op.sol_med!=null?op.sol_med:(OP.sol_med||0);
   var prior=op.prior||OP.prior||{};
   var estado=op.estado||OP.estado||{};
-  var bloqData=BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[];
+  var bloqData=BLOQ_MESES[activeMonth]||buildBloqEntry(op.estado||{});
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var atendData=op.atend||OP.atend||[];
   var atendAtivos=atendData.filter(function(a){return a.total>0;}).length||0;
@@ -4988,7 +5004,7 @@ function renderResumo(){
   var respMed=op.resp_med!=null?op.resp_med:(OP.resp_med||0);
   var prior=op.prior||OP.prior||{};
   var estado=op.estado||OP.estado||{};
-  var bloqData=BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[];
+  var bloqData=BLOQ_MESES[activeMonth]||buildBloqEntry(op.estado||{});
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var aguardCli=estado['Aguardando Cliente']||0;
   var aguardInt=estado['Aguardando Interno']||0;
@@ -5016,7 +5032,13 @@ function renderResumo(){
     }
   }
   var atendData=op.atend||OP.atend||[];
-  var criticos=OP.criticos||[];
+  // D: filtra criticos pelo cliente ativo (se houver) usando tickets da empresa
+  var criticos=(function(){
+    var all=OP.criticos||[];
+    if(!activeCliente)return all;
+    var empTks=EMPRESAS[activeCliente]&&EMPRESAS[activeCliente].tickets?EMPRESAS[activeCliente].tickets.map(function(t){return t.num;}):[];
+    return empTks.length?all.filter(function(c){return empTks.indexOf(c.num)!==-1;}):all;
+  })();
 
   // ── Referência de data: última data com dados no dataset filtrado ──
   // Não usa new Date() pois os dados podem ter defasagem em relação à data atual
