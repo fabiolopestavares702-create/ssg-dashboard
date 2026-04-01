@@ -1,7 +1,7 @@
 // SSG Operations Center — Constantes e mapeamentos
 // Gerado por refactor Fase 4
 
-var G='rgba(255,255,255,0.04)',TK='#5a6278';
+var G='rgba(13,27,46,0.07)',TK='#9CA3AF';
 var PAL=['#4f8ef7','#00d4a8','#8b5cf6','#f59e0b','#f43f5e','#10b981','#f97316','#38bdf8'];
 
 var COL_IMP={num:['número do chamado','número','chamado','ticket'],criado:['criado','data de abertura','abertura','created'],fechado:['fechado','data de fechamento','fechamento','closed'],estado:['estado','status','situação'],prior:['prioridade','priority'],atend:['atendente','assignee'],pnome:['primeironome','primeiro nome'],unome:['úlnome','últimonome','último nome'],cli_id:['id do cliente','customer id'],c_cli:['c_cliente','c cliente'],cli_nome:['nome do cliente','customer name'],assunto:['assunto','subject'],servico:['serviço','service'],resp_min:['primeira resposta em minutos','first response in minutes'],sol_min:['tempo de solução em minutos','resolution time in minutes'],fila:['fila','queue']};

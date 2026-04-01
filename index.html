@@ -1984,7 +1984,7 @@ function renderHealthScore(d){
   document.getElementById('hs-num').style.color=col;
   if(CH['c-ring']){CH['c-ring'].destroy();CH['c-ring']=null;}
   var ctx=document.getElementById('c-ring');
-  if(ctx)CH['c-ring']=new Chart(ctx,{type:'doughnut',data:{labels:['Score',''],datasets:[{data:[score,100-score],backgroundColor:[col,'rgba(255,255,255,.04)'],borderWidth:0}]},options:{responsive:false,cutout:'78%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
+  if(ctx)CH['c-ring']=new Chart(ctx,{type:'doughnut',data:{labels:['Score',''],datasets:[{data:[score,100-score],backgroundColor:[col,'rgba(13,27,46,0.07)'],borderWidth:0}]},options:{responsive:false,cutout:'78%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
   var ap=_pct(d.abertos,d.total);
   var rows=[
     {l:'Taxa de resolução',v:_pct(d.fechados,d.total)+'%',c:_pct(d.fechados,d.total)>=80?'var(--ok)':_pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
@@ -3971,7 +3971,7 @@ function renderCSOverview(d) {
   var mesVals = mesCats.map(function(k){ return d.by_mes[k]; });
   if (csCharts['cs-c-mensal']) csCharts['cs-c-mensal'].destroy();
   var ctxM = document.getElementById('cs-c-mensal');
-  if (ctxM) csCharts['cs-c-mensal'] = new Chart(ctxM, {type:'bar',data:{labels:mesCats,datasets:[{data:mesVals,backgroundColor:'rgba(139,92,246,.6)',borderColor:'#a855f7',borderWidth:1,borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5a6278',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#5a6278',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}}});
+  if (ctxM) csCharts['cs-c-mensal'] = new Chart(ctxM, {type:'bar',data:{labels:mesCats,datasets:[{data:mesVals,backgroundColor:'rgba(139,92,246,.6)',borderColor:'#a855f7',borderWidth:1,borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#9CA3AF',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#9CA3AF',font:{size:10}},grid:{color:'rgba(13,27,46,0.07)'}}}}});
   // Chart prioridade
   var priorOrder = ['Muito Alta','Alta','Normal','Baixa','Muito Baixa'];
   var priorVals = priorOrder.map(function(p){ return (d.prior && d.prior[p]) || 0; }).filter(function(v,i){ return v>0 || (d.prior && d.prior[priorOrder[i]]!==undefined); });
@@ -4043,7 +4043,7 @@ function renderCSHealth(d) {
   var baseTrend = [Math.max(score-15,30), Math.max(score-5,40), score];
   if (csCharts['cs-c-score-trend']) csCharts['cs-c-score-trend'].destroy();
   var ctxT = document.getElementById('cs-c-score-trend');
-  if (ctxT) csCharts['cs-c-score-trend'] = new Chart(ctxT, {type:'line',data:{labels:mesCats,datasets:[{label:'Health Score',data:baseTrend.slice(0,mesCats.length),borderColor:'#a855f7',backgroundColor:'rgba(139,92,246,.1)',tension:.4,fill:true,pointBackgroundColor:'#a855f7',pointRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5a6278',font:{size:10}},grid:{display:false}},y:{min:0,max:100,ticks:{color:'#5a6278',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}}});
+  if (ctxT) csCharts['cs-c-score-trend'] = new Chart(ctxT, {type:'line',data:{labels:mesCats,datasets:[{label:'Health Score',data:baseTrend.slice(0,mesCats.length),borderColor:'#a855f7',backgroundColor:'rgba(139,92,246,.1)',tension:.4,fill:true,pointBackgroundColor:'#a855f7',pointRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#9CA3AF',font:{size:10}},grid:{display:false}},y:{min:0,max:100,ticks:{color:'#9CA3AF',font:{size:10}},grid:{color:'rgba(13,27,46,0.07)'}}}}});
 }
 
 function renderCSRisks(d) {
