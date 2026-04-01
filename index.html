@@ -17,7 +17,22 @@
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div id="lo" style="position:fixed;inset:0;z-index:9999;background:#080b10;display:flex;align-items:center;justify-content:center;"><div style="background:#0e1117;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:40px;width:360px;"><input id="li" type="password" placeholder="Senha..." style="width:100%;background:#141820;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;color:#f0f2f7;font-size:14px;outline:none;margin-bottom:12px;"/><button id="lb" style="width:100%;background:#2563eb;border:none;border-radius:8px;padding:12px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Entrar</button><div id="le" style="color:#f43f5e;font-size:12px;text-align:center;margin-top:10px;display:none;">Senha incorreta.</div></div></div><script>var _o=document.getElementById("lo"),_i=document.getElementById("li"),_e=document.getElementById("le");if(sessionStorage.getItem("k")==="1"){_o.style.display="none";}async function _chk(v){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");}document.getElementById("lb").addEventListener("click",async function(){var h=await _chk(_i.value);if(h==="a1ca296eb57a5dfad7f42107da5720e91b8df602fd8a2760a8657485b46138ee"){sessionStorage.setItem("k","1");_o.style.display="none";}else{_e.style.display="block";_i.value="";}});_i.addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("lb").click();});</script>
+<div id="lo" style="position:fixed;inset:0;z-index:9999;background:#F7F8FA;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;">
+  <div style="background:#fff;border-radius:20px;padding:48px 40px;width:400px;max-width:92vw;box-sizing:border-box;box-shadow:0 8px 48px rgba(13,27,46,0.12);">
+    <div style="text-align:center;margin-bottom:36px;">
+      <img src="https://groundwork.com.br/wp/wp-content/uploads/2026/01/LOGO_Groundwork_2026-1-1024x156.png" style="height:34px;max-width:200px;display:inline-block" alt="Groundwork" onerror="this.style.display='none'">
+      <div style="margin-top:20px;font-size:21px;font-weight:700;color:#0D1B2E;letter-spacing:-.01em;">SSG Operations Center</div>
+      <div style="margin-top:6px;font-size:13px;color:#6b7280;">Entre com sua senha para continuar</div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:11px;font-weight:700;color:#0D1B2E;margin-bottom:7px;letter-spacing:.06em;text-transform:uppercase;">Senha</label>
+      <input id="li" type="password" placeholder="••••••••" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:13px 14px;font-size:15px;color:#0D1B2E;background:#F7F8FA;outline:none;" onfocus="this.style.borderColor='#FF6400';this.style.boxShadow='0 0 0 3px rgba(255,100,0,0.12)'" onblur="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'"/>
+    </div>
+    <button id="lb" style="width:100%;background:#FF6400;border:none;border-radius:10px;padding:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.02em;" onmouseover="this.style.background='#e05800'" onmouseout="this.style.background='#FF6400'">Entrar</button>
+    <div id="le" style="color:#ef4444;font-size:12px;text-align:center;margin-top:12px;display:none;">Senha incorreta. Tente novamente.</div>
+    <div style="text-align:center;margin-top:32px;font-size:11px;color:#9ca3af;">Groundwork · Uso interno · v3.0</div>
+  </div>
+</div><script>var _o=document.getElementById("lo"),_i=document.getElementById("li"),_e=document.getElementById("le");if(sessionStorage.getItem("k")==="1"){_o.style.display="none";}async function _chk(v){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");}document.getElementById("lb").addEventListener("click",async function(){var h=await _chk(_i.value);if(h==="a1ca296eb57a5dfad7f42107da5720e91b8df602fd8a2760a8657485b46138ee"){sessionStorage.setItem("k","1");_o.style.display="none";}else{_e.style.display="block";_i.value="";}});_i.addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("lb").click();});</script>
 
 <!-- ════════════════ TOPBAR ════════════════ -->
 <div class="topbar">
