@@ -5451,18 +5451,59 @@ function renderResumo(){
 
   // Eficiência da equipe
   if(atendData.length>0){
-    H+='<div class="rg-section-title">Eficiência da Equipe</div>';
+    H+='<div class="rg-section-title">Produtividade da Equipe</div>';
     H+='<div class="rg-resumo-card">';
     var avgAtend=atendData.length>0?Math.round(total/atendData.length):0;
+
+    // ── Dados de tempo contabilizado ──────────────────────────
+    var comTc=atendData.filter(function(a){return a.tc&&a.tc>0;});
+    var hasTcData=comTc.length>0;
+
+    if(hasTcData){
+      var totalTcEq=comTc.reduce(function(s,a){return s+a.tc;},0);
+      var totalFechadosTc=comTc.reduce(function(s,a){return s+a.f;},0);
+      var efMediaEq=totalFechadosTc>0&&totalTcEq>0?Math.round(totalFechadosTc/totalTcEq*100)/100:null;
+      var esMediaEq=totalFechadosTc>0&&totalTcEq>0?Math.round(totalTcEq/totalFechadosTc*10)/10:null;
+      var efCol=efMediaEq==null?'var(--muted)':efMediaEq>=0.5?'var(--ok)':efMediaEq>=0.3?'var(--warn)':'var(--danger)';
+      H+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">';
+      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
+      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Eficiência Média</div>';
+      H+='<div style="font-size:20px;font-weight:700;color:'+efCol+';font-family:var(--mono)">'+(efMediaEq!=null?efMediaEq:'—')+'</div>';
+      H+='<div style="font-size:10px;color:var(--muted)">ch / hora contabilizada</div></div>';
+      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
+      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Esforço Médio</div>';
+      H+='<div style="font-size:20px;font-weight:700;color:var(--teal);font-family:var(--mono)">'+(esMediaEq!=null?esMediaEq+'h':'—')+'</div>';
+      H+='<div style="font-size:10px;color:var(--muted)">horas por ticket fechado</div></div>';
+      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
+      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Com dados tc</div>';
+      H+='<div style="font-size:20px;font-weight:700;color:var(--blue);font-family:var(--mono)">'+comTc.length+'/'+atendData.length+'</div>';
+      H+='<div style="font-size:10px;color:var(--muted)">analistas com tempo contabilizado</div></div>';
+      H+='</div>';
+    } else {
+      H+='<div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding:8px 12px;background:var(--bg3);border-radius:6px">💡 Importe XLSX com coluna <strong style="color:var(--sub)">Tempo Contabilizado</strong> para ver métricas de eficiência, esforço e índice de atividade por analista.</div>';
+    }
+
     H+='<div style="font-size:12px;color:var(--sub);margin-bottom:10px">Média: <strong style="color:var(--text)">'+avgAtend+' chamados/atendente</strong> · '+atendData.length+' atendentes ativos</div>';
-    var topAtend=atendData.slice().sort(function(a,b){return b.t-a.t;}).slice(0,5);
-    topAtend.forEach(function(a){
-      var taxa=a.t>0?Math.round(a.f/a.t*100):0;
-      var col=taxa>=80?'var(--ok)':taxa>=60?'var(--warn)':'var(--danger)';
-      H+='<div class="rg-item-row"><div class="rg-item-txt" style="flex:1"><strong>'+a.n+'</strong></div>';
-      H+='<div style="font-family:var(--mono);font-size:11px;color:var(--sub);min-width:70px;text-align:right">'+a.t+' chamados</div>';
-      H+='<div style="font-family:var(--mono);font-size:11px;color:'+col+';min-width:52px;text-align:right;font-weight:600">'+taxa+'% ✓</div></div>';
+
+    // Ordenar por eficiência se há tc, senão por volume
+    var sortedAtendRg=atendData.slice().sort(function(a,b){
+      if(hasTcData){var ea=a.tc&&a.f>0?a.f/a.tc:0,eb=b.tc&&b.f>0?b.f/b.tc:0;return eb-ea;}
+      return b.t-a.t;
     });
+    sortedAtendRg.slice(0,6).forEach(function(a){
+      var taxa=a.t>0?Math.round(a.f/a.t*100):0;
+      var tCol=taxa>=80?'var(--ok)':taxa>=60?'var(--warn)':'var(--danger)';
+      var ef=a.tc&&a.f>0?Math.round(a.f/a.tc*100)/100:null;
+      var eCol=ef==null?'var(--muted)':ef>=0.5?'var(--ok)':ef>=0.3?'var(--warn)':'var(--danger)';
+      var shortN=a.n.split(' ').slice(0,2).join(' ');
+      H+='<div class="rg-item-row">';
+      H+='<div class="rg-item-txt" style="flex:1"><strong>'+shortN+'</strong></div>';
+      H+='<div style="font-family:var(--mono);font-size:11px;color:var(--sub);min-width:55px;text-align:right">'+a.t+' ch</div>';
+      H+='<div style="font-family:var(--mono);font-size:11px;color:'+tCol+';min-width:48px;text-align:right;font-weight:600">'+taxa+'%</div>';
+      if(hasTcData)H+='<div style="font-family:var(--mono);font-size:11px;color:'+eCol+';min-width:64px;text-align:right;font-weight:600">'+(ef!=null?ef+' ch/h':'—')+'</div>';
+      H+='</div>';
+    });
+    if(hasTcData)H+='<div style="font-size:10px;color:var(--muted);margin-top:8px">Ordenado por eficiência · ch/h = tickets fechados por hora contabilizada</div>';
     H+='</div>';
   }
 
