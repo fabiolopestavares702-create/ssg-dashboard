@@ -17,8 +17,9 @@
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div id="lo" style="position:fixed;inset:0;z-index:9999;background:#0D1B2E;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;">
-  <div style="background:#fff;border-radius:20px;padding:48px 40px;width:420px;max-width:92vw;box-sizing:border-box;box-shadow:0 24px 80px rgba(0,0,0,0.4);">
+<div id="lo" style="position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 65% 35%,rgba(255,100,0,0.08) 0%,transparent 55%),radial-gradient(ellipse at 20% 75%,rgba(79,142,247,0.06) 0%,transparent 50%),#0D1B2E;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;">
+  <div style="background:#fff;border-radius:22px;padding:48px 40px;width:420px;max-width:92vw;box-sizing:border-box;box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6400,#f59e0b,#FF6400);opacity:.9"></div>
     <div style="margin-bottom:28px;">
       <div style="margin-bottom:22px;">
         <img src="data:image/png;base64,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" alt="Groundwork" style="height:52px;width:auto;display:block;object-fit:contain;">
@@ -31,7 +32,7 @@
       <input id="li" type="password" placeholder="••••••••" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:13px 14px;font-size:15px;color:#0D1B2E;background:#F9FAFB;outline:none;" onfocus="this.style.borderColor='#FF6400';this.style.boxShadow='0 0 0 3px rgba(255,100,0,0.10)'" onblur="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'"/>
     </div>
     <div id="le" style="color:#ef4444;font-size:12px;margin-bottom:10px;display:none;">Senha incorreta. Tente novamente.</div>
-    <button id="lb" style="width:100%;background:#FF6400;border:none;border-radius:10px;padding:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.02em;margin-top:6px;" onmouseover="this.style.background='#e05800'" onmouseout="this.style.background='#FF6400'">Entrar</button>
+    <button id="lb" style="width:100%;background:#FF6400;border:none;border-radius:10px;padding:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.02em;margin-top:6px;transition:all .18s cubic-bezier(.4,0,.2,1);transform:scale(1);box-shadow:0 4px 18px rgba(255,100,0,0.35)" onmouseover="this.style.background='#e05800';this.style.transform='scale(1.015)';this.style.boxShadow='0 6px 24px rgba(255,100,0,0.5)'" onmouseout="this.style.background='#FF6400';this.style.transform='scale(1)';this.style.boxShadow='0 4px 18px rgba(255,100,0,0.35)'" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1.015)'">Entrar</button>
     <div style="text-align:center;margin-top:28px;font-size:11px;color:#9ca3af;">Groundwork · Uso interno · v3.0</div>
   </div>
 </div><script>var _o=document.getElementById("lo"),_i=document.getElementById("li"),_e=document.getElementById("le");if(sessionStorage.getItem("k")==="1"){_o.style.display="none";}async function _chk(v){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");}document.getElementById("lb").addEventListener("click",async function(){var h=await _chk(_i.value);if(h==="a1ca296eb57a5dfad7f42107da5720e91b8df602fd8a2760a8657485b46138ee"){sessionStorage.setItem("k","1");_o.style.display="none";}else{_e.style.display="block";_i.value="";}});_i.addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("lb").click();});</script>
@@ -1722,15 +1723,24 @@ function renderAt(){
       +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--purple)">'+(a.tm!=null?a.tm+'h':'—')+'</td>'
       +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+rc+'">'+(a.rm!=null?Math.round(a.rm)+'min':'—')+'</td>'
       +(function(){
-        if(!a.tc){return '<td style="text-align:center;font-size:11px;color:var(--muted)" colspan="3" title="Importe XLSX com coluna \'Tempo Contabilizado\' para ver métricas de produtividade">sem dados</td>';}
+        if(!a.tc){return '<td style="text-align:center" colspan="3" title="Importe XLSX com coluna \'Tempo Contabilizado\' para ver métricas de produtividade"><span style="display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:500;color:rgba(90,98,120,0.5);border:1px solid rgba(90,98,120,0.12);letter-spacing:.03em">sem dados</span></td>';}
         var ef=a.f>0?Math.round(a.f/a.tc*100)/100:null;
         var es=a.f>0?Math.round(a.tc/a.f*10)/10:null;
         var atv=(a.tm&&a.f>0)?Math.round(a.tc/(a.tm*a.f)*100):null;
         var efCol=ef==null?'var(--muted)':ef>=0.5?'var(--ok)':ef>=0.3?'var(--warn)':'var(--danger)';
         var atvCol=atv==null?'var(--muted)':atv>=30?'var(--ok)':atv>=15?'var(--warn)':'var(--danger)';
-        return '<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+efCol+'">'+(ef!=null?ef+'':'—')+'</td>'
-          +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--teal)">'+(es!=null?es+'h':'—')+'</td>'
-          +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+atvCol+'">'+(atv!=null?atv+'%':'—')+'</td>';
+        var atvBg=atv==null?'transparent':atv>=30?'rgba(16,185,129,.1)':atv>=15?'rgba(245,158,11,.1)':'rgba(244,63,94,.1)';
+        var atvBord=atv==null?'transparent':atv>=30?'rgba(16,185,129,.2)':atv>=15?'rgba(245,158,11,.2)':'rgba(244,63,94,.2)';
+        var efBar=ef!=null
+          ?'<div style="display:flex;flex-direction:column;align-items:center;gap:3px">'
+            +'<span style="font-family:var(--mono);font-size:12px;font-weight:700;color:'+efCol+'">'+ef+'</span>'
+            +'<div style="width:44px;height:3px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">'
+              +'<div style="height:100%;width:'+Math.min(ef/1.5*100,100)+'%;background:'+efCol+';border-radius:3px;transition:width .4s"></div>'
+            +'</div></div>'
+          :'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">—</span>';
+        return '<td style="text-align:center">'+efBar+'</td>'
+          +'<td style="text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--teal)">'+(es!=null?es+'h':'—')+'</td>'
+          +'<td style="text-align:center">'+(atv!=null?'<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-family:var(--mono);font-size:11px;font-weight:700;color:'+atvCol+';background:'+atvBg+';border:1px solid '+atvBord+'">'+atv+'%</span>':'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">—</span>')+'</td>';
       })()
       +tendCell
     +'</tr>';
@@ -5466,18 +5476,18 @@ function renderResumo(){
       var esMediaEq=totalFechadosTc>0&&totalTcEq>0?Math.round(totalTcEq/totalFechadosTc*10)/10:null;
       var efCol=efMediaEq==null?'var(--muted)':efMediaEq>=0.5?'var(--ok)':efMediaEq>=0.3?'var(--warn)':'var(--danger)';
       H+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">';
-      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
-      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Eficiência Média</div>';
-      H+='<div style="font-size:20px;font-weight:700;color:'+efCol+';font-family:var(--mono)">'+(efMediaEq!=null?efMediaEq:'—')+'</div>';
-      H+='<div style="font-size:10px;color:var(--muted)">ch / hora contabilizada</div></div>';
-      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
-      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Esforço Médio</div>';
-      H+='<div style="font-size:20px;font-weight:700;color:var(--teal);font-family:var(--mono)">'+(esMediaEq!=null?esMediaEq+'h':'—')+'</div>';
-      H+='<div style="font-size:10px;color:var(--muted)">horas por ticket fechado</div></div>';
-      H+='<div style="text-align:center;padding:10px;background:var(--bg3);border-radius:8px">';
-      H+='<div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Com dados tc</div>';
-      H+='<div style="font-size:20px;font-weight:700;color:var(--blue);font-family:var(--mono)">'+comTc.length+'/'+atendData.length+'</div>';
-      H+='<div style="font-size:10px;color:var(--muted)">analistas com tempo contabilizado</div></div>';
+      H+='<div style="text-align:center;padding:14px 10px 12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);border-top:2px solid '+efCol+';position:relative;overflow:hidden">';
+      H+='<div style="font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Eficiência Média</div>';
+      H+='<div style="font-size:24px;font-weight:800;color:'+efCol+';font-family:var(--mono);line-height:1.1;letter-spacing:-.02em">'+(efMediaEq!=null?efMediaEq:'—')+'</div>';
+      H+='<div style="font-size:10px;color:var(--sub);margin-top:4px">ch / hora contabilizada</div></div>';
+      H+='<div style="text-align:center;padding:14px 10px 12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);border-top:2px solid var(--teal)">';
+      H+='<div style="font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Esforço Médio</div>';
+      H+='<div style="font-size:24px;font-weight:800;color:var(--teal);font-family:var(--mono);line-height:1.1;letter-spacing:-.02em">'+(esMediaEq!=null?esMediaEq+'h':'—')+'</div>';
+      H+='<div style="font-size:10px;color:var(--sub);margin-top:4px">horas por ticket fechado</div></div>';
+      H+='<div style="text-align:center;padding:14px 10px 12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);border-top:2px solid var(--blue)">';
+      H+='<div style="font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Analistas</div>';
+      H+='<div style="font-size:24px;font-weight:800;color:var(--blue);font-family:var(--mono);line-height:1.1;letter-spacing:-.02em">'+comTc.length+'<span style="font-size:14px;font-weight:500;opacity:.5">/'+atendData.length+'</span></div>';
+      H+='<div style="font-size:10px;color:var(--sub);margin-top:4px">com tempo contabilizado</div></div>';
       H+='</div>';
     } else {
       H+='<div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding:8px 12px;background:var(--bg3);border-radius:6px">💡 Importe XLSX com coluna <strong style="color:var(--sub)">Tempo Contabilizado</strong> para ver métricas de eficiência, esforço e índice de atividade por analista.</div>';
@@ -5490,17 +5500,19 @@ function renderResumo(){
       if(hasTcData){var ea=a.tc&&a.f>0?a.f/a.tc:0,eb=b.tc&&b.f>0?b.f/b.tc:0;return eb-ea;}
       return b.t-a.t;
     });
-    sortedAtendRg.slice(0,6).forEach(function(a){
+    sortedAtendRg.slice(0,6).forEach(function(a,ri){
       var taxa=a.t>0?Math.round(a.f/a.t*100):0;
       var tCol=taxa>=80?'var(--ok)':taxa>=60?'var(--warn)':'var(--danger)';
       var ef=a.tc&&a.f>0?Math.round(a.f/a.tc*100)/100:null;
       var eCol=ef==null?'var(--muted)':ef>=0.5?'var(--ok)':ef>=0.3?'var(--warn)':'var(--danger)';
       var shortN=a.n.split(' ').slice(0,2).join(' ');
-      H+='<div class="rg-item-row">';
-      H+='<div class="rg-item-txt" style="flex:1"><strong>'+shortN+'</strong></div>';
+      var rankCol=ri===0?'var(--warn)':ri===1?'var(--sub)':'rgba(90,98,120,0.4)';
+      H+='<div class="rg-item-row" style="padding:7px 0">';
+      H+='<div style="font-family:var(--mono);font-size:10px;font-weight:700;color:'+rankCol+';min-width:18px;flex-shrink:0">'+(ri+1)+'</div>';
+      H+='<div class="rg-item-txt" style="flex:1"><strong style="font-size:12px">'+shortN+'</strong></div>';
       H+='<div style="font-family:var(--mono);font-size:11px;color:var(--sub);min-width:55px;text-align:right">'+a.t+' ch</div>';
-      H+='<div style="font-family:var(--mono);font-size:11px;color:'+tCol+';min-width:48px;text-align:right;font-weight:600">'+taxa+'%</div>';
-      if(hasTcData)H+='<div style="font-family:var(--mono);font-size:11px;color:'+eCol+';min-width:64px;text-align:right;font-weight:600">'+(ef!=null?ef+' ch/h':'—')+'</div>';
+      H+='<div style="font-family:var(--mono);font-size:11px;color:'+tCol+';min-width:48px;text-align:right;font-weight:700">'+taxa+'%</div>';
+      if(hasTcData)H+='<div style="font-family:var(--mono);font-size:11px;color:'+eCol+';min-width:64px;text-align:right;font-weight:700;background:'+(ef!=null?'rgba('+( ef>=0.5?'16,185,129':ef>=0.3?'245,158,11':'244,63,94')+',0.08)':'transparent')+';padding:1px 6px;border-radius:6px">'+(ef!=null?ef+' ch/h':'—')+'</div>';
       H+='</div>';
     });
     if(hasTcData)H+='<div style="font-size:10px;color:var(--muted);margin-top:8px">Ordenado por eficiência · ch/h = tickets fechados por hora contabilizada</div>';
