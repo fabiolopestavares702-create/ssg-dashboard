@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-02T15:42:01.334373",
+  "generated_at": "2026-04-02T18:08:18.085414",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>84 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (59.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>87 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (59.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -51,7 +51,7 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "84 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "87 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -71,11 +71,11 @@
   "riscos_clientes": [
     {
       "cliente": "Almeida Junior Integração Znuny",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 156 chamados (6% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 93% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 157 chamados (6% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 93% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "156 chamados (6% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "157 chamados (6% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
