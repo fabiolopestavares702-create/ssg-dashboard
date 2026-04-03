@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-03T11:08:47.811904",
+  "generated_at": "2026-04-03T14:08:53.882858",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>90 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>90 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (59.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -13,7 +13,7 @@
       {
         "label": "Risco de SLA",
         "value": "Médio",
-        "sub": "1ª resposta: 58.0 min",
+        "sub": "1ª resposta: 59.0 min",
         "color": "var(--warn)"
       },
       {
@@ -30,7 +30,7 @@
       }
     ],
     "risco_principal": {
-      "label": "36 chamados +30 dias",
+      "label": "37 chamados +30 dias",
       "desc": "Chamados críticos sem resolução"
     },
     "oportunidade": {
@@ -45,7 +45,7 @@
   "riscos_operacionais": [
     {
       "titulo": "Tempo de primeira resposta acima da meta",
-      "desc": "Mediana de 58.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
+      "desc": "Mediana de 59.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
       "nivel": "medium",
       "confianca": 78
     },
@@ -56,7 +56,7 @@
       "confianca": 92
     },
     {
-      "titulo": "36 chamados abertos há mais de 30 dias",
+      "titulo": "37 chamados abertos há mais de 30 dias",
       "desc": "Chamados com aging superior a 30 dias representam risco de escalonamento pelo cliente e impacto direto no health score da conta.",
       "nivel": "high",
       "confianca": 95
