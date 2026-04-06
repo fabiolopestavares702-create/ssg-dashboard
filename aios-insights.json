@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-06T19:57:51.612496",
+  "generated_at": "2026-04-06T21:54:19.299410",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 82%</strong>, considerada excelente.<br><br>O volume de <strong>79 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>82 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -51,7 +51,7 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "79 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "82 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -155,16 +155,16 @@
     },
     {
       "cliente": "Antonio Neto",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 59 chamados (2% do total). <strong>86% dos chamados com prioridade crítica</strong> — padrão acima do normal. O módulo <strong>Contabilidade</strong> concentra 97% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 60 chamados (2% do total). <strong>87% dos chamados com prioridade crítica</strong> — padrão acima do normal. O módulo <strong>Contabilidade</strong> concentra 97% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "59 chamados (2% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "60 chamados (2% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
         {
-          "titulo": "Alto percentual de prioridade Muito Alta (86%)",
+          "titulo": "Alto percentual de prioridade Muito Alta (87%)",
           "desc": "Pode indicar instabilidade no ambiente do cliente ou processo de abertura de chamados com triagem inadequada.",
           "nivel": "medium",
           "confianca": 70
