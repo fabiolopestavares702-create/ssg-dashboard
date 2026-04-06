@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-06T17:10:17.150371",
+  "generated_at": "2026-04-06T19:57:51.612496",
   "version": "1.0",
   "resumo_gestao": {
     "narrativa": "A operação apresenta <strong>taxa de conclusão de 82%</strong>, considerada excelente.<br><br>O volume de <strong>79 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (58.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
@@ -30,7 +30,7 @@
       }
     ],
     "risco_principal": {
-      "label": "41 chamados +30 dias",
+      "label": "42 chamados +30 dias",
       "desc": "Chamados críticos sem resolução"
     },
     "oportunidade": {
@@ -56,7 +56,7 @@
       "confianca": 92
     },
     {
-      "titulo": "41 chamados abertos há mais de 30 dias",
+      "titulo": "42 chamados abertos há mais de 30 dias",
       "desc": "Chamados com aging superior a 30 dias representam risco de escalonamento pelo cliente e impacto direto no health score da conta.",
       "nivel": "high",
       "confianca": 95
@@ -131,11 +131,11 @@
     },
     {
       "cliente": "Renato Ferreira",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 68 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 85% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 69 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 86% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "68 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "69 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -147,7 +147,7 @@
         },
         {
           "titulo": "Reincidência no módulo Fiscal",
-          "desc": "85% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "desc": "86% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
@@ -155,11 +155,11 @@
     },
     {
       "cliente": "Antonio Neto",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 57 chamados (2% do total). <strong>86% dos chamados com prioridade crítica</strong> — padrão acima do normal. O módulo <strong>Contabilidade</strong> concentra 96% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 59 chamados (2% do total). <strong>86% dos chamados com prioridade crítica</strong> — padrão acima do normal. O módulo <strong>Contabilidade</strong> concentra 97% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "57 chamados (2% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "59 chamados (2% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -171,7 +171,7 @@
         },
         {
           "titulo": "Reincidência no módulo Contabilidade",
-          "desc": "96% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "desc": "97% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
