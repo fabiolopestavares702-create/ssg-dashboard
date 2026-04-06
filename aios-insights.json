@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-05T23:52:45.275676",
+  "generated_at": "2026-04-06T06:20:05.603535",
   "version": "1.0",
   "resumo_gestao": {
     "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>85 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (59.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
@@ -24,7 +24,7 @@
       },
       {
         "label": "Previsão 7 dias",
-        "value": "~240/semana",
+        "value": "~235/semana",
         "sub": "pico: terça-feira 9h",
         "color": "var(--purple)"
       }
@@ -38,7 +38,7 @@
       "desc": "Foco no módulo Banco de Dados pode reduzir reincidências"
     },
     "previsao": {
-      "label": "~48/dia",
+      "label": "~47/dia",
       "desc": "pico: terça-feira 9h"
     }
   },
