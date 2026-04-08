@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-08T06:08:49.107984",
+  "generated_at": "2026-04-08T10:16:59.697489",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>91 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>86 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -30,7 +30,7 @@
       }
     ],
     "risco_principal": {
-      "label": "42 chamados +30 dias",
+      "label": "41 chamados +30 dias",
       "desc": "Chamados críticos sem resolução"
     },
     "oportunidade": {
@@ -51,12 +51,12 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "91 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "86 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
     {
-      "titulo": "42 chamados abertos há mais de 30 dias",
+      "titulo": "41 chamados abertos há mais de 30 dias",
       "desc": "Chamados com aging superior a 30 dias representam risco de escalonamento pelo cliente e impacto direto no health score da conta.",
       "nivel": "high",
       "confianca": 95
@@ -71,11 +71,11 @@
   "riscos_clientes": [
     {
       "cliente": "Almeida Junior Integração Znuny",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 168 chamados (7% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 93% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 168 chamados (6% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 93% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "168 chamados (7% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "168 chamados (6% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
