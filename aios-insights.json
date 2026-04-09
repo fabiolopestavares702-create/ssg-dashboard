@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-09T10:40:06.474762",
+  "generated_at": "2026-04-09T16:06:39.195600",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>92 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 81%</strong>, considerada excelente.<br><br>O volume de <strong>102 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (57.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O pico de volume ocorre na <strong>terça-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -24,7 +24,7 @@
       },
       {
         "label": "Previsão 7 dias",
-        "value": "~245/semana",
+        "value": "~250/semana",
         "sub": "pico: terça-feira 9h",
         "color": "var(--purple)"
       }
@@ -38,7 +38,7 @@
       "desc": "Foco no módulo Banco de Dados pode reduzir reincidências"
     },
     "previsao": {
-      "label": "~49/dia",
+      "label": "~50/dia",
       "desc": "pico: terça-feira 9h"
     }
   },
@@ -51,7 +51,7 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "92 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "102 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -95,11 +95,11 @@
     },
     {
       "cliente": "Yuri Oliveira",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 104 chamados (4% do total). O módulo <strong>VDI</strong> concentra 99% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 105 chamados (4% do total). O módulo <strong>VDI</strong> concentra 99% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "104 chamados (4% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "105 chamados (4% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -131,11 +131,11 @@
     },
     {
       "cliente": "Renato Ferreira",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 71 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 86% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 72 chamados (3% do total). <strong>7 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Fiscal</strong> concentra 86% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "71 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "72 chamados (3% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
