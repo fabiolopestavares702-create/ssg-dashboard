@@ -1464,14 +1464,15 @@ function renderCh(){
       {l:'Muito Alta',prev:prev2.prior&&prev2.prior['Muito Alta']||0,curr:muitaAlta,unid:'',invert:true},
       {l:'Aguardando Cliente',prev:prev2.estado&&prev2.estado['Aguardando Cliente']||0,curr:aguardCli,unid:'',invert:true},
       {l:'Taxa conclusão',prev:prev2.total>0?Math.round(prev2.fechados/prev2.total*100):0,curr:taxa,unid:'%',invert:false},
-      {l:'1ª Resposta',prev:prev2.resp_med||0,curr:_op2.resp_med||0,unid:'min',invert:true}
+      {l:'1ª Resposta',prev:prev2.resp_med||0,curr:_op2.resp_med||0,unid:'min',fmt:fmtRespTxt,invert:true}
     ];
     compRows.innerHTML=rows2.map(function(r){
       var delta=r.curr-r.prev,better=r.invert?delta<0:delta>0,same=delta===0;
       var dc=same?'var(--muted)':better?'var(--ok)':'var(--danger)';
       var dbg=same?'rgba(90,98,120,.1)':better?'rgba(16,185,129,.1)':'rgba(244,63,94,.1)';
       var sign=delta>0?'+':'';var pctD=r.prev!==0?Math.round(Math.abs(delta)/Math.abs(r.prev)*100):0;
-      return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" style="color:var(--muted)">'+r.prev+r.unid+'</span><span class="comp-arrow" style="color:'+dc+'">→</span><span class="comp-curr" style="color:'+dc+'">'+r.curr+r.unid+'</span><span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+sign+pctD+'%</span></div>';
+      var fmtVal=r.fmt?function(v){return r.fmt(v);}:function(v){return v+r.unid;};
+      return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" style="color:var(--muted)">'+fmtVal(r.prev)+'</span><span class="comp-arrow" style="color:'+dc+'">→</span><span class="comp-curr" style="color:'+dc+'">'+fmtVal(r.curr)+'</span><span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+sign+pctD+'%</span></div>';
     }).join('');
   }
 }
@@ -1555,7 +1556,7 @@ function renderComp(){
     {l:'Volume de chamados',fv:function(m){return m.total||0;},unid:'',invert:false},
     {l:'Taxa de conclusão',fv:function(m){return m.total>0?Math.round(m.fechados/m.total*100):0;},unid:'%',invert:false},
     {l:'Chamados Muito Alta',fv:function(m){return m.prior&&m.prior['Muito Alta']||0;},unid:'',invert:true},
-    {l:'1ª Resposta mediana',fv:function(m){return m.resp_med||0;},unid:'min',invert:true},
+    {l:'1ª Resposta mediana',fv:function(m){return m.resp_med||0;},unid:'min',fmt:fmtRespTxt,invert:true},
     {l:'Tempo médio solução',fv:function(m){return m.sol_med||0;},unid:'h',invert:true}
   ];
 
@@ -1580,12 +1581,13 @@ function renderComp(){
     var dbg=same?'rgba(90,98,120,.1)':better?'rgba(16,185,129,.1)':'rgba(244,63,94,.1)';
     var sign=delta>0?'+':'';
     var spk=spark(allVals,same?'#5a6278':(better?'#10b981':'#f43f5e'));
+    var fmtVal2=r.fmt?function(v){return r.fmt(v);}:function(v){return v+r.unid;};
     return'<div class="comp-row">'
       +'<span class="comp-label">'+r.l+'</span>'
       +spk
-      +(prevV!==null?'<span class="comp-prev" style="color:var(--muted)">'+prevV+r.unid+'</span>':'<span class="comp-prev" style="color:var(--muted)">—</span>')
+      +(prevV!==null?'<span class="comp-prev" style="color:var(--muted)">'+fmtVal2(prevV)+'</span>':'<span class="comp-prev" style="color:var(--muted)">—</span>')
       +'<span class="comp-arrow" style="color:'+dc+'">→</span>'
-      +'<span class="comp-curr" style="color:'+dc+'">'+currV+r.unid+'</span>'
+      +'<span class="comp-curr" style="color:'+dc+'">'+fmtVal2(currV)+'</span>'
       +'<span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+(prevV!==null?sign+pctD+'%':'Base')+'</span>'
     +'</div>';
   }).join('');
@@ -1945,7 +1947,7 @@ function renderPainel(d){
   document.getElementById('co-total').textContent=d.total;
   document.getElementById('co-abertos').textContent=d.abertos;
   document.getElementById('co-fechados').textContent=d.fechados;
-  document.getElementById('co-resp').textContent=d.resp_med!==null?(d.resp_med+'min'):'—';
+  document.getElementById('co-resp').textContent=d.resp_med!==null?fmtRespTxt(d.resp_med):'—';
   document.getElementById('co-sol').textContent=d.solucao_med_h!==null?(d.solucao_med_h+'h'):'—';
   // health badge
   var score=calcScore(d);
@@ -2013,7 +2015,7 @@ function renderHealthScore(d){
   var ap=_pct(d.abertos,d.total);
   var rows=[
     {l:'Taxa de resolução',v:_pct(d.fechados,d.total)+'%',c:_pct(d.fechados,d.total)>=80?'var(--ok)':_pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
-    {l:'1ª Resposta (med.)',v:(d.resp_med||'—')+'min',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
+    {l:'1ª Resposta (med.)',v:d.resp_med?fmtRespTxt(d.resp_med):'—',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
     {l:'Chamados em aberto',v:d.abertos+' ('+ap+'%)',c:ap<=10?'var(--ok)':ap<=25?'var(--warn)':'var(--danger)'},
     {l:'Tempo médio solução',v:(d.solucao_med_h||'—')+'h',c:d.solucao_med_h<=48?'var(--ok)':d.solucao_med_h<=96?'var(--warn)':'var(--danger)'}
   ];
@@ -2027,7 +2029,7 @@ function renderHealthScore(d){
   var mediaGeral={taxa:62,resp:8,sol:54};var taxa=_pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
-    {l:'1ª Resposta mediana',emp:(d.resp_med||'—')+'min',geral:mediaGeral.resp+'min',melhor:d.resp_med<=mediaGeral.resp},
+    {l:'1ª Resposta mediana',emp:d.resp_med?fmtRespTxt(d.resp_med):'—',geral:fmtRespTxt(mediaGeral.resp),melhor:d.resp_med<=mediaGeral.resp},
     {l:'Tempo médio solução',emp:(d.solucao_med_h||'—')+'h',geral:mediaGeral.sol+'h',melhor:d.solucao_med_h<=mediaGeral.sol}
   ].map(function(r){var c=r.melhor?'var(--ok)':'var(--warn)';return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" title="Média geral">Fila: '+r.geral+'</span><span class="comp-arrow" style="color:'+c+'">'+(r.melhor?'✓':'!')+'</span><span class="comp-curr" style="color:'+c+'">'+r.emp+'</span><span class="comp-delta" style="background:'+(r.melhor?'rgba(16,185,129,.1)':'rgba(245,158,11,.1)')+';color:'+c+'">'+(r.melhor?'Acima':'Abaixo')+'</span></div>';}).join('');
 }
@@ -2615,9 +2617,9 @@ function exportPDF(){
   var insights=[];
   if(efic>=90)insights.push({icon:'\u2705',txt:'Efici\u00eancia de <strong>'+efic+'%</strong> no per\u00edodo — dentro da meta de 90%.'});
   else insights.push({icon:'\u26a0\ufe0f',txt:'Efici\u00eancia de <strong>'+efic+'%</strong> — abaixo da meta de 90%. '+violados+' chamado(s) ultrapassaram 48h.'});
-  if(d.resp_med<=15)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — excelente, dentro da meta de 30min.'});
-  else if(d.resp_med<=30)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — dentro da meta de 30min.'});
-  else insights.push({icon:'\u26a0\ufe0f',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — acima da meta de 30min.'});
+  if(d.resp_med<=15)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — excelente, dentro da meta de 30min.'});
+  else if(d.resp_med<=30)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — dentro da meta de 30min.'});
+  else insights.push({icon:'\u26a0\ufe0f',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — acima da meta de 30min.'});
   var aguardCliente=d.estados['Aguardando Cliente']||0;
   if(aguardCliente>0)insights.push({icon:'\ud83d\udce8',txt:'<strong>'+aguardCliente+' chamado(s)</strong> aguardando retorno do cliente — requer aten\u00e7\u00e3o.'});
   var abertosQty=d.abertos||0;
@@ -2809,9 +2811,9 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   // ── SE\u00c7\u00c3O 4: TEMPO M\u00c9DIO SLA
   H+='<div class="section">';
   H+='<div class="sec-header"><div class="sec-num">4</div><div class="sec-title">Tempo M\u00e9dio de SLA</div><div class="sec-sub">Meta: \u226448h \u00fateis</div></div>';
-  H+='<p style="font-size:13px;color:#374151;margin-bottom:16px">O tempo m\u00e9dio de solu\u00e7\u00e3o no per\u00edodo foi de <strong>'+d.solucao_med_h+'h</strong> e o tempo de primeira resposta mediano foi de <strong>'+d.resp_med+'min</strong>.</p>';
+  H+='<p style="font-size:13px;color:#374151;margin-bottom:16px">O tempo m\u00e9dio de solu\u00e7\u00e3o no per\u00edodo foi de <strong>'+d.solucao_med_h+'h</strong> e o tempo de primeira resposta mediano foi de <strong>'+fmtRespTxt(d.resp_med)+'</strong>.</p>';
   H+='<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">';
-  H+='<div class="kpi '+(d.resp_med<=30?'green':'orange')+'"><div class="kpi-lbl">1\u00aa Resposta (med.)</div><div class="kpi-val">'+d.resp_med+'<span style="font-size:14px">min</span></div><div class="kpi-sub">'+(d.resp_med<=30?'\u2705 dentro da meta':'\u26a0\ufe0f acima de 30min')+'</div></div>';
+  H+='<div class="kpi '+(d.resp_med<=30?'green':'orange')+'"><div class="kpi-lbl">1\u00aa Resposta (med.)</div><div class="kpi-val">'+fmtResp(d.resp_med)+'</div><div class="kpi-sub">'+(d.resp_med<=30?'\u2705 dentro da meta':'\u26a0\ufe0f acima de 30min')+'</div></div>';
   H+='<div class="kpi '+(d.solucao_med_h<=48?'green':'orange')+'"><div class="kpi-lbl">Solu\u00e7\u00e3o M\u00e9dia</div><div class="kpi-val">'+d.solucao_med_h+'<span style="font-size:14px">h</span></div><div class="kpi-sub">'+(d.solucao_med_h<=48?'\u2705 dentro do SLA':'\u26a0\ufe0f acima de 48h')+'</div></div>';
   H+='<div class="kpi"><div class="kpi-lbl">Atendidos OK</div><div class="kpi-val" style="color:#16a34a">'+atenOK+'</div><div class="kpi-sub">dentro de 48h</div></div>';
   H+='<div class="kpi '+(violados>0?'red':'')+'"><div class="kpi-lbl">Violados</div><div class="kpi-val" style="color:'+(violados>0?'#dc2626':'#16a34a')+'">'+violados+'</div><div class="kpi-sub">'+(violados>0?'acima de 48h':'nenhuma viola\u00e7\u00e3o')+'</div></div>';
@@ -2889,10 +2891,10 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   // ── SE\u00c7\u00c3O 8: CARTA DO GESTOR ────────────────────────────────
   (function(){
     var pontoForte='', pontoAtencao='';
-    if(d.resp_med<=15) pontoForte='Nossa equipe manteve um tempo de primeira resposta mediano de <strong>'+d.resp_med+' minutos</strong> — muito acima da meta contratual de 30 minutos, refletindo o comprometimento do time em tratar cada solicitação com agilidade.';
+    if(d.resp_med<=15) pontoForte='Nossa equipe manteve um tempo de primeira resposta mediano de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — muito acima da meta contratual de 30 minutos, refletindo o comprometimento do time em tratar cada solicitação com agilidade.';
     else if(taxaConc>=80) pontoForte='Encerramos <strong>'+d.fechados+' de '+d.total+' chamados</strong> ('+taxaConc+'%) com sucesso no período — resultado que demonstra a capacidade de entrega da equipe mesmo em meses de volume elevado.';
     else if(efic>=90) pontoForte='Atingimos <strong>'+efic+'% de eficiência SLA</strong> no período, superando a meta contratual de 90%. Os chamados prioritários foram tratados dentro do prazo acordado.';
-    else pontoForte='Mantivemos comunicação ativa em todos os chamados do período, com <strong>primeira resposta mediana de '+d.resp_med+' min</strong> e acompanhamento contínuo de cada solicitação.';
+    else pontoForte='Mantivemos comunicação ativa em todos os chamados do período, com <strong>primeira resposta mediana de '+fmtRespTxt(d.resp_med)+'</strong> e acompanhamento contínuo de cada solicitação.';
     if(efic<70) pontoAtencao='Por outro lado, nossa eficiência SLA no período foi de <strong>'+efic+'%</strong> — abaixo da meta de 90%. '+violados+' chamado(s) ultrapassaram o prazo de 48h úteis. Reconhecemos o impacto na experiência de atendimento e já estamos endereçando as causas para o próximo período.';
     else if(d.solucao_med_h>48) pontoAtencao='O tempo médio de solução ficou em <strong>'+d.solucao_med_h+'h</strong>, acima da meta de 48h úteis. Parte dos casos demandou análise mais aprofundada e dependência de outros ambientes — estamos tomando ações para reduzir esse indicador a partir do próximo mês.';
     else if(d.abertos>0) pontoAtencao='Encerramos o período com <strong>'+d.abertos+' chamado(s) em aberto</strong>. Nossa equipe acompanha cada um deles e trabalhará para resolução prioritária nas próximas semanas.';
@@ -2919,7 +2921,7 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   (function(){
     var proxMesNome=({'2026-01':'Fevereiro/26','2026-02':'Março/26','2026-03':'Abril/26','2026-04':'Maio/26','2026-05':'Junho/26','2026-06':'Julho/26','2026-07':'Agosto/26','2026-08':'Setembro/26','2026-09':'Outubro/26','2026-10':'Novembro/26','2026-11':'Dezembro/26','2026-12':'Janeiro/27'})[activeMonth==='all'?'2026-03':activeMonth]||'Próximo Mês';
     var items=[];
-    items.push({num:'01',titulo:'Manter 1ª resposta ≤ 30 min',desc:'Garantir que todos os chamados recebam primeira resposta dentro de 30 minutos úteis, independente do volume diário.',resp:'Coordenação ERP',meta:'≤30min',atual:d.resp_med+'min',ok:d.resp_med<=30});
+    items.push({num:'01',titulo:'Manter 1ª resposta ≤ 30 min',desc:'Garantir que todos os chamados recebam primeira resposta dentro de 30 minutos úteis, independente do volume diário.',resp:'Coordenação ERP',meta:'≤30min',atual:fmtRespTxt(d.resp_med),ok:d.resp_med<=30});
     if(d.solucao_med_h>48) items.push({num:'02',titulo:'Reduzir tempo de solução para ≤ 48h',desc:'Priorizar triagem dos chamados represados. Redistribuir casos acima de 48h e acionar gestor para desbloqueio.',resp:'Liderança Técnica ERP',meta:'≤48h',atual:d.solucao_med_h+'h',ok:false});
     else items.push({num:'02',titulo:'Manter solução média ≤ 48h',desc:'Sustentar o nível de resolução atual com foco em chamados de prioridade Muito Alta e Alta.',resp:'Liderança Técnica ERP',meta:'≤48h',atual:d.solucao_med_h+'h ✓',ok:true});
     if(efic<90) items.push({num:'03',titulo:'Atingir ≥ 90% de eficiência SLA',desc:'Reduzir violações do prazo de 48h com acompanhamento diário da fila. Alerta proativo ao cliente quando chamado crítico se aproximar do limite.',resp:'Coordenação ERP + CS',meta:'≥90%',atual:efic+'%',ok:false});
@@ -4039,7 +4041,7 @@ function renderCSOverview(d) {
   document.getElementById('cs-kpi-abertos-sub').textContent = Math.round((d.abertos||0)/total*100)+'% do total';
   document.getElementById('cs-kpi-taxa').textContent = taxa + '%';
   document.getElementById('cs-kpi-taxa-sub').textContent = d.fechados + ' chamados resolvidos';
-  document.getElementById('cs-kpi-sla').textContent = (d.resp_med||'-') + 'min';
+  document.getElementById('cs-kpi-sla').textContent = d.resp_med ? fmtRespTxt(d.resp_med) : '—';
   document.getElementById('cs-kpi-sla-sub').textContent = d.resp_med <= 30 ? '✓ dentro da meta' : '⚠ acima de 30min';
   document.getElementById('cs-kpi-sol').textContent = (d.solucao_med_h || '-') + 'h';
   document.getElementById('cs-kpi-alta').textContent = alta;
@@ -4065,7 +4067,7 @@ function renderCSOverview(d) {
   // Sentiment
   var sentHtml = '';
   var metrics = [
-    {icon:'⏱', lbl:'Velocidade de resposta', val: d.resp_med<=15?'Ótima': d.resp_med<=30?'Boa':'Regular', sub: d.resp_med+'min mediana'},
+    {icon:'⏱', lbl:'Velocidade de resposta', val: d.resp_med<=15?'Ótima': d.resp_med<=30?'Boa':'Regular', sub: fmtRespTxt(d.resp_med)+' mediana'},
     {icon:'✅', lbl:'Taxa de resolução', val: taxa>=70?'Alta': taxa>=50?'Média':'Baixa', sub: taxa+'% dos chamados'},
     {icon:'🔔', lbl:'Pendências cliente', val: aguard===0?'Nenhuma': aguard<=3?'Poucas':'Atenção', sub: aguard+' aguardando'}
   ];
@@ -4115,7 +4117,7 @@ function renderCSHealth(d) {
   else if (score >= 70) interp.push('Conta em <strong>bom estado</strong>, com pontos de melhoria em prazos ou volume de abertura.');
   else if (score >= 55) interp.push('<strong>Atenção recomendada.</strong> Indicadores abaixo da média. Requer acompanhamento próximo.');
   else interp.push('<strong>Conta em risco.</strong> Recomenda-se contato imediato do CSM e revisão de prioridades.');
-  if ((d.resp_med||0) > 30) interp.push('Tempo de 1ª resposta ('+d.resp_med+'min) acima da meta de 30min.');
+  if ((d.resp_med||0) > 30) interp.push('Tempo de 1ª resposta ('+fmtRespTxt(d.resp_med)+') acima da meta de 30min.');
   if ((d.solucao_med_h||0) > 48) interp.push('Tempo médio de solução ('+d.solucao_med_h+'h) acima do SLA de 48h.');
   if (aguard > 0) interp.push(aguard+' chamado(s) aguardando retorno do cliente — pode indicar falta de follow-up.');
   document.getElementById('cs-hs-interpretation').innerHTML = interp.map(function(t){return '<p style="margin-bottom:8px">'+t+'</p>';}).join('');
@@ -4137,7 +4139,7 @@ function renderCSRisks(d) {
   if (aguard > 0) riscos.push({icon:'🔔', title:'Chamados aguardando cliente', desc:aguard+' chamado(s) sem retorno do cliente. Risco de aging.', level:'warn'});
   if (alta > total * 0.4) riscos.push({icon:'🔥', title:'Alto volume de prioridade Muito Alta', desc:alta+' chamados ('+Math.round(alta/total*100)+'%) com prioridade crítica.', level:'danger'});
   if ((d.solucao_med_h||0) > 48) riscos.push({icon:'⏰', title:'SLA de solução em risco', desc:'Tempo médio de '+(d.solucao_med_h||'-')+'h — acima do SLA de 48h.', level:'danger'});
-  if ((d.resp_med||0) > 30) riscos.push({icon:'⚡', title:'1ª resposta fora da meta', desc:'Mediana de '+(d.resp_med||'-')+'min — meta é 30min.', level:'warn'});
+  if ((d.resp_med||0) > 30) riscos.push({icon:'⚡', title:'1ª resposta fora da meta', desc:'Mediana de '+(d.resp_med?fmtRespTxt(d.resp_med):'-')+' — meta é 30min.', level:'warn'});
   if (score >= 70 && riscos.length === 0) riscos.push({icon:'✅', title:'Conta saudável', desc:'Nenhum risco crítico identificado no período.', level:'ok'});
   var levelStyle = {warn:'background:rgba(245,158,11,.1);border-radius:8px', danger:'background:rgba(244,63,94,.1);border-radius:8px', ok:'background:rgba(16,185,129,.1);border-radius:8px'};
   var levelBadge = {warn:'<span class="cs-risk-badge" style="background:rgba(245,158,11,.15);color:var(--warn)">Atenção</span>', danger:'<span class="cs-risk-badge" style="background:rgba(244,63,94,.15);color:var(--danger)">Crítico</span>', ok:'<span class="cs-risk-badge" style="background:rgba(16,185,129,.15);color:var(--ok)">OK</span>'};
@@ -4191,7 +4193,7 @@ function renderCSActions(d) {
   document.getElementById('cs-actions-list').innerHTML = aHtml;
   // Executive summary
   var taxa = Math.round(d.fechados/total*100);
-  var summary = '<strong>'+d.nome+'</strong> registrou <strong>'+total+' chamados</strong> no período (jan–mar 2026), com taxa de resolução de <strong>'+taxa+'%</strong> e mediana de 1ª resposta de <strong>'+d.resp_med+'min</strong>.<br><br>';
+  var summary = '<strong>'+d.nome+'</strong> registrou <strong>'+total+' chamados</strong> no período (jan–mar 2026), com taxa de resolução de <strong>'+taxa+'%</strong> e mediana de 1ª resposta de <strong>'+fmtRespTxt(d.resp_med)+'</strong>.<br><br>';
   summary += 'O Health Score atual é de <strong>'+score+' pts</strong> — classificado como <strong>'+csScoreLabel(score).label+'</strong>. ';
   if (aguard > 0) summary += 'Há <strong>'+aguard+' chamado(s)</strong> aguardando retorno do cliente. ';
   summary += 'O módulo mais utilizado é <strong>'+Object.keys(d.servicos||{}).sort(function(a,b){return (d.servicos[b]||0)-(d.servicos[a]||0);})[0]+'</strong>.<br><br>';
@@ -4245,7 +4247,7 @@ function exportCSPDF() {
     +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px">'
     +['<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Total Chamados</div><div style="font-size:24px;font-weight:800;color:#0d9488">'+total+'</div><div style="font-size:10px;color:#64748b">jan–mar 2026</div></div>',
     '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Taxa Resolução</div><div style="font-size:24px;font-weight:800;color:#16a34a">'+taxa+'%</div><div style="font-size:10px;color:#64748b">'+d.fechados+' resolvidos</div></div>',
-    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">1ª Resposta</div><div style="font-size:24px;font-weight:800;color:'+(d.resp_med<=30?'#0d9488':'#d97706')+'">'+(d.resp_med||'-')+'min</div><div style="font-size:10px;color:#64748b">'+(d.resp_med<=30?'✓ dentro da meta':'⚠ acima de 30min')+'</div></div>',
+    '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">1ª Resposta</div><div style="font-size:24px;font-weight:800;color:'+(d.resp_med<=30?'#0d9488':'#d97706')+'">'+(d.resp_med?fmtRespTxt(d.resp_med):'-')+'</div><div style="font-size:10px;color:#64748b">'+(d.resp_med<=30?'✓ dentro da meta':'⚠ acima de 30min')+'</div></div>',
     '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Solução Média</div><div style="font-size:24px;font-weight:800;color:'+(d.solucao_med_h<=48?'#7c3aed':'#e11d48')+'">'+(d.solucao_med_h||'-')+'h</div><div style="font-size:10px;color:#64748b">'+(d.solucao_med_h<=48?'✓ dentro do SLA':'⚠ acima de 48h')+'</div></div>'
     ].join('')+'</div>'
     // Volume mensal
@@ -4684,12 +4686,12 @@ function exportRgPDF(){
   var avgDaily=byDay.length>0?Math.round(byDay.reduce(function(a,b){return a+b.n;},0)/byDay.length):0;
   var cooActions=[];
   if(age30p>0)cooActions.push({p:'P1',area:'Operações',titulo:'Chamados envelhecidos (+30 dias)',oque:'Revisar os '+age30p+' chamados sem solução há mais de 30 dias. Escalar, redistribuir ou encerrar.',resp:'Coordenação + Liderança Técnica',prazo:'Hoje'});
-  if(respMed>60)cooActions.push({p:'P1',area:'Operações',titulo:'SLA de primeira resposta crítico ('+respMed+'min)',oque:'Revisar distribuição da fila no turno de maior volume.',resp:'Liderança Técnica',prazo:'Hoje'});
+  if(respMed>60)cooActions.push({p:'P1',area:'Operações',titulo:'SLA de primeira resposta crítico ('+fmtRespTxt(respMed)+')',oque:'Revisar distribuição da fila no turno de maior volume.',resp:'Liderança Técnica',prazo:'Hoje'});
   if(totalBloq>20&&!age30p&&respMed<=60)cooActions.push({p:'P1',area:'Operações',titulo:'Volume crítico de bloqueados ('+totalBloq+')',oque:'Mutirão de desbloqueio: ag.interno → escalar; ag.cliente → ligar ou encerrar.',resp:'Coordenação',prazo:'Hoje'});
   if(aguardInt>5)cooActions.push({p:'P2',area:'Equipe',titulo:'Fila interna represada ('+aguardInt+' chamados)',oque:'Identificar gargalo e definir prazo de resposta ou reatribuir.',resp:'Gestor de Fila',prazo:'Esta semana'});
   if(solMed>72)cooActions.push({p:'P2',area:'Processo',titulo:'Tempo de solução acima do SLA ('+solMed+'h)',oque:'Mapear chamados acima de 48h. Identificar causa: skill, dependência externa ou volume.',resp:'Liderança Técnica + CS',prazo:'Esta semana'});
   if(trendPct>15)cooActions.push({p:'P2',area:'Operações',titulo:'Volume crescendo '+trendPct+'% vs semana anterior',oque:'Verificar se aumento é de cliente específico ou sistêmico. Avaliar reforço temporário.',resp:'Coordenação',prazo:'Esta semana'});
-  if(respMed>30&&respMed<=60)cooActions.push({p:'P2',area:'Operações',titulo:'1ª resposta acima da meta ('+respMed+'min)',oque:'Auditar horários de pico e ajustar escala.',resp:'Liderança Técnica',prazo:'Esta semana'});
+  if(respMed>30&&respMed<=60)cooActions.push({p:'P2',area:'Operações',titulo:'1ª resposta acima da meta ('+fmtRespTxt(respMed)+')',oque:'Auditar horários de pico e ajustar escala.',resp:'Liderança Técnica',prazo:'Esta semana'});
   if(taxaConc<70&&taxaConc>0)cooActions.push({p:'P3',area:'Processo',titulo:'Taxa de conclusão abaixo da meta ('+taxaConc+'%)',oque:'Revisar backlog em aberto. Identificar chamados que podem ser encerrados.',resp:'Coordenação',prazo:'Próximas 2 semanas'});
   if(pctMA>25)cooActions.push({p:'P3',area:'Operações',titulo:'Alta concentração de prioridade Muito Alta ('+pctMA+'%)',oque:'Avaliar calibração de prioridades. Checar se clientes estão abrindo tudo como crítico.',resp:'Coordenação + CS',prazo:'Próximas 2 semanas'});
   var p1Count=cooActions.filter(function(a){return a.p==='P1';}).length;
@@ -4701,7 +4703,7 @@ function exportRgPDF(){
   // ── Narrativa ──────────────────────────────────────────────
   var nar1='Neste período foram registrados <strong>'+total+' chamados</strong>. Taxa de conclusão: <strong>'+taxaConc+'%</strong>'+(taxaConc>=80?' (excelente)':taxaConc>=65?' (boa)':taxaConc>=50?' (regular)':' (abaixo do esperado — requer atenção)')+'.';
   var nar2=abertos>0?'Existem <strong>'+abertos+' chamados em aberto</strong> ('+pctAbertos+'% do volume). '+(totalBloq>20?'Bloqueados em nível crítico: <strong>'+totalBloq+'</strong>.':totalBloq>10?totalBloq+' chamados bloqueados — requer atenção.':totalBloq>0?totalBloq+' chamados bloqueados (nível aceitável).':'Nenhum chamado bloqueado.'):'';
-  var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':respMed+'min';
+  var respH=fmtRespTxt(respMed);
   var nar3=respMed>0?'Tempo médio de <strong>primeira resposta</strong>: <strong>'+respH+'</strong>'+(respMed<=30?' (dentro da meta).':' (acima da meta de 30min).')+' Tempo médio de <strong>solução</strong>: <strong>'+solMed+'h</strong>'+(solMed<=24?' (ótimo).':solMed<=40?' (aceitável).':' (acima do ideal).'):'';
 
   // ── Ritmo ──────────────────────────────────────────────────
@@ -4800,7 +4802,7 @@ function exportRgPDF(){
   H+='<div class="metrics-grid">';
   H+='<div class="metric-card"><div class="metric-val">'+total+'</div><div class="metric-lbl">Total de Chamados</div><div class="metric-sub">'+trendTxt+'</div></div>';
   H+='<div class="metric-card"><div class="metric-val" style="color:'+(taxaConc>=70?'#10b981':taxaConc>=50?'#f59e0b':'#ef4444')+'">'+taxaConc+'%</div><div class="metric-lbl">Taxa de Conclusão</div><div class="metric-sub">meta: 70%</div></div>';
-  H+='<div class="metric-card"><div class="metric-val" style="color:'+(respMed<=30?'#10b981':respMed<=60?'#f59e0b':'#ef4444')+'">'+(respMed>=60?(Math.round(respMed/60*10)/10)+'h':respMed+'min')+'</div><div class="metric-lbl">1ª Resposta (med.)</div><div class="metric-sub">meta: 30min</div></div>';
+  H+='<div class="metric-card"><div class="metric-val" style="color:'+(respMed<=30?'#10b981':respMed<=60?'#f59e0b':'#ef4444')+'">'+fmtRespTxt(respMed)+'</div><div class="metric-lbl">1ª Resposta (med.)</div><div class="metric-sub">meta: 30min</div></div>';
   H+='<div class="metric-card"><div class="metric-val" style="color:'+(solMed<=48?'#10b981':solMed<=72?'#f59e0b':'#ef4444')+'">'+solMed+'h</div><div class="metric-lbl">Tempo de Solução (med.)</div><div class="metric-sub">meta: 48h</div></div>';
   H+='</div>';
   H+='<div class="metrics-grid" style="margin-top:10px">';
@@ -4978,7 +4980,7 @@ function renderRelatorio(){
   var saudeColor=saudeScore>=80?'#1D9E75':saudeScore>=65?'#4f8ef7':saudeScore>=50?'#EF9F27':'#E24B4A';
 
   // Frase executiva dinâmica
-  var alerta=respMed>60?'O tempo médio de primeira resposta ('+Math.round(respMed)+'min) está acima do acordado contratualmente, representando risco direto de insatisfação.':
+  var alerta=respMed>60?'O tempo médio de primeira resposta ('+fmtRespTxt(Math.round(respMed))+') está acima do acordado contratualmente, representando risco direto de insatisfação.':
              respMed>30?'O tempo de primeira resposta está acima da meta — exige atenção para evitar violações contratuais.':
              'O tempo de resposta está dentro da meta contratual.';
   var cliAbaixo=clientes.filter(function(c){return c.score<75;}).length;
@@ -4990,8 +4992,8 @@ function renderRelatorio(){
 
   // Riscos (dinâmicos)
   var riscos=[];
-  if(respMed>60)riscos.push({nivel:'crit',titulo:'Velocidade de atendimento comprometida',desc:'Tempo de primeira resposta '+Math.round(respMed)+'min — '+(Math.round(respMed/30*10)/10)+'× acima do contratado. Risco direto de violação contratual e churn.'});
-  else if(respMed>30)riscos.push({nivel:'warn',titulo:'Tempo de resposta acima da meta',desc:'Primeira resposta em '+Math.round(respMed)+'min contra meta de 30min. Monitorar para evitar escalações.'});
+  if(respMed>60)riscos.push({nivel:'crit',titulo:'Velocidade de atendimento comprometida',desc:'Tempo de primeira resposta '+fmtRespTxt(Math.round(respMed))+' — '+(Math.round(respMed/30*10)/10)+'× acima do contratado. Risco direto de violação contratual e churn.'});
+  else if(respMed>30)riscos.push({nivel:'warn',titulo:'Tempo de resposta acima da meta',desc:'Primeira resposta em '+fmtRespTxt(Math.round(respMed))+' contra meta de 30min. Monitorar para evitar escalações.'});
   if(saudeScore<65)riscos.push({nivel:'crit',titulo:'Índice de qualidade operacional baixo',desc:'Score médio '+saudeScore+'/100 — mais de '+(100-saudeScore)+'% dos critérios de qualidade não atingem o padrão mínimo.'});
   if(totalBloq>0&&pctBloq>=7)riscos.push({nivel:'warn',titulo:'Chamados aguardando ação externa',desc:totalBloq+' chamados ('+pctBloq+'%) bloqueados aguardam retorno externo. Cada dia parado aumenta o risco de escalação.'});
   if(cliAbaixo>0)riscos.push({nivel:cliAbaixo>=3?'crit':'warn',titulo:cliAbaixo+' cliente'+(cliAbaixo>1?'s abaixo':'abaixo')+' do limiar de qualidade',desc:'Clientes com score < 75: '+clientes.filter(function(c){return c.score<75;}).map(function(c){return c.nome+' ('+c.score+')';}).join(', ')+'. Risco de churn se não houver intervenção.'});
@@ -5066,7 +5068,7 @@ function renderRelatorio(){
   H+='<div class="rel-metric"><div class="rel-metric-label">Em andamento</div><div class="rel-metric-value" style="color:'+(pctAb>20?'#E24B4A':pctAb>10?'#EF9F27':'#4f8ef7')+'">'+abertos+'</div><div class="rel-metric-sub">'+pctAb+'% do total</div></div>';
   H+='<div class="rel-metric"><div class="rel-metric-label">Aguardando resposta</div><div class="rel-metric-value" style="color:'+(pctBloq>=10?'#E24B4A':pctBloq>=5?'#EF9F27':'var(--text)')+'">'+totalBloq+'</div><div class="rel-metric-sub">'+pctBloq+'% do total</div></div>';
   var respColor=respMed>60?'#E24B4A':respMed>30?'#EF9F27':'#1D9E75';
-  H+='<div class="rel-metric"><div class="rel-metric-label">1ª Resposta (mediana)</div><div class="rel-metric-value" style="color:'+respColor+'">'+Math.round(respMed)+'<span style="font-size:13px;font-weight:400">min</span></div><span class="rel-metric-tag" style="background:rgba(226,75,74,.12);color:'+respColor+'">meta: 30min</span></div>';
+  H+='<div class="rel-metric"><div class="rel-metric-label">1ª Resposta (mediana)</div><div class="rel-metric-value" style="color:'+respColor+'">'+fmtResp(Math.round(respMed))+'</div><span class="rel-metric-tag" style="background:rgba(226,75,74,.12);color:'+respColor+'">meta: 30min</span></div>';
   H+='<div class="rel-metric"><div class="rel-metric-label">Tempo médio de solução</div><div class="rel-metric-value">'+Math.round(solMed*10)/10+'<span style="font-size:13px;font-weight:400">h</span></div><div class="rel-metric-sub">chamados encerrados</div></div>';
   H+='<div class="rel-metric"><div class="rel-metric-label">Prioridade crítica</div><div class="rel-metric-value" style="color:'+(prioMA>0?'#E24B4A':'var(--text)')+'">'+prioMA+'</div><div class="rel-metric-sub">'+Math.round(prioMA/Math.max(total,1)*100)+'% do volume</div></div>';
   H+='<div class="rel-metric"><div class="rel-metric-label">Equipe ativa</div><div class="rel-metric-value" style="color:#4f8ef7">'+(atendAtivos||atendData.length||'—')+'</div><div class="rel-metric-sub">atendentes no período</div></div>';
@@ -5238,7 +5240,7 @@ function renderResumo(){
   else if(totalBloq>10)p2+='Existem <strong>'+totalBloq+' chamados bloqueados</strong>, o que <strong>exige atenção</strong>.';
   else if(totalBloq>0)p2+='Há <strong>'+totalBloq+' chamados bloqueados</strong>, dentro de um nível aceitável.';
   var p3='';
-  if(respMed>0){var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':Math.round(respMed)+' min';p3+='O tempo médio de <strong>primeira resposta</strong> foi de <strong>'+respH+'</strong>'+(respMed<=30?', dentro da meta de 30 minutos.':', acima da meta de 30 minutos.')+' ';}
+  if(respMed>0){var respH=fmtRespTxt(Math.round(respMed));p3+='O tempo médio de <strong>primeira resposta</strong> foi de <strong>'+respH+'</strong>'+(respMed<=30?', dentro da meta de 30 minutos.':', acima da meta de 30 minutos.')+' ';}
   if(solMed>0){p3+='O tempo médio de <strong>solução</strong> foi de <strong>'+solMed+'h</strong>'+(solMed<=24?', considerado <strong>bom</strong>.':solMed<=40?', dentro de um nível aceitável.':', <strong>acima do ideal</strong> — recomenda-se revisar chamados antigos.');}
   var p4='';
   if(prioMA>0){p4+='O volume de chamados de <strong>prioridade muito alta</strong> é de <strong>'+prioMA+'</strong> ('+pctMA+'% do total). ';if(pctMA>40)p4+='Este percentual é <strong>crítico</strong> e requer atenção urgente.';else if(pctMA>30)p4+='Este percentual está <strong>elevado</strong>.';else p4+='Este percentual está dentro do normal.';}
@@ -5256,7 +5258,7 @@ function renderResumo(){
     titulo:'SLA de primeira resposta em estado crítico',
     oque:'Revisar distribuição da fila no turno de maior volume. Considerar plantão de triagem para o pico.',
     resp:'Liderança Técnica',prazo:'Hoje',
-    justif:'Mediana de '+respMed+'min — '+Math.round(respMed/30*10)/10+'× acima do contrato. Cada violação é passivo contratual.'});
+    justif:'Mediana de '+fmtRespTxt(respMed)+' — '+Math.round(respMed/30*10)/10+'× acima do contrato. Cada violação é passivo contratual.'});
   if(totalBloq>20&&!age30p&&respMed<=60)cooActions.push({p:'p1',area:'Operações',
     titulo:'Volume crítico de chamados bloqueados ('+totalBloq+')',
     oque:'Realizar mutirão de desbloqueio: ag.interno → escalar para o responsável; ag.cliente → ligar ou encerrar.',
@@ -5285,7 +5287,7 @@ function renderResumo(){
     resp:'Customer Success',prazo:'Esta semana',
     justif:'Clientes: '+cliChurnAlto.slice(0,4).join(', ')+(cliChurnAlto.length>4?' e outros':'')+'.'});
   if(respMed>30&&respMed<=60)cooActions.push({p:'p2',area:'Operações',
-    titulo:'1ª resposta acima da meta ('+respMed+'min)',
+    titulo:'1ª resposta acima da meta ('+fmtRespTxt(respMed)+')',
     oque:'Auditar os horários de pico da fila. Ajustar escala ou priorizar atendimentos de "Aberto" no início do turno.',
     resp:'Liderança Técnica',prazo:'Esta semana',
     justif:'Meta: 30min. Desvio de '+Math.round(respMed-30)+'min. Impacto direto na percepção de SLA pelo cliente.'});
@@ -5780,14 +5782,14 @@ function computeIAData(op){
   var topS=Object.entries(svc).sort(function(a,b){return b[1]-a[1];})[0];
   var narr='A operação apresenta <strong>taxa de conclusão de '+taxa+'%</strong>'+(taxa>=80?', considerada excelente.':', abaixo da meta de 80%.')+(!total?' Sem chamados no período filtrado.':'');
   if(bloq>0)narr+='<br><br>O volume de <strong>'+bloq+' chamados bloqueados</strong>'+(bloq>50?' está crítico e exige triagem imediata.':' requer atenção.');
-  narr+='<br><br>A <strong>primeira resposta ('+resp_med+' min)</strong>'+(resp_med<=META?' está dentro da meta de '+META+' min.':' está acima da meta de '+META+' min.');
+  narr+='<br><br>A <strong>primeira resposta ('+fmtRespTxt(resp_med)+')</strong>'+(resp_med<=META?' está dentro da meta de '+META+' min.':' está acima da meta de '+META+' min.');
   if(topS)narr+='<br><br>O serviço <strong>'+topS[0]+'</strong> concentra '+Math.round(topS[1]/Math.max(total,1)*100)+'% dos chamados.';
   var ctx=[];
   if(activeCliente)ctx.push(activeCliente);
   if(activeMonth!=='all')ctx.push(({'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26'}[activeMonth]||activeMonth));
   if(activeFilaOP!=='all')ctx.push(activeFilaOP);
   var riscos=[];
-  if(resp_med>META)riscos.push({titulo:'Primeira resposta acima da meta',desc:'Mediana de '+resp_med+' min contra meta de '+META+' min.',nivel:resp_med>60?'high':'medium',confianca:85});
+  if(resp_med>META)riscos.push({titulo:'Primeira resposta acima da meta',desc:'Mediana de '+fmtRespTxt(resp_med)+' contra meta de '+META+' min.',nivel:resp_med>60?'high':'medium',confianca:85});
   if(bloq>0)riscos.push({titulo:'Chamados bloqueados aguardando ação',desc:bloq+' parados — Ag.Cliente: '+aguCli+', Ag.Interno: '+aguInt+', Ag.Externo: '+aguExt+'.',nivel:bloq>50?'high':'medium',confianca:90});
   if(aging30>0)riscos.push({titulo:aging30+' chamados abertos há mais de 30 dias',desc:'Risco de escalonamento pelo cliente.',nivel:'high',confianca:95});
   if(total>0&&prioMA/total>.10)riscos.push({titulo:'Alto percentual de prioridade Muito Alta ('+Math.round(prioMA/total*100)+'%)',desc:'Concentração acima de 10% indica possível instabilidade.',nivel:'medium',confianca:70});
@@ -5808,7 +5810,7 @@ function computeIAData(op){
       narrativa:narr,
       kpis:[
         {label:'Score Operacional',value:String(score),sub:scoreSub,color:scoreColor},
-        {label:'Risco de SLA',value:slaR,sub:'1ª resposta: '+resp_med+' min',color:slaC},
+        {label:'Risco de SLA',value:slaR,sub:'1ª resposta: '+fmtRespTxt(resp_med),color:slaC},
         {label:'Taxa de Conclusão',value:taxa+'%',sub:fechados+' de '+total+' fechados',color:taxa>=80?'var(--ok)':taxa>=60?'var(--warn)':'var(--danger)'},
         {label:'Previsão 7 dias',value:'~'+fore+'/semana',sub:'~'+avgD+'/dia (média)',color:'var(--purple)'}
       ],
