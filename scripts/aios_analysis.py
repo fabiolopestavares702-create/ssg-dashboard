@@ -14,6 +14,11 @@ PASTA       = os.environ.get("WORK_DIR", str(Path.home() / "Desktop" / "Arquivo 
 OUTPUT_PATH = os.path.join(PASTA, "aios-insights.json")
 LOG_PATH    = os.path.join(PASTA, "ssg_log.txt")
 
+# Filtro de mês: "YYYY-MM" ou "all". Padrão = mês atual.
+# Pode ser sobrescrito via env var AIOS_MES=all ou AIOS_MES=2026-03
+_hoje       = datetime.now()
+MES_FILTRO  = os.environ.get("AIOS_MES", _hoje.strftime("%Y-%m"))  # ex: "2026-04"
+
 # ── Mapeamentos (espelham o dashboard) ──────────────────────
 COL_MAP = {
     "num":      ["número do chamado", "número", "chamado", "ticket"],
@@ -22,9 +27,10 @@ COL_MAP = {
     "estado":   ["estado", "status", "situação"],
     "prior":    ["prioridade", "priority"],
     "atend":    ["atendente", "assignee"],
-    "cli_nome": ["nome do cliente", "customer name", "c_cliente", "c cliente"],
+    # C_Cliente (empresa) tem prioridade sobre Nome do Cliente (pessoa/contato)
+    "cli_nome": ["c_cliente", "c cliente", "nome do cliente", "customer name"],
     "assunto":  ["assunto", "subject"],
-    "servico":  ["serviço", "service"],
+    "servico":  ["serviço", "service", "árvore de artigo", "arvore de artigo"],
     "resp_min": ["primeira resposta em minutos", "first response in minutes"],
     "sol_min":  ["tempo de solução em minutos", "resolution time in minutes"],
     "fila":     ["fila", "queue"],
@@ -73,9 +79,10 @@ def log(m):
         pass
 
 def find_col(headers, key):
-    for h in headers:
-        hl = h.lower().strip().replace("_", " ")
-        for alias in COL_MAP.get(key, []):
+    # Itera aliases em ordem (1º alias = maior prioridade), então verifica headers
+    for alias in COL_MAP.get(key, []):
+        for h in headers:
+            hl = h.lower().strip().replace("_", " ")
             if hl == alias or alias in hl:
                 return h
     return None
@@ -521,6 +528,7 @@ def gerar_insights(m):
 
     return {
         "generated_at": datetime.now().isoformat(),
+        "periodo": MES_FILTRO,
         "version": "1.0",
         "resumo_gestao": {
             "narrativa": gerar_narrativa_resumo(m),
@@ -556,6 +564,15 @@ def main():
     log(f"Processando: {os.path.basename(xlsx_path)}")
     tickets = processar_xlsx(xlsx_path)
     log(f"{len(tickets)} chamados carregados")
+
+    # Filtro de mês
+    if MES_FILTRO != "all":
+        antes = len(tickets)
+        ano_m, mes_m = int(MES_FILTRO.split("-")[0]), int(MES_FILTRO.split("-")[1])
+        tickets = [t for t in tickets if t["criado"] and t["criado"].year == ano_m and t["criado"].month == mes_m]
+        log(f"Filtro mês {MES_FILTRO}: {len(tickets)}/{antes} chamados (use AIOS_MES=all para todos)")
+    else:
+        log("Sem filtro de mês — analisando período completo")
 
     m = calcular_metricas(tickets)
     log(f"health={m['health']} | abertos={m['abertos']} | bloqueados={m['bloqueados']} | resp={m['resp_med']}min | sol={m['sol_med']}h")
