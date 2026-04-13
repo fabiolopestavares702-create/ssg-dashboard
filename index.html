@@ -1654,7 +1654,7 @@ function setMode(m){
   if(isCli)initCli();
   if(isCS)initCS();
   if(isRG)renderResumo();
-  if(isIA)renderIA();
+  if(isIA){computeInsights();renderIA();}
 }
 function goSecIA(id,el){
   ['ia-resumo','ia-op','ia-cli','ia-cs'].forEach(function(s){
