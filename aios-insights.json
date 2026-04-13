@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-12T23:55:10.150863",
+  "generated_at": "2026-04-13T07:28:00.122429",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -90,17 +90,17 @@
     },
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 44 chamados (16% do total). O módulo <strong>Banco de Dados</strong> concentra 43% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 45 chamados (16% do total). O módulo <strong>Banco de Dados</strong> concentra 44% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "44 chamados (16% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "45 chamados (16% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
         {
           "titulo": "Reincidência no módulo Banco de Dados",
-          "desc": "43% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "desc": "44% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
@@ -177,7 +177,7 @@
     },
     {
       "cliente": "AUTOZONE",
-      "narrativa": "O módulo <strong>Banco de Dados</strong> representa 43% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.<br><br>Com <strong>61% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
+      "narrativa": "O módulo <strong>Banco de Dados</strong> representa 44% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.<br><br>Com <strong>58% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "média"
