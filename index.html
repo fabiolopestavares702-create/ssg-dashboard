@@ -2863,8 +2863,46 @@ function initCli(){
   renderInf();
 }
 
+// Constrói objeto empresa a partir do RAW_DATA com os 3 filtros ativos
+function buildEmpresaFromRaw(key){
+  if(!(typeof RAW_DATA!=='undefined'&&RAW_DATA&&RAW_DATA.length))return null;
+  var emp=EMPRESAS[key]||{};
+  var mN={'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
+  var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+  var isFe=function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+  var rows=RAW_DATA.filter(function(d){
+    if(!d.criado)return false;
+    if(d.cli_id!==key)return false;
+    if(activeMonth!=='all'&&d.criado.toISOString().slice(0,7)!==activeMonth)return false;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP)return false;
+    return true;
+  });
+  if(!rows.length)return Object.assign({},emp,{total:0,abertos:0,fechados:0,tickets:[],estados:{},servicos:{},by_mes:{},filas:{},prior:{}});
+  var total=rows.length;
+  var abertos=rows.filter(function(d){return isAb(d.estado);}).length;
+  var fechados=rows.filter(function(d){return isFe(d.estado);}).length;
+  var respRows=rows.filter(function(d){return d.resp_min!=null&&!isNaN(d.resp_min);}).sort(function(a,b){return a.resp_min-b.resp_min;});
+  var resp_med=respRows.length?Math.round(respRows[Math.floor(respRows.length/2)].resp_min):null;
+  var solRows=rows.filter(function(d){return isFe(d.estado)&&d.sol_h!=null;});
+  var solucao_med_h=solRows.length?Math.round(solRows.reduce(function(s,d){return s+d.sol_h;},0)/solRows.length*10)/10:null;
+  var estados={},servicos={},filas={},by_mes={},prior={};
+  rows.forEach(function(d){
+    if(d.estado)estados[d.estado]=(estados[d.estado]||0)+1;
+    if(d.servico)servicos[d.servico]=(servicos[d.servico]||0)+1;
+    if(d.fila&&d.fila!=='LIXO')filas[d.fila]=(filas[d.fila]||0)+1;
+    if(d.prior)prior[d.prior]=(prior[d.prior]||0)+1;
+    if(d.criado){var p=d.criado.toISOString().slice(0,7).split('-');var mk=mN[p[1]]+'/'+p[0].slice(2);by_mes[mk]=(by_mes[mk]||0)+1;}
+  });
+  var pad=function(n){return n<10?'0'+n:n;};
+  var tickets=rows.slice().sort(function(a,b){return(b.criado||0)-(a.criado||0);}).slice(0,25).map(function(d){
+    var dt=d.criado?pad(d.criado.getDate())+'/'+pad(d.criado.getMonth()+1)+' '+pad(d.criado.getHours())+':'+pad(d.criado.getMinutes()):'—';
+    return{num:d.num,assunto:d.assunto,estado:d.estado,prioridade:d.prior,criado:dt,servico:d.servico,fila:d.fila||'',resp_min:d.resp_min,sol:d.sol_h};
+  });
+  return{nome:emp.nome||ENM2[key]||key,id:key,total:total,abertos:abertos,fechados:fechados,resp_med:resp_med,solucao_med_h:solucao_med_h,estados:estados,servicos:servicos,filas:filas,by_mes:by_mes,tickets:tickets,prior:prior};
+}
+
 function loadEmpresa(key){
-  var d=key?getFilteredEmpresa(EMPRESAS[key]):null;
+  var d=key?((typeof RAW_DATA!=='undefined'&&RAW_DATA&&RAW_DATA.length)?buildEmpresaFromRaw(key):getFilteredEmpresa(EMPRESAS[key])):null;
   // Atualiza filtro de mês com totais da empresa selecionada
   buildMonthFilter();
   // Sempre re-renderiza o painel ao trocar empresa ou filtro de mês
