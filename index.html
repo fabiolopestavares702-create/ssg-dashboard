@@ -2811,9 +2811,9 @@ function renderSl(){
   var sm=op.sol_med!=null?op.sol_med:54.1;
   var kpis=document.querySelectorAll('#s-sl .kpi');
   if(kpis.length>=4){
-    var vals=[[rm,'min'],[Math.round(rm*10.5),'min'],[sm,'h'],[Math.round(sm*0.68*10)/10,'h']];
+    var vals=[[fmtResp(rm),''],[Math.round(rm*10.5)+'min',''],[sm,'h'],[Math.round(sm*0.68*10)/10,'h']];
     var subs=[rm<=META_RESP?'<span style="color:var(--ok)">✓ dentro da meta</span>':'<span style="color:var(--danger)">⚠ acima de 30min</span>','outliers elevam a média','chamados fechados','mais representativa'];
-    vals.forEach(function(kv,i){var v=kpis[i]&&kpis[i].querySelector('.kpi-val'),s=kpis[i]&&kpis[i].querySelector('.kpi-sub');if(v)v.innerHTML=kv[0]+'<span>'+kv[1]+'</span>';if(s)s.innerHTML=subs[i];});
+    vals.forEach(function(kv,i){var v=kpis[i]&&kpis[i].querySelector('.kpi-val'),s=kpis[i]&&kpis[i].querySelector('.kpi-sub');if(v)v.innerHTML=kv[1]?kv[0]+'<span>'+kv[1]+'</span>':kv[0];if(s)s.innerHTML=subs[i];});
   }
   // Barras de meta
   var metaEl=document.getElementById('sla-metas-bars');
@@ -2922,7 +2922,7 @@ function renderPainel(d){
   document.getElementById('co-total').textContent=d.total;
   document.getElementById('co-abertos').textContent=d.abertos;
   document.getElementById('co-fechados').textContent=d.fechados;
-  document.getElementById('co-resp').textContent=d.resp_med!==null?(d.resp_med+'min'):'—';
+  document.getElementById('co-resp').textContent=d.resp_med!==null?fmtRespTxt(d.resp_med):'—';
   document.getElementById('co-sol').textContent=d.solucao_med_h!==null?(d.solucao_med_h+'h'):'—';
   // health badge
   var score=calcScore(d);
@@ -2998,7 +2998,7 @@ function renderHealthScore(d){
   var ap=pct(d.abertos,d.total);
   var rows=[
     {l:'Taxa de resolução',v:pct(d.fechados,d.total)+'%',c:pct(d.fechados,d.total)>=80?'var(--ok)':pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
-    {l:'1ª Resposta (med.)',v:(d.resp_med||'—')+'min',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
+    {l:'1ª Resposta (med.)',v:d.resp_med?fmtRespTxt(d.resp_med):'—',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
     {l:'Chamados em aberto',v:d.abertos+' ('+ap+'%)',c:ap<=10?'var(--ok)':ap<=25?'var(--warn)':'var(--danger)'},
     {l:'Tempo médio solução',v:(d.solucao_med_h||'—')+'h',c:d.solucao_med_h<=48?'var(--ok)':d.solucao_med_h<=96?'var(--warn)':'var(--danger)'}
   ];
@@ -3012,7 +3012,7 @@ function renderHealthScore(d){
   var mediaGeral={taxa:62,resp:8,sol:54};var taxa=pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
-    {l:'1ª Resposta mediana',emp:(d.resp_med||'—')+'min',geral:mediaGeral.resp+'min',melhor:d.resp_med<=mediaGeral.resp},
+    {l:'1ª Resposta mediana',emp:d.resp_med?fmtRespTxt(d.resp_med):'—',geral:fmtRespTxt(mediaGeral.resp),melhor:d.resp_med<=mediaGeral.resp},
     {l:'Tempo médio solução',emp:(d.solucao_med_h||'—')+'h',geral:mediaGeral.sol+'h',melhor:d.solucao_med_h<=mediaGeral.sol}
   ].map(function(r){var c=r.melhor?'var(--ok)':'var(--warn)';return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" title="Média geral">Fila: '+r.geral+'</span><span class="comp-arrow" style="color:'+c+'">'+(r.melhor?'✓':'!')+'</span><span class="comp-curr" style="color:'+c+'">'+r.emp+'</span><span class="comp-delta" style="background:'+(r.melhor?'rgba(16,185,129,.1)':'rgba(245,158,11,.1)')+';color:'+c+'">'+(r.melhor?'Acima':'Abaixo')+'</span></div>';}).join('');
 }
@@ -4435,6 +4435,20 @@ setMode = function(m) {
   });
 };
 
+// ─── Formatação de tempo de resposta (min → horas legíveis) ──
+function fmtResp(min) {
+  if (min < 60) return min + '<span>min</span>';
+  var h = Math.floor(min / 60);
+  var m = Math.round(min % 60);
+  return m > 0 ? h + '<span>h' + m + 'min</span>' : h + '<span>h</span>';
+}
+function fmtRespTxt(min) {
+  if (min < 60) return min + 'min';
+  var h = Math.floor(min / 60);
+  var m = Math.round(min % 60);
+  return m > 0 ? h + 'h' + m + 'min' : h + 'h';
+}
+
 function updateKPIs(op) {
   var total=op.total||0,ab=op.abertos||0,fe=op.fechados||0;
   var maTotal=(op.prior&&op.prior['Muito Alta'])||0;
@@ -4442,7 +4456,7 @@ function updateKPIs(op) {
   var bloqE=['Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
   var bloq=bloqE.reduce(function(s,e){return s+(op.estado&&op.estado[e]||0);},0);
   var rm=op.resp_med!=null?op.resp_med:8,sm=op.sol_med!=null?op.sol_med:54.1;
-  var vals=[total,ab,fe,maTotal,rm+'<span>min</span>',sm+'<span>h</span>',bloq,14];
+  var vals=[total,ab,fe,maTotal,fmtResp(rm),sm+'<span>h</span>',bloq,14];
   var colors=['var(--text)','var(--warn)','var(--ok)','var(--danger)','var(--teal)','var(--purple)','var(--orange)','var(--blue)'];
   var subs=[activeMonth==='all'?'jan–mar':'período selecionado',Math.round(ab/(total||1)*100)+'% do total',taxa+'% de conclusão',Math.round(maTotal/(total||1)*100)+'% do volume',rm<=30?'✓ dentro da meta':'acima de 30min','chamados fechados',Math.round(bloq/(total||1)*100)+'% aguardando','equipe ativa'];
   for(var i=0;i<8;i++){
