@@ -4098,6 +4098,7 @@ function setFilaOP(fila) {
   rendered = {};
   var active = document.querySelector('#view-op .sec.on');
   if(active) renderSec(active.id);
+  renderInf();
   renderAlertas();
   // Re-render Portal se houver empresa selecionada
   var empKey = document.getElementById('sel-empresa') ? document.getElementById('sel-empresa').value : null;
@@ -4112,14 +4113,11 @@ function setFilaCli(fila) {
   buildFilaBtns('fila-btns-op', fila, setFilaOP); // sincroniza
   var empKey = document.getElementById('sel-empresa') ? document.getElementById('sel-empresa').value : null;
   if(empKey) loadEmpresa(empKey);
-  // Re-render OP e CLI ativos
+  // Re-render OP
   rendered = {};
   var active = document.querySelector('#view-op .sec.on');
   if(active) renderSec(active.id);
-  // c-inf sempre re-renderiza: initCli() renderiza seu conteúdo sem marcar .on
   renderInf();
-  var activeCli = document.querySelector('#view-cli .sec.on');
-  if(activeCli && activeCli.id !== 'c-inf') renderSec(activeCli.id);
   renderAlertas();
   computeInsights();
 }
