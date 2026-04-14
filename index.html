@@ -4428,6 +4428,21 @@ setMode = function(m) {
   });
 };
 
+// ─── REGRA PERMANENTE: 1ª Resposta exibe em horas quando >= 60min ────────────
+// NÃO REMOVER estas funções. São usadas em updateKPIs e outros pontos do dash.
+// < 60min → "45min" | >= 60min → "1h30min", "2h57min", etc.
+function fmtResp(min) {
+  if (min < 60) return min + '<span>min</span>';
+  var h = Math.floor(min / 60), m = Math.round(min % 60);
+  return m > 0 ? h + '<span>h' + m + 'min</span>' : h + '<span>h</span>';
+}
+function fmtRespTxt(min) {
+  if (min < 60) return min + 'min';
+  var h = Math.floor(min / 60), m = Math.round(min % 60);
+  return m > 0 ? h + 'h' + m + 'min' : h + 'h';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function updateKPIs(op) {
   var total=op.total||0,ab=op.abertos||0,fe=op.fechados||0;
   var maTotal=(op.prior&&op.prior['Muito Alta'])||0;
@@ -4436,7 +4451,7 @@ function updateKPIs(op) {
   var bloq=bloqE.reduce(function(s,e){return s+(op.estado&&op.estado[e]||0);},0);
   if(!bloq)bloq=(BLOQ_MESES[activeMonth]||BLOQ_MESES['all']||[]).reduce(function(a,b){return a+b.n;},0);
   var rm=op.resp_med!=null?op.resp_med:8,sm=op.sol_med!=null?op.sol_med:54.1;
-  var vals=[total,ab,fe,maTotal,rm+'<span>min</span>',sm+'<span>h</span>',bloq,14];
+  var vals=[total,ab,fe,maTotal,fmtResp(rm),sm+'<span>h</span>',bloq,14];
   var colors=['var(--text)','var(--warn)','var(--ok)','var(--danger)','var(--teal)','var(--purple)','var(--orange)','var(--blue)'];
   var subs=[activeMonth==='all'?'jan–mar':'período selecionado',Math.round(ab/(total||1)*100)+'% do total',taxa+'% de conclusão',Math.round(maTotal/(total||1)*100)+'% do volume',rm<=30?'✓ dentro da meta':'acima de 30min','chamados fechados',Math.round(bloq/(total||1)*100)+'% aguardando','equipe ativa'];
   for(var i=0;i<8;i++){
