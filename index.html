@@ -50,6 +50,108 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-btn.cs.on{background:linear-gradient(135deg,#7c3aed,#a855f7)}
 .tb-btn.rg.on{background:linear-gradient(135deg,#b45309,#d97706)}
 .tb-btn.ia.on{background:linear-gradient(135deg,#6d28d9,#8b5cf6)}
+.tb-btn.ap.on{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+/* ═══ AP (APONTAMENTOS) ════════════════════════════════════════ */
+.nav.ap-on{color:#14b8a6;background:rgba(20,184,166,.08);border-left-color:#14b8a6;font-weight:500}
+/* Cards do módulo AP */
+.ap-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.ap-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px}
+.ap-kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--display);margin-bottom:6px}
+.ap-kpi-val{font-size:22px;font-weight:700;font-family:var(--display);color:var(--text);line-height:1}
+.ap-kpi-sub{font-size:10px;color:var(--sub);margin-top:4px}
+.ap-kpi.accent-teal{border-color:rgba(20,184,166,.25);background:rgba(20,184,166,.05)}
+.ap-kpi.accent-teal .ap-kpi-val{color:#14b8a6}
+/* Config e import box */
+.ap-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.ap-box-title{font-family:var(--display);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--sub);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ap-box-title svg{width:13px;height:13px;flex-shrink:0}
+.ap-field-row{display:grid;gap:10px;margin-bottom:10px}
+.ap-field-row.col2{grid-template-columns:1fr 1fr}
+.ap-field-row.col3{grid-template-columns:1fr 1fr 1fr}
+.ap-field-row.col4{grid-template-columns:1fr 1fr 1fr 1fr}
+.ap-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-family:var(--display)}
+.ap-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--text);font-family:var(--font);outline:none;transition:border-color .2s}
+.ap-input:focus{border-color:#14b8a6}
+.ap-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--text);font-family:var(--font);outline:none;cursor:pointer}
+.ap-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--text);font-family:var(--font);outline:none;resize:vertical;min-height:60px;transition:border-color .2s}
+.ap-textarea:focus{border-color:#14b8a6}
+.ap-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:var(--font);transition:all .2s;white-space:nowrap}
+.ap-btn.primary{background:#14b8a6;color:#000}
+.ap-btn.primary:hover{background:#0d9488}
+.ap-btn.secondary{background:var(--bg3);color:var(--sub);border:1px solid var(--border)}
+.ap-btn.secondary:hover{border-color:#14b8a6;color:#14b8a6}
+.ap-btn.danger{background:rgba(244,63,94,.12);color:var(--danger);border:1px solid rgba(244,63,94,.2)}
+.ap-btn.danger:hover{background:rgba(244,63,94,.2)}
+.ap-btn svg{width:13px;height:13px}
+/* Tabela de apontamentos */
+.ap-tbl-wrap{overflow-x:auto}
+.ap-tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.ap-tbl th{padding:8px 10px;text-align:left;font-family:var(--display);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.ap-tbl td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text);vertical-align:middle}
+.ap-tbl tr:hover td{background:rgba(255,255,255,.02)}
+.ap-tbl .fator-1x{color:var(--teal)}
+.ap-tbl .fator-125x{color:var(--warn)}
+.ap-tbl .fator-150x{color:var(--orange)}
+.ap-tbl .fator-175x{color:var(--danger)}
+.ap-tbl tfoot td{padding:8px 10px;font-weight:700;border-top:1px solid var(--border2);color:#14b8a6;font-family:var(--display);font-size:11px}
+.ap-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.ap-badge.sim{background:rgba(16,185,129,.12);color:var(--ok)}
+.ap-badge.nao{background:rgba(244,63,94,.1);color:var(--danger)}
+/* Relatório imprimível */
+.ap-rel-preview{background:#fff;color:#111;padding:32px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:12px;line-height:1.5;border:1px solid var(--border)}
+.ap-rel-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #111}
+.ap-rel-logo-area h1{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#111;margin:0}
+.ap-rel-logo-area p{font-size:11px;color:#666;margin:2px 0 0}
+.ap-rel-meta{text-align:right;font-size:10px;color:#555}
+.ap-rel-meta strong{display:block;font-size:13px;color:#111;font-weight:700;margin-bottom:4px}
+.ap-rel-section{margin-bottom:20px}
+.ap-rel-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#fff;background:#111;padding:5px 10px;margin-bottom:10px}
+.ap-rel-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ap-rel-field label{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#888;display:block;margin-bottom:2px}
+.ap-rel-field span{font-size:12px;color:#111;font-weight:600}
+.ap-rel-tbl{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:8px}
+.ap-rel-tbl th{padding:5px 8px;background:#f3f4f6;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#555;border:1px solid #e5e7eb;font-weight:700}
+.ap-rel-tbl td{padding:5px 8px;border:1px solid #e5e7eb;color:#222;vertical-align:middle}
+.ap-rel-tbl tfoot td{background:#f9fafb;font-weight:700;color:#111}
+.ap-rel-comp-row{display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid #f0f0f0}
+.ap-rel-comp-row:last-child{border-bottom:none;font-weight:700;background:#f9fafb;padding:7px 10px}
+.ap-rel-banco-row{display:flex;justify-content:space-between;padding:6px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;margin-bottom:6px}
+.ap-rel-sign{margin-top:32px;padding-top:16px;border-top:1px solid #ddd;display:flex;gap:40px}
+.ap-rel-sign-block{flex:1}
+.ap-rel-sign-line{border-top:1px solid #222;margin-bottom:4px;padding-top:4px;font-size:10px;color:#666}
+.ap-rel-obs{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 12px;margin-top:8px;font-size:11px;color:#92400e}
+.ap-regras-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px;margin-top:12px;font-size:10px;color:#475569}
+.ap-regras-box table{width:100%;border-collapse:collapse}
+.ap-regras-box th,.ap-regras-box td{padding:4px 8px;border:1px solid #e2e8f0;text-align:left}
+.ap-regras-box th{background:#f1f5f9;font-weight:700}
+/* Upload drop zone */
+.ap-drop{border:2px dashed var(--border2);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;transition:all .2s}
+.ap-drop:hover,.ap-drop.drag{border-color:#14b8a6;background:rgba(20,184,166,.04)}
+.ap-drop-icon{width:40px;height:40px;border-radius:50%;background:rgba(20,184,166,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#14b8a6}
+.ap-drop-icon svg{width:20px;height:20px}
+.ap-mode-toggle{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;margin-bottom:16px;width:fit-content}
+.ap-mode-btn{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:var(--font);transition:all .2s}
+.ap-mode-btn.on{background:#14b8a6;color:#000}
+/* Filters bar */
+.ap-filters-bar{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+.ap-filter-group{display:flex;flex-direction:column;gap:4px;min-width:120px}
+/* Msg estado vazio */
+.ap-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;color:var(--muted);gap:12px}
+.ap-empty svg{width:40px;height:40px;opacity:.3}
+.ap-empty p{font-size:13px}
+/* Status pill */
+.ap-status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(20,184,166,.1);color:#14b8a6;border:1px solid rgba(20,184,166,.25)}
+.ap-status-pill.empty{background:rgba(90,98,120,.1);color:var(--muted);border-color:var(--border)}
+/* Print */
+@media print{
+  .topbar,.sidebar,#nav-ap,.ap-filters-bar,.ap-box.no-print,.ap-kpi-row,.ap-btn,
+  .ap-mode-toggle,.ap-drop,#view-op,#view-cli,#view-cs,#view-rg,#view-ia,
+  #ap-tabela-sec{display:none!important}
+  #view-ap,#ap-relatorio-sec{display:block!important}
+  .view{display:block!important}
+  .ap-rel-preview{border:none;padding:0;box-shadow:none}
+  body,html{background:#fff}
+}
 /* ═══ AI LAYER ════════════════════════════════════════════════ */
 .tb-ai-badge{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(139,92,246,.12);color:#a855f7;border:1px solid rgba(139,92,246,.3)}
 .tb-ai-dot{width:6px;height:6px;border-radius:50%;background:#a855f7;animation:aipulse 2s infinite}
@@ -629,6 +731,10 @@ input[type=file]{display:none}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       ✦ IA
     </button>
+    <button class="tb-btn ap" id="btn-ap" onclick="setMode('ap')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Apontamentos
+    </button>
   </div>
   <div class="tb-alerts" id="tb-alerts">
     <div class="tb-alert-pill tap-danger" id="alert-criticos">
@@ -715,6 +821,21 @@ input[type=file]{display:none}
   <div id="nav-rg" style="display:none">
     <div class="sb-head">Gestão</div>
     <div class="nav" style="color:var(--warn)" onclick="renderResumo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Resumo Executivo</div>
+  </div>
+  <div id="nav-ap" style="display:none">
+    <div class="sb-head">Apontamentos</div>
+    <div class="nav ap-on" id="nav-ap-tabela" onclick="goSecAP('ap-tabela-sec',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Apontamentos
+    </div>
+    <div class="nav" id="nav-ap-relatorio" onclick="goSecAP('ap-relatorio-sec',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Gerar Relatório
+    </div>
+    <div class="nav" id="nav-ap-config" onclick="goSecAP('ap-config-sec',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 105 19.07M19.07 4.93l-2.12 2.12"/></svg>
+      Configuração API
+    </div>
   </div>
   <div id="nav-ia" style="display:none">
     <div class="sb-head">Inteligência</div>
@@ -1370,6 +1491,246 @@ input[type=file]{display:none}
   </div>
 </div><!-- /view-ia -->
 
+<!-- ══════ APONTAMENTOS VIEW ══════ -->
+<div id="view-ap" class="view">
+
+  <!-- ── SEÇÃO: TABELA DE APONTAMENTOS ── -->
+  <div id="ap-tabela-sec" class="sec on">
+    <div class="page-header">
+      <h1>Apontamentos de Horas</h1>
+      <p>Consulte, filtre e consolide os registros do portal de apontamento.</p>
+    </div>
+    <div class="page-body">
+
+      <!-- KPIs -->
+      <div class="ap-kpi-row" id="ap-kpis">
+        <div class="ap-kpi"><div class="ap-kpi-label">Total Registros</div><div class="ap-kpi-val" id="ap-k-total">—</div><div class="ap-kpi-sub">apontamentos no período</div></div>
+        <div class="ap-kpi accent-teal"><div class="ap-kpi-label">Horas Apontadas</div><div class="ap-kpi-val" id="ap-k-horas">—</div><div class="ap-kpi-sub">horas brutas registradas</div></div>
+        <div class="ap-kpi"><div class="ap-kpi-label">Horas Utilizadas</div><div class="ap-kpi-val" id="ap-k-utilizadas">—</div><div class="ap-kpi-sub">com fator hora aplicado</div></div>
+        <div class="ap-kpi"><div class="ap-kpi-label">Aprovadas</div><div class="ap-kpi-val" id="ap-k-aprovadas">—</div><div class="ap-kpi-sub">horas aprovadas no portal</div></div>
+      </div>
+
+      <!-- Modo de fonte de dados -->
+      <div class="ap-box">
+        <div class="ap-box-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Fonte de Dados
+        </div>
+        <div class="ap-mode-toggle">
+          <button class="ap-mode-btn on" id="ap-src-csv-btn" onclick="apSetSource('csv')">Import CSV</button>
+          <button class="ap-mode-btn" id="ap-src-api-btn" onclick="apSetSource('api')">API Live</button>
+        </div>
+
+        <!-- CSV mode -->
+        <div id="ap-src-csv">
+          <p style="font-size:11px;color:var(--sub);margin-bottom:12px">Exporte os dados pelo portal em <strong style="color:var(--text)">Relatórios → OS → Gerar CSV</strong>, então importe aqui.</p>
+          <div class="ap-drop" id="ap-drop-zone" onclick="document.getElementById('ap-file-input').click()"
+               ondragover="event.preventDefault();this.classList.add('drag')"
+               ondragleave="this.classList.remove('drag')"
+               ondrop="apHandleDrop(event)">
+            <div class="ap-drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <p style="font-size:12px;font-weight:600;color:var(--text)">Arraste o CSV aqui ou clique para selecionar</p>
+            <p style="font-size:10px;color:var(--muted);margin-top:4px">Arquivo .csv exportado pelo portal de apontamentos</p>
+          </div>
+          <input type="file" id="ap-file-input" accept=".csv" style="display:none" onchange="apLoadCSV(this)">
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+            <button class="ap-btn secondary" onclick="apPasteJSON()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              Colar JSON/CSV manual
+            </button>
+            <span id="ap-load-status" class="ap-status-pill empty">Nenhum dado carregado</span>
+          </div>
+        </div>
+
+        <!-- API mode -->
+        <div id="ap-src-api" style="display:none">
+          <p style="font-size:11px;color:var(--sub);margin-bottom:12px">Requer o arquivo <code style="background:var(--bg3);padding:1px 5px;border-radius:4px;color:#14b8a6">api_apontamentos.php</code> instalado no servidor do portal.</p>
+          <div class="ap-field-row col2">
+            <div><div class="ap-label">URL do Proxy PHP</div><input class="ap-input" id="ap-api-url" type="text" placeholder="https://apontamento.groundwork.com.br/api_apontamentos.php" oninput="apSaveConfig()"></div>
+            <div><div class="ap-label">Login do Portal</div><input class="ap-input" id="ap-api-login" type="text" placeholder="fabio.tavares" oninput="apSaveConfig()"></div>
+          </div>
+          <div class="ap-field-row col2">
+            <div><div class="ap-label">Senha</div><input class="ap-input" id="ap-api-senha" type="password" placeholder="••••••••" oninput="apSaveConfig()"></div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="ap-btn primary" onclick="apFetchAPI()" style="width:100%">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 12a11.05 11.05 0 00-22 0zm-5 7a3 3 0 01-6 0v-7"/></svg>
+                Buscar dados
+              </button>
+            </div>
+          </div>
+          <p style="font-size:10px;color:var(--muted);margin-top:6px">🔒 Credenciais salvas apenas localmente neste dispositivo (localStorage). Nunca trafegam hardcodadas no código.</p>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="ap-filters-bar" id="ap-filters-bar">
+        <div class="ap-filter-group">
+          <div class="ap-label">De</div>
+          <input class="ap-input" id="ap-flt-de" type="date" onchange="apApplyFilters()" style="width:130px">
+        </div>
+        <div class="ap-filter-group">
+          <div class="ap-label">Até</div>
+          <input class="ap-input" id="ap-flt-ate" type="date" onchange="apApplyFilters()" style="width:130px">
+        </div>
+        <div class="ap-filter-group">
+          <div class="ap-label">Cliente</div>
+          <select class="ap-select" id="ap-flt-cliente" onchange="apApplyFilters()" style="width:140px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="ap-filter-group">
+          <div class="ap-label">Projeto</div>
+          <select class="ap-select" id="ap-flt-projeto" onchange="apApplyFilters()" style="width:140px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="ap-filter-group">
+          <div class="ap-label">Operador</div>
+          <select class="ap-select" id="ap-flt-operador" onchange="apApplyFilters()" style="width:140px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="ap-filter-group">
+          <div class="ap-label">Tarefa</div>
+          <input class="ap-input" id="ap-flt-tarefa" type="text" placeholder="Filtrar tarefa…" oninput="apApplyFilters()" style="width:130px">
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end">
+          <button class="ap-btn secondary" onclick="apClearFilters()">Limpar</button>
+          <button class="ap-btn primary" onclick="goSecAP('ap-relatorio-sec',document.getElementById('nav-ap-relatorio'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Gerar Relatório
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+          <span>Registros de Apontamento</span>
+          <span id="ap-tbl-count" style="font-size:10px;color:var(--muted)"></span>
+        </div>
+        <div class="ap-tbl-wrap">
+          <div id="ap-tbl-body">
+            <div class="ap-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <p>Importe um CSV ou conecte a API para visualizar os apontamentos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /ap-tabela-sec -->
+
+  <!-- ── SEÇÃO: RELATÓRIO ── -->
+  <div id="ap-relatorio-sec" class="sec">
+    <div class="page-header">
+      <h1>Gerar Relatório</h1>
+      <p>Configure os dados do relatório e gere o PDF para envio ao cliente.</p>
+    </div>
+    <div class="page-body">
+
+      <!-- Config do relatório -->
+      <div class="ap-box no-print">
+        <div class="ap-box-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Dados do Relatório
+        </div>
+        <div class="ap-field-row col3">
+          <div><div class="ap-label">Cliente</div><input class="ap-input" id="ap-rel-cliente" type="text" placeholder="Nome do cliente" oninput="apRenderRelatorio()"></div>
+          <div><div class="ap-label">Projeto / Contrato</div><input class="ap-input" id="ap-rel-projeto" type="text" placeholder="Nome do projeto ou contrato" oninput="apRenderRelatorio()"></div>
+          <div><div class="ap-label">Banco Contratual (hh:mm)</div><input class="ap-input" id="ap-rel-banco" type="text" placeholder="40:00" oninput="apRenderRelatorio()"></div>
+        </div>
+        <div class="ap-field-row col2">
+          <div><div class="ap-label">Descrição da Atividade</div><textarea class="ap-textarea" id="ap-rel-descricao" placeholder="Descreva as atividades realizadas no período…" oninput="apRenderRelatorio()"></textarea></div>
+          <div><div class="ap-label">Observação Contratual</div><textarea class="ap-textarea" id="ap-rel-obs" placeholder="Inserir observação sobre termos de SLA, contrato ou banco de horas…" oninput="apRenderRelatorio()"></textarea></div>
+        </div>
+        <div class="ap-field-row col3">
+          <div><div class="ap-label">Responsável / Assinatura</div><input class="ap-input" id="ap-rel-resp" type="text" placeholder="Nome do responsável"></div>
+          <div><div class="ap-label">Função</div><input class="ap-input" id="ap-rel-funcao" type="text" placeholder="ex: Gerente de Projetos"></div>
+          <div style="display:flex;align-items:flex-end;gap:8px">
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--sub);cursor:pointer">
+              <input type="checkbox" id="ap-rel-mostrar-regras" checked onchange="apRenderRelatorio()" style="accent-color:#14b8a6">
+              Exibir regras de fator hora
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="ap-btn primary" onclick="apPrintRelatorio()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir / Salvar PDF
+          </button>
+          <button class="ap-btn secondary" onclick="apRenderRelatorio()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Atualizar Preview
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview do relatório -->
+      <div id="ap-rel-preview-wrap">
+        <div class="ap-rel-preview" id="ap-rel-doc">
+          <div style="text-align:center;padding:40px;color:#999;font-size:13px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:40px;height:40px;opacity:.3;margin:0 auto 12px;display:block"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Carregue os dados e preencha os campos acima para visualizar o relatório.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /ap-relatorio-sec -->
+
+  <!-- ── SEÇÃO: CONFIG API ── -->
+  <div id="ap-config-sec" class="sec">
+    <div class="page-header">
+      <h1>Configuração da API</h1>
+      <p>Instruções para ativar o modo de integração live com o portal.</p>
+    </div>
+    <div class="page-body">
+      <div class="ap-box">
+        <div class="ap-box-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Como instalar o proxy PHP
+        </div>
+        <p style="font-size:12px;color:var(--sub);line-height:1.8;margin-bottom:14px">
+          Para usar o modo <strong style="color:var(--text)">API Live</strong>, é necessário instalar um arquivo PHP no servidor do portal de apontamentos.
+          Esse arquivo age como proxy CORS: recebe a requisição do dashboard, autentica no portal,
+          busca os dados e retorna JSON — sem expor credenciais no frontend.
+        </p>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;font-family:var(--mono);color:var(--sub);line-height:1.9">
+          1. Copie o arquivo <span style="color:#14b8a6">api_apontamentos.php</span> para a raiz do portal:<br>
+          &nbsp;&nbsp;&nbsp;<span style="color:var(--text)">apontamento.groundwork.com.br/api_apontamentos.php</span><br><br>
+          2. No dashboard → aba Apontamentos → Fonte de Dados → API Live<br>
+          3. Preencha a URL, login e senha → clique em "Buscar dados"<br><br>
+          <span style="color:var(--warn)">⚠ As credenciais ficam salvas apenas em localStorage neste dispositivo.</span><br>
+          <span style="color:var(--ok)">✓ O arquivo PHP já inclui proteção de origem (CORS) e não expõe a senha no código.</span>
+        </div>
+      </div>
+      <div class="ap-box">
+        <div class="ap-box-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Regras de Fator Hora (aplicadas localmente)
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+          <thead><tr style="background:var(--bg3)">
+            <th style="padding:7px 10px;text-align:left;border:1px solid var(--border);color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em">Período</th>
+            <th style="padding:7px 10px;text-align:left;border:1px solid var(--border);color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em">Horário</th>
+            <th style="padding:7px 10px;text-align:center;border:1px solid var(--border);color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em">Fator</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:7px 10px;border:1px solid var(--border)">Seg a Sex</td><td style="padding:7px 10px;border:1px solid var(--border)">08:00 às 18:00</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:center;color:var(--teal);font-weight:700">1,00×</td></tr>
+            <tr><td style="padding:7px 10px;border:1px solid var(--border)">Seg a Sex</td><td style="padding:7px 10px;border:1px solid var(--border)">18:01 às 22:00</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:center;color:var(--warn);font-weight:700">1,25×</td></tr>
+            <tr><td style="padding:7px 10px;border:1px solid var(--border)">Seg a Sex</td><td style="padding:7px 10px;border:1px solid var(--border)">22:01 às 07:59</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:center;color:var(--orange);font-weight:700">1,50×</td></tr>
+            <tr><td style="padding:7px 10px;border:1px solid var(--border)">Fins de Semana e Feriados</td><td style="padding:7px 10px;border:1px solid var(--border)">Qualquer horário</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:center;color:var(--danger);font-weight:700">1,75×</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:10px;color:var(--muted);margin-top:8px">O fator é determinado pelo horário de início do apontamento. Quando os dados vêm do portal via CSV, o fator já é fornecido pelo sistema — o dashboard usa esse valor. Na ausência do campo, calcula localmente pelas regras acima.</p>
+      </div>
+    </div>
+  </div><!-- /ap-config-sec -->
+
+</div><!-- /view-ap -->
+
 </main>
 </div>
 
@@ -1620,21 +1981,25 @@ function setMode(m){
   var isCS=m==='cs';
   var isRG=m==='rg';
   var isIA=m==='ia';
+  var isAP=m==='ap';
   document.getElementById('view-op').classList.toggle('on',isOp);
   document.getElementById('view-cli').classList.toggle('on',isCli);
   document.getElementById('view-cs').classList.toggle('on',isCS);
   document.getElementById('view-rg').classList.toggle('on',isRG);
   document.getElementById('view-ia').classList.toggle('on',isIA);
+  document.getElementById('view-ap').classList.toggle('on',isAP);
   document.getElementById('nav-op').style.display=isOp?'block':'none';
   document.getElementById('nav-cli').style.display=isCli?'block':'none';
   document.getElementById('nav-cs').style.display=isCS?'block':'none';
   document.getElementById('nav-rg').style.display=isRG?'block':'none';
   document.getElementById('nav-ia').style.display=isIA?'block':'none';
+  document.getElementById('nav-ap').style.display=isAP?'block':'none';
   document.getElementById('btn-op').classList.toggle('on',isOp);
   document.getElementById('btn-cli').classList.toggle('on',isCli);
   document.getElementById('btn-cs').classList.toggle('on',isCS);
   document.getElementById('btn-rg').classList.toggle('on',isRG);
   document.getElementById('btn-ia').classList.toggle('on',isIA);
+  document.getElementById('btn-ap').classList.toggle('on',isAP);
   document.getElementById('tb-alerts').style.display=isOp?'flex':'none';
   document.getElementById('sb-import-btn').className='sb-import-btn'+(isOp?'':' cli-mode');
   document.getElementById('import-drop-zone').className='import-drop-zone'+(isOp?'':' cli-mode');
@@ -1643,6 +2008,7 @@ function setMode(m){
   if(isCS)initCS();
   if(isRG)renderResumo();
   if(isIA){computeInsights();renderIA();}
+  if(isAP)initAP();
 }
 function goSecIA(id,el){
   ['ia-resumo','ia-op','ia-cli','ia-cs'].forEach(function(s){
@@ -3788,9 +4154,9 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   // ── SE\u00c7\u00c3O 4: TEMPO M\u00c9DIO SLA
   H+='<div class="section">';
   H+='<div class="sec-header"><div class="sec-num">4</div><div class="sec-title">Tempo M\u00e9dio de SLA</div><div class="sec-sub">Meta: \u226448h \u00fateis</div></div>';
-  H+='<p style="font-size:13px;color:#374151;margin-bottom:16px">O tempo m\u00e9dio de solu\u00e7\u00e3o no per\u00edodo foi de <strong>'+d.solucao_med_h+'h</strong> e o tempo de primeira resposta mediano foi de <strong>'+d.resp_med+'min</strong>.</p>';
+  H+='<p style="font-size:13px;color:#374151;margin-bottom:16px">O tempo m\u00e9dio de solu\u00e7\u00e3o no per\u00edodo foi de <strong>'+d.solucao_med_h+'h</strong> e o tempo de primeira resposta mediano foi de <strong>'+fmtRespTxt(d.resp_med)+'</strong>.</p>';
   H+='<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">';
-  H+='<div class="kpi '+(d.resp_med<=30?'green':'orange')+'"><div class="kpi-lbl">1\u00aa Resposta (med.)</div><div class="kpi-val">'+d.resp_med+'<span style="font-size:14px">min</span></div><div class="kpi-sub">'+(d.resp_med<=30?'\u2705 dentro da meta':'\u26a0\ufe0f acima de 30min')+'</div></div>';
+  H+='<div class="kpi '+(d.resp_med<=30?'green':'orange')+'"><div class="kpi-lbl">1\u00aa Resposta (med.)</div><div class="kpi-val">'+fmtResp(d.resp_med)+'</div><div class="kpi-sub">'+(d.resp_med<=30?'\u2705 dentro da meta':'\u26a0\ufe0f acima de 30min')+'</div></div>';
   H+='<div class="kpi '+(d.solucao_med_h<=48?'green':'orange')+'"><div class="kpi-lbl">Solu\u00e7\u00e3o M\u00e9dia</div><div class="kpi-val">'+d.solucao_med_h+'<span style="font-size:14px">h</span></div><div class="kpi-sub">'+(d.solucao_med_h<=48?'\u2705 dentro do SLA':'\u26a0\ufe0f acima de 48h')+'</div></div>';
   H+='<div class="kpi"><div class="kpi-lbl">Atendidos OK</div><div class="kpi-val" style="color:#16a34a">'+atenOK+'</div><div class="kpi-sub">dentro de 48h</div></div>';
   H+='<div class="kpi '+(violados>0?'red':'')+'"><div class="kpi-lbl">Violados</div><div class="kpi-val" style="color:'+(violados>0?'#dc2626':'#16a34a')+'">'+violados+'</div><div class="kpi-sub">'+(violados>0?'acima de 48h':'nenhuma viola\u00e7\u00e3o')+'</div></div>';
@@ -4429,8 +4795,6 @@ setMode = function(m) {
 };
 
 // ─── REGRA PERMANENTE: 1ª Resposta exibe em horas quando >= 60min ────────────
-// NÃO REMOVER estas funções. São usadas em updateKPIs e outros pontos do dash.
-// < 60min → "45min" | >= 60min → "1h30min", "2h57min", etc.
 function fmtResp(min) {
   if (min < 60) return min + '<span>min</span>';
   var h = Math.floor(min / 60), m = Math.round(min % 60);
@@ -4441,8 +4805,6 @@ function fmtRespTxt(min) {
   var h = Math.floor(min / 60), m = Math.round(min % 60);
   return m > 0 ? h + 'h' + m + 'min' : h + 'h';
 }
-// ─────────────────────────────────────────────────────────────────────────────
-
 function updateKPIs(op) {
   var total=op.total||0,ab=op.abertos||0,fe=op.fechados||0;
   var maTotal=(op.prior&&op.prior['Muito Alta'])||0;
@@ -6080,6 +6442,661 @@ function renderIA(){
   }else if(sub){
     sub.textContent='Importe um arquivo XLSX para gerar a análise automaticamente';
   }
+}
+
+// ════════════════════════════════════════════════════════════
+// MÓDULO AP — APONTAMENTOS DE HORAS
+// ════════════════════════════════════════════════════════════
+
+var AP_DATA = [];       // dados brutos carregados
+var AP_FILTERED = [];   // dados após filtros
+var AP_SOURCE = 'csv';  // 'csv' | 'api'
+
+// ── Inicialização ────────────────────────────────────────────
+function initAP() {
+  apLoadConfig();
+  apRenderStatus();
+  if (AP_DATA.length > 0) {
+    apPopulateFilters();
+    apApplyFilters();
+  }
+}
+
+// ── Navegação entre seções ────────────────────────────────────
+function goSecAP(id, el) {
+  ['ap-tabela-sec','ap-relatorio-sec','ap-config-sec'].forEach(function(s) {
+    var sec = document.getElementById(s);
+    if (sec) sec.classList.remove('on');
+  });
+  document.querySelectorAll('#nav-ap .nav').forEach(function(n) {
+    n.classList.remove('ap-on','on');
+  });
+  var sec = document.getElementById(id);
+  if (sec) sec.classList.add('on');
+  if (el) el.classList.add('ap-on');
+  if (id === 'ap-relatorio-sec') apRenderRelatorio();
+}
+
+// ── Modo de fonte ─────────────────────────────────────────────
+function apSetSource(src) {
+  AP_SOURCE = src;
+  document.getElementById('ap-src-csv').style.display = src === 'csv' ? 'block' : 'none';
+  document.getElementById('ap-src-api').style.display = src === 'api' ? 'block' : 'none';
+  document.getElementById('ap-src-csv-btn').classList.toggle('on', src === 'csv');
+  document.getElementById('ap-src-api-btn').classList.toggle('on', src === 'api');
+}
+
+// ── Config (localStorage) ─────────────────────────────────────
+function apSaveConfig() {
+  var cfg = {
+    url: document.getElementById('ap-api-url').value,
+    login: document.getElementById('ap-api-login').value,
+    senha: document.getElementById('ap-api-senha').value
+  };
+  localStorage.setItem('ssg-ap-config', JSON.stringify(cfg));
+}
+
+function apLoadConfig() {
+  try {
+    var raw = localStorage.getItem('ssg-ap-config');
+    if (!raw) return;
+    var cfg = JSON.parse(raw);
+    if (cfg.url)   document.getElementById('ap-api-url').value   = cfg.url;
+    if (cfg.login) document.getElementById('ap-api-login').value = cfg.login;
+    if (cfg.senha) document.getElementById('ap-api-senha').value = cfg.senha;
+  } catch(e) {}
+}
+
+// ── Status pill ───────────────────────────────────────────────
+function apRenderStatus() {
+  var el = document.getElementById('ap-load-status');
+  if (!el) return;
+  if (AP_DATA.length === 0) {
+    el.className = 'ap-status-pill empty';
+    el.textContent = 'Nenhum dado carregado';
+  } else {
+    el.className = 'ap-status-pill';
+    el.textContent = AP_DATA.length + ' registros carregados';
+  }
+}
+
+// ── CSV: drag & drop ──────────────────────────────────────────
+function apHandleDrop(e) {
+  e.preventDefault();
+  document.getElementById('ap-drop-zone').classList.remove('drag');
+  var file = e.dataTransfer.files[0];
+  if (file) apReadFile(file);
+}
+
+function apLoadCSV(input) {
+  var file = input.files[0];
+  if (file) apReadFile(file);
+}
+
+function apReadFile(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var records = apParseCSV(text);
+    if (records.length === 0) {
+      alert('Nenhum dado encontrado. Verifique se o arquivo é o CSV exportado do portal de apontamentos.');
+      return;
+    }
+    AP_DATA = records;
+    apPopulateFilters();
+    apApplyFilters();
+    apRenderStatus();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ── Parse CSV do portal ───────────────────────────────────────
+// Colunas esperadas (exportação padrão do portal):
+// Início | Fim | Dia da Semana | Horas Apontadas | Horas Extras |
+// Horas Utilizadas | Fator Hora | Cliente | Projeto | Tarefa | Descrição | Aprovada
+// Coluna Operador pode vir como coluna adicional ou campo separado.
+function apParseCSV(text) {
+  // Suporta separador ; ou ,
+  var lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').filter(function(l){return l.trim();});
+  if (lines.length < 2) return [];
+  var sep = lines[0].indexOf(';') > lines[0].indexOf(',') ? ';' : ',';
+  var headers = lines[0].split(sep).map(function(h){return h.trim().replace(/^"|"$/g,'').toLowerCase();});
+
+  // Mapeamento de campos (tolerante a variações de nome)
+  function col(h, candidates) {
+    for (var i=0;i<candidates.length;i++) {
+      var idx = h.indexOf(candidates[i]);
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  }
+
+  var iInicio  = col(headers,['início','inicio','de','start']);
+  var iFim     = col(headers,['fim','até','ate','end']);
+  var iDiaSem  = col(headers,['dia','semana','weekday']);
+  var iHAp     = col(headers,['horas apontadas','h.apontadas','apontadas','horas_apontadas']);
+  var iHEx     = col(headers,['horas extras','extras','h.extras']);
+  var iHUtil   = col(headers,['utilizadas','h.util','fator hora aplicado','horas_utilizadas']);
+  var iFator   = col(headers,['fator hora','fator_hora','fator']);
+  var iCli     = col(headers,['cliente']);
+  var iProj    = col(headers,['projeto']);
+  var iTarefa  = col(headers,['tarefa']);
+  var iDesc    = col(headers,['descri','descrição','description']);
+  var iAprov   = col(headers,['aprovada','aprovado','approved']);
+  var iOper    = col(headers,['operador','operator','usuário','usuario','atendente']);
+
+  var records = [];
+  for (var i = 1; i < lines.length; i++) {
+    var cells = apSplitCSVLine(lines[i], sep);
+    if (cells.length < 4) continue;
+    function g(idx) { return idx >= 0 ? cells[idx].replace(/^"|"$/g,'').trim() : ''; }
+
+    var inicio = g(iInicio);
+    var fim    = g(iFim);
+    var fatorRaw = g(iFator);
+    var hUtilRaw = g(iHUtil);
+
+    // Calcula fator localmente se não vier do CSV
+    var fatorNum = parseFloat(fatorRaw.replace(',','.')) || 0;
+    if (!fatorNum && inicio) fatorNum = apCalcFator(inicio);
+
+    // Calcula horas utilizadas se não vier
+    var hApMin  = apHHMMtoMin(g(iHAp));
+    var hUtilMin = hUtilRaw ? apHHMMtoMin(hUtilRaw) : Math.round(hApMin * fatorNum);
+
+    records.push({
+      inicio:    inicio,
+      fim:       fim,
+      dia_sem:   g(iDiaSem),
+      h_apontadas: g(iHAp),
+      h_extras:  g(iHEx),
+      h_utilizadas: hUtilRaw || apMinToHHMM(hUtilMin),
+      fator:     fatorNum || 1,
+      cliente:   g(iCli),
+      projeto:   g(iProj),
+      tarefa:    g(iTarefa),
+      descricao: g(iDesc),
+      aprovada:  g(iAprov),
+      operador:  g(iOper),
+    });
+  }
+  return records;
+}
+
+function apSplitCSVLine(line, sep) {
+  var result = [], cur = '', inQ = false;
+  for (var i=0;i<line.length;i++) {
+    var c = line[i];
+    if (c==='"') { inQ=!inQ; }
+    else if (c===sep && !inQ) { result.push(cur); cur=''; }
+    else cur+=c;
+  }
+  result.push(cur);
+  return result;
+}
+
+// ── JSON paste ────────────────────────────────────────────────
+function apPasteJSON() {
+  var text = prompt('Cole o JSON ou CSV dos apontamentos:');
+  if (!text) return;
+  try {
+    var parsed = JSON.parse(text);
+    AP_DATA = Array.isArray(parsed) ? parsed : (parsed.data || []);
+    apPopulateFilters();
+    apApplyFilters();
+    apRenderStatus();
+  } catch(e) {
+    var records = apParseCSV(text);
+    if (records.length > 0) {
+      AP_DATA = records;
+      apPopulateFilters();
+      apApplyFilters();
+      apRenderStatus();
+    } else {
+      alert('Formato não reconhecido. Use o CSV exportado do portal ou um JSON array.');
+    }
+  }
+}
+
+// ── API Live ──────────────────────────────────────────────────
+function apFetchAPI() {
+  var url   = document.getElementById('ap-api-url').value.trim();
+  var login = document.getElementById('ap-api-login').value.trim();
+  var senha = document.getElementById('ap-api-senha').value.trim();
+  var de    = document.getElementById('ap-flt-de').value;
+  var ate   = document.getElementById('ap-flt-ate').value;
+
+  if (!url || !login || !senha) {
+    alert('Preencha a URL do proxy, login e senha.');
+    return;
+  }
+
+  var btn = document.querySelector('#ap-src-api .ap-btn.primary');
+  if (btn) { btn.textContent = 'Buscando…'; btn.disabled = true; }
+
+  var body = new URLSearchParams({
+    action: 'list',
+    login: login,
+    password: senha,
+    date_from: de ? apDateInputToPortal(de) : '',
+    date_to:   ate ? apDateInputToPortal(ate) : ''
+  });
+
+  fetch(url, { method:'POST', body: body,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(obj) {
+    if (btn) { btn.textContent = 'Buscar dados'; btn.disabled = false; }
+    if (!obj.success) { alert('Erro: ' + (obj.error || obj.message || 'Falha na API')); return; }
+    AP_DATA = (obj.data || []).map(function(r) {
+      var fatorNum = parseFloat((r.fator_hora||'1').replace(',','.')) || 1;
+      return {
+        inicio: r.inicio, fim: r.fim, dia_sem: r.dia_semana,
+        h_apontadas: r.horas_apontadas, h_extras: r.horas_extras,
+        h_utilizadas: r.horas_utilizadas, fator: fatorNum,
+        cliente: r.cliente, projeto: r.projeto, tarefa: r.tarefa,
+        descricao: r.descricao, aprovada: r.aprovada, operador: r.operador||''
+      };
+    });
+    apPopulateFilters();
+    apApplyFilters();
+    apRenderStatus();
+  })
+  .catch(function(err) {
+    if (btn) { btn.textContent = 'Buscar dados'; btn.disabled = false; }
+    alert('Erro de conexão: ' + err.message + '\n\nVerifique se o arquivo api_apontamentos.php está instalado no servidor do portal.');
+  });
+}
+
+function apDateInputToPortal(dateStr) {
+  // converte yyyy-mm-dd → dd/mm/yyyy 00:00
+  var p = dateStr.split('-');
+  if (p.length !== 3) return dateStr;
+  return p[2]+'/'+p[1]+'/'+p[0]+' 00:00';
+}
+
+// ── Fator hora ────────────────────────────────────────────────
+// Regras: seg-sex 08-18 = 1.0 | 18:01-22 = 1.25 | 22:01-07:59 = 1.5 | fds/feriado = 1.75
+function apCalcFator(inicioStr) {
+  // Parseia "DD/MM/YYYY HH:MM" ou formatos similares
+  var dt = apParseDate(inicioStr);
+  if (!dt) return 1.0;
+  var dow = dt.getDay(); // 0=dom, 6=sab
+  if (dow === 0 || dow === 6) return 1.75;
+  var h = dt.getHours(), min = dt.getMinutes();
+  var totalMin = h * 60 + min;
+  if (totalMin >= 8*60 && totalMin <= 18*60)        return 1.0;
+  if (totalMin > 18*60 && totalMin <= 22*60)         return 1.25;
+  return 1.5; // noturno
+}
+
+function apParseDate(s) {
+  if (!s) return null;
+  // DD/MM/YYYY HH:MM
+  var m1 = s.match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
+  if (m1) return new Date(+m1[3], +m1[2]-1, +m1[1], +m1[4], +m1[5]);
+  // YYYY-MM-DD HH:MM
+  var m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2})/);
+  if (m2) return new Date(+m2[1], +m2[2]-1, +m2[3], +m2[4], +m2[5]);
+  return new Date(s) || null;
+}
+
+// ── Helpers hh:mm ─────────────────────────────────────────────
+function apHHMMtoMin(s) {
+  if (!s) return 0;
+  s = String(s).replace(/[^0-9:]/g,'');
+  var p = s.split(':');
+  if (p.length < 2) return 0;
+  return (+p[0]) * 60 + (+p[1]);
+}
+
+function apMinToHHMM(min) {
+  if (isNaN(min) || min < 0) min = 0;
+  var h = Math.floor(min / 60), m = min % 60;
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+// ── Filtros ───────────────────────────────────────────────────
+function apPopulateFilters() {
+  function fill(id, vals) {
+    var sel = document.getElementById(id);
+    if (!sel) return;
+    var prev = sel.value;
+    sel.innerHTML = '<option value="">Todos</option>';
+    vals.forEach(function(v) {
+      if (!v) return;
+      var o = document.createElement('option');
+      o.value = o.textContent = v;
+      sel.appendChild(o);
+    });
+    if (prev) sel.value = prev;
+  }
+  var clientes  = [...new Set(AP_DATA.map(function(r){return r.cliente;}).filter(Boolean))].sort();
+  var projetos  = [...new Set(AP_DATA.map(function(r){return r.projeto;}).filter(Boolean))].sort();
+  var operadors = [...new Set(AP_DATA.map(function(r){return r.operador;}).filter(Boolean))].sort();
+  fill('ap-flt-cliente', clientes);
+  fill('ap-flt-projeto', projetos);
+  fill('ap-flt-operador', operadors);
+
+  // Data range automática
+  var datas = AP_DATA.map(function(r){return r.inicio;}).filter(Boolean).sort();
+  if (datas.length > 0) {
+    var dtFirst = apParseDate(datas[0]);
+    var dtLast  = apParseDate(datas[datas.length-1]);
+    if (dtFirst && !document.getElementById('ap-flt-de').value)
+      document.getElementById('ap-flt-de').value = apDateToInput(dtFirst);
+    if (dtLast && !document.getElementById('ap-flt-ate').value)
+      document.getElementById('ap-flt-ate').value = apDateToInput(dtLast);
+  }
+}
+
+function apDateToInput(dt) {
+  if (!dt) return '';
+  var y = dt.getFullYear();
+  var m = String(dt.getMonth()+1).padStart(2,'0');
+  var d = String(dt.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+d;
+}
+
+function apApplyFilters() {
+  var de      = document.getElementById('ap-flt-de').value;
+  var ate     = document.getElementById('ap-flt-ate').value;
+  var cli     = document.getElementById('ap-flt-cliente').value;
+  var proj    = document.getElementById('ap-flt-projeto').value;
+  var oper    = document.getElementById('ap-flt-operador').value;
+  var tarefa  = (document.getElementById('ap-flt-tarefa').value||'').toLowerCase();
+
+  var dtDe  = de  ? new Date(de  + 'T00:00:00') : null;
+  var dtAte = ate ? new Date(ate + 'T23:59:59') : null;
+
+  AP_FILTERED = AP_DATA.filter(function(r) {
+    if (dtDe || dtAte) {
+      var dt = apParseDate(r.inicio);
+      if (dt && dtDe  && dt < dtDe)  return false;
+      if (dt && dtAte && dt > dtAte) return false;
+    }
+    if (cli    && r.cliente  !== cli)   return false;
+    if (proj   && r.projeto  !== proj)  return false;
+    if (oper   && r.operador !== oper)  return false;
+    if (tarefa && r.tarefa.toLowerCase().indexOf(tarefa) === -1) return false;
+    return true;
+  });
+
+  apRenderTable();
+  apUpdateKPIs();
+}
+
+function apClearFilters() {
+  ['ap-flt-de','ap-flt-ate','ap-flt-tarefa'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['ap-flt-cliente','ap-flt-projeto','ap-flt-operador'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  apApplyFilters();
+}
+
+// ── Tabela ────────────────────────────────────────────────────
+function apRenderTable() {
+  var wrap = document.getElementById('ap-tbl-body');
+  var countEl = document.getElementById('ap-tbl-count');
+  if (!wrap) return;
+
+  if (AP_FILTERED.length === 0) {
+    wrap.innerHTML = '<div class="ap-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>'+(AP_DATA.length===0?'Importe um CSV ou conecte a API para visualizar os apontamentos.':'Nenhum registro encontrado com os filtros aplicados.')+'</p></div>';
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+
+  if (countEl) countEl.textContent = AP_FILTERED.length + ' registro' + (AP_FILTERED.length!==1?'s':'');
+
+  var showOper = AP_FILTERED.some(function(r){return r.operador;});
+  var H = '<table class="ap-tbl"><thead><tr>';
+  H += '<th>Início</th><th>Fim</th><th>Dia</th>';
+  if (showOper) H += '<th>Operador</th>';
+  H += '<th>Cliente</th><th>Projeto</th><th>Tarefa</th>';
+  H += '<th style="text-align:right">H.Apontadas</th>';
+  H += '<th style="text-align:right">H.Extras</th>';
+  H += '<th style="text-align:center">Fator</th>';
+  H += '<th style="text-align:right">H.Utilizadas</th>';
+  H += '<th>Aprovada</th>';
+  H += '</tr></thead><tbody>';
+
+  AP_FILTERED.forEach(function(r) {
+    var fClass = r.fator >= 1.75 ? 'fator-175x' : r.fator >= 1.5 ? 'fator-150x' : r.fator >= 1.25 ? 'fator-125x' : 'fator-1x';
+    H += '<tr>';
+    H += '<td>'+apEsc(r.inicio)+'</td>';
+    H += '<td>'+apEsc(r.fim)+'</td>';
+    H += '<td>'+apEsc(r.dia_sem)+'</td>';
+    if (showOper) H += '<td>'+apEsc(r.operador)+'</td>';
+    H += '<td>'+apEsc(r.cliente)+'</td>';
+    H += '<td>'+apEsc(r.projeto)+'</td>';
+    H += '<td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+apEsc(r.tarefa)+'">'+apEsc(r.tarefa)+'</td>';
+    H += '<td style="text-align:right;font-family:var(--mono)">'+apEsc(r.h_apontadas)+'</td>';
+    H += '<td style="text-align:right;font-family:var(--mono)">'+apEsc(r.h_extras)+'</td>';
+    H += '<td style="text-align:center" class="'+fClass+'"><strong>'+r.fator.toFixed(2).replace('.',',')+'×</strong></td>';
+    H += '<td style="text-align:right;font-family:var(--mono);font-weight:700">'+apEsc(r.h_utilizadas)+'</td>';
+    var aprov = String(r.aprovada||'').trim().toLowerCase();
+    var simNao = aprov === 'sim' || aprov === '1' || aprov === 'true' || aprov === 'yes';
+    H += '<td><span class="ap-badge '+(simNao?'sim':'nao')+'">'+(simNao?'Sim':'Não')+'</span></td>';
+    H += '</tr>';
+  });
+
+  // Totais
+  var totAp = AP_FILTERED.reduce(function(a,r){return a+apHHMMtoMin(r.h_apontadas);},0);
+  var totEx = AP_FILTERED.reduce(function(a,r){return a+apHHMMtoMin(r.h_extras);},0);
+  var totUt = AP_FILTERED.reduce(function(a,r){return a+apHHMMtoMin(r.h_utilizadas);},0);
+  H += '</tbody><tfoot><tr>';
+  H += '<td colspan="'+(showOper?7:6)+'" style="color:var(--sub)">TOTAL ('+AP_FILTERED.length+' registros)</td>';
+  H += '<td style="text-align:right;font-family:var(--mono)">'+apMinToHHMM(totAp)+'</td>';
+  H += '<td style="text-align:right;font-family:var(--mono)">'+apMinToHHMM(totEx)+'</td>';
+  H += '<td></td>';
+  H += '<td style="text-align:right;font-family:var(--mono)">'+apMinToHHMM(totUt)+'</td>';
+  H += '<td></td>';
+  H += '</tr></tfoot></table>';
+
+  wrap.innerHTML = H;
+}
+
+function apEsc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── KPIs ──────────────────────────────────────────────────────
+function apUpdateKPIs() {
+  var data = AP_FILTERED.length > 0 ? AP_FILTERED : AP_DATA;
+  var totAp = data.reduce(function(a,r){return a+apHHMMtoMin(r.h_apontadas);},0);
+  var totUt = data.reduce(function(a,r){return a+apHHMMtoMin(r.h_utilizadas);},0);
+  var aprovadas = data.filter(function(r){
+    var v=String(r.aprovada||'').toLowerCase().trim();
+    return v==='sim'||v==='1'||v==='true'||v==='yes';
+  });
+  var totAprov = aprovadas.reduce(function(a,r){return a+apHHMMtoMin(r.h_utilizadas);},0);
+
+  function set(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+  set('ap-k-total', data.length);
+  set('ap-k-horas', apMinToHHMM(totAp));
+  set('ap-k-utilizadas', apMinToHHMM(totUt));
+  set('ap-k-aprovadas', apMinToHHMM(totAprov));
+}
+
+// ── Relatório ─────────────────────────────────────────────────
+function apRenderRelatorio() {
+  var doc = document.getElementById('ap-rel-doc');
+  if (!doc) return;
+
+  var cliente  = document.getElementById('ap-rel-cliente').value  || '—';
+  var projeto  = document.getElementById('ap-rel-projeto').value  || '—';
+  var bancoStr = document.getElementById('ap-rel-banco').value    || '00:00';
+  var descr    = document.getElementById('ap-rel-descricao').value|| '';
+  var obs      = document.getElementById('ap-rel-obs').value      || '';
+  var resp     = document.getElementById('ap-rel-resp').value     || '';
+  var funcao   = document.getElementById('ap-rel-funcao').value   || '';
+  var mostrarRegras = document.getElementById('ap-rel-mostrar-regras').checked;
+
+  var data = AP_FILTERED.length > 0 ? AP_FILTERED : AP_DATA;
+
+  if (data.length === 0) {
+    doc.innerHTML = '<div style="text-align:center;padding:40px;color:#999;font-size:13px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:40px;height:40px;opacity:.3;margin:0 auto 12px;display:block"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Carregue os dados e preencha os campos acima para visualizar o relatório.</div>';
+    return;
+  }
+
+  // Datas do período
+  var datas = data.map(function(r){return r.inicio;}).filter(Boolean).sort();
+  var periodoInicio = datas[0] ? datas[0].split(' ')[0] : '—';
+  var periodoFim    = datas[datas.length-1] ? datas[datas.length-1].split(' ')[0] : '—';
+  var hoje = new Date().toLocaleDateString('pt-BR');
+
+  // Totais gerais
+  var totAp   = data.reduce(function(a,r){return a+apHHMMtoMin(r.h_apontadas);},0);
+  var totEx   = data.reduce(function(a,r){return a+apHHMMtoMin(r.h_extras);},0);
+  var totUtil = data.reduce(function(a,r){return a+apHHMMtoMin(r.h_utilizadas);},0);
+  var aprovadas = data.filter(function(r){var v=String(r.aprovada||'').toLowerCase().trim();return v==='sim'||v==='1'||v==='true'||v==='yes';});
+  var totAprov  = aprovadas.reduce(function(a,r){return a+apHHMMtoMin(r.h_utilizadas);},0);
+
+  // Breakdown por fator
+  var fatorMap = {};
+  data.forEach(function(r) {
+    var f = r.fator || apCalcFator(r.inicio);
+    var k = parseFloat(f).toFixed(2);
+    if (!fatorMap[k]) fatorMap[k] = 0;
+    fatorMap[k] += apHHMMtoMin(r.h_utilizadas);
+  });
+
+  // Banco de horas
+  var bancoMin  = apHHMMtoMin(bancoStr);
+  var saldoMin  = bancoMin - totUtil;
+  var saldoStr  = (saldoMin < 0 ? '-' : '+') + apMinToHHMM(Math.abs(saldoMin));
+
+  // Operadores únicos
+  var operSet = [...new Set(data.map(function(r){return r.operador;}).filter(Boolean))];
+
+  var H = '';
+
+  // ── CABEÇALHO ────────────────────────────────────────────────
+  H += '<div class="ap-rel-header">';
+  H += '<div class="ap-rel-logo-area"><h1>GROUNDWORK TECNOLOGIA</h1><p>Relatório de Apontamento de Horas</p></div>';
+  H += '<div class="ap-rel-meta"><strong>RELATÓRIO DE HORAS</strong>Período: '+periodoInicio+' a '+periodoFim+'<br>Emissão: '+hoje+'</div>';
+  H += '</div>';
+
+  // ── DADOS DO PROJETO ─────────────────────────────────────────
+  H += '<div class="ap-rel-section">';
+  H += '<div class="ap-rel-section-title">Dados do Projeto</div>';
+  H += '<div class="ap-rel-grid2">';
+  H += '<div class="ap-rel-field"><label>Cliente</label><span>'+apEscRel(cliente)+'</span></div>';
+  H += '<div class="ap-rel-field"><label>Projeto / Contrato</label><span>'+apEscRel(projeto)+'</span></div>';
+  H += '<div class="ap-rel-field"><label>Período de Apontamento</label><span>'+periodoInicio+' a '+periodoFim+'</span></div>';
+  if (operSet.length > 0) H += '<div class="ap-rel-field"><label>Operador(es)</label><span>'+operSet.join(', ')+'</span></div>';
+  H += '</div>';
+  H += '</div>';
+
+  // ── APONTAMENTO REALIZADO ────────────────────────────────────
+  H += '<div class="ap-rel-section">';
+  H += '<div class="ap-rel-section-title">Apontamento Realizado</div>';
+  H += '<table class="ap-rel-tbl"><thead><tr>';
+  var showOper = operSet.length > 0;
+  if (showOper) H += '<th>Operador</th>';
+  H += '<th>Início</th><th>Fim</th><th>Dia</th><th style="text-align:right">H.Apontadas</th>';
+  H += '<th style="text-align:right">H.Extras</th><th style="text-align:center">Fator</th>';
+  H += '<th style="text-align:right">H.Utilizadas</th><th>Tarefa</th><th>Aprovada</th>';
+  H += '</tr></thead><tbody>';
+
+  data.forEach(function(r) {
+    var aprov = String(r.aprovada||'').toLowerCase().trim();
+    var simNao = aprov==='sim'||aprov==='1'||aprov==='true';
+    H += '<tr>';
+    if (showOper) H += '<td>'+apEscRel(r.operador)+'</td>';
+    H += '<td>'+apEscRel(r.inicio)+'</td>';
+    H += '<td>'+apEscRel(r.fim)+'</td>';
+    H += '<td>'+apEscRel(r.dia_sem)+'</td>';
+    H += '<td style="text-align:right">'+apEscRel(r.h_apontadas)+'</td>';
+    H += '<td style="text-align:right">'+apEscRel(r.h_extras)+'</td>';
+    H += '<td style="text-align:center;font-weight:700">'+parseFloat(r.fator||1).toFixed(2).replace('.',',')+'×</td>';
+    H += '<td style="text-align:right;font-weight:700">'+apEscRel(r.h_utilizadas)+'</td>';
+    H += '<td style="font-size:10px">'+apEscRel(r.tarefa)+'</td>';
+    H += '<td style="text-align:center">'+(simNao?'Sim':'Não')+'</td>';
+    H += '</tr>';
+  });
+
+  H += '</tbody><tfoot><tr>';
+  if (showOper) H += '<td></td>';
+  H += '<td colspan="3"><strong>TOTAL</strong></td>';
+  H += '<td style="text-align:right"><strong>'+apMinToHHMM(totAp)+'</strong></td>';
+  H += '<td style="text-align:right"><strong>'+apMinToHHMM(totEx)+'</strong></td>';
+  H += '<td></td>';
+  H += '<td style="text-align:right"><strong>'+apMinToHHMM(totUtil)+'</strong></td>';
+  H += '<td colspan="2"></td>';
+  H += '</tr></tfoot></table>';
+  H += '</div>';
+
+  // ── COMPOSIÇÃO DE HORAS ──────────────────────────────────────
+  H += '<div class="ap-rel-section">';
+  H += '<div class="ap-rel-section-title">Composição de Horas</div>';
+  var fLabels = {'1.00':'Horas Normais (Seg–Sex 08:00–18:00)','1.25':'Horas Estendidas (Seg–Sex 18:01–22:00)','1.50':'Horas Noturnas (Seg–Sex 22:01–07:59)','1.75':'Horas Fins de Semana / Feriados'};
+  var ordem = ['1.00','1.25','1.50','1.75'];
+  ordem.forEach(function(k) {
+    if (!fatorMap[k]) return;
+    H += '<div class="ap-rel-comp-row"><span>'+fLabels[k]+' — <strong>'+k.replace('.',',')+'×</strong></span><span><strong>'+apMinToHHMM(fatorMap[k])+'</strong></span></div>';
+  });
+  H += '<div class="ap-rel-comp-row"><span><strong>TOTAL HORAS UTILIZADAS</strong></span><span><strong>'+apMinToHHMM(totUtil)+'</strong></span></div>';
+  H += '</div>';
+
+  // ── RESUMO BANCO DE HORAS ────────────────────────────────────
+  H += '<div class="ap-rel-section">';
+  H += '<div class="ap-rel-section-title">Resumo do Banco de Horas</div>';
+  H += '<div class="ap-rel-banco-row"><span>Banco Contratual (período)</span><span><strong>'+bancoStr+'</strong></span></div>';
+  H += '<div class="ap-rel-banco-row"><span>Horas Utilizadas (com fator)</span><span><strong>'+apMinToHHMM(totUtil)+'</strong></span></div>';
+  H += '<div class="ap-rel-banco-row"><span>Horas Aprovadas</span><span><strong>'+apMinToHHMM(totAprov)+'</strong></span></div>';
+  H += '<div class="ap-rel-banco-row" style="background:#f0fdf4;border-color:'+(saldoMin>=0?'#bbf7d0':'#fecaca')+'"><span><strong>Saldo do Banco</strong></span><span style="color:'+(saldoMin>=0?'#166534':'#991b1b')+'"><strong>'+saldoStr+'</strong></span></div>';
+  H += '</div>';
+
+  // ── DESCRIÇÃO DA ATIVIDADE ───────────────────────────────────
+  if (descr.trim()) {
+    H += '<div class="ap-rel-section">';
+    H += '<div class="ap-rel-section-title">Descrição da Atividade</div>';
+    H += '<p style="font-size:11.5px;line-height:1.7;color:#333;padding:0 4px">'+apEscRel(descr).replace(/\n/g,'<br>')+'</p>';
+    H += '</div>';
+  }
+
+  // ── OBSERVAÇÃO CONTRATUAL ────────────────────────────────────
+  if (obs.trim()) {
+    H += '<div class="ap-rel-section">';
+    H += '<div class="ap-rel-section-title">Observação Contratual</div>';
+    H += '<div class="ap-rel-obs">'+apEscRel(obs).replace(/\n/g,'<br>')+'</div>';
+    H += '</div>';
+  }
+
+  // ── REGRAS DE FATOR HORA ─────────────────────────────────────
+  if (mostrarRegras) {
+    H += '<div class="ap-regras-box"><strong style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px">Regras de Fator Hora</strong>';
+    H += '<table><thead><tr><th>Período</th><th>Horário</th><th>Fator</th></tr></thead><tbody>';
+    H += '<tr><td>Seg a Sex</td><td>08:00 às 18:00</td><td>1,00×</td></tr>';
+    H += '<tr><td>Seg a Sex</td><td>18:01 às 22:00</td><td>1,25×</td></tr>';
+    H += '<tr><td>Seg a Sex</td><td>22:01 às 07:59</td><td>1,50×</td></tr>';
+    H += '<tr><td>Fins de Semana e Feriados</td><td>Qualquer horário</td><td>1,75×</td></tr>';
+    H += '</tbody></table></div>';
+  }
+
+  // ── ASSINATURA ───────────────────────────────────────────────
+  H += '<div class="ap-rel-sign">';
+  H += '<div class="ap-rel-sign-block"><div style="height:40px"></div><div class="ap-rel-sign-line">Assinatura</div><div>'+apEscRel(resp||'___________________________')+'</div><div style="font-size:10px;color:#666">'+apEscRel(funcao)+'</div></div>';
+  H += '<div class="ap-rel-sign-block"><div style="height:40px"></div><div class="ap-rel-sign-line">Data</div><div>_____ / _____ / __________</div></div>';
+  H += '<div class="ap-rel-sign-block"><div style="height:40px"></div><div class="ap-rel-sign-line">Visto do Cliente</div><div>___________________________</div></div>';
+  H += '</div>';
+
+  doc.innerHTML = H;
+}
+
+function apEscRel(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function apPrintRelatorio() {
+  apRenderRelatorio();
+  setTimeout(function(){ window.print(); }, 150);
 }
 </script>
 </body>
