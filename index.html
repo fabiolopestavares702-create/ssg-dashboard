@@ -5050,7 +5050,7 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
     H+='</div>';
   }
 
-  SE\u00c7\u00c3O 8: CONSIDERA\u00c7\u00d5ES FINAIS
+  // SE\u00c7\u00c3O 8: CONSIDERA\u00c7\u00d5ES FINAIS
   H+='<div class="section">';
   H+='<div class="sec-header"><div class="sec-num">9</div><div class="sec-title">Considera\u00e7\u00f5es Finais</div></div>';
   H+='<div class="consider">Com base nas informa\u00e7\u00f5es demonstradas acima, nosso objetivo \u00e9 produzir dados e indicadores que permitam avaliar de maneira simples, segura e confi\u00e1vel o atendimento prestado. Contamos com o retorno de todos para continuar aprimorando a qualidade dos servi\u00e7os.<br><br>Contamos com voc\u00eas.<br><br><strong>EQUIPE ERP</strong><br>GROUNDWORK</div>';
@@ -8656,7 +8656,7 @@ function renderNotifPanel() {
         '<div class="notif-desc">' + n.desc + '</div>'+
         '<div class="notif-time">' + n.time + '</div>'+
       '</div>'+
-      '<button style="background:none;border:none;color:var(--muted);cursor:pointer;padding:2px;font-size:14px;flex-shrink:0;line-height:1" onclick="notifDismiss('' + n.id + '',event)" title="Dispensar">×</button>'+
+      '<button style="background:none;border:none;color:var(--muted);cursor:pointer;padding:2px;font-size:14px;flex-shrink:0;line-height:1" data-id="'+ n.id +'" onclick="notifDismiss(this.dataset.id,event)" title="Dispensar">×</button>'+
     '</div>';
   }).join('');
 }
