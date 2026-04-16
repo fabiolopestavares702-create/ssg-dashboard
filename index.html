@@ -755,6 +755,19 @@ input[type=file]{display:none}
 .at-name-link{cursor:pointer;transition:opacity .15s}
 .at-name-link:hover{opacity:.75}
 
+.churn-badge{display:inline-block;font-size:9px;font-weight:800;font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.churn-badge.critico{background:rgba(244,63,94,.2);color:#f43f5e;border:1px solid rgba(244,63,94,.35)}
+.churn-badge.alto{background:rgba(251,146,60,.18);color:#fb923c;border:1px solid rgba(251,146,60,.35)}
+.churn-badge.medio{background:rgba(250,204,21,.15);color:#ca8a04;border:1px solid rgba(250,204,21,.35)}
+.churn-badge.baixo{background:rgba(34,197,94,.12);color:#16a34a;border:1px solid rgba(34,197,94,.25)}
+.churn-score-bar{display:inline-flex;align-items:center;gap:5px;width:100%}
+.churn-score-track{flex:1;height:4px;border-radius:2px;background:var(--bg3);min-width:50px}
+.churn-score-fill{height:100%;border-radius:2px;transition:width .3s}
+.churn-score-fill.critico{background:#f43f5e}
+.churn-score-fill.alto{background:#fb923c}
+.churn-score-fill.medio{background:#eab308}
+.churn-score-fill.baixo{background:#22c55e}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -1803,6 +1816,7 @@ input[type=file]{display:none}
           <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Top padrões — clique no card para ver chamados</div>
           <div id="ri-cards" class="ri-top-grid"></div>
           <div id="ri-cli-rec" class="ri-cli-section" style="display:none"></div>
+          <div id="ri-churn" class="ri-cli-section" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -7968,6 +7982,77 @@ function renderIARecurring(){
       cliRecEl.innerHTML=cliHtml;
     }
   }
+  renderChurnRisk();
+}
+
+function computeChurnRisk() {
+  if(typeof EMPRESAS==='undefined'||!EMPRESAS) return [];
+  var now=new Date();
+  var openSt=['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
+  var isAbCR=function(e){return openSt.indexOf(e)!==-1;};
+  var rows=[];
+  Object.keys(EMPRESAS).forEach(function(id){
+    var d=EMPRESAS[id];
+    if(!d||!d.total||d.total<3||!d.nome) return;
+    var tks=d.tickets||[];
+    var filtered=tks.filter(function(t){return ticketInFilter(t);});
+    if(!filtered.length) return;
+    var total=filtered.length;
+    var abertos=filtered.filter(function(t){return isAbCR(t.estado);}).length;
+    // Aging of open tickets
+    var openTks=filtered.filter(function(t){return isAbCR(t.estado)&&t.criado;});
+    var avgAge=0;
+    if(openTks.length){
+      var sumAge=openTks.reduce(function(s,t){return s+(now-t.criado)/864e5;},0);
+      avgAge=sumAge/openTks.length;
+    }
+    // Response time score
+    var rm=d.resp_med||0;
+    // Recurrence patterns
+    var pats=buildRecurringDataForTickets(filtered,'all');
+    // Score components (0-100)
+    var openScore=Math.min(abertos/total,1)*30;           // 0-30
+    var ageScore=Math.min(avgAge/21,1)*30;                // 0-30
+    var respScore=rm>0?Math.min(rm/(META_RESP*4),1)*20:0; // 0-20
+    var recScore=Math.min(pats.length/5,1)*20;            // 0-20
+    var score=Math.round(openScore+ageScore+respScore+recScore);
+    var risk=score>=60?'critico':score>=38?'alto':score>=18?'medio':'baixo';
+    rows.push({id:id,nome:d.nome,score:score,risk:risk,total:total,abertos:abertos,avgAge:Math.round(avgAge),respMed:rm,patterns:pats.length});
+  });
+  return rows.sort(function(a,b){return b.score-a.score;});
+}
+
+function renderChurnRisk() {
+  var el=document.getElementById('ri-churn');
+  if(!el) return;
+  var rows=computeChurnRisk().filter(function(r){return r.risk!=='baixo';}).slice(0,10);
+  if(!rows.length){el.style.display='none';return;}
+  el.style.display='';
+  var LABELS={critico:'Crítico',alto:'Alto',medio:'Médio',baixo:'Baixo'};
+  var html='<div class="ri-cli-title">Risco de Churn por Cliente</div>'+
+    '<table class="ri-cli-table"><thead><tr>'+
+    '<th>Cliente</th><th>Risco</th><th>Score</th><th>Abertos</th><th>Idade méd.</th><th>1ª Resp</th>'+
+    '<th style="text-align:left;min-width:120px">Volume / Padrões</th>'+
+    '</tr></thead><tbody>';
+  rows.forEach(function(r){
+    var barW=r.score;
+    var respTxt=r.respMed>0?Math.round(r.respMed)+'min':'—';
+    var ageTxt=r.avgAge>0?r.avgAge+'d':'—';
+    html+='<tr>'+
+      '<td><span class="ri-cli-name" onclick="setClienteGlobal(''+r.id+'')">'+r.nome+'</span></td>'+
+      '<td><span class="churn-badge '+r.risk+'">'+LABELS[r.risk]+'</span></td>'+
+      '<td style="font-family:var(--mono);font-weight:700;color:var(--text)">'+r.score+'</td>'+
+      '<td style="font-family:var(--mono)">'+r.abertos+'/'+r.total+'</td>'+
+      '<td style="font-family:var(--mono)">'+ageTxt+'</td>'+
+      '<td style="font-family:var(--mono)">'+respTxt+'</td>'+
+      '<td><div class="churn-score-bar">'+
+        '<div class="churn-score-track"><div class="churn-score-fill '+r.risk+'" style="width:'+barW+'%"></div></div>'+
+        '<span style="font-size:10px;color:var(--muted)">'+r.patterns+'↺</span>'+
+      '</div></td>'+
+    '</tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
 }
 
 function renderIA(){
