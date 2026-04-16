@@ -8781,92 +8781,214 @@ document.addEventListener('keydown',function(e){
 <!-- ════════════════ AÇÕES DA OPERAÇÃO ════════════════ -->
 <script>
 // ──────────────────────────────────────────────────────────────
-// buildAcoes()
-// Itera RAW_DATA, aplica filtros ativos, classifica tickets em
-// 4 grupos de ação prescritiva.
-//
-// NOTA: A regra "Aguardando Cliente" usa idade total do chamado
-// como proxy, pois o XLS do OTRS não exporta histórico de estados.
+// CAMADA DE AÇÕES — modelo prescritivo
+// Substitui buildAcoes() por gerarAcoes(op):
+//   • usa getActiveOP() para sinais agregados
+//   • deriva subset filtrado de RAW_DATA para detalhes
+//   • gera até 7 ações estruturadas com id estável
+//   • status persiste em localStorage (chave ssg_acoes_status)
 // ──────────────────────────────────────────────────────────────
-function buildAcoes() {
-  var result = {
-    slaRisk:   [],   // 🔴 Risco de SLA (alta/muito alta + >48h + aberto)
-    criticos:  [],   // 🔴 Alta criticidade em aberto (muito alta + aberto)
-    aguardCli: [],   // 🟡 Aguardando cliente > 24h
-    backlog:   []    // 🔵 Backlog crítico (aberto > 5 dias)
-  };
 
-  if(typeof RAW_DATA === 'undefined' || !RAW_DATA || !RAW_DATA.length) return result;
-
-  var now = new Date();
-  var OPEN_ST = ['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
-  var CLOSED_ST = ['Fechado','Resolvido','Fechado s/ Êxito'];
-
-  var isOpen   = function(e){ return OPEN_ST.indexOf(e) !== -1; };
-  var isClosed = function(e){ return CLOSED_ST.indexOf(e) !== -1; };
-
-  RAW_DATA.forEach(function(d) {
-    // Aplicar filtros globais (mês, fila)
-    if(!ticketInFilter(d)) return;
-    // Aplicar filtro de cliente global
-    if(activeCliente && d.cli_id !== activeCliente) return;
-    // Precisa ter data de criação
-    if(!d.criado) return;
-
-    var ageH = (now - d.criado) / 3600000; // horas desde criação
-    var ageD = ageH / 24;                   // dias
-
-    var cliNome = (typeof EMPRESAS !== 'undefined' && EMPRESAS[d.cli_id])
-      ? EMPRESAS[d.cli_id].nome : (d.cli_id || '—');
-
-    var item = {
-      num:     d.num,
-      assunto: (d.assunto || '—').slice(0, 60),
-      estado:  d.estado,
-      prior:   d.prior,
-      atend:   d.atend || '—',
-      cliNome: cliNome,
-      ageH:    Math.round(ageH),
-      ageD:    Math.round(ageD * 10) / 10
-    };
-
-    // 🔴 Risco de SLA: aberto + >48h + prioridade Alta ou Muito Alta
-    if(!isClosed(d.estado) &&
-       (d.prior === 'Alta' || d.prior === 'Muito Alta') &&
-       ageH > 48) {
-      result.slaRisk.push(item);
-    }
-
-    // 🔴 Alta criticidade: Muito Alta + aberto
-    if(!isClosed(d.estado) && d.prior === 'Muito Alta') {
-      result.criticos.push(item);
-    }
-
-    // 🟡 Aguardando cliente: estado específico + >24h
-    if(d.estado === 'Aguardando Cliente' && ageH > 24) {
-      result.aguardCli.push(item);
-    }
-
-    // 🔵 Backlog crítico: aberto + >5 dias
-    if(!isClosed(d.estado) && ageD > 5) {
-      result.backlog.push(item);
-    }
-  });
-
-  // Ordenar por idade decrescente (mais antigo primeiro)
-  var byAge = function(a, b){ return b.ageH - a.ageH; };
-  result.slaRisk.sort(byAge);
-  result.criticos.sort(byAge);
-  result.aguardCli.sort(byAge);
-  result.backlog.sort(byAge);
-
-  return result;
+// ── helpers localStorage ──────────────────────────────────────
+var ACOES_STATUS_KEY = 'ssg_acoes_status';
+function _loadAcoesStatus() {
+  try { return JSON.parse(localStorage.getItem(ACOES_STATUS_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function _saveAcoesStatus(map) {
+  try { localStorage.setItem(ACOES_STATUS_KEY, JSON.stringify(map)); } catch(e) {}
+}
+function setAcaoStatus(id, status) {
+  var map = _loadAcoesStatus();
+  map[id] = status;
+  _saveAcoesStatus(map);
+  renderAcoes();
 }
 
-// ──────────────────────────────────────────────────────────────
-// renderAcoes()
-// Renderiza o painel prescritivo na aba Ações.
-// ──────────────────────────────────────────────────────────────
+// ── gerarAcoes(op) ────────────────────────────────────────────
+// Recebe op = getActiveOP(). Retorna array de ações (max 7).
+function gerarAcoes(op) {
+  var acoes = [];
+  var statusMap = _loadAcoesStatus();
+
+  // ID estável: regra + contexto do filtro ativo
+  var ctx = (typeof activeMonth    !== 'undefined' ? activeMonth    : 'all')
+    + '__' + (typeof activeFilaOP  !== 'undefined' ? activeFilaOP  : 'all')
+    + '__' + (typeof activeCliente !== 'undefined' && activeCliente ? activeCliente : '');
+  function makeId(rule) { return rule + '__' + ctx; }
+  function getStatus(id) { return statusMap[id] || 'pendente'; }
+
+  if(!op) return acoes;
+
+  // ── Subset de tickets filtrados (para análise detalhada) ─────
+  var ticketsFiltrados = [];
+  var now = new Date();
+  if(typeof RAW_DATA !== 'undefined' && RAW_DATA && RAW_DATA.length) {
+    RAW_DATA.forEach(function(d) {
+      if(!ticketInFilter(d)) return;
+      if(typeof activeCliente !== 'undefined' && activeCliente && d.cli_id !== activeCliente) return;
+      if(!d.criado) return;
+      ticketsFiltrados.push(d);
+    });
+  }
+
+  var CLOSED_ST = ['Fechado','Resolvido','Fechado s/ Êxito'];
+  var isClosed  = function(e){ return CLOSED_ST.indexOf(e) !== -1; };
+
+  var abertos   = ticketsFiltrados.filter(function(d){ return !isClosed(d.estado); });
+
+  // Sinais computados dos tickets
+  var slaRisk = abertos.filter(function(d){
+    return (d.prior === 'Alta' || d.prior === 'Muito Alta') && ((now - d.criado) / 3600000) > 48;
+  });
+  var muitoAlta = abertos.filter(function(d){ return d.prior === 'Muito Alta'; });
+  var aged      = abertos.filter(function(d){ return ((now - d.criado) / 86400000) > 5; });
+  var aguardCli = ticketsFiltrados.filter(function(d){
+    return d.estado === 'Aguardando Cliente' && ((now - d.criado) / 3600000) > 24;
+  });
+  var aguardInt = ticketsFiltrados.filter(function(d){ return d.estado === 'Aguardando Interno'; });
+
+  // Sinais agregados de op
+  var topCli = null, topCliPct = 0;
+  if(op.cli && op.total > 0) {
+    Object.keys(op.cli).forEach(function(k){
+      var p = op.cli[k] / op.total;
+      if(p > topCliPct){ topCliPct = p; topCli = k; }
+    });
+  }
+  var topSvc = null, topSvcPct = 0;
+  if(op.svc && op.total > 0) {
+    Object.keys(op.svc).forEach(function(k){
+      var p = op.svc[k] / op.total;
+      if(p > topSvcPct){ topSvcPct = p; topSvc = k; }
+    });
+  }
+  var maxAbAtend = null, maxAb = 0;
+  (op.atend || []).forEach(function(a){
+    if((a.ab||0) > maxAb){ maxAb = a.ab; maxAbAtend = a.n; }
+  });
+
+  // ── Regras de geração ────────────────────────────────────────
+
+  // 🔴 Regra 1 — Risco de SLA
+  if(slaRisk.length > 0) {
+    var _id = makeId('sla_risco');
+    acoes.push({
+      id: _id, prioridade: 'critico',
+      problema: slaRisk.length + ' chamado' + (slaRisk.length > 1 ? 's' : '') + ' com prioridade alta/muito alta aberto' + (slaRisk.length > 1 ? 's' : '') + ' há mais de 48h — risco direto de violação de SLA',
+      acao: 'Contatar responsável de cada chamado e registrar previsão de conclusão. Escalar para gestão se sem retorno em 1h.',
+      responsavel: 'Gestor de Operações',
+      prazo: 'imediato', status: getStatus(_id),
+      origem: slaRisk.slice(0,3).map(function(t){ return '#'+t.num; }).join(', ') + (slaRisk.length > 3 ? ' +' + (slaRisk.length-3) + ' mais' : '')
+    });
+  }
+
+  // 🔴 Regra 2 — Criticidade Muito Alta em aberto
+  if(muitoAlta.length > 0) {
+    var _slaMA = slaRisk.filter(function(t){ return t.prior === 'Muito Alta'; }).length;
+    if(muitoAlta.length > _slaMA) {
+      var _id = makeId('criticidade_alta');
+      acoes.push({
+        id: _id, prioridade: 'critico',
+        problema: muitoAlta.length + ' chamado' + (muitoAlta.length > 1 ? 's' : '') + ' com prioridade Muito Alta em aberto — impacto direto no cliente',
+        acao: 'Verificar progresso de cada chamado Muito Alta. Garantir atendente dedicado e comunicação ativa com o cliente.',
+        responsavel: 'Atendente / Líder de Fila',
+        prazo: 'imediato', status: getStatus(_id),
+        origem: muitoAlta.slice(0,3).map(function(t){ return '#'+t.num; }).join(', ') + (muitoAlta.length > 3 ? ' +' + (muitoAlta.length-3) + ' mais' : '')
+      });
+    }
+  }
+
+  // 🔴/🟡 Regra 3 — Backlog envelhecido
+  if(aged.length >= 3) {
+    var _id = makeId('backlog_envelhecido');
+    acoes.push({
+      id: _id, prioridade: aged.length >= 10 ? 'critico' : 'atencao',
+      problema: aged.length + ' chamado' + (aged.length > 1 ? 's' : '') + ' aberto' + (aged.length > 1 ? 's' : '') + ' há mais de 5 dias — backlog envelhecendo sem encerramento',
+      acao: 'Revisar fila de backlog e definir ação para cada chamado: encerrar, escalar ou reagendar. Meta: reduzir 50% em 48h.',
+      responsavel: 'Líder de Fila',
+      prazo: 'hoje', status: getStatus(_id),
+      origem: aged.length + ' chamados abertos há mais de 5 dias'
+    });
+  }
+
+  // 🟡 Regra 4 — Aguardando cliente parado
+  if(aguardCli.length >= 2) {
+    var _id = makeId('aguard_cliente');
+    acoes.push({
+      id: _id, prioridade: 'atencao',
+      problema: aguardCli.length + ' chamado' + (aguardCli.length > 1 ? 's' : '') + ' em "Aguardando Cliente" há mais de 24h — risco de abandono e impacto no SLA de solução',
+      acao: 'CS acionar o cliente por e-mail ou telefone para retomada. Chamados sem resposta em 48h devem ser formalizados e encerrados.',
+      responsavel: 'CS / Atendente',
+      prazo: 'hoje', status: getStatus(_id),
+      origem: aguardCli.length + ' chamados aguardando cliente >24h'
+    });
+  }
+
+  // 🟡 Regra 5 — Bloqueio interno
+  if(aguardInt.length >= 2) {
+    var _id = makeId('bloqueio_interno');
+    acoes.push({
+      id: _id, prioridade: 'atencao',
+      problema: aguardInt.length + ' chamado' + (aguardInt.length > 1 ? 's' : '') + ' bloqueado' + (aguardInt.length > 1 ? 's' : '') + ' em "Aguardando Interno" — dependência interna não resolvida',
+      acao: 'Identificar o bloqueio de cada chamado. Acionar a área responsável ou realocar para atendente disponível.',
+      responsavel: 'Gestor de Operações',
+      prazo: 'hoje', status: getStatus(_id),
+      origem: aguardInt.length + ' chamados bloqueados internamente'
+    });
+  }
+
+  // 🟡 Regra 6 — Atendente sobrecarregado
+  if(maxAbAtend && maxAb >= 5) {
+    var _id = makeId('atend_sobrecarga');
+    acoes.push({
+      id: _id, prioridade: 'atencao',
+      problema: maxAbAtend + ' concentra ' + maxAb + ' chamados em aberto — possível gargalo de capacidade na equipe',
+      acao: 'Avaliar redistribuição de chamados entre atendentes disponíveis. Verificar se há impedimento operacional.',
+      responsavel: 'Gestor de Operações',
+      prazo: 'hoje', status: getStatus(_id),
+      origem: maxAb + ' chamados abertos com ' + maxAbAtend
+    });
+  }
+
+  // 💡 Regra 7 — Concentração de cliente
+  if(topCli && topCliPct >= 0.35 && op.total >= 5) {
+    var _id = makeId('conc_cliente');
+    acoes.push({
+      id: _id, prioridade: 'oportunidade',
+      problema: topCli + ' representa ' + Math.round(topCliPct * 100) + '% do volume do recorte — concentração pode indicar problema recorrente ou oportunidade de melhoria',
+      acao: 'Analisar padrão de chamados deste cliente. Avaliar QBR, proposta de projeto de melhoria ou ajuste de contrato.',
+      responsavel: 'CS / Comercial',
+      prazo: 'semana', status: getStatus(_id),
+      origem: Math.round(topCliPct * 100) + '% dos chamados do recorte'
+    });
+  }
+
+  // 💡 Regra 8 — Concentração de serviço
+  if(topSvc && topSvcPct >= 0.35 && op.total >= 5 && acoes.length < 7) {
+    var _id = makeId('conc_servico');
+    acoes.push({
+      id: _id, prioridade: 'oportunidade',
+      problema: '"' + topSvc + '" responde por ' + Math.round(topSvcPct * 100) + '% dos chamados — concentração temática que pode virar automação ou projeto',
+      acao: 'Mapear padrão recorrente neste serviço. Propor automação, documentação proativa ou projeto preventivo.',
+      responsavel: 'Consultor / Gestor Técnico',
+      prazo: 'semana', status: getStatus(_id),
+      origem: Math.round(topSvcPct * 100) + '% do volume em ' + topSvc
+    });
+  }
+
+  // Ordenar: crítico > atenção > oportunidade, depois por prazo
+  var PRIORD = { critico:0, atencao:1, oportunidade:2 };
+  var PRAZOD = { imediato:0, hoje:1, semana:2 };
+  acoes.sort(function(a,b){
+    var pd = PRIORD[a.prioridade] - PRIORD[b.prioridade];
+    return pd !== 0 ? pd : PRAZOD[a.prazo] - PRAZOD[b.prazo];
+  });
+
+  return acoes.slice(0, 7);
+}
+
+// ── renderAcoes() ─────────────────────────────────────────────
 function renderAcoes() {
   var el = document.getElementById('acoes-body');
   if(!el) return;
@@ -8876,99 +8998,82 @@ function renderAcoes() {
     return;
   }
 
-  var data = buildAcoes();
+  var op    = getActiveOP();
+  var acoes = gerarAcoes(op);
 
-  // Helper: formata idade
-  var fmtAge = function(ageH) {
-    if(ageH < 24) return ageH + 'h';
-    var d = Math.floor(ageH / 24);
-    var h = Math.round(ageH % 24);
-    return h > 0 ? d + 'd ' + h + 'h' : d + 'd';
-  };
+  var criticos     = acoes.filter(function(a){ return a.prioridade === 'critico'; });
+  var atencao      = acoes.filter(function(a){ return a.prioridade === 'atencao'; });
+  var oportunidade = acoes.filter(function(a){ return a.prioridade === 'oportunidade'; });
 
-  // Helper: lista de até 5 tickets
-  var fmtList = function(items) {
-    if(!items.length) return '';
-    var rows = items.slice(0, 5).map(function(t) {
-      return '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">'
-        + '<span style="font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0;padding-top:1px">#' + t.num + '</span>'
-        + '<div style="flex:1;min-width:0">'
-        +   '<div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + t.assunto + '</div>'
-        +   '<div style="font-size:10px;color:var(--muted);margin-top:2px">' + t.cliNome + ' · ' + t.atend + ' · <span style="font-family:var(--mono)">' + fmtAge(t.ageH) + '</span></div>'
-        + '</div>'
-        + '</div>';
-    }).join('');
-    var more = items.length > 5
-      ? '<div style="font-size:10px;color:var(--muted);padding:6px 0">+ ' + (items.length - 5) + ' mais</div>'
-      : '';
-    return rows + more;
-  };
+  var PRAZO_LABEL = { imediato:'⚡ Imediato', hoje:'📅 Hoje', semana:'📆 Esta semana' };
+  var PRAZO_COLOR = { imediato:'#f43f5e', hoje:'#f59e0b', semana:'#3b82f6' };
+  var STATUS_COLOR = { pendente:'var(--muted)', andamento:'#f59e0b', concluido:'var(--ok)' };
+  var STATUS_TEXT  = { pendente:'#aaa', andamento:'#000', concluido:'#fff' };
 
-  // Helper: bloco de grupo
-  var fmtBloco = function(cor, emoji, titulo, descricao, items) {
-    var count = items.length;
-    var lista = fmtList(items);
-    return '<div class="card card-mb" style="border-left:3px solid ' + cor + ';margin-bottom:16px">'
-      + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:' + (lista ? '12' : '0') + 'px">'
-      +   '<span style="font-size:22px;line-height:1">' + emoji + '</span>'
-      +   '<div style="flex:1">'
-      +     '<div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text)">'
-      +       '<span style="font-family:var(--mono);font-size:20px;font-weight:700;color:' + cor + '">' + count + '</span>'
-      +       '&nbsp;&nbsp;' + titulo
+  function fmtCard(a) {
+    var priorCor = a.prioridade === 'critico' ? '#f43f5e' : (a.prioridade === 'atencao' ? '#f59e0b' : '#3b82f6');
+    function btnStyle(s) {
+      var active = a.status === s;
+      return 'border:none;cursor:pointer;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:600;font-family:var(--font);transition:all .15s;'
+        + (active
+          ? 'background:' + STATUS_COLOR[s] + ';color:' + STATUS_TEXT[s] + ';'
+          : 'background:var(--bg3);color:var(--muted);');
+    }
+    var safeId = a.id.replace(/'/g, "\\'");
+    return '<div class="card" style="border-left:3px solid ' + priorCor + ';margin-bottom:12px;padding:14px 16px">'
+      + '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">'
+      +   '<div style="flex:1;min-width:0">'
+      +     '<div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px">' + a.problema + '</div>'
+      +     '<div style="font-size:10px;color:var(--muted)">'
+      +       '<span style="color:' + PRAZO_COLOR[a.prazo] + ';font-weight:600">' + PRAZO_LABEL[a.prazo] + '</span>'
+      +       '&nbsp;·&nbsp;' + a.responsavel
+      +       '&nbsp;·&nbsp;<span style="font-family:var(--mono)">' + a.origem + '</span>'
       +     '</div>'
-      +     '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + descricao + '</div>'
       +   '</div>'
       + '</div>'
-      + lista
+      + '<div style="background:var(--bg2);border-radius:6px;padding:8px 10px;margin-bottom:10px;font-size:11px;color:var(--sub);line-height:1.5">'
+      +   '<span style="font-weight:700;color:var(--text)">→ </span>' + a.acao
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:6px">'
+      +   '<span style="font-size:10px;color:var(--muted);margin-right:2px">Status:</span>'
+      +   '<button style="' + btnStyle('pendente')  + '" onclick="setAcaoStatus(\'' + safeId + '\',\'pendente\')">Pendente</button>'
+      +   '<button style="' + btnStyle('andamento') + '" onclick="setAcaoStatus(\'' + safeId + '\',\'andamento\')">Em andamento</button>'
+      +   '<button style="' + btnStyle('concluido') + '" onclick="setAcaoStatus(\'' + safeId + '\',\'concluido\')">Concluído</button>'
+      + '</div>'
       + '</div>';
-  };
+  }
 
-  var total = data.slaRisk.length + data.criticos.length + data.aguardCli.length + data.backlog.length;
+  function fmtSection(emoji, label, cor, items) {
+    if(!items.length) return '';
+    return '<div style="font-family:var(--display);font-size:11px;font-weight:700;color:' + cor + ';text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;margin-top:4px">' + emoji + ' ' + label + '</div>'
+      + items.map(fmtCard).join('');
+  }
 
+  var total = acoes.length;
   var H = '';
 
-  // Cabeçalho resumo
-  H += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)">'
+  // Resumo executivo
+  H += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)">'
     + '<div>'
-    +   '<div style="font-family:var(--mono);font-size:28px;font-weight:700;color:' + (total > 0 ? '#f43f5e' : 'var(--ok)') + '">' + total + '</div>'
-    +   '<div style="font-size:11px;color:var(--muted)">ações identificadas</div>'
+    +   '<div style="font-family:var(--mono);font-size:28px;font-weight:700;color:' + (criticos.length > 0 ? '#f43f5e' : total > 0 ? '#f59e0b' : 'var(--ok)') + '">' + total + '</div>'
+    +   '<div style="font-size:11px;color:var(--muted)">ações recomendadas</div>'
     + '</div>'
-    + '<div style="flex:1;border-left:1px solid var(--border);padding-left:16px;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px">'
-    +   '<div><span style="font-size:10px;color:#f43f5e;font-weight:700">🔴 Risco SLA</span><span style="font-family:var(--mono);font-size:13px;font-weight:700;margin-left:6px">' + data.slaRisk.length + '</span></div>'
-    +   '<div><span style="font-size:10px;color:#f43f5e;font-weight:700">🔴 Criticidade</span><span style="font-family:var(--mono);font-size:13px;font-weight:700;margin-left:6px">' + data.criticos.length + '</span></div>'
-    +   '<div><span style="font-size:10px;color:#eab308;font-weight:700">🟡 Aguard. cliente</span><span style="font-family:var(--mono);font-size:13px;font-weight:700;margin-left:6px">' + data.aguardCli.length + '</span></div>'
-    +   '<div><span style="font-size:10px;color:#3b82f6;font-weight:700">🔵 Backlog</span><span style="font-family:var(--mono);font-size:13px;font-weight:700;margin-left:6px">' + data.backlog.length + '</span></div>'
+    + '<div style="flex:1;border-left:1px solid var(--border);padding-left:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">'
+    +   '<div><span style="font-size:10px;color:#f43f5e;font-weight:700">🔴 Crítico</span><span style="font-family:var(--mono);font-size:15px;font-weight:700;margin-left:8px">' + criticos.length + '</span></div>'
+    +   '<div><span style="font-size:10px;color:#f59e0b;font-weight:700">🟡 Atenção</span><span style="font-family:var(--mono);font-size:15px;font-weight:700;margin-left:8px">' + atencao.length + '</span></div>'
+    +   '<div><span style="font-size:10px;color:#3b82f6;font-weight:700">💡 Oportunidade</span><span style="font-family:var(--mono);font-size:15px;font-weight:700;margin-left:8px">' + oportunidade.length + '</span></div>'
     + '</div>'
     + '</div>';
 
-  // ── SEÇÃO CRÍTICOS ──────────────────────────────────────────
-  var temCriticos = data.slaRisk.length > 0 || data.criticos.length > 0;
-  if(temCriticos) {
-    H += '<div style="font-family:var(--display);font-size:11px;font-weight:700;color:#f43f5e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">🔴 Críticos</div>';
-    if(data.slaRisk.length > 0)
-      H += fmtBloco('#f43f5e','⏱️','Risco de SLA','Chamados alta/muito alta prioridade abertos há mais de 48h — priorização imediata',data.slaRisk);
-    if(data.criticos.length > 0)
-      H += fmtBloco('#f43f5e','🚨','Alta criticidade em aberto','Prioridade Muito Alta ainda não encerrada — atenção imediata',data.criticos);
-  }
+  H += fmtSection('🔴', 'Críticos',      '#f43f5e', criticos);
+  H += fmtSection('🟡', 'Atenção',       '#f59e0b', atencao);
+  H += fmtSection('💡', 'Oportunidades', '#3b82f6', oportunidade);
 
-  // ── SEÇÃO ATENÇÃO ───────────────────────────────────────────
-  if(data.aguardCli.length > 0) {
-    H += '<div style="font-family:var(--display);font-size:11px;font-weight:700;color:#eab308;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;margin-top:8px">🟡 Atenção</div>';
-    H += fmtBloco('#eab308','📞','Aguardando cliente','Em estado "Aguardando Cliente" há mais de 24h — acionar CS para retomada<br><span style="font-size:10px;font-style:italic;opacity:.7">⚠️ Usa idade total do chamado como proxy — o XLS não possui histórico de mudança de estado</span>',data.aguardCli);
-  }
-
-  // ── SEÇÃO OPORTUNIDADES ─────────────────────────────────────
-  if(data.backlog.length > 0) {
-    H += '<div style="font-family:var(--display);font-size:11px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;margin-top:8px">🔵 Oportunidades</div>';
-    H += fmtBloco('#3b82f6','📋','Backlog crítico','Chamados abertos há mais de 5 dias — revisar priorização da fila',data.backlog);
-  }
-
-  // Sem dados
   if(total === 0) {
     H += '<div style="text-align:center;padding:48px 24px">'
       + '<div style="font-size:40px;margin-bottom:12px">✅</div>'
       + '<div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--ok)">Nenhuma ação necessária</div>'
-      + '<div style="font-size:12px;color:var(--muted);margin-top:6px">Todos os chamados estão dentro dos critérios de atenção</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-top:6px">Todos os indicadores dentro dos critérios de atenção</div>'
       + '</div>';
   }
 
