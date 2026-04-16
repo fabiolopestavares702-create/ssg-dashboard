@@ -232,6 +232,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sb-import-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(79,142,247,.06)}
 .sb-import-btn.cli-mode:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,168,.06)}
 .sb-import-btn svg{width:13px;height:13px}
+.sb-export-csv-btn{width:100%;margin-top:5px;padding:7px;background:rgba(0,212,168,.05);border:1px solid rgba(0,212,168,.2);border-radius:var(--r);color:var(--teal);font-size:11px;font-family:var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.sb-export-csv-btn:hover{border-color:var(--teal);background:rgba(0,212,168,.13)}
+.sb-export-csv-btn svg{width:13px;height:13px}
 
 /* ═══ MAIN ════════════════════════════════════════════════════ */
 .main{margin-left:210px;flex:1;min-width:0}
@@ -742,6 +745,10 @@ input[type=file]{display:none}
     <button class="sb-import-btn" id="sb-import-btn" onclick="openImport()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       Importar novo XLS
+    </button>
+    <button class="sb-export-csv-btn" id="sb-export-csv-btn" onclick="exportCSV()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Exportar dados (.xlsx)
     </button>
   </div>
 </aside>
@@ -4645,6 +4652,83 @@ function renderSLACountdown() {
 
 // Atualiza countdown a cada minuto
 setInterval(renderSLACountdown, 60 * 1000);
+
+// ════════════════════════════════════════════════════════════
+// EXPORTAR DADOS — gera .xlsx com filtros ativos via SheetJS
+// ════════════════════════════════════════════════════════════
+function exportCSV() {
+  if(typeof RAW_DATA === 'undefined' || !RAW_DATA || !RAW_DATA.length) {
+    alert('Nenhum dado importado. Importe um arquivo XLSX primeiro.');
+    return;
+  }
+  // Aplica filtros ativos
+  var filtered = RAW_DATA.filter(function(d) {
+    if(activeCliente && d.cli_id !== activeCliente) return false;
+    if(d.criado && activeMonth !== 'all') {
+      if(d.criado.toISOString().slice(0,7) !== activeMonth) return false;
+    }
+    if(activeFilaOP !== 'all' && d.fila !== activeFilaOP) return false;
+    return true;
+  });
+  if(!filtered.length) {
+    alert('Nenhum chamado encontrado com os filtros ativos.');
+    return;
+  }
+  var fmtDt = function(d) {
+    if(!d) return '';
+    var pad = function(n){return n<10?'0'+n:String(n);};
+    return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+  };
+  // Cabeçalhos
+  var headers = [
+    'Número','Data Criação','Data Fechamento','Estado','Prioridade',
+    'Atendente','Cliente','Assunto','Fila','Serviço',
+    '1ª Resp (min)','Solução Cal. (h)','Solução HU (h)'
+  ];
+  // Linhas de dados
+  var rows = filtered.map(function(d) {
+    return [
+      d.num||'',
+      fmtDt(d.criado),
+      fmtDt(d.fechado),
+      d.estado||'',
+      d.prior||'',
+      d.atend||'',
+      ENM2[d.cli_id]||d.cli_id||'',
+      d.assunto||'',
+      d.fila||'',
+      d.servico||'',
+      d.resp_min!=null?d.resp_min:'',
+      d.sol_h!=null?d.sol_h:'',
+      d.sol_h_bh!=null?d.sol_h_bh:''
+    ];
+  });
+  // Aba de chamados
+  var ws = XLSX.utils.aoa_to_sheet([headers].concat(rows));
+  ws['!cols'] = [
+    {wch:24},{wch:16},{wch:16},{wch:20},{wch:13},
+    {wch:24},{wch:18},{wch:52},{wch:12},{wch:20},
+    {wch:14},{wch:15},{wch:13}
+  ];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Chamados');
+  // Aba de filtros aplicados
+  var now = new Date();
+  var filtros = [
+    ['Exportado em', fmtDt(now)],
+    ['Mês', activeMonth==='all'?'Todos':activeMonth],
+    ['Fila', activeFilaOP==='all'?'Todas':activeFilaOP],
+    ['Cliente', activeCliente?(ENM2[activeCliente]||activeCliente):'Todos'],
+    ['Total de chamados', filtered.length],
+    ['SLA HU limite (h)', SLA_LIMIT_BH_H]
+  ];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(filtros), 'Filtros');
+  // Nome do arquivo
+  var mes = activeMonth!=='all'?('_'+activeMonth.replace('-','')):'';
+  var fila = activeFilaOP!=='all'?('_'+activeFilaOP.slice(0,8)):'';
+  var fname = 'GW_chamados'+mes+fila+'_'+now.toISOString().slice(0,10)+'.xlsx';
+  XLSX.writeFile(wb, fname);
+}
 
 // ════════════════════════════════════════════════════════════
 function renderOpActions(op) {
