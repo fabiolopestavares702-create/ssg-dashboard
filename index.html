@@ -786,6 +786,13 @@ input[type=file]{display:none}
 .cap-sum-item{font-size:11px;color:var(--sub)}
 .cap-sum-item strong{color:var(--text);font-family:var(--mono)}
 
+.aging-tab-bar{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
+.aging-tab{padding:4px 10px;font-size:10px;font-weight:700;font-family:var(--mono);border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--muted);transition:all .15s}
+.aging-tab.active,.aging-tab:hover{border-color:var(--blue);background:rgba(99,102,241,.2);color:var(--blue)}
+.aging-bar-cell{display:flex;align-items:center;gap:5px;min-width:80px}
+.aging-track{flex:1;height:4px;border-radius:2px;background:var(--bg3);max-width:60px}
+.aging-fill{height:100%;border-radius:2px}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -1170,6 +1177,7 @@ input[type=file]{display:none}
         <div class="card"><div class="card-title">Distribuição de bloqueados</div><div id="bloq-dist"></div></div>
         <div class="card"><div class="card-title">Atendentes com maior backlog</div><div class="cw" style="height:200px"><canvas id="c-backlog"></canvas></div></div>
       </div>
+      <div id="aging-card" class="card" style="margin-top:16px;display:none"></div>
     </div>
   </div>
 
@@ -2233,6 +2241,77 @@ var CRIT_TOTAL_MESES = {'all':37,'2026-01':5,'2026-02':6,'2026-03':26};
 
 var _alertState={criticos:[],filtroAtend:'all',filtroFila:'all'};
 
+function buildAgingData() {
+  if(!RAW_DATA||!RAW_DATA.length) return [];
+  var now=new Date();
+  var openSt=['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
+  var tix=(RAW_DATA||[]).filter(function(d){
+    return d.criado&&openSt.indexOf(d.estado)!==-1&&ticketInFilter(d)&&(!activeCliente||d.cli_id===activeCliente);
+  }).map(function(d){
+    var ageDays=Math.floor((now-d.criado)/864e5);
+    var bucket=ageDays>=15?'15+':ageDays>=8?'8-14':ageDays>=4?'4-7':'0-3';
+    var cliNome=(typeof EMPRESAS!=='undefined'&&EMPRESAS[d.cli_id])?EMPRESAS[d.cli_id].nome:(d.cli_id||'—');
+    return{num:d.num,assunto:d.assunto||'—',cliNome:cliNome,atend:d.atend||'—',estado:d.estado,ageDays:ageDays,bucket:bucket};
+  });
+  return tix.sort(function(a,b){return b.ageDays-a.ageDays;});
+}
+
+function renderAgingTimeline(bucket) {
+  var el=document.getElementById('aging-card');
+  if(!el) return;
+  var all=buildAgingData();
+  if(!all.length){el.style.display='none';return;}
+  el.style.display='';
+  bucket=bucket||'all';
+  var filtered=bucket==='all'?all:all.filter(function(t){return t.bucket===bucket;});
+  var maxAge=all[0]?Math.max(all[0].ageDays,1):1;
+  // Bucket counts
+  var counts={all:all.length,'15+':0,'8-14':0,'4-7':0,'0-3':0};
+  all.forEach(function(t){if(counts[t.bucket]!==undefined)counts[t.bucket]++;});
+  // Tab bar
+  var BUCKETS=['all','15+','8-14','4-7','0-3'];
+  var LABELS={'all':'Todos','15+':'>14d','8-14':'8–14d','4-7':'4–7d','0-3':'≤3d'};
+  var tabHtml='<div class="aging-tab-bar">';
+  BUCKETS.forEach(function(b){
+    var cnt=counts[b]||0;
+    if(b!=='all'&&!cnt) return;
+    tabHtml+='<button class="aging-tab'+(b===bucket?' active':'')+'" data-bucket="'+b+'">'+LABELS[b]+(cnt?' ('+cnt+')':'')+'</button>';
+  });
+  tabHtml+='</div>';
+  // Age colors
+  var AGE_COL={'15+':'#f43f5e','8-14':'#fb923c','4-7':'var(--warn)','0-3':'var(--ok)'};
+  // Table rows
+  var rows=filtered.slice(0,60).map(function(t){
+    var col=AGE_COL[t.bucket]||'var(--muted)';
+    var barW=Math.round(t.ageDays/maxAge*100);
+    var ageTxt=t.ageDays===0?'hoje':t.ageDays+'d';
+    return '<tr>'
+      +'<td><div class="aging-bar-cell">'
+        +'<div class="aging-track"><div class="aging-fill" style="width:'+barW+'%;background:'+col+'"></div></div>'
+        +'<span style="font-size:11px;font-weight:700;color:'+col+';font-family:var(--mono);min-width:28px">'+ageTxt+'</span>'
+      +'</div></td>'
+      +'<td style="font-family:var(--mono);font-size:10px;color:var(--muted)">#'+t.num+'</td>'
+      +'<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">'+t.assunto+'</td>'
+      +'<td style="font-size:11px;color:var(--sub);white-space:nowrap">'+t.cliNome+'</td>'
+      +'<td style="font-size:11px;color:var(--muted);white-space:nowrap">'+t.atend+'</td>'
+      +'<td>'+ePill(t.estado)+'</td>'
+    +'</tr>';
+  }).join('');
+  var moreNote=filtered.length>60
+    ?'<div style="text-align:center;font-size:11px;color:var(--muted);padding:8px">+'+(filtered.length-60)+' mais (filtre por bucket)</div>'
+    :'';
+  el.innerHTML='<div class="card-title">Aging de Chamados Abertos'
+    +' <span style="font-weight:400;font-size:11px;color:var(--muted)">'+all.length+' aberto'+(all.length!==1?'s':'')+'</span></div>'
+    +tabHtml
+    +'<div class="tbl-scroll"><table class="tbl"><thead><tr>'
+    +'<th style="min-width:100px">Idade</th><th style="width:56px">#</th>'
+    +'<th>Assunto</th><th>Cliente</th><th>Atendente</th><th>Estado</th>'
+    +'</tr></thead><tbody>'+rows+'</tbody></table></div>'+moreNote;
+  el.querySelectorAll('.aging-tab').forEach(function(btn){
+    btn.addEventListener('click',function(){renderAgingTimeline(this.dataset.bucket);});
+  });
+}
+
 function renderAlertas(){
   var mes = activeMonth;
   var critTodos;
@@ -2327,6 +2406,7 @@ function renderAlertas(){
   var N=top.map(function(a){return a.n.split(' ')[0];});
   mk('c-backlog','bar',N,[{data:top.map(function(a){return a.ab||0;}),backgroundColor:'rgba(244,63,94,.6)',borderColor:'#f43f5e',borderWidth:1,borderRadius:3}],{scales:xy('Em aberto')});
   renderCriticos();
+  renderAgingTimeline();
 }
 
 function setFilaFiltro(fila){
