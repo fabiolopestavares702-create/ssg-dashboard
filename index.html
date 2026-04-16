@@ -2988,7 +2988,7 @@ function renderTeamCapacity() {
     var colorIdx=Math.abs(a.n.split('').reduce(function(s,ch){return s+ch.charCodeAt(0);},0))%PAL.length;
     var col=PAL[colorIdx];
     var shortN=a.n.split(' ').slice(0,2).join(' ');
-    var respTxt=a.rm!=null?Math.round(a.rm)+'min':'—';
+    var respTxt=a.rm!=null?fmtRespTxt(Math.round(a.rm)):'—';
     cardsHtml+='<div class="cap-card" title="1ª resp: '+respTxt+' | Total: '+a.t+'">'
       +'<div class="cap-card-head">'
         +'<div class="cap-avatar-sm" style="background:'+col+'22;color:'+col+'">'+initials+'</div>'
@@ -3112,7 +3112,7 @@ function renderAt(){
       +pendCliCell
       +'<td style="padding-right:6px">'+taxaBar+'</td>'
       +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--purple)">'+(a.tm!=null?a.tm+'h':'—')+'</td>'
-      +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+rc+'">'+(a.rm!=null?Math.round(a.rm)+'min':'—')+'</td>'
+      +'<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+rc+'">'+(a.rm!=null?fmtRespTxt(Math.round(a.rm)):'—')+'</td>'
       +tendCell
     +'</tr>';
   }).join('')+'</tbody>';
@@ -3889,7 +3889,7 @@ function renderPainel(d){
   document.getElementById('co-total').textContent=d.total;
   document.getElementById('co-abertos').textContent=d.abertos;
   document.getElementById('co-fechados').textContent=d.fechados;
-  document.getElementById('co-resp').textContent=d.resp_med!==null?(d.resp_med+'min'):'—';
+  document.getElementById('co-resp').textContent=d.resp_med!==null?(fmtRespTxt(d.resp_med)):'—';
   document.getElementById('co-sol').textContent=d.solucao_med_h!==null?(d.solucao_med_h+'h'):'—';
   // health badge
   var score=calcScore(d);
@@ -3965,7 +3965,7 @@ function renderHealthScore(d){
   var ap=pct(d.abertos,d.total);
   var rows=[
     {l:'Taxa de resolução',v:pct(d.fechados,d.total)+'%',c:pct(d.fechados,d.total)>=80?'var(--ok)':pct(d.fechados,d.total)>=60?'var(--warn)':'var(--danger)'},
-    {l:'1ª Resposta (med.)',v:(d.resp_med||'—')+'min',c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
+    {l:'1ª Resposta (med.)',v:(d.resp_med!=null?fmtRespTxt(d.resp_med):'—'),c:d.resp_med<=30?'var(--ok)':d.resp_med<=60?'var(--warn)':'var(--danger)'},
     {l:'Chamados em aberto',v:d.abertos+' ('+ap+'%)',c:ap<=10?'var(--ok)':ap<=25?'var(--warn)':'var(--danger)'},
     {l:'Tempo médio solução',v:(d.solucao_med_h||'—')+'h',c:d.solucao_med_h<=48?'var(--ok)':d.solucao_med_h<=96?'var(--warn)':'var(--danger)'}
   ];
@@ -3979,7 +3979,7 @@ function renderHealthScore(d){
   var mediaGeral={taxa:62,resp:8,sol:54};var taxa=pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
-    {l:'1ª Resposta mediana',emp:(d.resp_med||'—')+'min',geral:mediaGeral.resp+'min',melhor:d.resp_med<=mediaGeral.resp},
+    {l:'1ª Resposta mediana',emp:(d.resp_med!=null?fmtRespTxt(d.resp_med):'—'),geral:fmtRespTxt(mediaGeral.resp),melhor:d.resp_med<=mediaGeral.resp},
     {l:'Tempo médio solução',emp:(d.solucao_med_h||'—')+'h',geral:mediaGeral.sol+'h',melhor:d.solucao_med_h<=mediaGeral.sol}
   ].map(function(r){var c=r.melhor?'var(--ok)':'var(--warn)';return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" title="Média geral">Fila: '+r.geral+'</span><span class="comp-arrow" style="color:'+c+'">'+(r.melhor?'✓':'!')+'</span><span class="comp-curr" style="color:'+c+'">'+r.emp+'</span><span class="comp-delta" style="background:'+(r.melhor?'rgba(16,185,129,.1)':'rgba(245,158,11,.1)')+';color:'+c+'">'+(r.melhor?'Acima':'Abaixo')+'</span></div>';}).join('');
 }
@@ -4640,9 +4640,9 @@ function exportPDF(){
   var insights=[];
   if(efic>=90)insights.push({icon:'\u2705',txt:'Efici\u00eancia de <strong>'+efic+'%</strong> no per\u00edodo — dentro da meta de 90%.'});
   else insights.push({icon:'\u26a0\ufe0f',txt:'Efici\u00eancia de <strong>'+efic+'%</strong> — abaixo da meta de 90%. '+violados+' chamado(s) ultrapassaram 48h.'});
-  if(d.resp_med<=15)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — excelente, dentro da meta de 30min.'});
-  else if(d.resp_med<=30)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — dentro da meta de 30min.'});
-  else insights.push({icon:'\u26a0\ufe0f',txt:'Primeira resposta mediana de <strong>'+d.resp_med+'min</strong> — acima da meta de 30min.'});
+  if(d.resp_med<=15)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — excelente, dentro da meta de 30min.'});
+  else if(d.resp_med<=30)insights.push({icon:'\u2705',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — dentro da meta de 30min.'});
+  else insights.push({icon:'\u26a0\ufe0f',txt:'Primeira resposta mediana de <strong>'+fmtRespTxt(d.resp_med)+'</strong> — acima da meta de 30min.'});
   var aguardCliente=d.estados['Aguardando Cliente']||0;
   if(aguardCliente>0)insights.push({icon:'\ud83d\udce8',txt:'<strong>'+aguardCliente+' chamado(s)</strong> aguardando retorno do cliente — requer aten\u00e7\u00e3o.'});
   var abertosQty=d.abertos||0;
@@ -4957,7 +4957,7 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
      +'</div>';
     H+='<div style="background:#f8fafc;padding:10px 14px">'
      +'<div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:4px;font-weight:600">1\u00aa Resposta (med.)</div>'
-     +'<div style="font-size:22px;font-weight:900;color:'+(fRespMed!=null?(fRespMed<=30?'#16a34a':'#d97706'):'#9ca3af')+'">'+(fRespMed!=null?fRespMed+'min':'\u2014')+'</div>'
+     +'<div style="font-size:22px;font-weight:900;color:'+(fRespMed!=null?(fRespMed<=30?'#16a34a':'#d97706'):'#9ca3af')+'">'+(fRespMed!=null?fmtRespTxt(fRespMed):'\u2014')+'</div>'
      +'<div style="font-size:10px;color:#9ca3af">'+(fRespMed!=null?(fRespMed<=30?'\u2705 dentro da meta':'\u26a0\ufe0f acima de 30min'):'sem amostra')+'</div>'
      +'</div>';
     H+='<div style="background:#f8fafc;padding:10px 14px">'
@@ -4979,7 +4979,7 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
       H+='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>N\u00famero</th><th>Assunto</th><th>Estado</th><th>Prioridade</th><th>Abertura</th><th>1\u00aa Resp</th></tr></thead><tbody>';
       fAbertos.forEach(function(t){
         var rc=t.resp_min!=null?(t.resp_min<=30?'#16a34a':t.resp_min<=120?'#d97706':'#dc2626'):'#9ca3af';
-        H+='<tr><td class="num">#'+t.num.slice(-8)+'</td><td style="max-width:220px;font-weight:500">'+t.assunto+'</td><td>'+eBadge(t.estado)+'</td><td>'+pBadge(t.prioridade)+'</td><td style="color:#6b7280;white-space:nowrap">'+t.criado+'</td><td style="font-family:monospace;color:'+rc+';white-space:nowrap">'+(t.resp_min!=null?t.resp_min+'min':'\u2014')+'</td></tr>';
+        H+='<tr><td class="num">#'+t.num.slice(-8)+'</td><td style="max-width:220px;font-weight:500">'+t.assunto+'</td><td>'+eBadge(t.estado)+'</td><td>'+pBadge(t.prioridade)+'</td><td style="color:#6b7280;white-space:nowrap">'+t.criado+'</td><td style="font-family:monospace;color:'+rc+';white-space:nowrap">'+(t.resp_min!=null?fmtRespTxt(t.resp_min):'\u2014')+'</td></tr>';
       });
       H+='</tbody></table></div></div>';
     }
@@ -4992,7 +4992,7 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
       fFechados.forEach(function(t){
         var rc=t.resp_min!=null?(t.resp_min<=30?'#16a34a':t.resp_min<=120?'#d97706':'#dc2626'):'#9ca3af';
         var sc=t.sol!=null?(t.sol<=48?'#16a34a':t.sol<=96?'#d97706':'#dc2626'):'#9ca3af';
-        H+='<tr><td class="num">#'+t.num.slice(-8)+'</td><td style="max-width:200px;font-weight:500">'+t.assunto+'</td><td>'+eBadge(t.estado)+'</td><td>'+pBadge(t.prioridade)+'</td><td style="color:#6b7280;white-space:nowrap">'+t.criado+'</td><td style="font-family:monospace;color:'+rc+';white-space:nowrap">'+(t.resp_min!=null?t.resp_min+'min':'\u2014')+'</td><td style="font-family:monospace;color:'+sc+';white-space:nowrap;font-weight:700">'+(t.sol!=null?t.sol+'h':'\u2014')+'</td></tr>';
+        H+='<tr><td class="num">#'+t.num.slice(-8)+'</td><td style="max-width:200px;font-weight:500">'+t.assunto+'</td><td>'+eBadge(t.estado)+'</td><td>'+pBadge(t.prioridade)+'</td><td style="color:#6b7280;white-space:nowrap">'+t.criado+'</td><td style="font-family:monospace;color:'+rc+';white-space:nowrap">'+(t.resp_min!=null?fmtRespTxt(t.resp_min):'\u2014')+'</td><td style="font-family:monospace;color:'+sc+';white-space:nowrap;font-weight:700">'+(t.sol!=null?t.sol+'h':'\u2014')+'</td></tr>';
       });
       H+='</tbody></table></div></div>';
     }
@@ -6240,7 +6240,7 @@ function renderEstadoTable(rows) {
     html += '<td style="font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap">'+(t.criado||'—')+'</td>';
     if(hasIdade) html += '<td style="font-family:var(--mono);font-size:11px;color:var(--warn);white-space:nowrap">'+(t.idade||'—')+'</td>';
     if(hasAtend) html += '<td style="font-size:11px;color:var(--sub);white-space:nowrap">'+(t.atend||'—')+'</td>';
-    html += '<td style="font-family:var(--mono);font-size:11px;color:'+respColor+';white-space:nowrap">'+(t.resp_min!=null?t.resp_min+'min':'—')+'</td>';
+    html += '<td style="font-family:var(--mono);font-size:11px;color:'+respColor+';white-space:nowrap">'+(t.resp_min!=null?fmtRespTxt(t.resp_min):'—')+'</td>';
     if(hasSol) html += '<td style="font-family:var(--mono);font-size:11px;color:var(--purple);white-space:nowrap">'+(t.sol!=null?t.sol+'h':'—')+'</td>';
     html += '</tr>';
   });
@@ -6580,7 +6580,7 @@ function renderCSTimeline(d) {
   document.getElementById('cs-tl-title').textContent = 'Chamados de '+d.nome+' ('+tickets.length+')';
   var html = tickets.map(function(t) {
     var solStr = t.sol ? ' · Solução: '+t.sol+'h' : '';
-    var respStr = t.resp_min != null ? ' · 1ª resp: '+t.resp_min+'min' : '';
+    var respStr = t.resp_min != null ? ' · 1ª resp: '+fmtRespTxt(t.resp_min) : '';
     return '<div class="cs-tl-item"><div class="cs-tl-dot" style="background:'+csStateColor(t.estado).replace(/var\(([^)]+)\)/g,function(_,v){return {'--ok':'#10b981','--teal':'#00d4a8','--sub':'#8892a4','--blue':'#4f8ef7','--warn':'#f59e0b','--orange':'#f97316','--purple':'#8b5cf6','--danger':'#f43f5e','--muted':'#5a6278'}[v]||'#8892a4';})+'"></div><div class="cs-tl-body"><div class="cs-tl-num">#'+t.num+' · '+t.criado+'</div><div class="cs-tl-assunto">'+t.assunto+'</div><div class="cs-tl-meta"><span class="cs-tl-tag" style="background:rgba(139,92,246,.1);color:#a855f7">'+t.estado+'</span><span class="cs-tl-tag" style="background:rgba(255,255,255,.05);color:var(--sub)">'+t.prioridade+'</span>'+(t.servico?'<span class="cs-tl-tag" style="background:rgba(79,142,247,.1);color:var(--blue)">'+t.servico+'</span>':'')+'<span class="cs-tl-tag" style="background:rgba(255,255,255,.04);color:var(--muted)">'+respStr.replace(' · ','')+solStr.replace(' · ','')+'</span></div></div></div>';
   }).join('');
   document.getElementById('cs-tl-list').innerHTML = html || '<div style="padding:14px;color:var(--muted)">Sem chamados registrados</div>';
@@ -7585,7 +7585,7 @@ function renderResumo(){
   else if(totalBloq>10)p2+='Existem <strong>'+totalBloq+' chamados bloqueados</strong>, o que <strong>exige atenção</strong>.';
   else if(totalBloq>0)p2+='Há <strong>'+totalBloq+' chamados bloqueados</strong>, dentro de um nível aceitável.';
   var p3='';
-  if(respMed>0){var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':Math.round(respMed)+' min';p3+='O tempo médio de <strong>primeira resposta</strong> foi de <strong>'+respH+'</strong>'+(respMed<=30?', dentro da meta de 30 minutos.':', acima da meta de 30 minutos.')+' ';}
+  if(respMed>0){var respH=fmtRespTxt(respMed);p3+='O tempo médio de <strong>primeira resposta</strong> foi de <strong>'+respH+'</strong>'+(respMed<=30?', dentro da meta de 30 minutos.':', acima da meta de 30 minutos.')+' ';}
   if(solMed>0){p3+='O tempo médio de <strong>solução</strong> foi de <strong>'+solMed+'h</strong>'+(solMed<=24?', considerado <strong>bom</strong>.':solMed<=40?', dentro de um nível aceitável.':', <strong>acima do ideal</strong> — recomenda-se revisar chamados antigos.');}
   var p4='';
   if(prioMA>0){p4+='O volume de chamados de <strong>prioridade muito alta</strong> é de <strong>'+prioMA+'</strong> ('+pctMA+'% do total). ';if(pctMA>40)p4+='Este percentual é <strong>crítico</strong> e requer atenção urgente.';else if(pctMA>30)p4+='Este percentual está <strong>elevado</strong>.';else p4+='Este percentual está dentro do normal.';}
@@ -7813,7 +7813,7 @@ function computeInsights(){
   var healthColor=healthScore>=85?'#10b981':healthScore>=70?'#00d4a8':healthScore>=55?'#f59e0b':'#f43f5e';
 
   var now=new Date().toISOString();
-  var respH=respMed>=60?(Math.round(respMed/60*10)/10)+'h':Math.round(respMed)+' min';
+  var respH=fmtRespTxt(respMed);
 
   // ── RESUMO DE GESTÃO ─────────────────────────────────────
   var narrativa='No período analisado foram registrados <strong>'+total+' chamados</strong> com taxa de conclusão de <strong>'+taxaConc+'%</strong>. ';
@@ -8284,7 +8284,7 @@ function renderChurnRisk() {
     '</tr></thead><tbody>';
   rows.forEach(function(r){
     var barW=r.score;
-    var respTxt=r.respMed>0?Math.round(r.respMed)+'min':'—';
+    var respTxt=r.respMed>0?fmtRespTxt(Math.round(r.respMed)):'—';
     var ageTxt=r.avgAge>0?r.avgAge+'d':'—';
     html+='<tr>'+
       '<td><span class="ri-cli-name" data-id="'+r.id+'" onclick="setClienteGlobal(this.dataset.id)">'+r.nome+'</span></td>'+
@@ -8353,7 +8353,7 @@ function buildExecutiveReport() {
     L.push('');
     L.push('Volume total: '+total+' chamados ('+fechados+' fechados · '+abertos+' abertos)');
     L.push('Taxa de conclusão: '+taxa+'% '+(taxa>=META_TAXA?'✅ acima':'⚠️ abaixo')+' da meta de '+META_TAXA+'%');
-    if(respMed!==null) L.push('1ª resposta média: '+respMed+'min '+(respMed<=META_RESP?'✅ dentro':'⚠️ acima')+' da meta de '+META_RESP+'min');
+    if(respMed!==null) L.push('1ª resposta média: '+fmtRespTxt(respMed)+' '+(respMed<=META_RESP?'✅ dentro':'⚠️ acima')+' da meta de '+META_RESP+'min');
     if(solMed!==null) L.push('Solução média: '+solMed+'h '+(solMed<=META_SOL?'✅ dentro':'⚠️ acima')+' da meta de '+META_SOL+'h');
     L.push('');
     L.push(sep);
@@ -8394,7 +8394,7 @@ function buildExecutiveReport() {
       var tx=Math.round(a.f/a.t*100);
       var ab=a.ab||0;
       var line='  '+a.n+': '+a.t+' ch · '+tx+'% concluídos · '+ab+' abertos';
-      if(a.rm!=null) line+=' · 1ª resp '+Math.round(a.rm)+'min';
+      if(a.rm!=null) line+=' · 1ª resp '+fmtRespTxt(Math.round(a.rm));
       L.push(line);
     });
     L.push('');
@@ -8405,7 +8405,7 @@ function buildExecutiveReport() {
     L.push('Top clientes por volume:');
     topCli.forEach(function(e){
       var line='  '+e.nome+': '+e.total+' chamados · '+e.abertos+' abertos';
-      if(e.resp_med) line+=' · resp '+Math.round(e.resp_med)+'min';
+      if(e.resp_med) line+=' · resp '+fmtRespTxt(Math.round(e.resp_med));
       L.push(line);
     });
     if(churnRisk.length>0){
