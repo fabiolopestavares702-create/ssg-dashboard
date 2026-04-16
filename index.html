@@ -3818,7 +3818,7 @@ function renderSLAFinanceiro() {
     +'</tr></thead><tbody>';
   rows.forEach(function(r){
     tblHtml+='<tr>'
-      +'<td><span class="ri-cli-name" onclick="setClienteGlobal(''+r.id+'')">'+r.nome+'</span></td>'
+      +'<td><span class="ri-cli-name" data-id="'+r.id+'" onclick="setClienteGlobal(this.dataset.id)">'+r.nome+'</span></td>'
       +'<td>'+r.tickets+'</td>'
       +'<td>'+r.excessH+'h</td>'
       +'<td class="sla-fin-exposure">'+fmtBRL(r.exposure)+'</td>'
@@ -8284,7 +8284,7 @@ function renderChurnRisk() {
     var respTxt=r.respMed>0?Math.round(r.respMed)+'min':'—';
     var ageTxt=r.avgAge>0?r.avgAge+'d':'—';
     html+='<tr>'+
-      '<td><span class="ri-cli-name" onclick="setClienteGlobal(''+r.id+'')">'+r.nome+'</span></td>'+
+      '<td><span class="ri-cli-name" data-id="'+r.id+'" onclick="setClienteGlobal(this.dataset.id)">'+r.nome+'</span></td>'+
       '<td><span class="churn-badge '+r.risk+'">'+LABELS[r.risk]+'</span></td>'+
       '<td style="font-family:var(--mono);font-weight:700;color:var(--text)">'+r.score+'</td>'+
       '<td style="font-family:var(--mono)">'+r.abertos+'/'+r.total+'</td>'+
@@ -8649,7 +8649,7 @@ function renderNotifPanel() {
 
   var dotColors = {danger:'var(--danger)', warn:'var(--warn)', ok:'var(--ok)', info:'var(--blue)'};
   listEl.innerHTML = filtered.map(function(n) {
-    return '<div class="notif-item ' + n.sev + '" onclick="notifClick('' + n.id + '',event)">'+
+    return '<div class="notif-item ' + n.sev + '" data-id="' + n.id + '" onclick="notifClick(this.dataset.id,event)">'+
       '<div class="notif-dot" style="background:' + (dotColors[n.sev] || 'var(--muted)') + '"></div>'+
       '<div class="notif-body">'+
         '<div class="notif-title">' + n.title + '</div>'+
