@@ -7462,6 +7462,9 @@ function renderBacklogTable(rows) {
   </div>
 </div>
 <script>
+// ── helpers de estado (usados em múltiplos módulos deste bloco) ─
+var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+var isFe=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ \u00caxito';};
 // ════════════════════════════════════════════════════════════
 // RESUMO DE GESTÃO
 // ════════════════════════════════════════════════════════════
