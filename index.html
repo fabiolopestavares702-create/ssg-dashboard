@@ -679,6 +679,17 @@ input[type=file]{display:none}
 .csat-rank-score{font-size:12px;font-weight:700;font-family:var(--mono);width:32px;text-align:right;flex-shrink:0}
 .csat-disclaimer{font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:10px;padding:8px;background:var(--bg3);border-radius:6px;line-height:1.5}
 
+.dr-wrap{padding:0 0 4px}
+.dr-row{display:flex;align-items:center;gap:4px;margin:4px 0}
+.dr-input{background:var(--bg3);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:4px 7px;font-size:10px;font-family:var(--mono);width:0;flex:1;min-width:0;cursor:pointer;color-scheme:dark;outline:none}
+.dr-input:focus{border-color:var(--blue2)}
+.dr-btns{display:flex;gap:5px;margin-top:5px}
+.dr-apply{padding:4px 10px;border-radius:20px;font-size:10px;border:1px solid var(--border2);background:transparent;color:var(--sub);cursor:pointer;font-family:var(--font);transition:all .15s}
+.dr-apply:hover,.dr-apply.dr-active{background:var(--teal);border-color:var(--teal);color:#fff}
+.dr-clear{padding:4px 8px;border-radius:20px;font-size:10px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font);transition:all .15s}
+.dr-clear:hover{border-color:var(--danger);color:var(--danger)}
+.dr-active-badge{font-size:9px;font-family:var(--mono);color:var(--teal);padding:2px 6px;background:rgba(0,212,168,.1);border-radius:10px;margin-top:4px;display:block;word-break:break-all}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -807,6 +818,7 @@ input[type=file]{display:none}
   <div class="month-filter-wrap" id="mf-op">
     <span class="month-filter-lbl">Filtrar por mês</span>
     <div class="month-btns" id="mth-btns-op"></div>
+    <div id="dr-op"></div>
     <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
     <div class="month-btns" id="fila-btns-op" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
   </div>
@@ -823,6 +835,7 @@ input[type=file]{display:none}
   <div class="month-filter-wrap" id="mf-cli" style="display:none">
     <span class="month-filter-lbl">Filtrar por mês</span>
     <div class="month-btns" id="mth-btns-cli"></div>
+    <div id="dr-cli"></div>
     <span class="month-filter-lbl" style="margin-top:8px">Filtrar por fila</span>
     <div class="month-btns" id="fila-btns-cli" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
   </div>
@@ -841,6 +854,7 @@ input[type=file]{display:none}
   <div class="month-filter-wrap" id="mf-cs" style="display:none">
     <span class="month-filter-lbl">Filtrar por mês</span>
     <div class="month-btns" id="mth-btns-cs"></div>
+    <div id="dr-cs"></div>
   </div>
   </div>
   <div id="nav-rg" style="display:none">
@@ -2051,7 +2065,21 @@ var _alertState={criticos:[],filtroAtend:'all',filtroFila:'all'};
 
 function renderAlertas(){
   var mes = activeMonth;
-  var critTodos = mes==='all' ? OP.criticos : OP.criticos.filter(function(c){return c.mes===mes;});
+  var critTodos;
+  if(activeRangeStart && activeRangeEnd) {
+    var isAbRA=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+    critTodos=(RAW_DATA||[]).filter(function(d){
+      return d.criado&&isAbRA(d.estado)&&ticketInFilter(d)&&(!activeCliente||d.cli_id===activeCliente);
+    }).map(function(d){
+      var diff=Math.floor((new Date()-d.criado)/(864e5));
+      var p2=function(n){return n<10?'0'+n:String(n);};
+      return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,
+        criado:p2(d.criado.getDate())+'/'+p2(d.criado.getMonth()+1)+' '+p2(d.criado.getHours())+':'+p2(d.criado.getMinutes()),
+        idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+    });
+  } else {
+    critTodos = mes==='all' ? OP.criticos : OP.criticos.filter(function(c){return c.mes===mes;});
+  }
   var filaAtiva = _alertState.filtroFila||'all';
   var critFiltrados = filaAtiva==='all' ? critTodos : critTodos.filter(function(c){return c.fila===filaAtiva;});
   _alertState = {criticos:critFiltrados, filtroAtend:'all', filtroFila:filaAtiva};
@@ -2259,10 +2287,7 @@ function openAtendPendModal(nome){
   var chamados=(RAW_DATA||[]).filter(function(d){
     if(!d.atend||d.atend!==nome)return false;
     if(PEND.indexOf(d.estado)===-1)return false;
-    if(activeMonth!=='all'&&d.criado){
-      var mk=d.criado.toISOString?d.criado.toISOString().slice(0,7):String(d.criado).slice(0,7);
-      if(mk!==activeMonth)return false;
-    }
+    if(!ticketInFilter(d)) return false;
     return true;
   }).map(function(d){
     var diffDays=d.criado?Math.floor((new Date()-d.criado)/(1000*60*60*24)):null;
@@ -3265,9 +3290,14 @@ function renderSl(){
 }
 
 function renderBl(){
-  var bloqData=BLOQ_MESES[activeMonth];
-  if(!bloqData&&activeMonth!=='all'&&OP_MESES[activeMonth])bloqData=buildBloqEntry(OP_MESES[activeMonth].estado||{});
-  bloqData=bloqData||BLOQ_MESES['all']||buildBloqEntry(OP.estado||{});
+  var bloqData;
+  if(activeRangeStart && activeRangeEnd) {
+    bloqData = buildBloqEntry(buildOPFromRange().estado || {});
+  } else {
+    bloqData=BLOQ_MESES[activeMonth];
+    if(!bloqData&&activeMonth!=='all'&&OP_MESES[activeMonth])bloqData=buildBloqEntry(OP_MESES[activeMonth].estado||{});
+    bloqData=bloqData||BLOQ_MESES['all']||buildBloqEntry(OP.estado||{});
+  }
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var totalGeral=getActiveOP().total||OP.total;
   var kpis=document.querySelectorAll('#s-bl .kpi');
@@ -3445,7 +3475,7 @@ function getInfDataFromRaw(){
   var rows=RAW_DATA.filter(function(d){
     if(!d.criado)return false;
     if(activeCliente&&d.cli_id!==activeCliente)return false;
-    if(activeMonth!=='all'&&d.criado.toISOString().slice(0,7)!==activeMonth)return false;
+    if(!ticketInFilter(d)) return false;
     if(activeFilaOP!=='all'&&d.fila!==activeFilaOP)return false;
     return true;
   });
@@ -3894,8 +3924,14 @@ function exportPDF(){
   var d=getFilteredEmpresa(dRaw); // respeita filtro de mês
   var score=calcScore(d);
   var now=new Date().toLocaleDateString('pt-BR');
-  var mesLabel=activeMonth==='all'?'Jan\u2013Mar 2026':({'2026-01':'Janeiro 2026','2026-02':'Fevereiro 2026','2026-03':'Mar\u00e7o 2026'}[activeMonth]||activeMonth);
-  var mesShort=activeMonth==='all'?'Jan/26':({'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26'}[activeMonth]||activeMonth);
+  var mesLabel = (activeRangeStart&&activeRangeEnd) ?
+    activeRangeStart.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})+' a '+
+    activeRangeEnd.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) :
+    (activeMonth==='all'?'Jan\u2013Mar 2026':({'2026-01':'Janeiro 2026','2026-02':'Fevereiro 2026','2026-03':'Mar\u00e7o 2026'}[activeMonth]||activeMonth));
+  var mesShort = (activeRangeStart&&activeRangeEnd) ?
+    activeRangeStart.toLocaleDateString('pt-BR',{month:'short'})+'/'+activeRangeStart.getFullYear().toString().slice(2)+'\u2013'+
+    activeRangeEnd.toLocaleDateString('pt-BR',{month:'short'})+'/'+activeRangeEnd.getFullYear().toString().slice(2) :
+    (activeMonth==='all'?'Jan/26':({'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26'}[activeMonth]||activeMonth));
 
   // ── Métricas — usa dados do mês filtrado
   var taxaConc=d.total>0?Math.round(d.fechados/d.total*100):0;
@@ -4493,7 +4529,130 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
 }
 
 // ─── MONTH FILTER ────────────────────────────────────────────
-var activeMonth = 'all'; // 'all' | 'YYYY-MM'
+var activeMonth = 'all'; // 'all' | 'YYYY-MM' | 'range'
+var activeRangeStart = null; // Date | null
+var activeRangeEnd   = null; // Date | null
+
+// ─── DATE RANGE HELPERS ─────────────────────────────────────────
+function ticketInFilter(d) {
+  if(!d || !d.criado) return false;
+  if(activeRangeStart && activeRangeEnd) {
+    return d.criado >= activeRangeStart && d.criado <= activeRangeEnd;
+  }
+  if(activeMonth === 'all') return true;
+  var mk = d.criado.toISOString ? d.criado.toISOString().slice(0,7) : String(d.criado).slice(0,7);
+  return mk === activeMonth;
+}
+
+function buildOPFromRange() {
+  var isAbR = function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+  var isFR  = function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+  var rows = (RAW_DATA||[]).filter(function(d){
+    if(!d.criado) return false;
+    if(!ticketInFilter(d)) return false;
+    if(activeFilaOP !== 'all' && d.fila !== activeFilaOP) return false;
+    return true;
+  });
+  var total    = rows.length;
+  var abertos  = rows.filter(function(d){return isAbR(d.estado);}).length;
+  var fechados = rows.filter(function(d){return isFR(d.estado);}).length;
+  var respRows = rows.filter(function(d){return d.resp_min!=null&&!isNaN(d.resp_min);});
+  var resp_med = respRows.length ? Math.round(respRows.reduce(function(s,d){return s+d.resp_min;},0)/respRows.length) : 0;
+  var solRows  = rows.filter(function(d){return isFR(d.estado)&&d.sol_h!=null&&!isNaN(d.sol_h);});
+  var sol_med  = solRows.length  ? Math.round(solRows.reduce(function(s,d){return s+d.sol_h;},0)/solRows.length*10)/10 : 0;
+  var estado={}, prior={}, svc={}, cli={}, heat={}, atendMap={};
+  rows.forEach(function(d){
+    if(d.estado) estado[d.estado]=(estado[d.estado]||0)+1;
+    if(d.prior)  prior[d.prior] =(prior[d.prior] ||0)+1;
+    if(d.servico)svc[d.servico] =(svc[d.servico] ||0)+1;
+    if(d.cli_id) cli[d.cli_id]  =(cli[d.cli_id]  ||0)+1;
+    if(d.criado){
+      var dow=d.criado.getDay(), mapped=dow===0?6:dow-1, h=d.criado.getHours();
+      heat[mapped+'_'+h]=(heat[mapped+'_'+h]||0)+1;
+    }
+    if(d.atend&&d.atend!=='—'){
+      if(!atendMap[d.atend]) atendMap[d.atend]={n:d.atend,t:0,f:0,ab:0,rSum:0,rN:0,sSum:0,sN:0};
+      var a=atendMap[d.atend]; a.t++;
+      if(isFR(d.estado))  a.f++;
+      if(isAbR(d.estado)) a.ab++;
+      if(d.resp_min!=null){a.rSum+=d.resp_min;a.rN++;}
+      if(d.sol_h!=null)   {a.sSum+=d.sol_h;   a.sN++;}
+    }
+  });
+  var atend=Object.keys(atendMap).sort(function(a,b){return atendMap[b].t-atendMap[a].t;}).map(function(n){
+    var a=atendMap[n];
+    return{n:a.n,t:a.t,f:a.f,ab:a.ab,tm:a.sN>0?Math.round(a.sSum/a.sN*10)/10:null,rm:a.rN>0?Math.round(a.rSum/a.rN*10)/10:null};
+  });
+  var byDayMap={};
+  rows.forEach(function(d){if(d.criado){var k=d.criado.toISOString().slice(0,10);byDayMap[k]=(byDayMap[k]||0)+1;}});
+  var by_day=Object.keys(byDayMap).sort().map(function(k){return{d:k,n:byDayMap[k]};});
+  var criticos=rows.filter(function(d){return d.prior==='Muito Alta'&&isAbR(d.estado);}).map(function(d){
+    var diff=Math.floor((new Date()-d.criado)/(864e5));
+    var p2=function(n){return n<10?'0'+n:String(n);};
+    return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,
+      criado:p2(d.criado.getDate())+'/'+p2(d.criado.getMonth()+1)+' '+p2(d.criado.getHours())+':'+p2(d.criado.getMinutes()),
+      idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+  });
+  return{total:total,abertos:abertos,fechados:fechados,resp_med:resp_med,sol_med:sol_med,
+    estado:estado,prior:prior,svc:svc,cli:cli,heat:heat,atend:atend,criticos:criticos,
+    by_day:by_day,byDay:by_day,volMes:{}};
+}
+
+function buildDateRangePicker(mode) {
+  var el = document.getElementById('dr-'+mode);
+  if(!el) return;
+  var rangeActive = !!(activeRangeStart && activeRangeEnd);
+  var fromVal = activeRangeStart ? activeRangeStart.toISOString().slice(0,10) : '';
+  var toVal   = activeRangeEnd   ? activeRangeEnd.toISOString().slice(0,10)   : '';
+  el.innerHTML =
+    '<span class="month-filter-lbl" style="margin-top:10px;display:block">Período personalizado</span>'+
+    '<div class="dr-row">'+
+      '<input type="date" id="dr-from-'+mode+'" class="dr-input" value="'+fromVal+'">'+
+      '<span style="color:var(--muted);font-size:10px;padding:0 2px">→</span>'+
+      '<input type="date" id="dr-to-'+mode+'" class="dr-input" value="'+toVal+'">'+
+    '</div>'+
+    '<div class="dr-btns">'+
+      '<button id="dr-apply-btn-'+mode+'" class="dr-apply'+(rangeActive?' dr-active':'')+'">'+
+        (rangeActive?'✓ Aplicado':'Aplicar')+'</button>'+
+      (rangeActive ? '<button class="dr-clear" onclick="clearDateRange()">✕ Limpar</button>' : '')+
+    '</div>'+
+    (rangeActive ? '<span class="dr-active-badge">'+fromVal+' → '+toVal+'</span>' : '');
+  var applyBtn = document.getElementById('dr-apply-btn-'+mode);
+  if(applyBtn) applyBtn.addEventListener('click', function(){ applyDateRange(mode); });
+}
+
+function applyDateRange(mode) {
+  var fromEl = document.getElementById('dr-from-'+mode);
+  var toEl   = document.getElementById('dr-to-'+mode);
+  if(!fromEl || !toEl || !fromEl.value || !toEl.value) return;
+  var start = new Date(fromEl.value + 'T00:00:00');
+  var end   = new Date(toEl.value   + 'T23:59:59');
+  if(isNaN(start)||isNaN(end)||start>end){alert('Período inválido.');return;}
+  activeRangeStart = start;
+  activeRangeEnd   = end;
+  activeMonth      = 'range';
+  buildMonthFilter();
+  Object.keys(rendered).forEach(function(k){rendered[k]=false;});
+  Object.keys(CH).forEach(function(k){if(CH[k]){CH[k].destroy();CH[k]=null;}});
+  var aOp=document.querySelector('#view-op .sec.on');
+  if(aOp){rendered[aOp.id]=true;renderSec(aOp.id);}
+  var aCli=document.querySelector('#view-cli .sec.on');
+  if(aCli){rendered[aCli.id]=true;renderSec(aCli.id);}
+  var key=document.getElementById('sel-empresa').value;
+  if(key) loadEmpresa(key);
+  var vCS=document.getElementById('view-cs');
+  if(vCS&&vCS.classList.contains('on')){
+    var csKey=document.getElementById('cs-sel-empresa').value;
+    if(csKey) loadCS(csKey); else renderCSHealthList();
+  }
+  computeInsights();
+}
+
+function clearDateRange() {
+  activeRangeStart = null;
+  activeRangeEnd   = null;
+  setMonth('all');
+}
 
 function buildMonthFilter() {
   var mNames = {'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
@@ -4535,10 +4694,13 @@ function buildMonthFilter() {
       rows += '<button class="' + cls + '" onclick="setMonth(&quot;' + k + '&quot;)">' + mLabel(k) + '<span class="mth-count">' + count + '</span></button>';
     });
     el.innerHTML = rows;
+    buildDateRangePicker(mode);
   });
 }
 
 function setMonth(m) {
+  activeRangeStart = null;
+  activeRangeEnd   = null;
   activeMonth = m;
   buildMonthFilter();
   // Re-render all active sections
@@ -4635,6 +4797,7 @@ function getActiveOP() {
     }
   }
   var base;
+  if(activeRangeStart && activeRangeEnd) { return buildOPFromRange(); }
   if(activeFilaOP !== 'all') {
     var filaData = OP_FILAS[activeFilaOP];
     if(!filaData) { base = OP; }
@@ -4901,6 +5064,26 @@ var EMP_MESES = {"ALMEIDA JR": {"2026-01": {"total": 78, "abertos": 1, "fechados
 
 function getFilteredEmpresa(d) {
   if(!d) return null;
+  // Range mode: filter from RAW_DATA for accurate results
+  if(activeRangeStart && activeRangeEnd) {
+    var rTix=(RAW_DATA||[]).filter(function(t){return t.cli_id===d.id&&ticketInFilter(t);});
+    if(!rTix.length) return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},by_mes:{}});
+    var isAbGFE=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+    var isFGFE=function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+    var estGFE={};
+    rTix.forEach(function(t){if(t.estado)estGFE[t.estado]=(estGFE[t.estado]||0)+1;});
+    var p2g=function(n){return n<10?'0'+n:String(n);};
+    var tixGFE=rTix.map(function(t){
+      var dt=t.criado?p2g(t.criado.getDate())+'/'+p2g(t.criado.getMonth()+1)+' '+p2g(t.criado.getHours())+'h':'—';
+      return Object.assign({},t,{criado:dt});
+    });
+    return Object.assign({},d,{
+      total:rTix.length,
+      abertos:rTix.filter(function(t){return isAbGFE(t.estado);}).length,
+      fechados:rTix.filter(function(t){return isFGFE(t.estado);}).length,
+      tickets:tixGFE, estados:estGFE, by_mes:{}
+    });
+  }
   if(activeMonth==='all') return d;
 
   var mParts = activeMonth.split('-');
@@ -5040,10 +5223,7 @@ function getSLACountdown() {
     if(abertosStates.indexOf(d.estado) === -1) return;
     // filtro de mês/fila/cliente ativos
     if(activeCliente && d.cli_id !== activeCliente) return;
-    if(activeMonth !== 'all') {
-      var mk = d.criado.toISOString().slice(0,7);
-      if(mk !== activeMonth) return;
-    }
+    if(!ticketInFilter(d)) return;
     if(activeFilaOP !== 'all' && d.fila !== activeFilaOP) return;
     // ── HORAS ÚTEIS: conta apenas Seg-Sex 8h-18h ──
     var elapsedH = calcBusinessHoursH(d.criado, now);
@@ -5150,9 +5330,7 @@ function exportCSV() {
   // Aplica filtros ativos
   var filtered = RAW_DATA.filter(function(d) {
     if(activeCliente && d.cli_id !== activeCliente) return false;
-    if(d.criado && activeMonth !== 'all') {
-      if(d.criado.toISOString().slice(0,7) !== activeMonth) return false;
-    }
+    if(d.criado && !ticketInFilter(d)) return false;
     if(activeFilaOP !== 'all' && d.fila !== activeFilaOP) return false;
     return true;
   });
@@ -5202,7 +5380,7 @@ function exportCSV() {
   var now = new Date();
   var filtros = [
     ['Exportado em', fmtDt(now)],
-    ['Mês', activeMonth==='all'?'Todos':activeMonth],
+    ['Mês', (activeRangeStart&&activeRangeEnd)?activeRangeStart.toISOString().slice(0,10)+' a '+activeRangeEnd.toISOString().slice(0,10):(activeMonth==='all'?'Todos':activeMonth)],
     ['Fila', activeFilaOP==='all'?'Todas':activeFilaOP],
     ['Cliente', activeCliente?(ENM2[activeCliente]||activeCliente):'Todos'],
     ['Total de chamados', filtered.length],
@@ -6694,7 +6872,7 @@ function renderResumo(){
     var rawFilt=RAW_DATA.filter(function(d){
       if(!d.criado)return false;
       if(activeCliente&&d.cli_id!==activeCliente)return false;
-      if(activeMonth!=='all'&&d.criado.toISOString().slice(0,7)!==activeMonth)return false;
+      if(!ticketInFilter(d)) return false;
       if(activeFilaOP!=='all'&&d.fila!==activeFilaOP)return false;
       return true;
     });
