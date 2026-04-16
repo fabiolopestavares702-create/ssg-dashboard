@@ -599,6 +599,27 @@ input[type=file]{display:none}
 .rm-vol-badge{font-size:9px;color:var(--muted);font-family:var(--mono)}
 .rq-empty{font-size:11px;color:var(--muted);text-align:center;padding:16px;opacity:.55}
 
+/* Recurring Issues Detector */
+.ri-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ri-filter-btn{padding:4px 11px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--sub);font-size:10px;font-family:var(--mono);cursor:pointer;transition:all .15s}
+.ri-filter-btn.on,.ri-filter-btn:hover{border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,.08)}
+.ri-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:18px}
+.ri-pattern-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:border-color .15s}
+.ri-pattern-card:hover{border-color:var(--purple)}
+.ri-pattern-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ri-pattern-term{font-size:12px;font-weight:700;color:var(--text);flex:1;line-height:1.3}
+.ri-pattern-count{font-size:18px;font-weight:800;color:var(--purple);font-family:var(--display);flex-shrink:0}
+.ri-pattern-bar{height:3px;border-radius:2px;background:rgba(168,85,247,.18);margin-bottom:8px}
+.ri-pattern-bar-fill{height:100%;border-radius:2px;background:var(--purple)}
+.ri-pattern-meta{font-size:9px;color:var(--muted);font-family:var(--mono);display:flex;gap:10px;flex-wrap:wrap}
+.ri-pattern-tickets{margin-top:8px;border-top:1px solid var(--border);padding-top:8px;display:none}
+.ri-pattern-card.expanded .ri-pattern-tickets{display:block}
+.ri-ticket-row{font-size:10px;padding:3px 0;color:var(--sub);border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-ticket-row:last-child{border-bottom:none}
+.ri-wordcloud{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);margin-bottom:14px}
+.ri-word-tag{padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ri-word-tag:hover{filter:brightness(1.2)}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -765,6 +786,7 @@ input[type=file]{display:none}
     <div class="nav" id="nav-ia-resumo" onclick="goSecIA('ia-resumo',this)" style="color:#a855f7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Resumo de Gestão</div>
     <div class="nav" id="nav-ia-op" onclick="goSecIA('ia-op',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Riscos Operacionais</div>
     <div class="nav" id="nav-ia-cli" onclick="goSecIA('ia-cli',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Riscos de Cliente</div>
+    <div class="nav" id="nav-ia-ri" onclick="goSecIA('ia-ri',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>Problemas Recorrentes</div>
     <div class="nav" id="nav-ia-cs" onclick="goSecIA('ia-cs',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Insights CS</div>
   </div>
   <div class="sb-footer">
@@ -1445,6 +1467,27 @@ input[type=file]{display:none}
       <div id="ia-cs-content"></div>
     </div>
 
+
+    <!-- PROBLEMAS RECORRENTES -->
+    <div id="ia-ri" class="sec">
+      <div class="page-header"><h1>Problemas Recorrentes</h1><p>Termos mais frequentes nos assuntos dos chamados — padrões que podem virar problema sistêmico</p></div>
+      <div class="page-body">
+        <div id="ri-empty" class="empty" style="display:none"><div class="empty-icon"></div><p>Importe dados para detectar padrões</p></div>
+        <div id="ri-content">
+          <div class="ri-filters">
+            <span style="font-size:10px;color:var(--muted);font-family:var(--mono)">Filtrar:</span>
+            <button class="ri-filter-btn on" onclick="riFilter('all',this)">Todos</button>
+            <button class="ri-filter-btn" onclick="riFilter('open',this)">Apenas abertos</button>
+            <button class="ri-filter-btn" onclick="riFilter('closed',this)">Apenas fechados</button>
+            <span style="margin-left:auto;font-size:10px;color:var(--muted)" id="ri-stats"></span>
+          </div>
+          <div id="ri-wordcloud" class="ri-wordcloud"></div>
+          <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Top padrões — clique no card para ver chamados</div>
+          <div id="ri-cards" class="ri-top-grid"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div><!-- /view-ia -->
 
@@ -1723,7 +1766,7 @@ function setMode(m){
   if(isIA){computeInsights();renderIA();}
 }
 function goSecIA(id,el){
-  ['ia-resumo','ia-op','ia-cli','ia-cs'].forEach(function(s){
+  ['ia-resumo','ia-op','ia-cli','ia-cs','ia-ri'].forEach(function(s){
     var sec=document.getElementById(s);if(sec)sec.classList.remove('on');
   });
   document.querySelectorAll('#nav-ia .nav').forEach(function(n){n.classList.remove('on');});
@@ -6466,16 +6509,112 @@ function renderIACS(){
   el.innerHTML=H;
 }
 
+function buildRecurringData(mode){
+  if(typeof RAW_DATA==='undefined'||!RAW_DATA||!RAW_DATA.length) return [];
+  var tickets=RAW_DATA.filter(function(d){
+    if(mode==='open')   return d.estado&&isAb(d.estado);
+    if(mode==='closed') return d.estado&&isFe(d.estado);
+    return true;
+  });
+  var STOP={de:1,da:1,do:1,das:1,dos:1,em:1,no:1,na:1,nos:1,nas:1,e:1,ou:1,a:1,o:1,as:1,os:1,um:1,uma:1,para:1,com:1,por:1,que:1,se:1,ao:1,aos:1,nao:1,mais:1,novo:1,chamado:1,criado:1,re:1,res:1,fwd:1,fw:1,enc:1,ticket:1,otrs:1,suporte:1,solicitacao:1,atualizacao:1,pedido:1,problema:1,ajuda:1,duvida:1,help:1,request:1,issue:1,via:1,sua:1,seu:1,sobre:1,ser:1,foi:1,esta:1,tem:1,ter:1,como:1,quando:1,favor:1,the:1,of:1,in:1,to:1,and:1,for:1,at:1};
+  var termMap={};
+  tickets.forEach(function(t){
+    if(!t.assunto||t.assunto==='\u2014') return;
+    var words=t.assunto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(function(w){return w.length>=4&&!STOP[w];});
+    var seen={};
+    words.forEach(function(w){
+      if(seen[w]) return; seen[w]=1;
+      if(!termMap[w]) termMap[w]={term:w,count:0,tickets:[],open:0,closed:0};
+      termMap[w].count++; termMap[w].tickets.push(t);
+      if(isAb(t.estado)) termMap[w].open++; else termMap[w].closed++;
+    });
+    for(var i=0;i<words.length-1;i++){
+      var bg=words[i]+' '+words[i+1];
+      if(seen[bg]) continue; seen[bg]=1;
+      if(!termMap[bg]) termMap[bg]={term:bg,count:0,tickets:[],open:0,closed:0};
+      termMap[bg].count++; termMap[bg].tickets.push(t);
+      if(isAb(t.estado)) termMap[bg].open++; else termMap[bg].closed++;
+    }
+  });
+  return Object.values(termMap).filter(function(x){return x.count>=2;}).sort(function(a,b){return b.count-a.count;}).slice(0,60);
+}
+
+var _riMode='all';
+function riFilter(mode,el){
+  _riMode=mode;
+  document.querySelectorAll('.ri-filter-btn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  renderIARecurring();
+}
+
+function renderIARecurring(){
+  var emEl=document.getElementById('ri-empty');
+  var ctEl=document.getElementById('ri-content');
+  if(typeof RAW_DATA==='undefined'||!RAW_DATA||!RAW_DATA.length){
+    if(emEl) emEl.style.display='';
+    if(ctEl) ctEl.style.display='none';
+    return;
+  }
+  if(emEl) emEl.style.display='none';
+  if(ctEl) ctEl.style.display='';
+  var patterns=buildRecurringData(_riMode);
+  var total=RAW_DATA.filter(function(d){
+    if(_riMode==='open') return isAb(d.estado);
+    if(_riMode==='closed') return isFe(d.estado);
+    return true;
+  }).length;
+  var statsEl=document.getElementById('ri-stats');
+  if(statsEl) statsEl.textContent=patterns.length+' padr\u00f5es \u00b7 '+total+' chamados analisados';
+  var wcEl=document.getElementById('ri-wordcloud');
+  if(wcEl){
+    var top20=patterns.slice(0,20);
+    var maxC=top20.length?top20[0].count:1;
+    wcEl.innerHTML=top20.length?top20.map(function(p){
+      var ratio=p.count/maxC;
+      var sz=Math.round(10+ratio*10);
+      var bg=(0.08+ratio*0.15).toFixed(2);
+      var bord=(0.12+ratio*0.25).toFixed(2);
+      var col=(0.65+ratio*0.35).toFixed(2);
+      return '<span class="ri-word-tag" style="font-size:'+sz+'px;background:rgba(168,85,247,'+bg+');color:rgba(220,180,255,'+col+');border:1px solid rgba(168,85,247,'+bord+')" title="'+p.count+' chamados">'+p.term+'</span>';
+    }).join(''):'<span style="font-size:11px;color:var(--muted)">Nenhum padr\u00e3o com m\u00ednimo 2 ocorr\u00eancias</span>';
+  }
+  var cardsEl=document.getElementById('ri-cards');
+  if(!cardsEl) return;
+  var top12=patterns.slice(0,12);
+  var maxCnt=top12.length?top12[0].count:1;
+  cardsEl.innerHTML=top12.map(function(p){
+    var pct=Math.round(p.count/maxCnt*100);
+    var openRatio=p.count>0?Math.round(p.open/p.count*100):0;
+    var rows=p.tickets.slice(0,5).map(function(t){
+      return '<div class="ri-ticket-row">'+
+        '<span style="color:var(--muted);font-family:var(--mono);margin-right:6px">#'+t.num+'</span>'+
+        (t.assunto||'\u2014').slice(0,50)+'</div>';
+    }).join('');
+    var more=p.tickets.length>5?'<div style="font-size:9px;color:var(--muted);margin-top:4px">+ '+(p.tickets.length-5)+' chamados</div>':'';
+    return '<div class="ri-pattern-card" onclick="this.classList.toggle(\'expanded\')">'+
+      '<div class="ri-pattern-head"><div class="ri-pattern-term">'+p.term+'</div><div class="ri-pattern-count">'+p.count+'</div></div>'+
+      '<div class="ri-pattern-bar"><div class="ri-pattern-bar-fill" style="width:'+pct+'%"></div></div>'+
+      '<div class="ri-pattern-meta">'+
+        '<span style="color:var(--danger)">'+p.open+' aberto'+(p.open!==1?'s':'')+'</span>'+
+        '<span style="color:var(--ok)">'+p.closed+' fechado'+(p.closed!==1?'s':'')+'</span>'+
+        (openRatio>=60?'<span style="color:var(--danger)">\u26a0 '+openRatio+'% em aberto</span>':'')+
+      '</div>'+
+      '<div class="ri-pattern-tickets">'+rows+more+'</div>'+
+    '</div>';
+  }).join('')||'<div style="color:var(--muted);font-size:12px;padding:20px">Nenhum padr\u00e3o encontrado</div>';
+}
+
 function renderIA(){
   renderIAResumo();
   renderIAOp();
   renderIACli();
   renderIACS();
+  renderIARecurring();
   // atualiza nav active state
   document.querySelectorAll('#nav-ia .nav').forEach(function(n){n.classList.remove('on');});
   var first=document.getElementById('nav-ia-resumo');if(first)first.classList.add('on');
   // mostra sec ativa
-  ['ia-resumo','ia-op','ia-cli','ia-cs'].forEach(function(s){
+  ['ia-resumo','ia-op','ia-cli','ia-cs','ia-ri'].forEach(function(s){
     var sec=document.getElementById(s);if(sec)sec.classList.remove('on');
   });
   var active=document.getElementById('ia-resumo');if(active)active.classList.add('on');
