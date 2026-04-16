@@ -576,6 +576,29 @@ input[type=file]{display:none}
 .mth-count{font-family:var(--mono);font-size:10px;opacity:.7}
 .mth-all{background:rgba(255,255,255,.03);border-color:var(--border)}
 
+/* Risk Matrix 2×2 */
+.risk-matrix-wrap{display:grid;grid-template-columns:22px 1fr;gap:0;height:500px;margin-top:4px}
+.risk-matrix-y-label{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:9px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:4px 2px}
+.risk-matrix-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:calc(100% - 26px)}
+.risk-matrix-x-labels{display:flex;justify-content:space-around;padding:5px 0 0;font-size:9px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.risk-quadrant{border-radius:var(--r);padding:10px 10px 8px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;min-height:0}
+.rq-header{font-size:9px;font-weight:700;font-family:var(--mono);letter-spacing:.08em;margin-bottom:3px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
+.rq-stable{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18)}
+.rq-stable .rq-header{color:#10b981}
+.rq-monitor{background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.18)}
+.rq-monitor .rq-header{color:#4f8ef7}
+.rq-risk{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2)}
+.rq-risk .rq-header{color:#f59e0b}
+.rq-critical{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.28)}
+.rq-critical .rq-header{color:#f43f5e}
+.rm-client{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:var(--bg2);border-radius:6px;cursor:pointer;transition:background .15s;gap:8px}
+.rm-client:hover{background:var(--bg3)}
+.rm-client-name{font-size:11px;font-weight:600;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm-client-meta{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.rm-score-badge{font-size:9px;font-family:var(--mono);font-weight:700;padding:2px 5px;border-radius:4px;background:rgba(0,0,0,.2)}
+.rm-vol-badge{font-size:9px;color:var(--muted);font-family:var(--mono)}
+.rq-empty{font-size:11px;color:var(--muted);text-align:center;padding:16px;opacity:.55}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -722,6 +745,7 @@ input[type=file]{display:none}
     <div class="sb-head">Customer Success</div>
     <div class="nav" id="cs-nav-overview" onclick="goSecCS('cs-overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Visão Geral</div>
     <div class="nav" id="cs-nav-health" onclick="goSecCS('cs-health',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health Score</div>
+    <div class="nav" id="cs-nav-matrix" onclick="goSecCS('cs-matrix',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>Matriz de Risco</div>
     <div class="nav" id="cs-nav-risks" onclick="goSecCS('cs-risks',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Riscos &amp; Alertas</div>
     <div class="nav" id="cs-nav-timeline" onclick="goSecCS('cs-timeline',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Histórico Conta</div>
     <div class="nav" id="cs-nav-actions" onclick="goSecCS('cs-actions',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Próximas Ações</div>
@@ -1329,6 +1353,28 @@ input[type=file]{display:none}
           <div class="card"><div class="card-title">Distribuição de estados</div><div class="cw" style="height:180px"><canvas id="cs-c-estados"></canvas></div></div>
         </div>
         <div class="card"><div class="card-title">Chamados críticos abertos</div><div id="cs-criticos-list"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATRIZ DE RISCO 2x2 -->
+  <div id="cs-matrix" class="sec">
+    <div class="page-header"><h1>Matriz de Risco</h1><p>Todos os clientes — volume × saúde. Clique num cliente para abrir o painel.</p></div>
+    <div class="page-body">
+      <div id="rm-empty" class="empty"><div class="empty-icon"></div><p>Importe dados para visualizar a matriz</p></div>
+      <div id="rm-content" style="display:none">
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px;flex-wrap:wrap">
+          <div style="font-size:11px;color:var(--muted)">Limiar de saúde: <strong style="color:var(--text)">score ≥ 65</strong></div>
+          <div style="font-size:11px;color:var(--muted)">Limiar de volume: <strong style="color:var(--text)" id="rm-threshold-vol">—</strong> (mediana)</div>
+          <div style="font-size:11px;color:var(--muted)" id="rm-total-cli">—</div>
+        </div>
+        <div class="risk-matrix-wrap">
+          <div class="risk-matrix-y-label">↑ Saúde</div>
+          <div>
+            <div class="risk-matrix-grid" id="rm-grid"></div>
+            <div class="risk-matrix-x-labels"><span>◀ Baixo volume</span><span>Alto volume ▶</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -5066,7 +5112,8 @@ function goSecCS(id, el) {
   document.getElementById(id).classList.add('on');
   el.classList.add('on');
   if(id==='cs-overview') renderCSHealthList();
-  if (csCurrentKey) renderCSSection(id, EMPRESAS[csCurrentKey]);
+  if(id==='cs-matrix') renderRiskMatrix();
+  if (csCurrentKey && id!=='cs-matrix') renderCSSection(id, EMPRESAS[csCurrentKey]);
 }
 
 function calcCSScore(d) { return calcUnifiedScore(d); }
@@ -5169,6 +5216,7 @@ function renderCSSection(id, d) {
   else if (id === 'cs-risks') renderCSRisks(d);
   else if (id === 'cs-timeline') renderCSTimeline(d);
   else if (id === 'cs-actions') renderCSActions(d);
+  else if (id === 'cs-matrix') renderRiskMatrix();
 }
 
 function renderCSOverview(d) {
@@ -5334,6 +5382,71 @@ function renderCSTimeline(d) {
     return '<div class="cs-tl-item"><div class="cs-tl-dot" style="background:'+csStateColor(t.estado).replace(/var\(([^)]+)\)/g,function(_,v){return {'--ok':'#10b981','--teal':'#00d4a8','--sub':'#8892a4','--blue':'#4f8ef7','--warn':'#f59e0b','--orange':'#f97316','--purple':'#8b5cf6','--danger':'#f43f5e','--muted':'#5a6278'}[v]||'#8892a4';})+'"></div><div class="cs-tl-body"><div class="cs-tl-num">#'+t.num+' · '+t.criado+'</div><div class="cs-tl-assunto">'+t.assunto+'</div><div class="cs-tl-meta"><span class="cs-tl-tag" style="background:rgba(139,92,246,.1);color:#a855f7">'+t.estado+'</span><span class="cs-tl-tag" style="background:rgba(255,255,255,.05);color:var(--sub)">'+t.prioridade+'</span>'+(t.servico?'<span class="cs-tl-tag" style="background:rgba(79,142,247,.1);color:var(--blue)">'+t.servico+'</span>':'')+'<span class="cs-tl-tag" style="background:rgba(255,255,255,.04);color:var(--muted)">'+respStr.replace(' · ','')+solStr.replace(' · ','')+'</span></div></div></div>';
   }).join('');
   document.getElementById('cs-tl-list').innerHTML = html || '<div style="padding:14px;color:var(--muted)">Sem chamados registrados</div>';
+}
+
+function renderRiskMatrix() {
+  var empIds = Object.keys(EMPRESAS).filter(function(k){
+    return k && k.indexOf('@')===-1 && EMPRESAS[k].total>0;
+  });
+  var elC = document.getElementById('rm-content');
+  var elE = document.getElementById('rm-empty');
+  if (!empIds.length) {
+    if(elC) elC.style.display='none';
+    if(elE) elE.style.display='';
+    return;
+  }
+  if(elC) elC.style.display='';
+  if(elE) elE.style.display='none';
+
+  // Mediana de volume como limiar
+  var vols = empIds.map(function(k){return EMPRESAS[k].total;}).slice().sort(function(a,b){return a-b;});
+  var mid = Math.floor(vols.length/2);
+  var medVol = vols.length%2===0 ? Math.round((vols[mid-1]+vols[mid])/2) : vols[mid];
+  var HEALTH_THR = 65;
+
+  var tvEl = document.getElementById('rm-threshold-vol');
+  if(tvEl) tvEl.textContent = medVol + ' chamados';
+  var tcEl = document.getElementById('rm-total-cli');
+  if(tcEl) tcEl.textContent = empIds.length + ' clientes analisados';
+
+  var quads = {stable:[],monitor:[],risk:[],critical:[]};
+  empIds.forEach(function(k){
+    var d = EMPRESAS[k];
+    var score = calcCSScore(d);
+    var hiVol = d.total >= medVol;
+    var healthy = score >= HEALTH_THR;
+    var q = healthy ? (hiVol ? 'monitor' : 'stable') : (hiVol ? 'critical' : 'risk');
+    quads[q].push({id:k, nome:d.nome, score:score, total:d.total});
+  });
+  quads.critical.sort(function(a,b){return a.score-b.score;});
+  quads.risk.sort(function(a,b){return a.score-b.score;});
+  quads.stable.sort(function(a,b){return b.score-a.score;});
+  quads.monitor.sort(function(a,b){return b.score-a.score;});
+
+  function mkClient(cli) {
+    var sl = csScoreLabel(cli.score);
+    return '<div class="rm-client" onclick="setClienteGlobal(\'' + cli.id + '\')" title="'+cli.nome+' — score '+cli.score+' · '+cli.total+' chamados">'+
+      '<span class="rm-client-name">'+cli.nome+'</span>'+
+      '<span class="rm-client-meta">'+
+        '<span class="rm-vol-badge">'+cli.total+'</span>'+
+        '<span class="rm-score-badge" style="color:'+sl.color+'">'+cli.score+'</span>'+
+      '</span>'+
+    '</div>';
+  }
+
+  function mkQuad(title, cls, list) {
+    return '<div class="risk-quadrant '+cls+'">'+
+      '<div class="rq-header"><span>'+title+'</span><span style="opacity:.5;font-size:9px;font-weight:400">'+list.length+'</span></div>'+
+      (list.length ? list.map(mkClient).join('') : '<div class="rq-empty">Nenhum cliente</div>')+
+    '</div>';
+  }
+
+  // Topo-esquerda=Estável, Topo-direita=Monitorar, Baixo-esquerda=Em risco, Baixo-direita=Crítico
+  document.getElementById('rm-grid').innerHTML =
+    mkQuad('⬡ Estável','rq-stable',quads.stable) +
+    mkQuad('◆ Monitorar','rq-monitor',quads.monitor) +
+    mkQuad('▲ Em risco','rq-risk',quads.risk) +
+    mkQuad('✕ Crítico','rq-critical',quads.critical);
 }
 
 function renderCSActions(d) {
