@@ -663,6 +663,22 @@ input[type=file]{display:none}
 .fv-insight-box{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:11px;color:var(--text);line-height:1.6}
 .fv-insight-box strong{color:var(--purple)}
 
+/* CSAT Proxy */
+.csat-score-big{font-size:52px;font-weight:800;font-family:var(--display);line-height:1}
+.csat-gauge-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.csat-driver-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)}
+.csat-driver-row:last-child{border-bottom:none}
+.csat-driver-label{font-size:11px;color:var(--sub);width:160px;flex-shrink:0}
+.csat-driver-bar{flex:1;height:6px;border-radius:3px;background:var(--bg3)}
+.csat-driver-fill{height:100%;border-radius:3px;transition:width .4s}
+.csat-driver-val{font-size:11px;font-family:var(--mono);font-weight:600;width:32px;text-align:right;flex-shrink:0}
+.csat-rank-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.csat-rank-row:last-child{border-bottom:none}
+.csat-rank-pos{font-size:10px;font-family:var(--mono);color:var(--muted);width:20px;flex-shrink:0;text-align:center}
+.csat-rank-name{font-size:11px;font-weight:600;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csat-rank-score{font-size:12px;font-weight:700;font-family:var(--mono);width:32px;text-align:right;flex-shrink:0}
+.csat-disclaimer{font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:10px;padding:8px;background:var(--bg3);border-radius:6px;line-height:1.5}
+
 /* ── Fullscreen mode ───────────────────────────────────────── */
 .fs-mode .topbar{display:none!important}
 .fs-mode .sidebar{display:none!important}
@@ -818,6 +834,7 @@ input[type=file]{display:none}
     <div class="nav" id="cs-nav-matrix" onclick="goSecCS('cs-matrix',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>Matriz de Risco</div>
     <div class="nav" id="cs-nav-risks" onclick="goSecCS('cs-risks',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Riscos &amp; Alertas</div>
     <div class="nav" id="cs-nav-timeline" onclick="goSecCS('cs-timeline',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Histórico Conta</div>
+    <div class="nav" id="cs-nav-csat" onclick="goSecCS('cs-csat',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>CSAT Proxy</div>
     <div class="nav" id="cs-nav-actions" onclick="goSecCS('cs-actions',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Próximas Ações</div>
 
   <!-- MONTH FILTER CS -->
@@ -1519,6 +1536,46 @@ input[type=file]{display:none}
       <div id="cs-tl-empty" class="empty"><div class="empty-icon"></div><p>Selecione uma conta</p></div>
       <div id="cs-tl-content" style="display:none">
         <div class="card"><div class="card-title" id="cs-tl-title">Chamados</div><div id="cs-tl-list" style="max-height:520px;overflow-y:auto"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSAT PROXY -->
+  <div id="cs-csat" class="sec">
+    <div class="page-header"><h1>CSAT Proxy</h1><p>Score estimado de satisfação — derivado de velocidade de resposta, resolução e desfecho</p></div>
+    <div class="page-body">
+      <div id="csat-empty" class="empty" style="display:none"><div class="empty-icon"></div><p>Importe dados para calcular o CSAT proxy</p></div>
+      <div id="csat-content">
+        <div class="grid2" style="margin-bottom:14px">
+          <div class="card">
+            <div class="card-title">Score geral</div>
+            <div class="csat-gauge-wrap">
+              <div>
+                <div class="csat-score-big" id="csat-score-num">—</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">/10 — <span id="csat-score-lbl">—</span></div>
+              </div>
+              <div style="flex:1">
+                <canvas id="c-csat-ring" width="90" height="90"></canvas>
+              </div>
+            </div>
+            <div id="csat-summary" style="font-size:11px;color:var(--sub);line-height:1.6"></div>
+            <div class="csat-disclaimer">⚠ Score estimado — não substitui pesquisa de satisfação real. Baseado em: tempo de 1ª resposta, tempo de solução (horas úteis), desfecho do chamado.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Drivers do score</div>
+            <div id="csat-drivers"></div>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="card">
+            <div class="card-title">Melhores clientes — CSAT proxy</div>
+            <div id="csat-top"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Clientes que precisam de atenção</div>
+            <div id="csat-bottom"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -4021,6 +4078,32 @@ function exportPDF(){
 
   // ══════════════════════════════════════════════════
   // HTML DO RELAT\u00d3RIO
+  // ── Comparativo mês anterior ──────────────────────────────────────────
+  var mOrderKeys2=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10','2026-11','2026-12'];
+  var mNamesFull={'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26','2026-04':'Abr/26','2026-05':'Mai/26','2026-06':'Jun/26','2026-07':'Jul/26','2026-08':'Ago/26','2026-09':'Set/26','2026-10':'Out/26','2026-11':'Nov/26','2026-12':'Dez/26'};
+  var EMP_MESES_COMP = typeof EMP_MESES !== 'undefined' ? EMP_MESES : {};
+  var empMonthMap = EMP_MESES_COMP[dRaw.id] || {};
+  var curMk2 = activeMonth !== 'all' ? activeMonth : null;
+  if(!curMk2) {
+    var availK = Object.keys(empMonthMap).filter(function(k){return mOrderKeys2.indexOf(k)!==-1;}).sort();
+    curMk2 = availK.length ? availK[availK.length-1] : null;
+  }
+  var prevMk2 = null;
+  if(curMk2){ var ci=mOrderKeys2.indexOf(curMk2); if(ci>0) prevMk2=mOrderKeys2[ci-1]; }
+  var curData  = curMk2  && empMonthMap[curMk2]  ? empMonthMap[curMk2]  : null;
+  var prevData = prevMk2 && empMonthMap[prevMk2] ? empMonthMap[prevMk2] : null;
+  function pctDelta(cur,prev,lower){
+    if(cur==null||prev==null||prev===0) return null;
+    var d=Math.round((cur-prev)/Math.abs(prev)*100);
+    return{d:d,better:lower?d<0:d>0};
+  }
+  function fmtDelta(delta){
+    if(!delta) return '<span style=\"display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;background:#f3f4f6;color:#6b7280\">\u2014</span>';
+    var sign=delta.d>0?'+':'';
+    var bg=delta.better?'#dcfce7':'#fee2e2';
+    var col=delta.better?'#166534':'#991b1b';
+    return '<span style=\"display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;background:'+bg+';color:'+col+'\">'+sign+delta.d+'%</span>';
+  }
   // ══════════════════════════════════════════════════
   var LOGO='<img src="https://groundwork.com.br/wp/wp-content/uploads/2026/01/LOGO_Groundwork_2026-1-1024x156.png" height="40" style="display:block;max-width:220px">';
   var LOGO_WHITE='<img src="https://groundwork.com.br/wp/wp-content/uploads/2023/02/LOGO_GROUNDWORK_2026-branco-scaled.png" height="40" style="display:block;max-width:220px">';
@@ -4122,6 +4205,14 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
 .tbl .num{font-family:monospace;font-size:10px;color:#9ca3af}
 
 /* CONSIDER\u00c7\u00d5ES */
+.comp-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.comp-tbl th{padding:7px 10px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;border-bottom:2px solid #e5e7eb}
+.comp-tbl td{padding:8px 10px;border-bottom:1px solid #f3f4f6;color:#1a2744}
+.comp-tbl tr:last-child td{border-bottom:none}
+.comp-delta{font-size:10px;font-weight:700;padding:2px 7px;border-radius:12px;white-space:nowrap}
+.delta-up{background:#dcfce7;color:#166534}
+.delta-down{background:#fee2e2;color:#991b1b}
+.delta-neutral{background:#f3f4f6;color:#6b7280}
 .consider{background:#f8fafc;border-left:4px solid #E8622A;border-radius:0 8px 8px 0;padding:18px 20px;font-size:13px;line-height:1.8;color:#374151}
 
 /* FOOTER */
@@ -4348,9 +4439,44 @@ body{font-family:Arial,sans-serif;background:#f8fafc;color:#1a2744;font-size:13p
   H+='</div>';
   H+='</div>';
 
-  // ── SE\u00c7\u00c3O 8: CONSIDERA\u00c7\u00d5ES FINAIS
+  // ── 
+  // ── SEÇÃO 8: COMPARATIVO MÊS ANTERIOR
+  if(curData && prevData) {
+    var compSec8rows = [
+      {label:'Volume total',      cur:curData.total,    prev:prevData.total,    unit:'',    lower:false},
+      {label:'Fechados',          cur:curData.fechados, prev:prevData.fechados, unit:'',    lower:false},
+      {label:'Em aberto',         cur:curData.abertos,  prev:prevData.abertos,  unit:'',    lower:true},
+      {label:'Taxa de conclusão', cur:curData.total>0?Math.round(curData.fechados/curData.total*100):0, prev:prevData.total>0?Math.round(prevData.fechados/prevData.total*100):0, unit:'%', lower:false},
+      {label:'1ª Resposta (med.)',cur:curData.resp_med, prev:prevData.resp_med, unit:'min', lower:true},
+      {label:'Solução (med.)',    cur:curData.sol_med,  prev:prevData.sol_med,  unit:'h',   lower:true}
+    ];
+    H+='<div class="section">';
+    H+='<div class="sec-header"><div class="sec-num" style="background:#E8622A">8</div><div class="sec-title">Comparativo — '+(mNamesFull[prevMk2]||prevMk2)+' vs '+(mNamesFull[curMk2]||curMk2)+'</div></div>';
+    H+='<table style="width:100%;border-collapse:collapse;font-size:12px">';
+    H+='<thead><tr style="border-bottom:2px solid #e5e7eb">';
+    H+='<th style="padding:7px 10px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280">Métrica</th>';
+    H+='<th style="padding:7px 10px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280">'+(mNamesFull[prevMk2]||prevMk2)+'</th>';
+    H+='<th style="padding:7px 10px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280">'+(mNamesFull[curMk2]||curMk2)+'</th>';
+    H+='<th style="padding:7px 10px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280">Variação</th>';
+    H+='</tr></thead><tbody>';
+    compSec8rows.forEach(function(row){
+      var dlt=pctDelta(row.cur,row.prev,row.lower);
+      var cf=(row.cur!==null&&row.cur!==undefined)?row.cur+row.unit:'—';
+      var pf=(row.prev!==null&&row.prev!==undefined)?row.prev+row.unit:'—';
+      H+='<tr style="border-bottom:1px solid #f3f4f6">'+
+        '<td style="padding:8px 10px;font-weight:600;color:#1a2744">'+row.label+'</td>'+
+        '<td style="padding:8px 10px;text-align:right;color:#6b7280">'+pf+'</td>'+
+        '<td style="padding:8px 10px;text-align:right;font-weight:700;color:#1a2744">'+cf+'</td>'+
+        '<td style="padding:8px 10px;text-align:center">'+fmtDelta(dlt)+'</td>'+
+      '</tr>';
+    });
+    H+='</tbody></table>';
+    H+='</div>';
+  }
+
+  SE\u00c7\u00c3O 8: CONSIDERA\u00c7\u00d5ES FINAIS
   H+='<div class="section">';
-  H+='<div class="sec-header"><div class="sec-num">8</div><div class="sec-title">Considera\u00e7\u00f5es Finais</div></div>';
+  H+='<div class="sec-header"><div class="sec-num">9</div><div class="sec-title">Considera\u00e7\u00f5es Finais</div></div>';
   H+='<div class="consider">Com base nas informa\u00e7\u00f5es demonstradas acima, nosso objetivo \u00e9 produzir dados e indicadores que permitam avaliar de maneira simples, segura e confi\u00e1vel o atendimento prestado. Contamos com o retorno de todos para continuar aprimorando a qualidade dos servi\u00e7os.<br><br>Contamos com voc\u00eas.<br><br><strong>EQUIPE ERP</strong><br>GROUNDWORK</div>';
   H+='</div>';
 
@@ -5389,7 +5515,8 @@ function goSecCS(id, el) {
   el.classList.add('on');
   if(id==='cs-overview') renderCSHealthList();
   if(id==='cs-matrix') renderRiskMatrix();
-  if (csCurrentKey && id!=='cs-matrix') renderCSSection(id, EMPRESAS[csCurrentKey]);
+  if(id==='cs-csat') renderCSAT();
+  if (csCurrentKey && id!=='cs-matrix'&&id!=='cs-csat') renderCSSection(id, EMPRESAS[csCurrentKey]);
 }
 
 function calcCSScore(d) { return calcUnifiedScore(d); }
@@ -5493,6 +5620,7 @@ function renderCSSection(id, d) {
   else if (id === 'cs-timeline') renderCSTimeline(d);
   else if (id === 'cs-actions') renderCSActions(d);
   else if (id === 'cs-matrix') renderRiskMatrix();
+  else if (id === 'cs-csat') renderCSAT();
 }
 
 function renderCSOverview(d) {
@@ -5658,6 +5786,139 @@ function renderCSTimeline(d) {
     return '<div class="cs-tl-item"><div class="cs-tl-dot" style="background:'+csStateColor(t.estado).replace(/var\(([^)]+)\)/g,function(_,v){return {'--ok':'#10b981','--teal':'#00d4a8','--sub':'#8892a4','--blue':'#4f8ef7','--warn':'#f59e0b','--orange':'#f97316','--purple':'#8b5cf6','--danger':'#f43f5e','--muted':'#5a6278'}[v]||'#8892a4';})+'"></div><div class="cs-tl-body"><div class="cs-tl-num">#'+t.num+' · '+t.criado+'</div><div class="cs-tl-assunto">'+t.assunto+'</div><div class="cs-tl-meta"><span class="cs-tl-tag" style="background:rgba(139,92,246,.1);color:#a855f7">'+t.estado+'</span><span class="cs-tl-tag" style="background:rgba(255,255,255,.05);color:var(--sub)">'+t.prioridade+'</span>'+(t.servico?'<span class="cs-tl-tag" style="background:rgba(79,142,247,.1);color:var(--blue)">'+t.servico+'</span>':'')+'<span class="cs-tl-tag" style="background:rgba(255,255,255,.04);color:var(--muted)">'+respStr.replace(' · ','')+solStr.replace(' · ','')+'</span></div></div></div>';
   }).join('');
   document.getElementById('cs-tl-list').innerHTML = html || '<div style="padding:14px;color:var(--muted)">Sem chamados registrados</div>';
+}
+
+function calcCSATProxy(tickets) {
+  // tickets: array of RAW_DATA items (closed only)
+  // Returns score 0-10
+  if(!tickets||!tickets.length) return null;
+  var closed = tickets.filter(function(t){
+    return t.estado && (t.estado.indexOf('Fechado')!==-1 || t.estado.indexOf('Resolvido')!==-1);
+  });
+  if(!closed.length) return null;
+  var scores = closed.map(function(t){
+    var s = 10;
+    // Desfecho negativo
+    if(t.estado==='Fechado s/ Êxito') return 2;
+    // Penalidade por resposta lenta
+    if(t.resp_min !== null && t.resp_min !== undefined){
+      if(t.resp_min > 120) s -= 3;
+      else if(t.resp_min > 60) s -= 2;
+      else if(t.resp_min > 30) s -= 1;
+    }
+    // Penalidade por resolução lenta (BH)
+    var sol = t.sol_h_bh !== null && t.sol_h_bh !== undefined ? t.sol_h_bh : t.sol_h;
+    if(sol !== null && sol !== undefined){
+      if(sol > 72) s -= 4;
+      else if(sol > 48) s -= 3;
+      else if(sol > 24) s -= 2;
+      else if(sol > 8)  s -= 1;
+    }
+    return Math.max(1, Math.min(10, s));
+  });
+  var avg = scores.reduce(function(a,b){return a+b;},0) / scores.length;
+  return Math.round(avg * 10) / 10;
+}
+
+function csatLabel(score) {
+  if(score === null) return {label:'Sem dados', color:'var(--muted)'};
+  if(score >= 8.5) return {label:'Excelente', color:'var(--ok)'};
+  if(score >= 7)   return {label:'Bom',       color:'var(--teal)'};
+  if(score >= 5.5) return {label:'Atenção',   color:'var(--warn)'};
+  return                  {label:'Crítico',   color:'var(--danger)'};
+}
+
+function renderCSAT() {
+  var emEl = document.getElementById('csat-empty');
+  var ctEl = document.getElementById('csat-content');
+  if(typeof RAW_DATA === 'undefined' || !RAW_DATA || !RAW_DATA.length) {
+    if(emEl) emEl.style.display='';
+    if(ctEl) ctEl.style.display='none';
+    return;
+  }
+  if(emEl) emEl.style.display='none';
+  if(ctEl) ctEl.style.display='';
+
+  var allClosed = RAW_DATA.filter(function(t){
+    return t.estado && (t.estado.indexOf('Fechado')!==-1 || t.estado.indexOf('Resolvido')!==-1);
+  });
+
+  var globalScore = calcCSATProxy(allClosed);
+  var sl = csatLabel(globalScore);
+
+  // Score display
+  var numEl = document.getElementById('csat-score-num');
+  if(numEl){ numEl.textContent = globalScore !== null ? globalScore : '—'; numEl.style.color = sl.color; }
+  var lblEl = document.getElementById('csat-score-lbl');
+  if(lblEl){ lblEl.textContent = sl.label; lblEl.style.color = sl.color; }
+
+  // Ring chart
+  if(CH['c-csat-ring']){ CH['c-csat-ring'].destroy(); CH['c-csat-ring']=null; }
+  var ctx = document.getElementById('c-csat-ring');
+  if(ctx && globalScore !== null){
+    CH['c-csat-ring'] = new Chart(ctx, {
+      type:'doughnut',
+      data:{labels:['Score',''],datasets:[{data:[globalScore,10-globalScore],backgroundColor:[sl.color,'rgba(255,255,255,.04)'],borderWidth:0}]},
+      options:{responsive:false,cutout:'76%',plugins:{legend:{display:false},tooltip:{enabled:false}}}
+    });
+  }
+
+  // Summary
+  var total = allClosed.length;
+  var semExito = allClosed.filter(function(t){return t.estado==='Fechado s/ Êxito';}).length;
+  var semExitoPct = total > 0 ? Math.round(semExito/total*100) : 0;
+  var rapidos = allClosed.filter(function(t){return t.resp_min!==null&&t.resp_min<=30;}).length;
+  var rapidosPct = total > 0 ? Math.round(rapidos/total*100) : 0;
+  var sumEl = document.getElementById('csat-summary');
+  if(sumEl) sumEl.innerHTML =
+    total + ' chamados fechados analisados · ' +
+    '<span style="color:var(--danger)">' + semExitoPct + '% sem êxito</span> · ' +
+    '<span style="color:var(--ok)">' + rapidosPct + '% com resposta ≤30min</span>';
+
+  // Drivers
+  var drivers = [
+    {label:'Resposta ≤30min',  val: rapidosPct, max:100, color:'var(--ok)'},
+    {label:'Solução ≤24h úteis', val: total>0?Math.round(allClosed.filter(function(t){return t.sol_h_bh!==null&&t.sol_h_bh<=24;}).length/total*100):0, max:100, color:'var(--teal)'},
+    {label:'Desfecho positivo', val: total>0?Math.round((total-semExito)/total*100):0, max:100, color:'var(--blue)'},
+    {label:'Score composto',    val: globalScore!==null?Math.round(globalScore/10*100):0, max:100, color:sl.color}
+  ];
+  var drvEl = document.getElementById('csat-drivers');
+  if(drvEl) drvEl.innerHTML = drivers.map(function(dr){
+    return '<div class="csat-driver-row">'+
+      '<span class="csat-driver-label">'+dr.label+'</span>'+
+      '<div class="csat-driver-bar"><div class="csat-driver-fill" style="width:'+dr.val+'%;background:'+dr.color+'"></div></div>'+
+      '<span class="csat-driver-val" style="color:'+dr.color+'">'+dr.val+'%</span>'+
+    '</div>';
+  }).join('');
+
+  // Per-client scores
+  var clientScores = [];
+  Object.keys(EMPRESAS).forEach(function(k){
+    if(!k||k.indexOf('@')!==-1||!EMPRESAS[k].total) return;
+    var tks = EMPRESAS[k].tickets || [];
+    var score = calcCSATProxy(tks);
+    if(score !== null) clientScores.push({nome:EMPRESAS[k].nome, score:score, total:tks.length, id:k});
+  });
+  clientScores.sort(function(a,b){return b.score-a.score;});
+
+  function mkRankRow(item, pos) {
+    var sl2 = csatLabel(item.score);
+    return '<div class="csat-rank-row">'+
+      '<span class="csat-rank-pos">'+pos+'</span>'+
+      '<span class="csat-rank-name" title="'+item.nome+'">'+item.nome+'</span>'+
+      '<span style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-right:4px">'+item.total+'↑</span>'+
+      '<span class="csat-rank-score" style="color:'+sl2.color+'">'+item.score+'</span>'+
+    '</div>';
+  }
+
+  var topEl = document.getElementById('csat-top');
+  if(topEl) topEl.innerHTML = clientScores.slice(0,5).map(function(item,i){return mkRankRow(item,i+1);}).join('') ||
+    '<div style="color:var(--muted);font-size:11px;padding:8px">Sem dados suficientes</div>';
+
+  var botEl = document.getElementById('csat-bottom');
+  var bottom = clientScores.slice().reverse().slice(0,5);
+  if(botEl) botEl.innerHTML = bottom.map(function(item,i){return mkRankRow(item,clientScores.length-i);}).join('') ||
+    '<div style="color:var(--muted);font-size:11px;padding:8px">Sem dados suficientes</div>';
 }
 
 function renderRiskMatrix() {
