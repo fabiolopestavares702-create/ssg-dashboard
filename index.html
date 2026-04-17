@@ -9012,7 +9012,8 @@ function renderAcoes() {
   var PRAZO_LABEL = { imediato:'⚡ Imediato', hoje:'📅 Hoje', semana:'📆 Esta semana' };
   var PRAZO_COLOR = { imediato:'#f43f5e', hoje:'#f59e0b', semana:'#3b82f6' };
   var STATUS_COLOR = { pendente:'var(--muted)', andamento:'#f59e0b', concluido:'var(--ok)' };
-  var STATUS_TEXT  = { pendente:'#aaa', andamento:'#000', concluido:'#fff' };
+  var STATUS_TEXT  = { pendente:'#e2e8f0', andamento:'#000', concluido:'#fff' };
+  var PRIORIDADE_LABEL = { critico:'🔴 Crítico', atencao:'🟡 Atenção', oportunidade:'💡 Oportunidade' };
 
   function fmtCard(a) {
     var priorCor = a.prioridade === 'critico' ? '#f43f5e' : (a.prioridade === 'atencao' ? '#f59e0b' : '#3b82f6');
@@ -9027,6 +9028,7 @@ function renderAcoes() {
     return '<div class="card" style="border-left:3px solid ' + priorCor + ';margin-bottom:12px;padding:14px 16px">'
       + '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">'
       +   '<div style="flex:1;min-width:0">'
+      +     '<div style="font-size:10px;font-weight:700;color:' + priorCor + ';margin-bottom:4px;letter-spacing:.03em">' + PRIORIDADE_LABEL[a.prioridade] + '</div>'
       +     '<div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px">' + a.problema + '</div>'
       +     '<div style="font-size:10px;color:var(--muted)">'
       +       '<span style="color:' + PRAZO_COLOR[a.prazo] + ';font-weight:600">' + PRAZO_LABEL[a.prazo] + '</span>'
