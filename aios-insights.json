@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-17T10:40:54.699693",
+  "generated_at": "2026-04-17T14:43:48.078521",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A taxa de conclusão está em <strong>64%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>74 chamados em aberto</strong> (30%) e <strong>45 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A taxa de conclusão está em <strong>63%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>79 chamados em aberto</strong> (31%) e <strong>43 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
-        "value": "65",
+        "value": "61",
         "sub": "atenção · meta: >80",
         "color": "var(--warn)"
       },
@@ -20,7 +20,7 @@
       {
         "label": "Oportunidade",
         "value": "Capacitação recomendada",
-        "sub": "Foco no módulo Infraestrutura e Cloud pode reduzir reincidências",
+        "sub": "Foco no módulo ERP Protheus pode reduzir reincidências",
         "color": "var(--teal)"
       },
       {
@@ -36,7 +36,7 @@
     },
     "oportunidade": {
       "label": "Capacitação recomendada",
-      "desc": "Foco no módulo Infraestrutura e Cloud pode reduzir reincidências"
+      "desc": "Foco no módulo ERP Protheus pode reduzir reincidências"
     },
     "previsao": {
       "label": "~5/dia",
@@ -46,7 +46,7 @@
   "riscos_operacionais": [
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "45 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "43 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -66,11 +66,11 @@
   "riscos_clientes": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 67 chamados (27% do total).",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 69 chamados (27% do total).",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "67 chamados (27% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "69 chamados (27% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         }
@@ -78,17 +78,17 @@
     },
     {
       "cliente": "FADEL",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 65 chamados (26% do total). O módulo <strong>Infraestrutura e Cloud</strong> concentra 46% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 66 chamados (26% do total). O módulo <strong>Infraestrutura e Cloud</strong> concentra 45% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "65 chamados (26% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "66 chamados (26% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
         {
           "titulo": "Reincidência no módulo Infraestrutura e Cloud",
-          "desc": "46% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "desc": "45% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
@@ -96,11 +96,11 @@
     },
     {
       "cliente": "ALMEIDA JR",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 32 chamados (13% do total). O módulo <strong>ERP Protheus</strong> concentra 100% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 33 chamados (13% do total). O módulo <strong>ERP Protheus</strong> concentra 100% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "32 chamados (13% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "33 chamados (13% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -114,7 +114,7 @@
     },
     {
       "cliente": "_GroundWork",
-      "narrativa": "O módulo <strong>Infraestrutura e Cloud</strong> concentra 58% dos chamados desta conta — possível reincidência.",
+      "narrativa": "O módulo <strong>Infraestrutura e Cloud</strong> concentra 54% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "SLA de resposta fora do contrato (61.0 min)",
@@ -124,7 +124,7 @@
         },
         {
           "titulo": "Reincidência no módulo Infraestrutura e Cloud",
-          "desc": "58% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
+          "desc": "54% dos chamados desta conta são do mesmo módulo. Sugere problema não resolvido na raiz ou gap de treinamento.",
           "nivel": "medium",
           "confianca": 75
         }
@@ -146,21 +146,21 @@
   "cs_insights": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com 67 chamados no período e sem anomalias críticas. Manter relacionamento regular para garantir satisfação.",
+      "narrativa": "Conta com 69 chamados no período e sem anomalias críticas. Manter relacionamento regular para garantir satisfação.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "baixa"
     },
     {
       "cliente": "FADEL",
-      "narrativa": "<strong>2 chamado(s) próximos do limite de 30 dias</strong> sem resolução. Contato preventivo recomendado para demonstrar atenção antes do vencimento.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> representa 46% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
+      "narrativa": "<strong>2 chamado(s) próximos do limite de 30 dias</strong> sem resolução. Contato preventivo recomendado para demonstrar atenção antes do vencimento.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> representa 45% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
       "proximo_contato": "até o fim desta semana",
       "tom_sugerido": "proativo",
       "prioridade": "média"
     },
     {
       "cliente": "ALMEIDA JR",
-      "narrativa": "O módulo <strong>ERP Protheus</strong> representa 100% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.<br><br>Com <strong>31% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
+      "narrativa": "O módulo <strong>ERP Protheus</strong> representa 100% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "média"
