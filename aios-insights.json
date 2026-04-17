@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-17T06:14:17.363459",
+  "generated_at": "2026-04-17T10:40:54.699693",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A taxa de conclusão está em <strong>64%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>75 chamados em aberto</strong> (30%) e <strong>45 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A taxa de conclusão está em <strong>64%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>74 chamados em aberto</strong> (30%) e <strong>45 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -51,7 +51,7 @@
       "confianca": 92
     },
     {
-      "titulo": "18 chamados entre 8 e 30 dias sem resolução",
+      "titulo": "20 chamados entre 8 e 30 dias sem resolução",
       "desc": "Volume de chamados no limite antes de se tornarem críticos. Intervenção preventiva nos próximos 2 dias pode evitar escalonamento.",
       "nivel": "medium",
       "confianca": 82
@@ -160,7 +160,7 @@
     },
     {
       "cliente": "ALMEIDA JR",
-      "narrativa": "O módulo <strong>ERP Protheus</strong> representa 100% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.<br><br>Com <strong>34% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
+      "narrativa": "O módulo <strong>ERP Protheus</strong> representa 100% dos chamados desta conta. Sugerir uma <strong>sessão de alinhamento técnico</strong> pode quebrar o ciclo de reincidência e reduzir volume.<br><br>Com <strong>31% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "média"
