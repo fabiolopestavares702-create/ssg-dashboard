@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T22:25:09.318414",
+  "generated_at": "2026-04-17T06:14:17.363459",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -14,7 +14,7 @@
       {
         "label": "Risco de SLA",
         "value": "Baixo",
-        "sub": "1ª resposta: 23.0 min",
+        "sub": "1ª resposta: 24.0 min",
         "color": "var(--ok)"
       },
       {
@@ -31,7 +31,7 @@
       }
     ],
     "risco_principal": {
-      "label": "SLA 23.0 min",
+      "label": "SLA 24.0 min",
       "desc": "Acima da meta de 30 min"
     },
     "oportunidade": {
