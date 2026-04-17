@@ -3623,6 +3623,9 @@ function renderWHInit(){
   // Get unique analysts sorted by volume
   var atMap={};
   RAW_DATA.forEach(function(d){
+    if(!ticketInFilter(d)) return;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return;
+    if(activeCliente&&d.cli_id!==activeCliente) return;
     if(d.atend&&d.atend!=='—'&&d.criado){
       atMap[d.atend]=(atMap[d.atend]||0)+1;
     }
@@ -3650,6 +3653,9 @@ function renderWH(){
   var total=0;
   var dias2=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
   RAW_DATA.forEach(function(d){
+    if(!ticketInFilter(d)) return;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return;
+    if(activeCliente&&d.cli_id!==activeCliente) return;
     if(d.atend!==analyst||!d.criado) return;
     var dow=d.criado.getDay(),mapped=dow===0?6:dow-1;
     var h=d.criado.getHours();
@@ -3808,6 +3814,8 @@ function computeSLAFinanceiro() {
   var cliMap={};
   (RAW_DATA||[]).forEach(function(d){
     if(!d.criado||openSt.indexOf(d.estado)===-1||!ticketInFilter(d)) return;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return;
+    if(activeCliente&&d.cli_id!==activeCliente) return;
     var ageDays=Math.floor((now-d.criado)/864e5);
     if(ageDays<=slaThreshDays) return; // dentro do SLA
     var excessH=Math.round((ageDays-slaThreshDays)*8*10)/10; // excess BH hours
@@ -6741,6 +6749,9 @@ function renderCSAT() {
   if(ctEl) ctEl.style.display='';
 
   var allClosed = RAW_DATA.filter(function(t){
+    if(!ticketInFilter(t)) return false;
+    if(activeFilaOP!=='all'&&t.fila!==activeFilaOP) return false;
+    if(activeCliente&&t.cli_id!==activeCliente) return false;
     return t.estado && (t.estado.indexOf('Fechado')!==-1 || t.estado.indexOf('Resolvido')!==-1);
   });
 
@@ -6824,7 +6835,9 @@ function renderCSAT() {
 
 function renderRiskMatrix() {
   var empIds = Object.keys(EMPRESAS).filter(function(k){
-    return k && k.indexOf('@')===-1 && EMPRESAS[k].total>0;
+    if(!k||k.indexOf('@')!==-1||!EMPRESAS[k].total) return false;
+    if(activeCliente&&k!==activeCliente) return false;
+    return true;
   });
   var elC = document.getElementById('rm-content');
   var elE = document.getElementById('rm-empty');
@@ -7186,7 +7199,22 @@ function fvSetHorizon(h, el) {
 function renderForecast() {
   var emEl = document.getElementById('fv-empty');
   var ctEl = document.getElementById('fv-content');
-  var byDay = (typeof OP !== 'undefined') ? (OP.byDay || OP.by_day || []) : [];
+  var byDay;
+  if(typeof RAW_DATA!=='undefined'&&RAW_DATA&&RAW_DATA.length){
+    var _fvDayMap={};
+    RAW_DATA.forEach(function(d){
+      if(!ticketInFilter(d)) return;
+      if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return;
+      if(activeCliente&&d.cli_id!==activeCliente) return;
+      if(!d.criado) return;
+      var _y=d.criado.getFullYear(),_m=String(d.criado.getMonth()+1).padStart(2,'0'),_d=String(d.criado.getDate()).padStart(2,'0');
+      var dk=_y+'-'+_m+'-'+_d;
+      _fvDayMap[dk]=(_fvDayMap[dk]||0)+1;
+    });
+    byDay=Object.keys(_fvDayMap).sort().map(function(k){return{d:k,n:_fvDayMap[k]};});
+  } else {
+    byDay=(typeof OP!=='undefined')?(OP.byDay||OP.by_day||[]):[];
+  }
 
   if(!byDay || !byDay.length) {
     if(emEl) emEl.style.display='';
@@ -7416,6 +7444,7 @@ function renderBacklog() {
     if (!e || !e.tickets) return;
     e.tickets.forEach(function(t) {
       if (estadosAbertos.indexOf(t.estado) !== -1) {
+        if(!ticketInFilter(t)) return;
         if(activeFilaOP!=='all'&&t.fila!==activeFilaOP) return;
         // Calcular aging em dias a partir da data de criação
         var aging = calcAging(t.criado);
@@ -8207,6 +8236,9 @@ function buildClientRecurrence() {
   var cliMap={};
   RAW_DATA.forEach(function(t){
     if(!t.cli_id) return;
+    if(!ticketInFilter(t)) return;
+    if(activeFilaOP!=='all'&&t.fila!==activeFilaOP) return;
+    if(activeCliente&&t.cli_id!==activeCliente) return;
     if(!cliMap[t.cli_id]) cliMap[t.cli_id]={id:t.cli_id, total:0, tickets:[]};
     cliMap[t.cli_id].total++;
     cliMap[t.cli_id].tickets.push(t);
@@ -8276,6 +8308,9 @@ function renderIARecurring(){
   if(ctEl) ctEl.style.display='';
   var patterns=buildRecurringData(_riMode);
   var total=RAW_DATA.filter(function(d){
+    if(!ticketInFilter(d)) return false;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return false;
+    if(activeCliente&&d.cli_id!==activeCliente) return false;
     if(_riMode==='open') return isAb(d.estado);
     if(_riMode==='closed') return isFe(d.estado);
     return true;
