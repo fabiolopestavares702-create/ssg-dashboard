@@ -1111,7 +1111,7 @@ input[type=file]{display:none}
         <div class="kpi fu"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-trend dn">↑ risco</div><div class="kpi-lbl">Prioridade Muito Alta</div><div class="kpi-val" id="kpi-v-3" style="color:var(--danger)">200</div><div class="kpi-sub" id="kpi-s-3">36% do volume</div></div>
       </div>
       <div class="kpi-row kpi-row-4">
-        <div class="kpi fu"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-trend up">✓ meta</div><div class="kpi-lbl">1ª Resposta (mediana)</div><div class="kpi-val" id="kpi-v-4" style="color:var(--teal)">8<span>min</span></div><div class="kpi-sub" id="kpi-s-4">excelente performance</div></div>
+        <div class="kpi fu"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-trend up">✓ meta</div><div class="kpi-lbl">1ª Resposta (mediana)</div><div class="kpi-val" id="kpi-v-4" style="color:var(--teal)">—</div><div class="kpi-sub" id="kpi-s-4">excelente performance</div></div>
         <div class="kpi fu"><div class="kpi-accent" style="background:var(--purple)"></div><div class="kpi-trend nt">◦ ref.</div><div class="kpi-lbl">Solução média</div><div class="kpi-val" id="kpi-v-5" style="color:var(--purple)">54<span>h</span></div><div class="kpi-sub" id="kpi-s-5">chamados fechados</div></div>
         <div class="kpi fu"><div class="kpi-accent" style="background:var(--orange)"></div><div class="kpi-trend dn">↑ aging</div><div class="kpi-lbl">Bloqueados</div><div class="kpi-val" id="kpi-v-6" style="color:var(--orange)">119</div><div class="kpi-sub" id="kpi-s-6">21,4% aguardando</div></div>
         <div class="kpi fu"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-trend nt">▬ ativo</div><div class="kpi-lbl">Atendentes</div><div class="kpi-val" id="kpi-v-7">14</div><div class="kpi-sub" id="kpi-s-7">fila SSG operando</div></div>
@@ -1387,17 +1387,17 @@ input[type=file]{display:none}
     <div class="page-header"><h1>SLA & Tempos</h1><p>Análise de primeira resposta e tempo de solução — metas: 1ª resp &lt;30min · solução &lt;48h</p></div>
     <div class="page-body">
       <div class="kpi-row kpi-row-4">
-        <div class="kpi"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-lbl">1ª Resp — mediana</div><div class="kpi-val" style="color:var(--teal)" id="sl-v-0">8<span>min</span></div><div class="kpi-sub" id="sl-s-0"><span style="color:var(--ok)">✓ dentro da meta</span></div></div>
-        <div class="kpi"><div class="kpi-accent" style="background:var(--warn)"></div><div class="kpi-lbl">1ª Resp — média</div><div class="kpi-val" style="color:var(--warn)" id="sl-v-1">91<span>min</span></div><div class="kpi-sub" id="sl-s-1">outliers elevam média</div></div>
-        <div class="kpi"><div class="kpi-accent" style="background:var(--purple)"></div><div class="kpi-lbl">Solução — média</div><div class="kpi-val" style="color:var(--purple)" id="sl-v-2">54<span>h</span></div><div class="kpi-sub" id="sl-s-2">chamados fechados</div></div>
-        <div class="kpi"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-lbl">Solução — mediana</div><div class="kpi-val" style="color:var(--blue)" id="sl-v-3">37<span>h</span></div><div class="kpi-sub" id="sl-s-3">mais representativa</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-lbl">1ª Resp — mediana</div><div class="kpi-val" style="color:var(--teal)" id="sl-v-0">—</div><div class="kpi-sub" id="sl-s-0"></div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--warn)"></div><div class="kpi-lbl">1ª Resp — média</div><div class="kpi-val" style="color:var(--warn)" id="sl-v-1">—</div><div class="kpi-sub" id="sl-s-1">outliers elevam média</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--purple)"></div><div class="kpi-lbl">Solução — média</div><div class="kpi-val" style="color:var(--purple)" id="sl-v-2">—</div><div class="kpi-sub" id="sl-s-2">chamados fechados</div></div>
+        <div class="kpi"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-lbl">Solução — mediana</div><div class="kpi-val" style="color:var(--blue)" id="sl-v-3">—</div><div class="kpi-sub" id="sl-s-3">mais representativa</div></div>
       </div>
       <div class="card card-mb" style="padding:16px 20px">
         <div class="card-title" style="margin-bottom:14px">Cumprimento de metas por indicador</div>
         <div id="sla-metas-bars"></div>
       </div>
       <div class="grid2">
-        <div class="card"><div class="card-title">1ª Resposta por atendente <span class="card-title-right">meta: &lt;30min</span></div><div class="cw" style="height:240px"><canvas id="c-resp"></canvas></div></div>
+        <div class="card"><div class="card-title">1ª Resposta por atendente <span class="card-title-right" id="sl-resp-meta-lbl">meta: &lt;30min</span></div><div class="cw" style="height:240px"><canvas id="c-resp"></canvas></div></div>
         <div class="card"><div class="card-title">Solução por atendente <span class="card-title-right">meta: &lt;48h</span></div><div class="cw" style="height:240px"><canvas id="c-sol"></canvas></div></div>
       </div>
       <div id="sla-fin-card" class="card" style="margin-top:16px;display:none"></div>
@@ -2581,7 +2581,7 @@ function openAtendProfile(nome) {
     {lbl:'Total', val:a.t, unit:'', color:'var(--text)', rank:''},
     {lbl:'Fechados', val:a.f, unit:'', color:'var(--ok)', rank:''},
     {lbl:'Taxa', val:taxa+'%', unit:'', color:taxa>=META_TAXA?'var(--ok)':taxa>=50?'var(--warn)':'var(--danger)', rank:''},
-    {lbl:'1ª Resp', val:a.rm!=null?Math.round(a.rm)+'min':'—', unit:'', color:a.rm!=null&&a.rm<=META_RESP?'var(--ok)':a.rm!=null&&a.rm<=120?'var(--warn)':'var(--danger)', rank:rankBadge(rankResp,allAtend.length,true)},
+    {lbl:'1ª Resp', val:a.rm!=null?fmtRespTxt(a.rm):'—', unit:'', color:a.rm!=null&&a.rm<=META_RESP?'var(--ok)':a.rm!=null&&a.rm<=120?'var(--warn)':'var(--danger)', rank:rankBadge(rankResp,allAtend.length,true)},
     {lbl:'Solução', val:a.tm!=null?a.tm+'h':'—', unit:'', color:a.tm!=null&&a.tm<=META_SOL?'var(--ok)':'var(--warn)', rank:rankBadge(rankSol,allAtend.length,true)}
   ];
   var kpisEl = document.getElementById('atpf-kpis');
@@ -2843,7 +2843,8 @@ function renderCh(){
       var dc=same?'var(--muted)':better?'var(--ok)':'var(--danger)';
       var dbg=same?'rgba(90,98,120,.1)':better?'rgba(16,185,129,.1)':'rgba(244,63,94,.1)';
       var sign=delta>0?'+':'';var pctD=r.prev!==0?Math.round(Math.abs(delta)/Math.abs(r.prev)*100):0;
-      return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" style="color:var(--muted)">'+r.prev+r.unid+'</span><span class="comp-arrow" style="color:'+dc+'">→</span><span class="comp-curr" style="color:'+dc+'">'+r.curr+r.unid+'</span><span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+sign+pctD+'%</span></div>';
+      var fmtV2=function(v){return r.unid==='min'?fmtRespTxt(v):(v+r.unid);};
+      return'<div class="comp-row"><span class="comp-label">'+r.l+'</span><span class="comp-prev" style="color:var(--muted)">'+fmtV2(r.prev)+'</span><span class="comp-arrow" style="color:'+dc+'">→</span><span class="comp-curr" style="color:'+dc+'">'+fmtV2(r.curr)+'</span><span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+sign+pctD+'%</span></div>';
     }).join('');
   }
 }
@@ -2976,12 +2977,13 @@ function renderComp(){
     var dbg=same?'rgba(90,98,120,.1)':better?'rgba(16,185,129,.1)':'rgba(244,63,94,.1)';
     var sign=delta>0?'+':'';
     var spk=spark(allVals,same?'#5a6278':(better?'#10b981':'#f43f5e'));
+    var fmtV=function(v){return r.unid==='min'?fmtRespTxt(v):(v+r.unid);};
     return'<div class="comp-row">'
       +'<span class="comp-label">'+r.l+'</span>'
       +spk
-      +(prevV!==null?'<span class="comp-prev" style="color:var(--muted)">'+prevV+r.unid+'</span>':'<span class="comp-prev" style="color:var(--muted)">—</span>')
+      +(prevV!==null?'<span class="comp-prev" style="color:var(--muted)">'+fmtV(prevV)+'</span>':'<span class="comp-prev" style="color:var(--muted)">—</span>')
       +'<span class="comp-arrow" style="color:'+dc+'">→</span>'
-      +'<span class="comp-curr" style="color:'+dc+'">'+currV+r.unid+'</span>'
+      +'<span class="comp-curr" style="color:'+dc+'">'+fmtV(currV)+'</span>'
       +'<span class="comp-delta" style="background:'+dbg+';color:'+dc+'">'+(prevV!==null?sign+pctD+'%':'Base')+'</span>'
     +'</div>';
   }).join('');
@@ -2991,9 +2993,9 @@ function renderComp(){
   var mLen=mLabels.length||1;
   mk('c-resp-trend','line',mLabels,[
     {data:respData,borderColor:'#00d4a8',backgroundColor:'rgba(0,212,168,.08)',tension:.4,fill:true,pointRadius:6,pointBackgroundColor:mOrder.map(function(k){return activeMonth==='all'||activeMonth===k?'#00d4a8':'rgba(0,212,168,.3)';}),borderWidth:2,label:'1ª Resp'},
-    {data:new Array(mLen).fill(META_RESP),label:'≤'+META_RESP+'min — meta GW',borderColor:'rgba(245,158,11,.85)',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0},
+    {data:new Array(mLen).fill(META_RESP),label:'≤'+fmtRespTxt(META_RESP)+' — meta GW',borderColor:'rgba(245,158,11,.85)',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0},
     {data:new Array(mLen).fill(15),label:'≤15min — ITSM excelente',borderColor:'rgba(16,185,129,.65)',borderDash:[3,5],borderWidth:1.5,pointRadius:0,fill:false,tension:0}
-  ],{scales:xy('min'),plugins:{
+  ],{scales:xy('Tempo (min)'),plugins:{
     legend:{display:true,labels:{color:TK,font:{size:9,family:"'JetBrains Mono'"},boxWidth:14,padding:8,filter:function(item){return item.datasetIndex>0;}}}
   }});
 }
@@ -3089,7 +3091,7 @@ function renderAt(){
     +'<th style="text-align:center;width:72px"><span style="color:var(--warn)">Ag. cli</span></th>'
     +'<th style="width:160px">Taxa <span style="font-weight:400;opacity:.5;font-size:9px">meta '+META_TAXA+'%</span></th>'
     +'<th style="text-align:center;width:84px">Sol. média</th>'
-    +'<th style="text-align:center;width:84px">1ª Resp <span style="font-weight:400;opacity:.5;font-size:9px">meta '+META_RESP+'min</span></th>'
+    +'<th style="text-align:center;width:84px">1ª Resp <span style="font-weight:400;opacity:.5;font-size:9px">meta '+fmtRespTxt(META_RESP)+'</span></th>'
     +(hasTend?'<th style="width:110px">vs mês ant.</th>':'')
     +'</tr></thead>';
 
@@ -3791,10 +3793,10 @@ function renderSl(){
   var lgndOpts={display:true,labels:{color:TK,font:{size:9,family:"'JetBrains Mono'"},boxWidth:14,padding:10,filter:function(item){return item.datasetIndex>0;}}};
   mk('c-resp','bar',N,[
     {data:atend.map(function(a){return a.rm?Math.round(a.rm):0;}),backgroundColor:rC,borderRadius:4},
-    refLine(META_RESP,'≤'+META_RESP+'min — meta GW','rgba(245,158,11,.9)',[6,4]),
+    refLine(META_RESP,'≤'+fmtRespTxt(META_RESP)+' — meta GW','rgba(245,158,11,.9)',[6,4]),
     refLine(15,'≤15min — ITSM excelente','rgba(16,185,129,.7)',[3,5])
-  ],{scales:xy('Minutos'),plugins:{
-    tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?c.raw+'min':c.dataset.label||'';}}},
+  ],{scales:xy('Tempo (min)'),plugins:{
+    tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?fmtRespTxt(c.raw):c.dataset.label||'';}}},
     legend:lgndOpts
   }});
   var sC=atend.map(function(a){return a.tm==null?'#5a6278':a.tm<=META_SOL?'#10b981':a.tm<=96?'#f59e0b':'#f43f5e';});
@@ -3810,9 +3812,10 @@ function renderSl(){
   var sm=op.sol_med!=null?op.sol_med:54.1;
   var kpis=document.querySelectorAll('#s-sl .kpi');
   if(kpis.length>=4){
-    var vals=[[rm,'min'],[Math.round(rm*10.5),'min'],[sm,'h'],[Math.round(sm*0.68*10)/10,'h']];
-    var subs=[rm<=META_RESP?'<span style="color:var(--ok)">✓ dentro da meta</span>':'<span style="color:var(--danger)">⚠ acima de 30min</span>','outliers elevam a média','chamados fechados','mais representativa'];
-    vals.forEach(function(kv,i){var v=kpis[i]&&kpis[i].querySelector('.kpi-val'),s=kpis[i]&&kpis[i].querySelector('.kpi-sub');if(v)v.innerHTML=kv[0]+'<span>'+kv[1]+'</span>';if(s)s.innerHTML=subs[i];});
+    var rmMed=Math.round(rm), rmAvg=Math.round(rm*10.5);
+    var htmlVals=[fmtResp(rmMed), fmtResp(rmAvg), sm+'<span>h</span>', (Math.round(sm*0.68*10)/10)+'<span>h</span>'];
+    var subs=[rm<=META_RESP?'<span style="color:var(--ok)">✓ dentro da meta</span>':'<span style="color:var(--danger)">⚠ acima de '+fmtRespTxt(META_RESP)+'</span>','outliers elevam a média','chamados fechados','mais representativa'];
+    htmlVals.forEach(function(html,i){var v=kpis[i]&&kpis[i].querySelector('.kpi-val'),s=kpis[i]&&kpis[i].querySelector('.kpi-sub');if(v)v.innerHTML=html;if(s)s.innerHTML=subs[i];});
   }
   // Barras de meta
   var metaEl=document.getElementById('sla-metas-bars');
@@ -3825,8 +3828,11 @@ function renderSl(){
     var cR=pRP>=80?'var(--ok)':pRP>=50?'var(--warn)':'var(--danger)';
     var cS=pSP>=80?'var(--ok)':pSP>=50?'var(--warn)':'var(--danger)';
     function mBar(lbl,pct2,col,meta){return'<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px"><span>'+lbl+'</span><span style="font-family:var(--mono);font-weight:600;color:'+col+'">'+pct2+'% dentro da meta</span></div><div style="position:relative;height:8px;background:rgba(255,255,255,.06);border-radius:6px"><div style="height:100%;width:'+pct2+'%;background:'+col+';border-radius:6px"></div><div style="position:absolute;left:80%;top:-3px;width:2px;height:14px;background:rgba(255,255,255,.25);border-radius:1px"></div></div></div>';}
-    metaEl.innerHTML=mBar('1ª Resposta ≤'+META_RESP+'min',pRP,cR)+mBar('Solução ≤'+META_SOL+'h',pSP,cS)+'<div style="font-size:10px;color:var(--muted);margin-top:4px">Base: '+atend.length+' atendentes · Linha branca = meta 80%</div>';
+    metaEl.innerHTML=mBar('1ª Resposta ≤'+fmtRespTxt(META_RESP),pRP,cR)+mBar('Solução ≤'+META_SOL+'h',pSP,cS)+'<div style="font-size:10px;color:var(--muted);margin-top:4px">Base: '+atend.length+' atendentes · Linha branca = meta 80%</div>';
   }
+  // Atualiza label de meta no card-title
+  var metaLblEl=document.getElementById('sl-resp-meta-lbl');
+  if(metaLblEl) metaLblEl.innerHTML='meta: &lt;'+fmtRespTxt(META_RESP);
   renderSLAFinanceiro();
 }
 
@@ -3974,7 +3980,7 @@ function renderPainel(d){
   document.getElementById('co-servicos').innerHTML=sK.map(function(k,i){var p=Math.round(d.servicos[k]/maxS*100);return'<div class="bl-item"><span class="bl-label">'+k+'</span><div class="bl-track"><div class="bl-fill" style="width:'+p+'%;background:'+PAL[i%PAL.length]+'"></div></div><span class="bl-val">'+d.servicos[k]+'</span></div>';}).join('');
   // tickets
   var eDot=function(e){return{'Fechado':'#10b981','Resolvido':'#00d4a8','Fechado s/ Êxito':'#5a6278','Aberto':'#4f8ef7','Em Atendimento':'#4f8ef7','Aguardando Cliente':'#f59e0b','Aguardando Interno':'#f59e0b','Retorno Cliente':'#f59e0b','Aguardando Externo':'#8b5cf6'}[e]||TK;};
-  document.getElementById('co-tickets').innerHTML=d.tickets.map(function(t,i){return'<div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:'+eDot(t.estado)+'"></div>'+(i<d.tickets.length-1?'<div class="tl-line"></div>':'')+'</div><div class="tl-body"><div class="tl-title" title="'+t.assunto+'">'+t.assunto+'</div><div class="tl-meta">'+ePill(t.estado)+pPill(t.prioridade)+'<span class="tl-dt">'+t.criado+'</span><span class="tl-num">#'+t.num.slice(-8)+'</span><span class="tl-svc">'+t.servico+'</span>'+(t.fila?'<span style="font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(79,142,247,.15);color:var(--blue)">'+t.fila+'</span>':'')+(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+t.resp_min+'min</span>':'')+(t.sol?'<span style="font-size:10px;color:var(--teal)">'+t.sol+'h</span>':'')+'</div></div></div>';}).join('');
+  document.getElementById('co-tickets').innerHTML=d.tickets.map(function(t,i){return'<div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:'+eDot(t.estado)+'"></div>'+(i<d.tickets.length-1?'<div class="tl-line"></div>':'')+'</div><div class="tl-body"><div class="tl-title" title="'+t.assunto+'">'+t.assunto+'</div><div class="tl-meta">'+ePill(t.estado)+pPill(t.prioridade)+'<span class="tl-dt">'+t.criado+'</span><span class="tl-num">#'+t.num.slice(-8)+'</span><span class="tl-svc">'+t.servico+'</span>'+(t.fila?'<span style="font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(79,142,247,.15);color:var(--blue)">'+t.fila+'</span>':'')+(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+fmtRespTxt(t.resp_min)+'</span>':'')+(t.sol?'<span style="font-size:10px;color:var(--teal)">'+t.sol+'h</span>':'')+'</div></div></div>';}).join('');
   // fila filter buttons
   var filasBtns=document.getElementById('co-fila-btns');
   if(filasBtns&&d.filas&&typeof d.filas==='object'){
@@ -3993,7 +3999,7 @@ function renderTimeline(d){
   empty.style.display='none';content.style.display='block';
   document.getElementById('tl-title').textContent='Histórico — '+d.nome+' · '+d.total+' chamados';
   var eDot=function(e){return{'Fechado':'#10b981','Resolvido':'#00d4a8','Fechado s/ Êxito':'#5a6278','Aberto':'#4f8ef7','Em Atendimento':'#4f8ef7','Aguardando Cliente':'#f59e0b','Aguardando Interno':'#f59e0b','Retorno Cliente':'#f59e0b','Aguardando Externo':'#8b5cf6'}[e]||TK;};
-  document.getElementById('tl-list').innerHTML=d.tickets.map(function(t,i){return'<div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:'+eDot(t.estado)+'"></div>'+(i<d.tickets.length-1?'<div class="tl-line"></div>':'')+'</div><div class="tl-body"><div class="tl-title" title="'+t.assunto+'">'+t.assunto+'</div><div class="tl-meta">'+ePill(t.estado)+pPill(t.prioridade)+'<span class="tl-dt">'+t.criado+'</span><span class="tl-num">#'+t.num.slice(-8)+'</span><span class="tl-svc">'+t.servico+'</span>'+(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+t.resp_min+'min</span>':'')+(t.sol?'<span style="font-size:10px;color:var(--teal)">Concluído em '+t.sol+'h</span>':'')+'</div></div></div>';}).join('');
+  document.getElementById('tl-list').innerHTML=d.tickets.map(function(t,i){return'<div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:'+eDot(t.estado)+'"></div>'+(i<d.tickets.length-1?'<div class="tl-line"></div>':'')+'</div><div class="tl-body"><div class="tl-title" title="'+t.assunto+'">'+t.assunto+'</div><div class="tl-meta">'+ePill(t.estado)+pPill(t.prioridade)+'<span class="tl-dt">'+t.criado+'</span><span class="tl-num">#'+t.num.slice(-8)+'</span><span class="tl-svc">'+t.servico+'</span>'+(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+fmtRespTxt(t.resp_min)+'</span>':'')+(t.sol?'<span style="font-size:10px;color:var(--teal)">Concluído em '+t.sol+'h</span>':'')+'</div></div></div>';}).join('');
 }
 
 function calcScore(d){ return calcUnifiedScore(d); }
@@ -5871,14 +5877,18 @@ setMode = function(m) {
 // NÃO REMOVER estas funções. São usadas em updateKPIs e outros pontos do dash.
 // < 60min → "45min" | >= 60min → "1h30min", "2h57min", etc.
 function fmtResp(min) {
+  if (min == null || isNaN(min)) return '—';
+  min = Math.round(min);
   if (min < 60) return min + '<span>min</span>';
-  var h = Math.floor(min / 60), m = Math.round(min % 60);
-  return m > 0 ? h + '<span>h' + m + 'min</span>' : h + '<span>h</span>';
+  var h = Math.floor(min / 60), m = min % 60;
+  return m > 0 ? h + '<span>h ' + m + 'min</span>' : h + '<span>h</span>';
 }
 function fmtRespTxt(min) {
+  if (min == null || isNaN(min)) return '—';
+  min = Math.round(min);
   if (min < 60) return min + 'min';
-  var h = Math.floor(min / 60), m = Math.round(min % 60);
-  return m > 0 ? h + 'h' + m + 'min' : h + 'h';
+  var h = Math.floor(min / 60), m = min % 60;
+  return m > 0 ? h + 'h ' + m + 'min' : h + 'h';
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -5892,7 +5902,7 @@ function updateKPIs(op) {
   var rm=op.resp_med!=null?op.resp_med:8,sm=op.sol_med!=null?op.sol_med:54.1;
   var vals=[total,ab,fe,maTotal,fmtResp(rm),sm+'<span>h</span>',bloq,14];
   var colors=['var(--text)','var(--warn)','var(--ok)','var(--danger)','var(--teal)','var(--purple)','var(--orange)','var(--blue)'];
-  var subs=[activeMonth==='all'?'jan–mar':'período selecionado',Math.round(ab/(total||1)*100)+'% do total',taxa+'% de conclusão',Math.round(maTotal/(total||1)*100)+'% do volume',rm<=30?'✓ dentro da meta':'acima de 30min','chamados fechados',Math.round(bloq/(total||1)*100)+'% aguardando','equipe ativa'];
+  var subs=[activeMonth==='all'?'jan–mar':'período selecionado',Math.round(ab/(total||1)*100)+'% do total',taxa+'% de conclusão',Math.round(maTotal/(total||1)*100)+'% do volume',rm<=META_RESP?'✓ dentro da meta':'acima de '+fmtRespTxt(META_RESP),'chamados fechados',Math.round(bloq/(total||1)*100)+'% aguardando','equipe ativa'];
   for(var i=0;i<8;i++){
     var vEl=document.getElementById('kpi-v-'+i);
     var sEl=document.getElementById('kpi-s-'+i);
@@ -7055,7 +7065,7 @@ function cliFilaFiltro(fila,btn){
       +'<span class="tl-num">#'+t.num.slice(-8)+'</span>'
       +'<span class="tl-svc">'+t.servico+'</span>'
       +(t.fila?'<span style="font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(79,142,247,.15);color:var(--blue)">'+t.fila+'</span>':'')
-      +(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+t.resp_min+'min</span>':'')
+      +(t.resp_min!==null&&t.resp_min!==undefined?'<span class="tl-dt">1ª resp: '+fmtRespTxt(t.resp_min)+'</span>':'')
       +(t.sol?'<span style="font-size:10px;color:var(--teal)">'+t.sol+'h</span>':'')
       +'</div></div></div>';
   }).join('');
