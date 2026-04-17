@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-17T20:08:29.996905",
+  "generated_at": "2026-04-17T22:09:30.746913",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A taxa de conclusão está em <strong>61%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>91 chamados em aberto</strong> (33%) e <strong>54 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A taxa de conclusão está em <strong>61%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>90 chamados em aberto</strong> (33%) e <strong>57 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -14,7 +14,7 @@
       {
         "label": "Risco de SLA",
         "value": "Baixo",
-        "sub": "1ª resposta: 25.0 min",
+        "sub": "1ª resposta: 27.0 min",
         "color": "var(--ok)"
       },
       {
@@ -31,7 +31,7 @@
       }
     ],
     "risco_principal": {
-      "label": "SLA 25.0 min",
+      "label": "SLA 27.0 min",
       "desc": "Acima da meta de 30 min"
     },
     "oportunidade": {
@@ -46,7 +46,7 @@
   "riscos_operacionais": [
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "54 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "57 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -117,9 +117,9 @@
       "narrativa": "O módulo <strong>Infraestrutura e Cloud</strong> concentra 57% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
-          "titulo": "SLA de resposta fora do contrato (61.0 min)",
-          "desc": "Mediana de primeira resposta nesta conta: 61.0 min. Acima da meta contratual de 30 min.",
-          "nivel": "medium",
+          "titulo": "SLA de resposta fora do contrato (109.0 min)",
+          "desc": "Mediana de primeira resposta nesta conta: 109.0 min. Acima da meta contratual de 30 min.",
+          "nivel": "high",
           "confianca": 85
         },
         {
@@ -146,7 +146,7 @@
   "cs_insights": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Com <strong>35% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
+      "narrativa": "Com <strong>34% dos chamados ainda em aberto</strong>, o próximo contato deve incluir um plano de fechamento claro com prazo.",
       "proximo_contato": "nos próximos 7 dias",
       "tom_sugerido": "consultivo",
       "prioridade": "baixa"
