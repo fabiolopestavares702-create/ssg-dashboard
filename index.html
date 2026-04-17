@@ -3996,7 +3996,7 @@ function renderHealthScore(d){
   var pC={'Muito Alta':'#f43f5e','Alta':'#f59e0b','Normal':'#4f8ef7','Baixa':'#00d4a8','Muito Baixa':'#5a6278'};
   mk('c-prior-co','doughnut',pK,[{data:pV,backgroundColor:pK.map(function(k){return pC[k]||TK;}),borderWidth:0}],{cutout:'62%',plugins:{legend:{display:true,position:'right',labels:{color:'#8892a4',font:{size:10},boxWidth:8,padding:6}}}});
   // Comparativo com média geral
-  var mediaGeral={taxa:62,resp:8,sol:54};var taxa=pct(d.fechados,d.total);
+  var mediaGeral={taxa:OP&&OP.total>0?Math.round((OP.fechados||0)/OP.total*100):62,resp:OP&&OP.resp_med>0?Math.round(OP.resp_med):8,sol:OP&&(OP.sol_med||OP.sol_med_h)>0?Math.round(OP.sol_med||OP.sol_med_h):54};var taxa=pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
     {l:'1ª Resposta mediana',emp:(d.resp_med!=null?fmtRespTxt(d.resp_med):'—'),geral:fmtRespTxt(mediaGeral.resp),melhor:d.resp_med<=mediaGeral.resp},
@@ -4345,6 +4345,11 @@ function rebuildAll(data){
         data.forEach(function(d){ if(d.fila && d.fila !== 'LIXO' && filasImport.indexOf(d.fila) === -1) filasImport.push(d.fila); });
         filasImport.sort();
         FILAS_LIST = filasImport;
+        if(!filasImport.length && data.length > 0) {
+          var _fwarn = document.getElementById('import-last');
+          if(_fwarn) _fwarn.title = '⚠️ Coluna "Fila" não encontrada — filtro por fila desativado';
+          console.warn('[SSG] Import: coluna "fila" não encontrada na planilha. Filtro por fila não funcionará.');
+        }
 
         // Reconstruir OP_FILAS com breakdown por mês
         var isAb2=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
@@ -5714,7 +5719,7 @@ function getFilteredEmpresa(d) {
   if(!d) return null;
   // Range mode: filter from RAW_DATA for accurate results
   if(activeRangeStart && activeRangeEnd) {
-    var rTix=(RAW_DATA||[]).filter(function(t){return t.cli_id===d.id&&ticketInFilter(t);});
+    var rTix=(RAW_DATA||[]).filter(function(t){return t.cli_id===d.id&&ticketInFilter(t)&&(activeFilaOP==='all'||t.fila===activeFilaOP);});
     if(!rTix.length) return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},by_mes:{}});
     var isAbGFE=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
     var isFGFE=function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
@@ -5755,8 +5760,17 @@ function getFilteredEmpresa(d) {
     if(!t.criado||t.criado==='—') return false;
     var parts = t.criado.split('/');
     if(parts.length<2) return false;
-    return parts[1].split(' ')[0] === mNum;
+    var mOk = parts[1].split(' ')[0] === mNum;
+    var fOk = activeFilaOP === 'all' || t.fila === activeFilaOP;
+    return mOk && fOk;
   });
+  if(activeFilaOP !== 'all') {
+    var isAbFE=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+    var isFeFE=function(e){return e==='Fechado'||e==='Resolvido'||e.indexOf('Fechado s')===0;};
+    total = filteredTickets.length;
+    abertos = filteredTickets.filter(function(t){return isAbFE(t.estado);}).length;
+    fechados = filteredTickets.filter(function(t){return isFeFE(t.estado);}).length;
+  }
 
   // Rebuild estados from filtered tickets (approximate)
   var estados = {};
@@ -6439,7 +6453,7 @@ function renderCSHealthList() {
 
 function loadCS(key) {
   csCurrentKey = key;
-  var d = EMPRESAS[key];
+  var d = getFilteredEmpresa(EMPRESAS[key]) || EMPRESAS[key];
   // mostrar/esconder empty states
   var secs = ['ov','hs','risk','tl','act'];
   secs.forEach(function(s) {
@@ -6879,7 +6893,7 @@ function renderCSActions(d) {
 function exportCSPDF() {
   var key = document.getElementById('cs-sel-empresa').value;
   if (!key) { alert('Selecione uma conta primeiro.'); return; }
-  var d = EMPRESAS[key];
+  var d = getFilteredEmpresa(EMPRESAS[key]) || EMPRESAS[key];
   var score = calcCSScore(d);
   var sl = csScoreLabel(score);
   var now = new Date().toLocaleDateString('pt-BR');
@@ -7804,7 +7818,17 @@ function autoFetchXLS(){
       var w=XLSX.read(new Uint8Array(b),{type:"array",cellDates:true});
       var s=w.Sheets[w.SheetNames[0]];
       var rows=XLSX.utils.sheet_to_json(s,{defval:""});
+      var _sm=activeMonth,_sf=activeFilaOP,_sfc=activeFilaCli,_sc=activeCliente,_srs=activeRangeStart,_sre=activeRangeEnd;
       rebuildAll(parseR(rows));
+      if(_sm!=='all'||_sf!=='all'||_sc||_srs){
+        activeMonth=_sm;activeFilaOP=_sf;activeFilaCli=_sfc;activeCliente=_sc;activeRangeStart=_srs;activeRangeEnd=_sre;
+        buildMonthFilter();
+        Object.keys(rendered).forEach(function(k){rendered[k]=false;});
+        Object.keys(CH).forEach(function(k){if(CH[k]){CH[k].destroy();CH[k]=null;}});
+        var _aOp=document.querySelector('#view-op .sec.on');
+        if(_aOp){rendered[_aOp.id]=true;renderSec(_aOp.id);}
+        renderAlertas();computeInsights();
+      }
       var now=new Date();
       var hm=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       if(dot)dot.style.background='var(--ok)';
