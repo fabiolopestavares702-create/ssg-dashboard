@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-18T08:09:07.271944",
+  "generated_at": "2026-04-18T10:27:25.736045",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A taxa de conclusão está em <strong>61%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>85 chamados em aberto</strong> (31%) e <strong>51 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A taxa de conclusão está em <strong>61%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>86 chamados em aberto</strong> (31%) e <strong>52 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -46,7 +46,7 @@
   "riscos_operacionais": [
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "51 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "52 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
