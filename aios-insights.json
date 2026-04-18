@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-18T10:27:25.736045",
+  "generated_at": "2026-04-18T12:01:05.626767",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -51,7 +51,7 @@
       "confianca": 92
     },
     {
-      "titulo": "20 chamados entre 8 e 30 dias sem resolução",
+      "titulo": "21 chamados entre 8 e 30 dias sem resolução",
       "desc": "Volume de chamados no limite antes de se tornarem críticos. Intervenção preventiva nos próximos 2 dias pode evitar escalonamento.",
       "nivel": "medium",
       "confianca": 82
