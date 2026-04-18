@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-18T21:53:46.985638",
+  "generated_at": "2026-04-18T23:55:02.759926",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A taxa de conclusão está em <strong>59%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>92 chamados em aberto</strong> (33%) e <strong>52 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
+    "narrativa": "A taxa de conclusão está em <strong>58%</strong>, abaixo do esperado — requer atenção imediata.<br><br>Existem <strong>98 chamados em aberto</strong> (34%) e <strong>52 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -78,11 +78,11 @@
     },
     {
       "cliente": "FADEL",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 72 chamados (26% do total). O módulo <strong>VDI</strong> concentra 44% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 72 chamados (25% do total). O módulo <strong>VDI</strong> concentra 44% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "72 chamados (26% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "72 chamados (25% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
