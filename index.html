@@ -1073,6 +1073,41 @@ input[type=file]{display:none}
 [data-theme="light"] .al-ring .al-ring-bg{stroke:rgba(148,163,184,.4)}
 [data-theme="light"] #s-alertas .kpi{background:rgba(255,255,255,.85);border-color:rgba(148,163,184,.3);box-shadow:0 2px 8px rgba(40,54,69,.06)}
 
+/* ════════════════════════════════════════════════════════════════════
+   ATENDENTES — redesign (escopo: #s-at)
+   ════════════════════════════════════════════════════════════════════ */
+#s-at{--gw:#ff7024;--gw-2:#f37633;--cyan:#22d3ee;--at-surface:rgba(20,29,40,.5);--at-border:rgba(40,54,69,.6);--at-border-bright:rgba(40,54,69,.95);--at-muted:#8a9bb0;--at-text:#e5edf5}
+.at-hero{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--at-border);background:linear-gradient(135deg,#0e1620 0%,#141d2a 60%,#1a2534 100%);padding:28px 34px 24px;margin:0 0 18px}
+.at-hero::before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 90% 25%,rgba(34,211,238,.14),transparent 52%),radial-gradient(circle at 10% 90%,rgba(255,112,36,.12),transparent 45%);pointer-events:none;z-index:0}
+.at-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(255,255,255,.015) 50%,transparent 58%,transparent 100%);animation:ialScan 9s linear infinite;pointer-events:none;z-index:1}
+.at-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
+.at-hero-left{display:flex;flex-direction:column;gap:6px}
+.at-hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);color:var(--at-muted);text-transform:uppercase;letter-spacing:.18em}
+.at-hero-tag .at-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:ialPulse 2.4s ease-in-out infinite}
+.at-hero-status{font-family:'Syne',sans-serif;font-size:50px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:4px;background:linear-gradient(135deg,var(--cyan) 0%,var(--gw-2) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(34,211,238,.28))}
+.at-hero-status.at-s-warn{background:linear-gradient(135deg,#f59e0b 0%,var(--gw) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(245,158,11,.35))}
+.at-hero-status.at-s-crit{background:linear-gradient(135deg,var(--gw) 0%,#f43f5e 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 22px rgba(255,112,36,.4))}
+.at-hero-sub{font-size:13px;color:var(--at-muted);font-family:var(--mono);letter-spacing:.02em;line-height:1.6}
+.at-hero-sub strong{color:var(--at-text);font-weight:600}
+.at-hero-meta{font-size:10px;color:var(--at-muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-top:6px}
+.at-ring{position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+.at-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.at-ring svg circle{fill:none;stroke-width:2}
+.at-ring .at-ring-bg{stroke:rgba(40,54,69,.5)}
+.at-ring .at-ring-fg{stroke:var(--cyan);stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(34,211,238,.5));transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.at-ring.at-s-warn .at-ring-fg{stroke:#f59e0b;filter:drop-shadow(0 0 8px rgba(245,158,11,.5))}
+.at-ring.at-s-crit .at-ring-fg{stroke:var(--gw);filter:drop-shadow(0 0 8px rgba(255,112,36,.5))}
+.at-ring-core{display:flex;flex-direction:column;align-items:center;gap:2px;z-index:1}
+.at-ring-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:700;color:var(--at-text);line-height:1}
+.at-ring-lbl{font-family:var(--mono);font-size:9px;color:var(--at-muted);text-transform:uppercase;letter-spacing:.18em}
+/* LIGHT MODE overrides */
+[data-theme="light"] #s-at{--at-surface:rgba(255,255,255,.85);--at-border:rgba(148,163,184,.3);--at-muted:#64748b;--at-text:#0f172a}
+[data-theme="light"] .at-hero{background:linear-gradient(135deg,#ffffff 0%,#f8fafc 60%,#eef2f7 100%);box-shadow:0 4px 20px rgba(40,54,69,.08)}
+[data-theme="light"] .at-hero::before{background:radial-gradient(circle at 90% 25%,rgba(34,211,238,.1),transparent 52%),radial-gradient(circle at 10% 90%,rgba(255,112,36,.07),transparent 45%)}
+[data-theme="light"] .at-hero::after{background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(40,54,69,.02) 50%,transparent 58%,transparent 100%)}
+[data-theme="light"] .at-ring-num{color:#0f172a}
+[data-theme="light"] .at-ring .at-ring-bg{stroke:rgba(148,163,184,.4)}
+
 </style>
 </head>
 <body>
@@ -1591,6 +1626,27 @@ input[type=file]{display:none}
       </div>
     </div>
     <div class="page-body">
+
+      <div class="at-hero" id="at-hero">
+        <div class="at-hero-grid">
+          <div class="at-hero-left">
+            <div class="at-hero-tag"><span class="at-dot"></span>ATENDENTES · PERFORMANCE DA EQUIPE</div>
+            <div class="at-hero-status" id="at-hero-status">—</div>
+            <div class="at-hero-sub" id="at-hero-sub">carregando equipe…</div>
+            <div class="at-hero-meta" id="at-hero-meta">monitoramento via GWMS · sync 10min</div>
+          </div>
+          <div class="at-ring" id="at-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="at-ring-bg" cx="100" cy="100" r="90"/>
+              <circle class="at-ring-fg" id="at-ring-fg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+            </svg>
+            <div class="at-ring-core">
+              <div class="at-ring-num" id="at-ring-num">—</div>
+              <div class="at-ring-lbl">atendentes</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- ── MODO XLSX ── -->
       <div id="at-xlsx-content">
@@ -3452,6 +3508,50 @@ function renderUtilizacao(data){
       +'</tr>';
   }).join('');
   if(tbl) tbl.innerHTML='<thead><tr><th>Atendente</th><th>Ativos</th><th>Em atend.</th><th>Aguard.</th><th>Aberto</th><th>Tempo médio em atend.</th></tr></thead><tbody>'+trs+'</tbody>';
+  try{populateAtHero(data);}catch(e){console.warn('at hero:',e);}
+}
+function populateAtHero(data){
+  var g=function(id){return document.getElementById(id);};
+  var hero=g('at-hero-status'), ring=g('at-ring'), ringFg=g('at-ring-fg'), ringNum=g('at-ring-num'), sub=g('at-hero-sub'), meta=g('at-hero-meta');
+  if(!hero) return;
+  hero.classList.remove('at-s-warn','at-s-crit');
+  if(ring) ring.classList.remove('at-s-warn','at-s-crit');
+  if(!data||!data.rows||!data.rows.length){
+    hero.textContent='SEM DADOS';
+    if(sub) sub.textContent='aguardando próximo sync do GWMS…';
+    if(ringNum) ringNum.textContent='—';
+    if(ringFg) ringFg.setAttribute('stroke-dashoffset','565.48');
+    return;
+  }
+  var rows=data.rows;
+  var total=rows.length;
+  var carga=function(r){return (r.em_atendimento||0)+(r.abertos||0);};
+  var sobrecarga=rows.filter(function(r){return carga(r)>=8;}).length;
+  var atencao=rows.filter(function(r){return carga(r)>=5&&carga(r)<8;}).length;
+  var folga=rows.filter(function(r){return carga(r)<=2;}).length;
+  var totalAtivos=rows.reduce(function(a,r){return a+(r.ativos_total||0);},0);
+  var cargaMedia=rows.reduce(function(a,r){return a+carga(r);},0)/total;
+  var status, cls;
+  if(sobrecarga>=3){status='SOBRECARGA';cls='at-s-crit';}
+  else if(sobrecarga>=1){status='ATENÇÃO';cls='at-s-warn';}
+  else {status=total+' ATIVOS';cls='';}
+  hero.textContent=status;
+  if(cls){hero.classList.add(cls);if(ring)ring.classList.add(cls);}
+  if(sub){
+    sub.innerHTML=
+      '<strong>'+total+'</strong> atendentes com carga · '
+      +'<strong>'+totalAtivos+'</strong> tickets ativos · '
+      +'<strong>'+sobrecarga+'</strong> em sobrecarga · '
+      +'<strong>'+atencao+'</strong> em atenção · '
+      +'<strong>'+folga+'</strong> com folga';
+  }
+  var tsMin=Math.floor((Date.now()/1000-(data.generated_at||Date.now()/1000))/60);
+  if(meta)meta.textContent='sync GWMS há '+(tsMin<1?'agora':tsMin+' min')+' · carga média '+cargaMedia.toFixed(1);
+  if(ringNum)ringNum.textContent=total;
+  if(ringFg){
+    var pct=Math.min(1,sobrecarga/Math.max(1,total*.3));
+    ringFg.setAttribute('stroke-dashoffset', 565.48*(1-pct));
+  }
 }
 function fetchUtilizacao(){
   fetch('utilizacao.json?v='+Date.now())
