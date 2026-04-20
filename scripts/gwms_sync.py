@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import time
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 
 import requests
