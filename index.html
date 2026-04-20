@@ -1271,6 +1271,20 @@ input[type=file]{display:none}
         </div>
         <div class="tbl-scroll" style="max-height:440px;overflow-y:auto"><table class="tbl" id="ch-sil-tbl"></table></div>
       </div>
+      <div class="card card-mb" id="ch-reab-card" style="margin-top:16px">
+        <div class="card-title">Reaberturas (últimos 90 dias)
+          <span class="card-title-right" style="font-size:10px;color:var(--muted)">
+            <span id="ch-reab-meta">carregando…</span> ·
+            <a href="#" onclick="fetchReaberturas();return false" style="color:var(--teal);text-decoration:none">recarregar</a>
+          </span>
+        </div>
+        <div class="kpi-row kpi-row-3" style="margin-bottom:12px">
+          <div class="kpi"><div class="kpi-accent" style="background:var(--muted)"></div><div class="kpi-lbl">Total reabertos</div><div class="kpi-val" id="ch-reab-kpi-total">—</div><div class="kpi-sub">fechou e voltou</div></div>
+          <div class="kpi"><div class="kpi-accent" style="background:var(--warn)"></div><div class="kpi-lbl">Reaberto 1x</div><div class="kpi-val" id="ch-reab-kpi-1" style="color:var(--warn)">—</div><div class="kpi-sub">1 ciclo</div></div>
+          <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-lbl">Reaberto 2x+</div><div class="kpi-val" id="ch-reab-kpi-2" style="color:var(--danger)">—</div><div class="kpi-sub">padrão recorrente</div></div>
+        </div>
+        <div class="tbl-scroll" style="max-height:400px;overflow-y:auto"><table class="tbl" id="ch-reab-tbl"></table></div>
+      </div>
     </div>
   </div>
 
@@ -1313,6 +1327,20 @@ input[type=file]{display:none}
       <div id="at-xlsx-content">
         <div id="at-capacity" class="card card-mb" style="display:none"></div>
         <div class="card card-mb"><div class="card-title">Volume total × fechados × pendentes</div><div class="cw" style="height:220px"><canvas id="c-atend"></canvas></div></div>
+        <div class="card card-mb" id="at-util-card">
+          <div class="card-title">Carga atual (tempo real via GWMS)
+            <span class="card-title-right" style="font-size:10px;color:var(--muted)">
+              <span id="at-util-meta">carregando…</span> ·
+              <a href="#" onclick="fetchUtilizacao();return false" style="color:var(--teal);text-decoration:none">recarregar</a>
+            </span>
+          </div>
+          <div class="kpi-row kpi-row-3" style="margin-bottom:12px">
+            <div class="kpi"><div class="kpi-accent" style="background:var(--muted)"></div><div class="kpi-lbl">Atendentes com carga</div><div class="kpi-val" id="at-util-kpi-ppl">—</div><div class="kpi-sub">têm tickets ativos</div></div>
+            <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-lbl">Sobrecarga (≥8 ativos)</div><div class="kpi-val" id="at-util-kpi-over" style="color:var(--danger)">—</div><div class="kpi-sub">risco de atraso</div></div>
+            <div class="kpi"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-lbl">Ativos totais</div><div class="kpi-val" id="at-util-kpi-tot" style="color:var(--blue)">—</div><div class="kpi-sub">em todas as filas</div></div>
+          </div>
+          <div class="tbl-scroll" style="max-height:380px;overflow-y:auto"><table class="tbl" id="at-util-tbl"></table></div>
+        </div>
         <div class="card"><div class="card-title">Ranking detalhado</div><div class="tbl-scroll"><table class="tbl" id="atend-tbl"></table></div></div>
       </div>
 
@@ -1438,6 +1466,20 @@ input[type=file]{display:none}
       <div class="grid2">
         <div class="card"><div class="card-title">1ª Resposta por atendente <span class="card-title-right" id="sl-resp-meta-lbl">meta: &lt;30min</span></div><div class="cw" style="height:240px"><canvas id="c-resp"></canvas></div></div>
         <div class="card"><div class="card-title">Solução por atendente <span class="card-title-right">meta: &lt;48h</span></div><div class="cw" style="height:240px"><canvas id="c-sol"></canvas></div></div>
+      </div>
+      <div class="card card-mb" id="sl-tri-card" style="margin-top:16px">
+        <div class="card-title">Tickets em triagem
+          <span class="card-title-right" style="font-size:10px;color:var(--muted)">
+            <span id="sl-tri-meta">carregando…</span> ·
+            <a href="#" onclick="fetchTriagem();return false" style="color:var(--teal);text-decoration:none">recarregar</a>
+          </span>
+        </div>
+        <div class="kpi-row kpi-row-3" style="margin-bottom:12px">
+          <div class="kpi"><div class="kpi-accent" style="background:var(--muted)"></div><div class="kpi-lbl">Em triagem agora</div><div class="kpi-val" id="sl-tri-kpi-total">—</div><div class="kpi-sub">OPEN sem movimento</div></div>
+          <div class="kpi"><div class="kpi-accent" style="background:var(--warn)"></div><div class="kpi-lbl">Urgente (&gt;24h)</div><div class="kpi-val" id="sl-tri-kpi-dia" style="color:var(--warn)">—</div><div class="kpi-sub">demora de triagem</div></div>
+          <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-lbl">Abandonado (&gt;7d)</div><div class="kpi-val" id="sl-tri-kpi-sem" style="color:var(--danger)">—</div><div class="kpi-sub">crítico</div></div>
+        </div>
+        <div class="tbl-scroll" style="max-height:400px;overflow-y:auto"><table class="tbl" id="sl-tri-tbl"></table></div>
       </div>
       <div id="sla-fin-card" class="card" style="margin-top:16px;display:none"></div>
     </div>
@@ -2877,9 +2919,157 @@ function fetchSilenciosos(){
     .then(function(d){SILENC_DATA=d;renderSilenciosos(d);})
     .catch(function(){renderSilenciosos(null);});
 }
+
+// ─── Triagem / Reaberturas / Utilização — dados GWMS via workflow a cada 10min ──
+var TRI_DATA=null, REAB_DATA=null, UTIL_DATA=null;
+function _gwmsFilters(){
+  var norm=function(s){return (s||'').toLowerCase().replace(/[_\s]/g,'');};
+  var acCli=(typeof activeCliente!=='undefined'&&activeCliente)?norm(activeCliente):'';
+  var acFila=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?activeFilaOP:'';
+  return {norm:norm,acCli:acCli,acFila:acFila};
+}
+function _fmtDuration(min){
+  var d=Math.floor(min/1440), h=Math.floor((min%1440)/60);
+  if(d>=1) return d+'d'+(h>0?' '+h+'h':'');
+  if(h>=1) return h+'h'+((min%60)>0?' '+(min%60)+'min':'');
+  return min+'min';
+}
+function renderTriagem(data){
+  var g=function(id){return document.getElementById(id);};
+  var tbl=g('sl-tri-tbl');
+  if(!data||!data.rows){
+    if(tbl) tbl.innerHTML='<tbody><tr><td style="padding:20px;text-align:center;color:var(--muted);font-size:11px">triagem.json ainda não disponível</td></tr></tbody>';
+    ['sl-tri-kpi-total','sl-tri-kpi-dia','sl-tri-kpi-sem'].forEach(function(id){var e=g(id);if(e)e.textContent='—';});
+    var m=g('sl-tri-meta');if(m)m.textContent='sem dados';
+    return;
+  }
+  var f=_gwmsFilters();
+  var rows=data.rows.filter(function(r){
+    if(f.acCli && f.norm(r.cliente)!==f.acCli) return false;
+    if(f.acFila && r.fila!==f.acFila) return false;
+    return true;
+  });
+  var dia=rows.filter(function(r){return r.triagem_min>1440;}).length;
+  var sem=rows.filter(function(r){return r.triagem_min>10080;}).length;
+  var setv=function(id,v){var e=g(id);if(e)e.textContent=v;};
+  setv('sl-tri-kpi-total',rows.length);
+  setv('sl-tri-kpi-dia',dia);
+  setv('sl-tri-kpi-sem',sem);
+  var tsMin=Math.floor((Date.now()/1000-data.generated_at)/60);
+  var filtTxt=(f.acCli||f.acFila)?(' (de '+data.rows.length+' · filtrado)'):'';
+  setv('sl-tri-meta',rows.length+' tickets'+filtTxt+' · atualizado há '+(tsMin<1?'agora':tsMin+' min'));
+  var trs=rows.map(function(r){
+    var m=r.triagem_min;
+    var col=m>10080?'var(--danger)':(m>1440?'var(--warn)':'var(--blue)');
+    var tkUrl='https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketZoom;TicketNumber='+encodeURIComponent(r.ticket);
+    return '<tr>'
+      +'<td><a href="'+tkUrl+'" target="_blank" rel="noopener" style="color:var(--teal);font-family:var(--mono);text-decoration:none">'+r.ticket+'</a></td>'
+      +'<td style="font-size:11px">'+(r.cliente||'—')+'</td>'
+      +'<td style="font-size:11px">'+(r.fila||'')+'</td>'
+      +'<td style="font-size:11px">'+((r.atendente||'').split(' ').slice(0,2).join(' '))+'</td>'
+      +'<td style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+(r.criado||'').replace('T',' ').slice(0,16)+'</td>'
+      +'<td style="color:'+col+';font-weight:700;font-family:var(--mono);font-size:11px">'+_fmtDuration(m)+'</td>'
+      +'</tr>';
+  }).join('');
+  if(tbl) tbl.innerHTML='<thead><tr><th>Ticket</th><th>Cliente</th><th>Fila</th><th>Atendente</th><th>Criado</th><th>Em triagem</th></tr></thead><tbody>'+trs+'</tbody>';
+}
+function fetchTriagem(){
+  fetch('triagem.json?v='+Date.now())
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){TRI_DATA=d;renderTriagem(d);})
+    .catch(function(){renderTriagem(null);});
+}
+function renderReaberturas(data){
+  var g=function(id){return document.getElementById(id);};
+  var tbl=g('ch-reab-tbl');
+  if(!data||!data.rows){
+    if(tbl) tbl.innerHTML='<tbody><tr><td style="padding:20px;text-align:center;color:var(--muted);font-size:11px">reaberturas.json ainda não disponível</td></tr></tbody>';
+    ['ch-reab-kpi-total','ch-reab-kpi-1','ch-reab-kpi-2'].forEach(function(id){var e=g(id);if(e)e.textContent='—';});
+    var m=g('ch-reab-meta');if(m)m.textContent='sem dados';
+    return;
+  }
+  var f=_gwmsFilters();
+  var rows=data.rows.filter(function(r){
+    if(f.acCli && f.norm(r.cliente)!==f.acCli) return false;
+    if(f.acFila && r.fila!==f.acFila) return false;
+    return true;
+  });
+  var r1=rows.filter(function(r){return r.vezes_fechado===1;}).length;
+  var r2=rows.filter(function(r){return r.vezes_fechado>=2;}).length;
+  var setv=function(id,v){var e=g(id);if(e)e.textContent=v;};
+  setv('ch-reab-kpi-total',rows.length);
+  setv('ch-reab-kpi-1',r1);
+  setv('ch-reab-kpi-2',r2);
+  var tsMin=Math.floor((Date.now()/1000-data.generated_at)/60);
+  var filtTxt=(f.acCli||f.acFila)?(' (de '+data.rows.length+' · filtrado)'):'';
+  setv('ch-reab-meta',rows.length+' tickets'+filtTxt+' · atualizado há '+(tsMin<1?'agora':tsMin+' min'));
+  var trs=rows.map(function(r){
+    var col=r.vezes_fechado>=2?'var(--danger)':'var(--warn)';
+    var tkUrl='https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketZoom;TicketNumber='+encodeURIComponent(r.ticket);
+    return '<tr>'
+      +'<td><a href="'+tkUrl+'" target="_blank" rel="noopener" style="color:var(--teal);font-family:var(--mono);text-decoration:none">'+r.ticket+'</a></td>'
+      +'<td style="font-size:11px">'+(r.cliente||'—')+'</td>'
+      +'<td style="font-size:11px">'+(r.fila||'')+'</td>'
+      +'<td style="font-size:10px;letter-spacing:.04em">'+(r.estado_atual||'')+'</td>'
+      +'<td style="font-size:11px">'+((r.atendente||'').split(' ').slice(0,2).join(' '))+'</td>'
+      +'<td style="color:'+col+';font-weight:700;font-family:var(--mono);font-size:11px;text-align:center">'+r.vezes_fechado+'×</td>'
+      +'<td style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+((r.modificado||'').replace('T',' ').slice(0,16))+'</td>'
+      +'</tr>';
+  }).join('');
+  if(tbl) tbl.innerHTML='<thead><tr><th>Ticket</th><th>Cliente</th><th>Fila</th><th>Estado</th><th>Atendente</th><th>Vezes fechado</th><th>Modificado</th></tr></thead><tbody>'+trs+'</tbody>';
+}
+function fetchReaberturas(){
+  fetch('reaberturas.json?v='+Date.now())
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){REAB_DATA=d;renderReaberturas(d);})
+    .catch(function(){renderReaberturas(null);});
+}
+function renderUtilizacao(data){
+  var g=function(id){return document.getElementById(id);};
+  var tbl=g('at-util-tbl');
+  if(!data||!data.rows){
+    if(tbl) tbl.innerHTML='<tbody><tr><td style="padding:20px;text-align:center;color:var(--muted);font-size:11px">utilizacao.json ainda não disponível</td></tr></tbody>';
+    ['at-util-kpi-ppl','at-util-kpi-over','at-util-kpi-tot'].forEach(function(id){var e=g(id);if(e)e.textContent='—';});
+    var m=g('at-util-meta');if(m)m.textContent='sem dados';
+    return;
+  }
+  // Utilização é por atendente (não filtra por cliente — dataset não tem cliente)
+  // mas pode filtrar por fila se fosse necessário; por ora mostra agregado
+  var rows=data.rows;
+  var over=rows.filter(function(r){return r.ativos_total>=8;}).length;
+  var tot=rows.reduce(function(s,r){return s+(r.ativos_total||0);},0);
+  var setv=function(id,v){var e=g(id);if(e)e.textContent=v;};
+  setv('at-util-kpi-ppl',rows.length);
+  setv('at-util-kpi-over',over);
+  setv('at-util-kpi-tot',tot);
+  var tsMin=Math.floor((Date.now()/1000-data.generated_at)/60);
+  setv('at-util-meta',rows.length+' atendentes · atualizado há '+(tsMin<1?'agora':tsMin+' min'));
+  var trs=rows.map(function(r){
+    var ativos=r.ativos_total||0;
+    var col=ativos>=8?'var(--danger)':(ativos>=5?'var(--warn)':'var(--ok)');
+    var tempo=r.em_atend_tempo_med_min?_fmtDuration(Math.round(r.em_atend_tempo_med_min)):'—';
+    return '<tr>'
+      +'<td style="font-size:11px">'+(r.atendente||'—').split(' ').slice(0,3).join(' ')+'</td>'
+      +'<td style="color:'+col+';font-weight:700;font-family:var(--mono);font-size:11px;text-align:center">'+ativos+'</td>'
+      +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.em_atendimento||0)+'</td>'
+      +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.aguardando||0)+'</td>'
+      +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.abertos||0)+'</td>'
+      +'<td style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+tempo+'</td>'
+      +'</tr>';
+  }).join('');
+  if(tbl) tbl.innerHTML='<thead><tr><th>Atendente</th><th>Ativos</th><th>Em atend.</th><th>Aguard.</th><th>Aberto</th><th>Tempo médio em atend.</th></tr></thead><tbody>'+trs+'</tbody>';
+}
+function fetchUtilizacao(){
+  fetch('utilizacao.json?v='+Date.now())
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){UTIL_DATA=d;renderUtilizacao(d);})
+    .catch(function(){renderUtilizacao(null);});
+}
 function renderCh(){
   if(!SILENC_DATA||(Date.now()/1000-SILENC_DATA.generated_at)>300) fetchSilenciosos();
   else renderSilenciosos(SILENC_DATA);
+  if(!REAB_DATA||(Date.now()/1000-REAB_DATA.generated_at)>300) fetchReaberturas();
+  else renderReaberturas(REAB_DATA);
   var _op2=getActiveOP();_op2=Object.assign({estado:{},prior:{},svc:{},atend:[],criticos:[],by_day:[],byDay:[]},_op2);
   var _days=getFilteredDays();
   var L=_days.map(function(d){return fd(d.d);}),V=_days.map(function(d){return d.n;});
@@ -3180,6 +3370,8 @@ function renderTeamCapacity() {
 }
 
 function renderAt(){
+  if(!UTIL_DATA||(Date.now()/1000-UTIL_DATA.generated_at)>300) fetchUtilizacao();
+  else renderUtilizacao(UTIL_DATA);
   var atendFiltrado=(getActiveOP().atend||OP.atend);
   var top=atendFiltrado.slice(0,10);
   var N=top.map(function(a){return a.n.split(' ')[0];});
@@ -3905,6 +4097,8 @@ function renderHm(){
 }
 
 function renderSl(){
+  if(!TRI_DATA||(Date.now()/1000-TRI_DATA.generated_at)>300) fetchTriagem();
+  else renderTriagem(TRI_DATA);
   var atend=(getActiveOP().atend||OP.atend).slice(0,10);
   var op=getActiveOP();
   var N=atend.map(function(a){return a.n.split('.')[0]||a.n.split(' ')[0];});
