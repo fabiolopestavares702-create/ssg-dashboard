@@ -1220,6 +1220,57 @@ input[type=file]{display:none}
 [data-theme="light"] .cl-ring-num{color:#0f172a}
 [data-theme="light"] .cl-ring .cl-ring-bg{stroke:rgba(148,163,184,.4)}
 
+/* ════════════════════════════════════════════════════════════════════
+   SHARED HERO CLASSES — usadas por s-hm, s-wh, s-bl, s-bk, s-fv
+   (mesma estética das outras abas, escopada pelos IDs abaixo)
+   ════════════════════════════════════════════════════════════════════ */
+#s-hm > .page-header,#s-wh > .page-header,#s-bl > .page-header,#s-bk > .page-header,#s-fv > .page-header{display:none}
+.hm-hero,.wh-hero,.bl-hero,.bk-hero,.fv-hero{position:relative;overflow:hidden;border-radius:14px;border:1px solid rgba(40,54,69,.6);background:linear-gradient(135deg,#0e1620 0%,#131d2a 60%,#1a2534 100%);padding:26px 32px 22px;margin:0 0 18px}
+.hm-hero::before,.wh-hero::before,.bl-hero::before,.bk-hero::before,.fv-hero::before{content:"";position:absolute;inset:-2px;pointer-events:none;z-index:0}
+.hm-hero::before{background:radial-gradient(circle at 88% 25%,rgba(249,115,22,.15),transparent 52%),radial-gradient(circle at 10% 90%,rgba(255,112,36,.08),transparent 45%)}
+.wh-hero::before{background:radial-gradient(circle at 88% 25%,rgba(79,142,247,.15),transparent 52%),radial-gradient(circle at 10% 90%,rgba(34,211,238,.08),transparent 45%)}
+.bl-hero::before{background:radial-gradient(circle at 88% 25%,rgba(245,158,11,.18),transparent 52%),radial-gradient(circle at 10% 90%,rgba(255,112,36,.1),transparent 45%)}
+.bk-hero::before{background:radial-gradient(circle at 88% 25%,rgba(244,63,94,.2),transparent 52%),radial-gradient(circle at 10% 90%,rgba(255,112,36,.1),transparent 45%)}
+.fv-hero::before{background:radial-gradient(circle at 88% 25%,rgba(139,92,246,.18),transparent 52%),radial-gradient(circle at 10% 90%,rgba(34,211,238,.08),transparent 45%)}
+.hm-hero::after,.wh-hero::after,.bl-hero::after,.bk-hero::after,.fv-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(255,255,255,.015) 50%,transparent 58%,transparent 100%);animation:ialScan 10s linear infinite;pointer-events:none;z-index:1}
+.gw-hero-grid,.gw-hero-grid-min{position:relative;z-index:2;display:grid;gap:28px;align-items:center}
+.gw-hero-grid{grid-template-columns:1fr auto}
+.gw-hero-grid-min{grid-template-columns:1fr}
+.gw-hero-left{display:flex;flex-direction:column;gap:6px}
+.gw-hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);color:#8a9bb0;text-transform:uppercase;letter-spacing:.18em}
+.gw-dot{width:8px;height:8px;border-radius:50%}
+.gw-hero-status{font-family:'Syne',sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:4px}
+.hm-hero-status{font-size:42px;background:linear-gradient(135deg,#f97316 0%,#ff7024 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(249,115,22,.3))}
+.wh-hero-status{font-size:42px;background:linear-gradient(135deg,#4f8ef7 0%,#22d3ee 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(79,142,247,.3))}
+.bl-hero-status{font-size:50px;background:linear-gradient(135deg,#f59e0b 0%,#ff7024 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(245,158,11,.35))}
+.bk-hero-status{font-size:50px;background:linear-gradient(135deg,#f43f5e 0%,#ff7024 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 22px rgba(244,63,94,.35))}
+.fv-hero-status{font-size:50px;background:linear-gradient(135deg,#8b5cf6 0%,#22d3ee 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(139,92,246,.35))}
+.gw-hero-sub{font-size:13px;color:#8a9bb0;font-family:var(--mono);letter-spacing:.02em;line-height:1.6}
+.gw-hero-sub strong{color:#e5edf5;font-weight:600}
+.gw-hero-meta{font-size:10px;color:#8a9bb0;font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-top:6px}
+.gw-ring{position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+.gw-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.gw-ring svg circle{fill:none;stroke-width:2}
+.gw-ring-bg{stroke:rgba(40,54,69,.5)}
+.gw-ring-fg{stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.bl-ring-fg{stroke:#f59e0b;filter:drop-shadow(0 0 8px rgba(245,158,11,.5))}
+.bk-ring-fg{stroke:#f43f5e;filter:drop-shadow(0 0 8px rgba(244,63,94,.5))}
+.fv-ring-fg{stroke:#8b5cf6;filter:drop-shadow(0 0 8px rgba(139,92,246,.5))}
+.gw-ring-core{display:flex;flex-direction:column;align-items:center;gap:2px;z-index:1}
+.gw-ring-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#e5edf5;line-height:1}
+.gw-ring-lbl{font-family:var(--mono);font-size:9px;color:#8a9bb0;text-transform:uppercase;letter-spacing:.18em}
+/* LIGHT MODE */
+[data-theme="light"] .hm-hero,[data-theme="light"] .wh-hero,[data-theme="light"] .bl-hero,[data-theme="light"] .bk-hero,[data-theme="light"] .fv-hero{background:linear-gradient(135deg,#ffffff 0%,#f8fafc 60%,#eef2f7 100%);box-shadow:0 4px 20px rgba(40,54,69,.08);border-color:rgba(148,163,184,.3)}
+[data-theme="light"] .hm-hero::before{background:radial-gradient(circle at 88% 25%,rgba(249,115,22,.12),transparent 52%)}
+[data-theme="light"] .wh-hero::before{background:radial-gradient(circle at 88% 25%,rgba(79,142,247,.1),transparent 52%)}
+[data-theme="light"] .bl-hero::before{background:radial-gradient(circle at 88% 25%,rgba(245,158,11,.12),transparent 52%)}
+[data-theme="light"] .bk-hero::before{background:radial-gradient(circle at 88% 25%,rgba(244,63,94,.12),transparent 52%)}
+[data-theme="light"] .fv-hero::before{background:radial-gradient(circle at 88% 25%,rgba(139,92,246,.12),transparent 52%)}
+[data-theme="light"] .hm-hero::after,[data-theme="light"] .wh-hero::after,[data-theme="light"] .bl-hero::after,[data-theme="light"] .bk-hero::after,[data-theme="light"] .fv-hero::after{background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(40,54,69,.02) 50%,transparent 58%,transparent 100%)}
+[data-theme="light"] .gw-hero-tag,[data-theme="light"] .gw-hero-sub,[data-theme="light"] .gw-hero-meta,[data-theme="light"] .gw-ring-lbl{color:#64748b}
+[data-theme="light"] .gw-hero-sub strong,[data-theme="light"] .gw-ring-num{color:#0f172a}
+[data-theme="light"] .gw-ring-bg{stroke:rgba(148,163,184,.4)}
+
 </style>
 </head>
 <body>
@@ -1884,6 +1935,15 @@ input[type=file]{display:none}
   <div id="s-hm" class="sec">
     <div class="page-header"><h1>Mapa de Calor</h1><p>Concentração de abertura de chamados por hora e dia da semana</p></div>
     <div class="page-body">
+      <div class="hm-hero" id="hm-hero">
+        <div class="gw-hero-grid-min">
+          <div class="gw-hero-left">
+            <div class="gw-hero-tag"><span class="gw-dot" style="background:#f97316;box-shadow:0 0 10px #f97316"></span>MAPA DE CALOR · CONCENTRAÇÃO TEMPORAL</div>
+            <div class="gw-hero-status hm-hero-status" id="hm-hero-status">Seg–Dom × 00h–23h</div>
+            <div class="gw-hero-sub" id="hm-hero-sub">quanto mais escuro, mais chamados · identifique horários de pico pra dimensionar equipe</div>
+          </div>
+        </div>
+      </div>
       <div class="card">
         <div class="card-title">Abertura por Seg–Dom × 00h–23h <span class="card-title-right">quanto mais escuro, mais chamados</span></div>
         <div style="overflow-x:auto"><canvas id="heatmap-canvas"></canvas></div>
@@ -1898,6 +1958,15 @@ input[type=file]{display:none}
   <div id="s-wh" class="sec">
     <div class="page-header"><h1>Heatmap por Analista</h1><p>Concentração de chamados por hora e dia — por atendente individual</p></div>
     <div class="page-body">
+      <div class="wh-hero" id="wh-hero">
+        <div class="gw-hero-grid-min">
+          <div class="gw-hero-left">
+            <div class="gw-hero-tag"><span class="gw-dot" style="background:#4f8ef7;box-shadow:0 0 10px #4f8ef7"></span>HEATMAP POR ANALISTA · DISTRIBUIÇÃO INDIVIDUAL</div>
+            <div class="gw-hero-status wh-hero-status">Concentração por Atendente</div>
+            <div class="gw-hero-sub">selecione um analista pra ver quando ele concentra esforço · ajuda em avaliação de carga e horário ótimo</div>
+          </div>
+        </div>
+      </div>
       <div id="wh-empty" class="empty" style="display:none"><div class="empty-icon"></div><p>Importe dados para ver o heatmap</p></div>
       <div id="wh-content">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
@@ -1986,6 +2055,26 @@ input[type=file]{display:none}
   <div id="s-bl" class="sec">
     <div class="page-header"><h1>Chamados Bloqueados</h1><p>Aguardando ação — risco de aging e insatisfação</p></div>
     <div class="page-body">
+      <div class="bl-hero" id="bl-hero">
+        <div class="gw-hero-grid">
+          <div class="gw-hero-left">
+            <div class="gw-hero-tag"><span class="gw-dot" style="background:#f59e0b;box-shadow:0 0 10px #f59e0b;animation:ialPulse 2s ease-in-out infinite"></span>BLOQUEADOS · RISCO DE AGING</div>
+            <div class="gw-hero-status bl-hero-status" id="bl-hero-status">—</div>
+            <div class="gw-hero-sub" id="bl-hero-sub">calculando motivos…</div>
+            <div class="gw-hero-meta">aguardando ação — risco de aging e insatisfação</div>
+          </div>
+          <div class="gw-ring bl-ring" id="bl-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="gw-ring-bg" cx="100" cy="100" r="90"/>
+              <circle class="gw-ring-fg bl-ring-fg" id="bl-ring-fg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+            </svg>
+            <div class="gw-ring-core">
+              <div class="gw-ring-num" id="bl-ring-num">—</div>
+              <div class="gw-ring-lbl">bloqueados</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="kpi-row kpi-row-3">
         <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-lbl">Total bloqueados</div><div class="kpi-val" style="color:var(--danger)">119</div><div class="kpi-sub">do volume</div></div>
         <div class="kpi"><div class="kpi-accent" style="background:var(--ok)"></div><div class="kpi-lbl">Desbloqueados</div><div class="kpi-val" style="color:var(--ok)">437</div><div class="kpi-sub">fluindo normalmente</div></div>
@@ -2001,6 +2090,26 @@ input[type=file]{display:none}
       <p>Chamados em aberto ordenados por aging — foco em priorização e risco de escalação</p>
     </div>
     <div class="page-body">
+      <div class="bk-hero" id="bk-hero">
+        <div class="gw-hero-grid">
+          <div class="gw-hero-left">
+            <div class="gw-hero-tag"><span class="gw-dot" style="background:#f43f5e;box-shadow:0 0 10px #f43f5e;animation:ialPulse 2s ease-in-out infinite"></span>BACKLOG · AGING &amp; PRIORIZAÇÃO</div>
+            <div class="gw-hero-status bk-hero-status" id="bk-hero-status">—</div>
+            <div class="gw-hero-sub" id="bk-hero-sub">calculando aging…</div>
+            <div class="gw-hero-meta">ordenado por idade — foco em escalação</div>
+          </div>
+          <div class="gw-ring bk-ring" id="bk-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="gw-ring-bg" cx="100" cy="100" r="90"/>
+              <circle class="gw-ring-fg bk-ring-fg" id="bk-ring-fg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+            </svg>
+            <div class="gw-ring-core">
+              <div class="gw-ring-num" id="bk-ring-num">—</div>
+              <div class="gw-ring-lbl">dias méd.</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="kpi-row kpi-row-4" id="bk-kpis">
         <div class="kpi"><div class="kpi-accent" style="background:var(--warn)"></div><div class="kpi-lbl">Total em Aberto</div><div class="kpi-val" style="color:var(--warn)" id="bk-total">—</div><div class="kpi-sub" id="bk-total-sub">chamados pendentes</div></div>
         <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-lbl">Prioridade Muito Alta</div><div class="kpi-val" style="color:var(--danger)" id="bk-criticos">—</div><div class="kpi-sub" id="bk-criticos-sub">requerem atenção imediata</div></div>
@@ -2052,6 +2161,26 @@ input[type=file]{display:none}
   <div id="s-fv" class="sec">
     <div class="page-header"><h1>Previsão de Volume</h1><p>Regressão linear sobre o histórico diário — estimativa de demanda futura</p></div>
     <div class="page-body">
+      <div class="fv-hero" id="fv-hero">
+        <div class="gw-hero-grid">
+          <div class="gw-hero-left">
+            <div class="gw-hero-tag"><span class="gw-dot" style="background:#8b5cf6;box-shadow:0 0 10px #8b5cf6;animation:ialPulse 2.4s ease-in-out infinite"></span>PREVISÃO · DEMANDA FUTURA</div>
+            <div class="gw-hero-status fv-hero-status" id="fv-hero-status">—</div>
+            <div class="gw-hero-sub" id="fv-hero-sub">calculando regressão…</div>
+            <div class="gw-hero-meta">regressão linear sobre histórico diário</div>
+          </div>
+          <div class="gw-ring fv-ring" id="fv-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="gw-ring-bg" cx="100" cy="100" r="90"/>
+              <circle class="gw-ring-fg fv-ring-fg" id="fv-ring-fg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+            </svg>
+            <div class="gw-ring-core">
+              <div class="gw-ring-num" id="fv-ring-num">—</div>
+              <div class="gw-ring-lbl">dias prev.</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="fv-empty" class="empty" style="display:none"><div class="empty-icon"></div><p>Importe dados para gerar a previsão</p></div>
       <div id="fv-content">
         <div class="fv-horizon-btns">
@@ -2986,6 +3115,90 @@ function populateChHero(op){
   if(ringLbl)ringLbl.textContent='conclusão';
   if(ringFg){
     ringFg.setAttribute('stroke-dashoffset', 565.48*(1-(taxa/100)));
+  }
+}
+
+function populateBlHero(){
+  var g=function(id){return document.getElementById(id);};
+  var hero=g('bl-hero-status'), sub=g('bl-hero-sub'), ringNum=g('bl-ring-num'), ringFg=g('bl-ring-fg');
+  if(!hero) return;
+  var op=getActiveOP();
+  var e=op.estado||{};
+  var aguarCli=e['Aguardando Cliente']||0;
+  var aguarInt=e['Aguardando Interno']||0;
+  var aguarExt=e['Aguardando Externo']||0;
+  var retorno=e['Retorno Cliente']||0;
+  var total=aguarCli+aguarInt+aguarExt+retorno;
+  hero.textContent=total+' BLOQUEADOS';
+  if(sub){
+    sub.innerHTML=
+      '<strong>'+aguarCli+'</strong> aguardando cliente · '
+      +'<strong>'+aguarInt+'</strong> aguardando interno · '
+      +'<strong>'+retorno+'</strong> retorno cliente · '
+      +'<strong>'+aguarExt+'</strong> aguardando externo';
+  }
+  if(ringNum)ringNum.textContent=total;
+  if(ringFg){
+    var pct=Math.min(1,total/150);
+    ringFg.setAttribute('stroke-dashoffset', 565.48*(1-pct));
+  }
+}
+
+function populateBkHero(op){
+  var g=function(id){return document.getElementById(id);};
+  var hero=g('bk-hero-status'), sub=g('bk-hero-sub'), ringNum=g('bk-ring-num'), ringFg=g('bk-ring-fg');
+  if(!hero) return;
+  // Compute aging from open tickets in current filter
+  var abertos=0, muitoAlta=0, somaDias=0, semResp=0;
+  (RAW_DATA||[]).forEach(function(d){
+    if(!d||!d.criado) return;
+    var ab=['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(d.estado)!==-1;
+    if(!ab) return;
+    if(activeCliente&&d.cli_id!==activeCliente) return;
+    if(activeFilaOP!=='all'&&d.fila!==activeFilaOP) return;
+    abertos++;
+    var dias=Math.floor((new Date()-d.criado)/864e5);
+    somaDias+=dias;
+    if(d.prior==='Muito Alta')muitoAlta++;
+    if(dias>=2&&(d.resp_min==null||d.resp_min>30))semResp++;
+  });
+  var agingMed=abertos>0?Math.round(somaDias/abertos):0;
+  hero.textContent=abertos+' EM ABERTO';
+  if(sub){
+    sub.innerHTML=
+      '<strong>'+muitoAlta+'</strong> muito alta · '
+      +'<strong>'+agingMed+'</strong> dias aging médio · '
+      +'<strong>'+semResp+'</strong> sem resposta &gt;2 dias';
+  }
+  if(ringNum)ringNum.textContent=agingMed;
+  if(ringFg){
+    var pct=Math.min(1,agingMed/30);
+    ringFg.setAttribute('stroke-dashoffset', 565.48*(1-pct));
+  }
+}
+
+function populateFvHero(){
+  var g=function(id){return document.getElementById(id);};
+  var hero=g('fv-hero-status'), sub=g('fv-hero-sub'), ringNum=g('fv-ring-num'), ringFg=g('fv-ring-fg');
+  if(!hero) return;
+  var totalEl=g('fv-total'), avgEl=g('fv-avg'), histEl=g('fv-hist-avg'), trendEl=g('fv-trend');
+  var total=totalEl?(parseInt(totalEl.textContent)||0):0;
+  var avg=avgEl?(parseFloat(avgEl.textContent)||0):0;
+  var hist=histEl?(parseFloat(histEl.textContent)||0):0;
+  var trendTxt=trendEl?trendEl.textContent.trim():'—';
+  hero.textContent=(total||'—')+' PREVISTOS';
+  if(sub){
+    sub.innerHTML=
+      'média diária prevista: <strong>'+avg.toFixed(1)+'</strong> · '
+      +'histórico: <strong>'+hist.toFixed(1)+'</strong>/dia · '
+      +'tendência: <strong>'+trendTxt+'</strong>';
+  }
+  var horizon=document.querySelector('.fv-horizon-btn.on');
+  var dias=horizon?(horizon.textContent.indexOf('30')>-1?30:7):7;
+  if(ringNum)ringNum.textContent=dias;
+  if(ringFg){
+    var pct=Math.min(1,dias/30);
+    ringFg.setAttribute('stroke-dashoffset', 565.48*(1-pct));
   }
 }
 
@@ -5104,6 +5317,7 @@ function renderSLAFinanceiro() {
 }
 
 function renderBl(){
+  try{populateBlHero();}catch(e){console.warn('bl hero:',e);}
   var bloqData;
   if(activeRangeStart && activeRangeEnd) {
     bloqData = buildBloqEntry(buildOPFromRange().estado || {});
@@ -8485,6 +8699,7 @@ function fvSetHorizon(h, el) {
 }
 
 function renderForecast() {
+  setTimeout(function(){try{populateFvHero();}catch(e){console.warn('fv hero:',e);}},100);
   var emEl = document.getElementById('fv-empty');
   var ctEl = document.getElementById('fv-content');
   var byDay;
@@ -8719,6 +8934,7 @@ function renderForecast() {
 
 function renderBacklog() {
   var op = getActiveOP();
+  try{populateBkHero(op);}catch(e){console.warn('bk hero:',e);}
 
   // Estados considerados "abertos" / backlog
   var estadosAbertos = ['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Aguardando Externo','Retorno Cliente'];
