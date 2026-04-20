@@ -972,6 +972,63 @@ input[type=file]{display:none}
 [data-theme="light"] .ial-rec-txt{color:#1e293b}
 [data-theme="light"] .ial-empty{background:rgba(248,250,252,.6);border-color:rgba(148,163,184,.4);color:#64748b}
 
+/* ════════════════════════════════════════════════════════════════════
+   DASHBOARD OPERACIONAL — redesign futurista Groundwork
+   Escopo: #s-ov (aba Operação Interna → Dashboard)
+   ════════════════════════════════════════════════════════════════════ */
+#s-ov{--gw:#ff7024;--gw-2:#f37633;--slate:#283645;--cyan:#22d3ee;--ov-surface:rgba(20,29,40,.5);--ov-border:rgba(40,54,69,.6);--ov-border-bright:rgba(40,54,69,.95);--ov-muted:#8a9bb0;--ov-text:#e5edf5}
+/* esconde o page-header original do s-ov (substituído pelo hero) */
+#s-ov > .page-header{display:none}
+/* Hero operacional */
+.ov-hero{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--ov-border);background:linear-gradient(135deg,#0e1620 0%,#131d2a 60%,#1a2534 100%);padding:30px 34px 26px;margin:0 0 18px}
+.ov-hero::before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 90% 15%,rgba(255,112,36,.22),transparent 52%),radial-gradient(circle at 10% 90%,rgba(34,211,238,.1),transparent 45%);pointer-events:none;z-index:0}
+.ov-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(255,255,255,.015) 50%,transparent 58%,transparent 100%);animation:ialScan 9s linear infinite;pointer-events:none;z-index:1}
+.ov-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
+.ov-hero-left{display:flex;flex-direction:column;gap:6px}
+.ov-hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);color:var(--ov-muted);text-transform:uppercase;letter-spacing:.18em}
+.ov-hero-tag .ov-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:ialPulse 2.2s ease-in-out infinite}
+.ov-hero-status{font-family:'Syne',sans-serif;font-size:56px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:4px;background:linear-gradient(135deg,var(--gw) 0%,var(--gw-2) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(255,112,36,.3))}
+.ov-hero-status.ov-s-ok{background:linear-gradient(135deg,#10b981 0%,#34d399 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(16,185,129,.3))}
+.ov-hero-status.ov-s-warn{background:linear-gradient(135deg,#f59e0b 0%,#fbbf24 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(245,158,11,.3))}
+.ov-hero-sub{font-size:13px;color:var(--ov-muted);font-family:var(--mono);letter-spacing:.02em;line-height:1.6}
+.ov-hero-sub strong{color:var(--ov-text);font-weight:600}
+.ov-hero-meta{font-size:10px;color:var(--ov-muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-top:6px}
+/* Ring */
+.ov-ring{position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center}
+.ov-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ov-ring svg circle{fill:none;stroke-width:2}
+.ov-ring .ov-ring-bg{stroke:rgba(40,54,69,.5)}
+.ov-ring .ov-ring-fg{stroke:var(--gw);stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(255,112,36,.5));transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.ov-ring.ov-s-ok .ov-ring-fg{stroke:#10b981;filter:drop-shadow(0 0 8px rgba(16,185,129,.5))}
+.ov-ring.ov-s-warn .ov-ring-fg{stroke:#f59e0b;filter:drop-shadow(0 0 8px rgba(245,158,11,.5))}
+.ov-ring-core{display:flex;flex-direction:column;align-items:center;gap:2px;z-index:1}
+.ov-ring-num{font-family:'Syne',sans-serif;font-size:34px;font-weight:700;color:var(--ov-text);line-height:1}
+.ov-ring-lbl{font-family:var(--mono);font-size:9px;color:var(--ov-muted);text-transform:uppercase;letter-spacing:.18em;text-align:center}
+/* KPIs glass (só dentro de #s-ov) */
+#s-ov .kpi-row{gap:12px}
+#s-ov .kpi.fu{background:var(--ov-surface);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--ov-border);border-radius:10px;padding:14px 16px 12px;transition:border-color .25s,transform .25s}
+#s-ov .kpi.fu:hover{border-color:var(--ov-border-bright);transform:translateY(-1px)}
+#s-ov .kpi.fu .kpi-accent{position:absolute;top:0;left:0;right:0;height:2px;width:auto;border-radius:10px 10px 0 0;box-shadow:0 0 10px currentColor}
+#s-ov .kpi.fu .kpi-lbl{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:10px;color:var(--ov-muted);margin-top:4px}
+#s-ov .kpi.fu .kpi-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:700;line-height:1.1;margin-top:4px}
+#s-ov .kpi.fu .kpi-sub{font-size:10px;color:var(--ov-muted);margin-top:3px}
+#s-ov .kpi.fu .kpi-trend{font-family:var(--mono);font-size:9px;letter-spacing:.06em}
+/* Cards glass nas grids */
+#s-ov .card.fu{background:var(--ov-surface);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--ov-border);border-radius:12px;transition:border-color .25s}
+#s-ov .card.fu:hover{border-color:var(--ov-border-bright)}
+/* Actions panel com glow sutil */
+#s-ov #op-actions-panel{border-radius:12px;overflow:hidden}
+/* LIGHT MODE overrides */
+[data-theme="light"] #s-ov{--ov-surface:rgba(255,255,255,.85);--ov-border:rgba(148,163,184,.3);--ov-border-bright:rgba(100,116,139,.5);--ov-muted:#64748b;--ov-text:#0f172a}
+[data-theme="light"] .ov-hero{background:linear-gradient(135deg,#ffffff 0%,#f8fafc 60%,#eef2f7 100%);box-shadow:0 4px 20px rgba(40,54,69,.08)}
+[data-theme="light"] .ov-hero::before{background:radial-gradient(circle at 90% 15%,rgba(255,112,36,.14),transparent 52%),radial-gradient(circle at 10% 90%,rgba(40,54,69,.05),transparent 45%)}
+[data-theme="light"] .ov-hero::after{background:linear-gradient(90deg,transparent 0%,transparent 42%,rgba(40,54,69,.02) 50%,transparent 58%,transparent 100%)}
+[data-theme="light"] .ov-ring-num{color:#0f172a}
+[data-theme="light"] .ov-ring .ov-ring-bg{stroke:rgba(148,163,184,.4)}
+[data-theme="light"] #s-ov .kpi.fu{background:rgba(255,255,255,.85);border-color:rgba(148,163,184,.3);box-shadow:0 2px 8px rgba(40,54,69,.06)}
+[data-theme="light"] #s-ov .kpi.fu:hover{box-shadow:0 4px 14px rgba(40,54,69,.1)}
+[data-theme="light"] #s-ov .card.fu{background:rgba(255,255,255,.9);border-color:rgba(148,163,184,.3);box-shadow:0 2px 8px rgba(40,54,69,.06)}
+
 </style>
 </head>
 <body>
@@ -1255,6 +1312,26 @@ input[type=file]{display:none}
       <p id="ov-subtitle">Centro de Operações SSG · Fila ERP Protheus · 02 jan – 13 mar 2026</p>
     </div>
     <div class="page-body">
+      <div class="ov-hero" id="ov-hero">
+        <div class="ov-hero-grid">
+          <div class="ov-hero-left">
+            <div class="ov-hero-tag"><span class="ov-dot"></span>OPERAÇÃO INTERNA · DASHBOARD</div>
+            <div class="ov-hero-status" id="ov-hero-status">—</div>
+            <div class="ov-hero-sub" id="ov-hero-sub">calculando panorama…</div>
+            <div class="ov-hero-meta" id="ov-hero-meta">—</div>
+          </div>
+          <div class="ov-ring" id="ov-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="ov-ring-bg" cx="100" cy="100" r="90"/>
+              <circle class="ov-ring-fg" id="ov-ring-fg" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="565.48"/>
+            </svg>
+            <div class="ov-ring-core">
+              <div class="ov-ring-num" id="ov-ring-num">—</div>
+              <div class="ov-ring-lbl" id="ov-ring-lbl">em aberto</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="op-actions-panel" class="actions-panel"></div>
       <div class="kpi-row kpi-row-4">
         <div class="kpi fu"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-trend nt">▬ estável</div><div class="kpi-lbl">Total de chamados</div><div class="kpi-val" id="kpi-v-0">556</div><div class="kpi-sub" id="kpi-s-0">53 dias · fila SSG</div></div>
@@ -2542,6 +2619,47 @@ function renderOv(){
 
   updateKPIs(_op);
   renderOpActions(_op);
+  try{populateOvHero(_op);}catch(e){console.warn('ov hero:',e);}
+}
+
+function populateOvHero(op){
+  var g=function(id){return document.getElementById(id);};
+  var setv=function(id,v){var e=g(id);if(e)e.textContent=v;};
+  var total=op.total||0;
+  var abertos=op.abertos||0;
+  var fechados=op.fechados||0;
+  // Bloqueados derivados dos estados (aguardando cliente, interno, externo, retorno)
+  var estado=op.estado||{};
+  var bloq=(estado['Aguardando Cliente']||0)+(estado['Aguardando Interno']||0)+(estado['Aguardando Externo']||0)+(estado['Retorno Cliente']||0);
+  // Críticos a partir do insights (se carregado) + prioridade muito alta
+  var crit=0;
+  if(window.IAL_DATA&&IAL_DATA.counts) crit=IAL_DATA.counts.crit||0;
+  var muitoAlta=(op.prior&&op.prior['Muito Alta'])||0;
+  // Derivar status
+  var pctAberto=total>0?abertos/total:0;
+  var status, cls;
+  if(crit>=1 || pctAberto>=.25 || muitoAlta>=50){status='ALERTA';cls='';}
+  else if(crit>=1 || pctAberto>=.18 || muitoAlta>=20 || bloq>=80){status='ATENÇÃO';cls='ov-s-warn';}
+  else {status='NORMAL';cls='ov-s-ok';}
+  var hero=g('ov-hero-status'), ring=g('ov-ring'), ringFg=g('ov-ring-fg'), ringNum=g('ov-ring-num'), ringLbl=g('ov-ring-lbl'), sub=g('ov-hero-sub'), meta=g('ov-hero-meta');
+  if(hero){hero.classList.remove('ov-s-ok','ov-s-warn');hero.textContent=status;if(cls)hero.classList.add(cls);}
+  if(ring){ring.classList.remove('ov-s-ok','ov-s-warn');if(cls)ring.classList.add(cls);}
+  if(sub){
+    sub.innerHTML=
+      '<strong>'+total.toLocaleString('pt-BR')+'</strong> chamados no período · '
+      +'<strong>'+abertos+'</strong> em aberto ('+(total>0?Math.round(pctAberto*100):0)+'%) · '
+      +'<strong>'+bloq+'</strong> bloqueados · '
+      +'<strong>'+muitoAlta+'</strong> prioridade muito alta'
+      +(crit?' · <strong style="color:var(--gw)">'+crit+' crítico'+(crit===1?'':'s')+' IA</strong>':'');
+  }
+  var subtitle=(g('ov-subtitle')||{}).textContent||'';
+  if(meta)meta.textContent=subtitle||'centro de operações SSG';
+  if(ringNum)ringNum.textContent=abertos;
+  if(ringLbl)ringLbl.textContent='em aberto';
+  if(ringFg){
+    var pct=Math.min(1,pctAberto*2); // 50% aberto = ring cheio
+    ringFg.setAttribute('stroke-dashoffset', 565.48*(1-pct));
+  }
 }
 
 // Bloqueados por mês (dados reais do Excel)
