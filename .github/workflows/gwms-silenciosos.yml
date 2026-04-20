@@ -2,7 +2,7 @@ name: GWMS Silenciosos
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # a cada 30 min
+    - cron: '*/10 * * * *'   # a cada 10 min — mesmo ritmo do pipeline Znuny
   workflow_dispatch:          # permite rodar manualmente
 
 jobs:
