@@ -1,0 +1,49 @@
+name: GWMS Silenciosos
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # a cada 30 min
+  workflow_dispatch:          # permite rodar manualmente
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Validar secrets obrigatórios
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_REPO:      ${{ secrets.GH_REPO }}
+          GWMS_USER:    ${{ secrets.GWMS_USER }}
+          GWMS_PASS:    ${{ secrets.GWMS_PASS }}
+        run: |
+          MISSING=""
+          [ -z "$DEPLOY_TOKEN" ] && MISSING="$MISSING DEPLOY_TOKEN"
+          [ -z "$GH_REPO" ]      && MISSING="$MISSING GH_REPO"
+          [ -z "$GWMS_USER" ]    && MISSING="$MISSING GWMS_USER"
+          [ -z "$GWMS_PASS" ]    && MISSING="$MISSING GWMS_PASS"
+          if [ -n "$MISSING" ]; then
+            echo "ERRO: secrets ausentes:$MISSING"
+            exit 1
+          fi
+          echo "Secrets presentes. OK"
+
+      - name: Puxar silenciosos do GWMS e commitar
+        env:
+          GWMS_USER:    ${{ secrets.GWMS_USER }}
+          GWMS_PASS:    ${{ secrets.GWMS_PASS }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_REPO:      ${{ secrets.GH_REPO }}
+        run: python scripts/gwms_silenciosos.py
