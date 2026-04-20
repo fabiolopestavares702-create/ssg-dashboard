@@ -1256,17 +1256,6 @@ input[type=file]{display:none}
         <div class="card-title">Comparativo com mês anterior <span class="card-title-right" id="ch-comp-label"></span></div>
         <div id="ch-comp-rows"></div>
       </div>
-      <div class="card card-mb" id="ch-sil-card" style="margin-top:16px">
-        <div class="card-title">Chamados sem interação
-          <span class="card-title-right" style="font-size:10px;color:var(--muted)">
-            dados ao vivo do GWMS · requer login ativo ·
-            <a href="https://gwms2.groundwork.com.br/dashboard-detail?tag=module.Reports&uid=LVayPUTSz&orgId=48" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none">abrir no GWMS ↗</a>
-          </span>
-        </div>
-        <div style="position:relative;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--bg2)">
-          <iframe id="ch-sil-iframe" data-src="https://gwms2.groundwork.com.br/dashboard-detail?tag=module.Reports&uid=LVayPUTSz&orgId=48&kiosk=tv" src="about:blank" style="width:100%;height:780px;border:0;display:block" title="GWMS — Ingressos sem interação" loading="lazy"></iframe>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -2807,8 +2796,6 @@ function openAtendPendModal(nome){
 }
 
 function renderCh(){
-  var _ifr=document.getElementById('ch-sil-iframe');
-  if(_ifr&&_ifr.getAttribute('src')==='about:blank'){var _ds=_ifr.getAttribute('data-src');if(_ds)_ifr.setAttribute('src',_ds);}
   var _op2=getActiveOP();_op2=Object.assign({estado:{},prior:{},svc:{},atend:[],criticos:[],by_day:[],byDay:[]},_op2);
   var _days=getFilteredDays();
   var L=_days.map(function(d){return fd(d.d);}),V=_days.map(function(d){return d.n;});
