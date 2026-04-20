@@ -230,7 +230,7 @@ def github_upload(path: str, payload_bytes: bytes, message: str) -> None:
     log(f"Upload {path} OK ({put.status_code})")
 
 
-def make_envelope(rows: list, extra: dict | None = None) -> dict:
+def make_envelope(rows: list, extra=None) -> dict:
     now = datetime.now(timezone.utc)
     env = {
         "generated_at": int(time.time()),
@@ -261,20 +261,232 @@ def main() -> None:
         ("utilizacao.json",  q_utilizacao,  None),
     ]
 
+    collected = {}
     failures = []
     for fname, qfn, extra in datasets:
         try:
             rows = qfn(s)
             log(f"{fname}: {len(rows)} linhas")
+            collected[fname] = rows
             payload = json.dumps(make_envelope(rows, extra), ensure_ascii=False, indent=2).encode("utf-8")
             github_upload(fname, payload, f"chore: sync {fname} ({len(rows)} linhas)")
         except Exception as e:
             log(f"ERRO em {fname}: {e}")
             failures.append(fname)
 
+    # ── Insights (regras determinísticas sobre os dados em memória) ──
+    try:
+        ins = generate_insights(collected)
+        log(f"gwms-insights.json: {len(ins['insights'])} insights (crit={ins['counts']['crit']}, warn={ins['counts']['warn']})")
+        payload = json.dumps(ins, ensure_ascii=False, indent=2).encode("utf-8")
+        github_upload("gwms-insights.json", payload, f"chore: sync gwms-insights ({len(ins['insights'])} insights)")
+    except Exception as e:
+        log(f"ERRO em gwms-insights.json: {e}")
+        failures.append("gwms-insights.json")
+
     if failures:
         print(f"FALHAS: {failures}", file=sys.stderr)
         sys.exit(1)
+
+
+# ─── INSIGHTS (regras determinísticas) ──────────────────────────────────────
+
+def generate_insights(data: dict) -> dict:
+    """Gera insights a partir dos 4 datasets em memória.
+    Cada regra é uma função pequena que retorna 0 ou mais insight-dicts."""
+    insights = []
+
+    silenciosos = data.get("silenciosos.json", [])
+    triagem     = data.get("triagem.json", [])
+    reaberturas = data.get("reaberturas.json", [])
+    utilizacao  = data.get("utilizacao.json", [])
+
+    insights.extend(_rule_reaberturas_recorrentes(reaberturas))
+    insights.extend(_rule_tickets_abandonados(triagem, silenciosos))
+    insights.extend(_rule_sobrecarga_atendente(utilizacao))
+    insights.extend(_rule_fila_concentrada(silenciosos))
+
+    counts = {"crit": 0, "warn": 0, "ok": 0}
+    for i in insights:
+        sev = i.get("severity", "ok")
+        counts[sev] = counts.get(sev, 0) + 1
+
+    return {
+        "generated_at": int(time.time()),
+        "generated_at_iso": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "counts": counts,
+        "insights": insights,
+    }
+
+
+def _rule_reaberturas_recorrentes(reaberturas: list) -> list:
+    """Detecta padrão de cliente com múltiplos tickets reabertos 2x+."""
+    multi = [r for r in reaberturas if (r.get("vezes_fechado") or 0) >= 2]
+    if not multi:
+        return []
+    # Agrupa por cliente
+    by_cli = defaultdict(list)
+    for r in multi:
+        by_cli[r.get("cliente") or "—"].append(r)
+    out = []
+    for cli, rows in by_cli.items():
+        if len(rows) < 2:
+            continue  # precisa 2+ tickets recorrentes pra virar padrão
+        filas = sorted(set(r.get("fila", "") for r in rows))
+        atendentes = sorted(set((r.get("atendente") or "").split(" ")[0] for r in rows if r.get("atendente")))
+        out.append({
+            "id": f"reaberturas_recorrentes_{cli}",
+            "severity": "warn",
+            "category": "qualidade",
+            "title": f"Padrão de reabertura recorrente em {cli}",
+            "summary": (
+                f"{len(rows)} tickets reabertos 2× ou mais nos últimos 90d em {cli}, "
+                f"concentrados em {', '.join(filas)}. "
+                "Indica fechamento prematuro ou escopo mal definido."
+            ),
+            "evidence": [
+                {"ticket": r["ticket"], "fila": r.get("fila"), "atendente": r.get("atendente"),
+                 "vezes_fechado": r.get("vezes_fechado"), "estado_atual": r.get("estado_atual")}
+                for r in rows[:10]
+            ],
+            "recommendation": (
+                f"Revisar critério de encerramento com {', '.join(atendentes[:3])}. "
+                "Audit de 5 tickets por atendente pra entender se fechamento está sendo prematuro."
+            ),
+            "impact_estimate": "médio",
+        })
+    return out
+
+
+def _rule_tickets_abandonados(triagem: list, silenciosos: list) -> list:
+    """Tickets em triagem > 30 dias OU silenciosos > 60 dias."""
+    ABAND_TRIAGEM_MIN = 30 * 24 * 60   # 30 dias em minutos
+    ABAND_SILENT_SEC  = 60 * 24 * 3600  # 60 dias em segundos
+
+    abandonados_tri = [r for r in triagem if (r.get("triagem_min") or 0) >= ABAND_TRIAGEM_MIN]
+    abandonados_sil = [r for r in silenciosos if (r.get("silent_sec") or 0) >= ABAND_SILENT_SEC]
+
+    out = []
+    if abandonados_tri:
+        sev = "crit" if len(abandonados_tri) >= 1 else "warn"
+        out.append({
+            "id": "tickets_abandonados_triagem",
+            "severity": sev,
+            "category": "sla",
+            "title": f"{len(abandonados_tri)} ticket(s) em triagem abandonada (>30 dias)",
+            "summary": (
+                f"{len(abandonados_tri)} ticket(s) em estado OPEN sem qualquer movimentação há "
+                f"mais de 30 dias. Risco de violação contínua de SLA e insatisfação crônica do cliente."
+            ),
+            "evidence": [
+                {"ticket": r["ticket"], "cliente": r.get("cliente"), "fila": r.get("fila"),
+                 "atendente": r.get("atendente"), "dias": round((r.get("triagem_min") or 0) / 1440, 1),
+                 "criado": r.get("criado")}
+                for r in sorted(abandonados_tri, key=lambda x: -(x.get("triagem_min") or 0))[:10]
+            ],
+            "recommendation": "Reatribuir a outro atendente ou fechar com justificativa formal. Validar se o cliente ainda precisa.",
+            "impact_estimate": "alto",
+        })
+    if abandonados_sil:
+        out.append({
+            "id": "tickets_silenciosos_longos",
+            "severity": "warn",
+            "category": "sla",
+            "title": f"{len(abandonados_sil)} ticket(s) silenciosos há mais de 60 dias",
+            "summary": (
+                f"{len(abandonados_sil)} tickets abertos sem nenhuma interação há mais de 60 dias. "
+                "Pode indicar tickets abandonados mesmo tendo sido tocados no passado."
+            ),
+            "evidence": [
+                {"ticket": r["ticket"], "cliente": r.get("cliente"), "fila": r.get("fila"),
+                 "atendente": r.get("atendente"), "dias_silencio": round((r.get("silent_sec") or 0) / 86400, 1),
+                 "estado": r.get("estado")}
+                for r in sorted(abandonados_sil, key=lambda x: -(x.get("silent_sec") or 0))[:10]
+            ],
+            "recommendation": "Revisar em bloco: cada atendente confirma se o ticket está ativo ou deve ser fechado/escalado.",
+            "impact_estimate": "médio",
+        })
+    return out
+
+
+def _rule_sobrecarga_atendente(utilizacao: list) -> list:
+    """Atendentes com >= 8 tickets ativos + sugestão de redistribuição."""
+    if not utilizacao:
+        return []
+    SOBRECARGA = 8
+    FOLGA_MAX  = 3
+
+    sobrecarregados = [u for u in utilizacao if (u.get("ativos_total") or 0) >= SOBRECARGA]
+    folga = [u for u in utilizacao if (u.get("ativos_total") or 0) <= FOLGA_MAX]
+    if not sobrecarregados:
+        return []
+    out = []
+    for u in sobrecarregados:
+        candidatos = sorted(folga, key=lambda x: x.get("ativos_total") or 0)[:3]
+        sugestao_nomes = [c.get("atendente") for c in candidatos]
+        out.append({
+            "id": f"sobrecarga_{u.get('atendente','').replace(' ','_')}",
+            "severity": "warn" if (u.get("ativos_total") or 0) < 12 else "crit",
+            "category": "capacidade",
+            "title": f"{u.get('atendente')} em sobrecarga ({u.get('ativos_total')} tickets ativos)",
+            "summary": (
+                f"{u.get('atendente')} tem {u.get('ativos_total')} tickets ativos agora, "
+                f"{u.get('em_atendimento', 0)} em atendimento e {u.get('aguardando', 0)} aguardando. "
+                "Risco de gargalo e atraso em resposta."
+            ),
+            "evidence": [{
+                "atendente": u.get("atendente"),
+                "ativos_total": u.get("ativos_total"),
+                "em_atendimento": u.get("em_atendimento"),
+                "aguardando": u.get("aguardando"),
+                "abertos": u.get("abertos"),
+            }],
+            "recommendation": (
+                f"Redistribuir 2-3 tickets para: {', '.join(sugestao_nomes)} — atualmente com "
+                f"{', '.join(str(c.get('ativos_total')) for c in candidatos)} ativos respectivamente."
+                if candidatos else "Avaliar remanejamento ou contratação temporária."
+            ),
+            "impact_estimate": "médio",
+        })
+    return out
+
+
+def _rule_fila_concentrada(silenciosos: list) -> list:
+    """Fila com silenciosos concentrados em um único cliente (>60%)."""
+    if not silenciosos:
+        return []
+    by_fila = defaultdict(list)
+    for r in silenciosos:
+        by_fila[r.get("fila") or "—"].append(r)
+    out = []
+    for fila, rows in by_fila.items():
+        if len(rows) < 5:
+            continue  # precisa massa mínima
+        by_cli = Counter(r.get("cliente", "—") for r in rows)
+        top_cli, top_n = by_cli.most_common(1)[0]
+        pct = top_n / len(rows)
+        if pct >= 0.6:
+            out.append({
+                "id": f"fila_concentrada_{fila}_{top_cli}",
+                "severity": "warn",
+                "category": "distribuicao",
+                "title": f"Fila {fila} concentrada em {top_cli}",
+                "summary": (
+                    f"{top_n} de {len(rows)} tickets silenciosos na fila {fila} ({int(pct*100)}%) "
+                    f"são do cliente {top_cli}. Concentração alta pode indicar SLA subdimensionado ou problema recorrente."
+                ),
+                "evidence": [
+                    {"fila": fila, "cliente_top": top_cli, "n_top": top_n, "n_total": len(rows),
+                     "pct_top": round(pct, 2),
+                     "distribuicao": dict(by_cli.most_common(5))}
+                ],
+                "recommendation": (
+                    f"Revisar contrato/SLA de {top_cli} na fila {fila}. Avaliar alocação de recurso "
+                    "específico ou negociar volume diferenciado."
+                ),
+                "impact_estimate": "médio",
+            })
+    return out
 
 
 if __name__ == "__main__":
