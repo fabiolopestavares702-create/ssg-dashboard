@@ -1,6 +1,6 @@
 {
-  "generated_at": 1776729348,
-  "generated_at_iso": "2026-04-20T23:55:48Z",
+  "generated_at": 1776729809,
+  "generated_at_iso": "2026-04-21T00:03:29Z",
   "count": 1,
   "filas": [
     "DATASUL",
@@ -20,7 +20,7 @@
       "prioridade": "3 normal",
       "atendente": "Carlos Fernandes",
       "criado": "2025-11-10T16:00:28",
-      "triagem_min": 232135,
+      "triagem_min": 232143,
       "assunto": "Criação de novo serviço/job - Projeto DailySales"
     }
   ]
