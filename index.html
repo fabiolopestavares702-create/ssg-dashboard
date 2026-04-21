@@ -7674,9 +7674,30 @@ setInterval(renderSLACountdown, 60 * 1000);
 
 // ─── DETALHE DE TICKET DO SLA (modal resumido) ──────────────────────────────
 function openTicketDetail(num){
-  if(typeof RAW_DATA==='undefined'||!RAW_DATA||!RAW_DATA.length) return;
-  var t=null;
-  for(var i=0;i<RAW_DATA.length;i++){ if(RAW_DATA[i].num===num){ t=RAW_DATA[i]; break; } }
+  // Tenta primeiro os tickets ativos do GWMS (estado ao vivo, <10min).
+  // Se achar, usa isso. Senão, cai no RAW_DATA do XLSX (histórico, pode estar defasado).
+  var t=null, live=false;
+  if(typeof TICKETS_ATIVOS_DATA!=='undefined' && TICKETS_ATIVOS_DATA && TICKETS_ATIVOS_DATA.rows){
+    for(var j=0;j<TICKETS_ATIVOS_DATA.rows.length;j++){
+      if(String(TICKETS_ATIVOS_DATA.rows[j].ticket)===String(num)){
+        var r=TICKETS_ATIVOS_DATA.rows[j];
+        t={
+          num:r.ticket, cli_id:r.cliente, atend:r.atendente||'',
+          estado:r.estado||'—',
+          prior: (function(p){if(!p)return '—';p=p.toLowerCase();if(p.indexOf('very high')>-1||p.indexOf('muito alta')>-1)return 'Muito Alta';if(p.indexOf('high')>-1||p.indexOf('alta')>-1)return 'Alta';if(p.indexOf('normal')>-1)return 'Normal';if(p.indexOf('low')>-1||p.indexOf('baixa')>-1)return 'Baixa';return p;})(r.prioridade),
+          fila:r.fila||'—',
+          servico:'',  // não vem no query atual — ok, exibe —
+          criado: r.criado ? new Date(r.criado) : null,
+          resp_min: null,  // não calculado live
+          assunto: r.assunto||''
+        };
+        live=true; break;
+      }
+    }
+  }
+  if(!t && typeof RAW_DATA!=='undefined' && RAW_DATA && RAW_DATA.length){
+    for(var i=0;i<RAW_DATA.length;i++){ if(RAW_DATA[i].num===num){ t=RAW_DATA[i]; break; } }
+  }
   if(!t) return;
   var esc=function(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
   var pad=function(n){ return n<10?'0'+n:String(n); };
@@ -7723,8 +7744,13 @@ function openTicketDetail(num){
     }
   }
   document.getElementById('tkd-assunto').textContent=t.assunto||'—';
+  // Badge de origem: AO VIVO (GWMS) ou HISTÓRICO (XLSX)
+  var liveHtml = live
+    ? '<span style="display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.4);vertical-align:middle">● AO VIVO · GWMS</span>'
+    : '<span style="display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;background:rgba(139,92,246,.12);color:#8b5cf6;border:1px solid rgba(139,92,246,.35);vertical-align:middle">● HISTÓRICO · XLSX</span>';
   document.getElementById('tkd-body').innerHTML=
-      '<div class="tkd-grid">'
+      '<div style="margin-bottom:12px;font-size:11px;color:var(--muted)">fonte de dados: '+liveHtml+'</div>'
+    + '<div class="tkd-grid">'
     + cell('Cliente',esc(cliNome),true)
     + cell('Atendente',esc(atendNome))
     + cell('Estado',esc(t.estado||'—'))
@@ -7737,6 +7763,17 @@ function openTicketDetail(num){
     + '</div>';
   document.getElementById('tkd-overlay').classList.add('open');
 }
+// Carrega tickets ativos do GWMS (estado ao vivo)
+var TICKETS_ATIVOS_DATA=null;
+function fetchTicketsAtivos(){
+  fetch('tickets_ativos.json?v='+Date.now())
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){TICKETS_ATIVOS_DATA=d;})
+    .catch(function(){});
+}
+// Busca no load e a cada 10min
+fetchTicketsAtivos();
+setInterval(fetchTicketsAtivos, 10*60*1000);
 function closeTicketDetail(){ var el=document.getElementById('tkd-overlay'); if(el) el.classList.remove('open'); }
 function handleTkdOverlay(e){ if(e.target===document.getElementById('tkd-overlay')) closeTicketDetail(); }
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeTicketDetail(); });

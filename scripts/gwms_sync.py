@@ -183,6 +183,35 @@ def q_reaberturas(session: requests.Session) -> list[dict]:
     return query_mysql(session, sql)
 
 
+def q_tickets_ativos(session: requests.Session) -> list[dict]:
+    """Snapshot atual de todos os tickets ativos (não fechados).
+    Usado para o modal de detalhe de ticket (Alertas Críticos, Silenciosos, etc.)
+    — garante que o card mostre estado atual e não o XLSX possivelmente defasado."""
+    sql = f"""
+    SELECT
+      t.tn                                                       AS ticket,
+      t.customer_id                                              AS cliente,
+      q.name                                                     AS fila,
+      UPPER(ts.name)                                             AS estado,
+      tp.name                                                    AS prioridade,
+      CONCAT(u.first_name, ' ', u.last_name)                     AS atendente,
+      DATE_FORMAT(t.create_time, '%Y-%m-%dT%H:%i:%s')            AS criado,
+      DATE_FORMAT(t.change_time, '%Y-%m-%dT%H:%i:%s')            AS modificado,
+      TIMESTAMPDIFF(DAY, t.create_time, NOW())                   AS idade_dias,
+      t.title                                                    AS assunto
+    FROM ticket t
+    JOIN queue           q  ON t.queue_id           = q.id
+    JOIN ticket_state    ts ON t.ticket_state_id    = ts.id
+    JOIN ticket_priority tp ON t.ticket_priority_id = tp.id
+    JOIN users           u  ON t.user_id            = u.id
+    WHERE t.ticket_state_id NOT IN ({','.join(str(s) for s in ESTADOS_FECHADOS)})
+      AND q.name IN ({FILAS_SQL})
+    ORDER BY t.change_time DESC
+    LIMIT 3000
+    """
+    return query_mysql(session, sql)
+
+
 def q_utilizacao(session: requests.Session) -> list[dict]:
     """Carga atual por atendente: count de ativos e em_atendimento.
     Simplificação: não computa % de utilização histórica (exigiria time-series),
@@ -256,10 +285,11 @@ def main() -> None:
     login(s, user, password)
 
     datasets = [
-        ("silenciosos.json", q_silenciosos, {"silencio_min_sec": 86400}),
-        ("triagem.json",     q_triagem,     None),
-        ("reaberturas.json", q_reaberturas, {"janela_dias": 90}),
-        ("utilizacao.json",  q_utilizacao,  None),
+        ("silenciosos.json",    q_silenciosos,    {"silencio_min_sec": 86400}),
+        ("triagem.json",        q_triagem,        None),
+        ("reaberturas.json",    q_reaberturas,    {"janela_dias": 90}),
+        ("utilizacao.json",     q_utilizacao,     None),
+        ("tickets_ativos.json", q_tickets_ativos, None),
     ]
 
     collected = {}
