@@ -1,6 +1,6 @@
 {
-  "generated_at": 1776752753,
-  "generated_at_iso": "2026-04-21T06:25:53Z",
+  "generated_at": 1776768750,
+  "generated_at_iso": "2026-04-21T10:52:30Z",
   "counts": {
     "crit": 1,
     "warn": 4,
@@ -15,14 +15,14 @@
       "summary": "3 tickets reabertos 2× ou mais nos últimos 90d em NSX, concentrados em PROTHEUS, SSG-MELHORIAS. Indica fechamento prematuro ou escopo mal definido.",
       "evidence": [
         {
-          "ticket": "2026012126000095",
+          "ticket": "2026012626000148",
           "fila": "SSG-MELHORIAS",
           "atendente": "Tiago Silva",
           "vezes_fechado": 2,
           "estado_atual": "AGUARDANDO CLIENTE"
         },
         {
-          "ticket": "2026012626000148",
+          "ticket": "2026012126000095",
           "fila": "SSG-MELHORIAS",
           "atendente": "Tiago Silva",
           "vezes_fechado": 2,
@@ -51,7 +51,7 @@
           "cliente": "AUTOZONE",
           "fila": "SSG",
           "atendente": "Carlos Fernandes",
-          "dias": 161.5,
+          "dias": 161.7,
           "criado": "2025-11-10T16:00:28"
         }
       ],
