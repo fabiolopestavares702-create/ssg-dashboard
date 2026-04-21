@@ -1,6 +1,6 @@
 {
-  "generated_at": 1776752751,
-  "generated_at_iso": "2026-04-21T06:25:51Z",
+  "generated_at": 1776768748,
+  "generated_at_iso": "2026-04-21T10:52:28Z",
   "count": 6,
   "filas": [
     "DATASUL",
@@ -13,6 +13,18 @@
   ],
   "rows": [
     {
+      "ticket": "2026012626000148",
+      "cliente": "NSX",
+      "fila": "SSG-MELHORIAS",
+      "estado_atual": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Tiago Silva",
+      "criado": "2026-01-26T10:21:55",
+      "modificado": "2026-04-21T05:00:19",
+      "vezes_fechado": 2,
+      "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
+    },
+    {
       "ticket": "2026012126000095",
       "cliente": "NSX",
       "fila": "SSG-MELHORIAS",
@@ -23,18 +35,6 @@
       "modificado": "2026-04-20T10:16:33",
       "vezes_fechado": 2,
       "assunto": "Contabilização offline dos titulos gerados por planilha"
-    },
-    {
-      "ticket": "2026012626000148",
-      "cliente": "NSX",
-      "fila": "SSG-MELHORIAS",
-      "estado_atual": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-26T10:21:55",
-      "modificado": "2026-04-20T05:00:20",
-      "vezes_fechado": 2,
-      "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
     },
     {
       "ticket": "2026012626000166",
@@ -49,6 +49,18 @@
       "assunto": "Levantamento Referente Cotação de cambio para importações"
     },
     {
+      "ticket": "2026041426000101",
+      "cliente": "postmaster@autozone.com",
+      "fila": "SSG",
+      "estado_atual": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-14T08:55:24",
+      "modificado": "2026-04-21T05:00:20",
+      "vezes_fechado": 1,
+      "assunto": "Your message could not be delivered"
+    },
+    {
       "ticket": "2026012926000393",
       "cliente": "NSX",
       "fila": "SSG",
@@ -56,7 +68,7 @@
       "prioridade": "5 very high",
       "atendente": "Francisco Silva",
       "criado": "2026-01-29T16:21:37",
-      "modificado": "2026-04-20T13:30:21",
+      "modificado": "2026-04-21T05:00:18",
       "vezes_fechado": 1,
       "assunto": "Fazer carga para criar titulos de Imposto no financeiro"
     },
@@ -71,18 +83,6 @@
       "modificado": "2026-04-20T09:17:59",
       "vezes_fechado": 1,
       "assunto": "Ativar SNMPv3 equipamentos TOTVS"
-    },
-    {
-      "ticket": "2026041426000101",
-      "cliente": "postmaster@autozone.com",
-      "fila": "SSG",
-      "estado_atual": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-14T08:55:24",
-      "modificado": "2026-04-20T05:00:21",
-      "vezes_fechado": 1,
-      "assunto": "Your message could not be delivered"
     }
   ],
   "janela_dias": 90
