@@ -1,7 +1,7 @@
 {
-  "generated_at": 1776768748,
-  "generated_at_iso": "2026-04-21T10:52:28Z",
-  "count": 6,
+  "generated_at": 1776787013,
+  "generated_at_iso": "2026-04-21T15:56:53Z",
+  "count": 5,
   "filas": [
     "DATASUL",
     "DBA",
@@ -23,18 +23,6 @@
       "modificado": "2026-04-21T05:00:19",
       "vezes_fechado": 2,
       "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
-    },
-    {
-      "ticket": "2026012126000095",
-      "cliente": "NSX",
-      "fila": "SSG-MELHORIAS",
-      "estado_atual": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-21T11:05:47",
-      "modificado": "2026-04-20T10:16:33",
-      "vezes_fechado": 2,
-      "assunto": "Contabilização offline dos titulos gerados por planilha"
     },
     {
       "ticket": "2026012626000166",
