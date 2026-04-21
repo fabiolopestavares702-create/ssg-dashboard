@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-21T06:13:39.754225",
+  "generated_at": "2026-04-21T10:51:44.091010",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 65%</strong>, com margem para melhoria.<br><br>Existem <strong>78 chamados em aberto</strong> (28%) e <strong>46 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 65%</strong>, com margem para melhoria.<br><br>Existem <strong>72 chamados em aberto</strong> (26%) e <strong>40 bloqueados</strong> aguardando ação — combinação que indica gargalo operacional.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Infraestrutura e Cloud</strong> concentra <strong>21% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
-        "value": "65",
+        "value": "70",
         "sub": "atenção · meta: >80",
         "color": "var(--warn)"
       },
@@ -46,12 +46,12 @@
   "riscos_operacionais": [
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "46 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "40 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
     {
-      "titulo": "23 chamados entre 8 e 30 dias sem resolução",
+      "titulo": "21 chamados entre 8 e 30 dias sem resolução",
       "desc": "Volume de chamados no limite antes de se tornarem críticos. Intervenção preventiva nos próximos 2 dias pode evitar escalonamento.",
       "nivel": "medium",
       "confianca": 82
