@@ -3218,6 +3218,7 @@ function renderOv(){
   updateKPIs(_op);
   renderOpActions(_op);
   try{populateOvHero(_op);}catch(e){console.warn('ov hero:',e);}
+  setTimeout(function(){try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}},50);
 }
 
 function populateOvHero(op){
@@ -3622,6 +3623,7 @@ function renderAlertas(){
   if(kpiBloq) kpiBloq.textContent=totalBloq;
   if(kpiResp) kpiResp.textContent=semResp;
   try{populateAlertasHero(totalCrit,totalBloq,semResp,bloqExato);}catch(e){console.warn('alertas hero:',e);}
+  try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}
   var badge=document.getElementById('badge-criticos');
   if(badge) badge.textContent=totalCrit;
   var alertPill=document.getElementById('alert-criticos-txt');
@@ -4381,6 +4383,7 @@ function renderCh(){
   else renderReaberturas(REAB_DATA);
   var _op2=getActiveOP();_op2=Object.assign({estado:{},prior:{},svc:{},atend:[],criticos:[],by_day:[],byDay:[]},_op2);
   try{populateChHero(_op2);}catch(e){console.warn('ch hero:',e);}
+  setTimeout(function(){try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}},50);
   var _days=getFilteredDays();
   var L=_days.map(function(d){return fd(d.d);}),V=_days.map(function(d){return d.n;});
   var total=_op2.total||0,fechados=_op2.fechados||0;
@@ -7768,12 +7771,62 @@ var TICKETS_ATIVOS_DATA=null;
 function fetchTicketsAtivos(){
   fetch('tickets_ativos.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
-    .then(function(d){TICKETS_ATIVOS_DATA=d;})
+    .then(function(d){TICKETS_ATIVOS_DATA=d;try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}})
     .catch(function(){});
 }
 // Busca no load e a cada 10min
 fetchTicketsAtivos();
 setInterval(fetchTicketsAtivos, 10*60*1000);
+
+// ─── LIVE KPIs — sobrescreve valores de "em aberto / bloqueados / muito alta" ──
+// Regra: XLSX para histórico/fechado, GWMS para estado atual.
+function liveFilteredTickets(){
+  if(!TICKETS_ATIVOS_DATA||!TICKETS_ATIVOS_DATA.rows) return null;
+  var norm=function(s){return (s||'').toLowerCase().replace(/[_\s]/g,'');};
+  var acCli=(typeof activeCliente!=='undefined'&&activeCliente)?norm(activeCliente):'';
+  var acFila=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?activeFilaOP:'';
+  return TICKETS_ATIVOS_DATA.rows.filter(function(r){
+    if(acCli && norm(r.cliente)!==acCli) return false;
+    if(acFila && r.fila!==acFila) return false;
+    return true;
+  });
+}
+function applyLiveKPIs(){
+  var rows=liveFilteredTickets();
+  if(!rows) return;
+  var BLOQ_STATES=['AGUARDANDO CLIENTE','AGUARDANDO INTERNO','AGUARDANDO EXTERNO','RETORNO CLIENTE','AGUARDANDO ATENDENTE (INTERNO)','AGUARDANDO AGENTES EXTERNOS','AGUARDANDO ATENDENTE','MELHORIA','GMUD'];
+  var isMuitoAlta=function(p){var l=(p||'').toLowerCase();return l.indexOf('muito alta')!==-1||l.indexOf('very high')!==-1||l.charAt(0)==='5';};
+  var isBloq=function(e){return BLOQ_STATES.indexOf((e||'').toUpperCase())!==-1;};
+  var total=rows.length;
+  var muitoAlta=rows.filter(function(r){return isMuitoAlta(r.prioridade);}).length;
+  var bloqueados=rows.filter(function(r){return isBloq(r.estado);}).length;
+  var setText=function(id,val){var e=document.getElementById(id);if(e)e.textContent=val;};
+  var addLiveBadge=function(subId){
+    var e=document.getElementById(subId);
+    if(!e) return;
+    // Remove badge antigo e adiciona fresh — idempotente
+    var old=e.querySelector('.live-badge');
+    if(old) old.remove();
+    var b=document.createElement('span');
+    b.className='live-badge';
+    b.style.cssText='display:inline-block;margin-left:4px;padding:1px 6px;border-radius:999px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.35);vertical-align:middle';
+    b.textContent='● AO VIVO';
+    e.appendChild(b);
+  };
+  // Dashboard (s-ov): KPI "Em aberto"
+  setText('kpi-v-1',total);
+  addLiveBadge('kpi-s-1');
+  // Alertas Críticos (s-alertas)
+  setText('kpi-ma-abertos',muitoAlta);
+  addLiveBadge('kpi-ma-sub');
+  setText('kpi-bloq-aging',bloqueados);
+  addLiveBadge('kpi-bloq-sub');
+  // Chamados (s-ch)
+  setText('ch-kpi-bloq',bloqueados);
+  addLiveBadge('ch-kpi-bloq-sub');
+  setText('ch-kpi-ma',muitoAlta);
+  addLiveBadge('ch-kpi-ma-sub');
+}
 function closeTicketDetail(){ var el=document.getElementById('tkd-overlay'); if(el) el.classList.remove('open'); }
 function handleTkdOverlay(e){ if(e.target===document.getElementById('tkd-overlay')) closeTicketDetail(); }
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeTicketDetail(); });
