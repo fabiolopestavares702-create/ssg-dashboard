@@ -1,9 +1,9 @@
 {
-  "generated_at": 1776768750,
-  "generated_at_iso": "2026-04-21T10:52:30Z",
+  "generated_at": 1776787015,
+  "generated_at_iso": "2026-04-21T15:56:55Z",
   "counts": {
     "crit": 1,
-    "warn": 4,
+    "warn": 5,
     "ok": 0
   },
   "insights": [
@@ -12,17 +12,10 @@
       "severity": "warn",
       "category": "qualidade",
       "title": "Padrão de reabertura recorrente em NSX",
-      "summary": "3 tickets reabertos 2× ou mais nos últimos 90d em NSX, concentrados em PROTHEUS, SSG-MELHORIAS. Indica fechamento prematuro ou escopo mal definido.",
+      "summary": "2 tickets reabertos 2× ou mais nos últimos 90d em NSX, concentrados em PROTHEUS, SSG-MELHORIAS. Indica fechamento prematuro ou escopo mal definido.",
       "evidence": [
         {
           "ticket": "2026012626000148",
-          "fila": "SSG-MELHORIAS",
-          "atendente": "Tiago Silva",
-          "vezes_fechado": 2,
-          "estado_atual": "AGUARDANDO CLIENTE"
-        },
-        {
-          "ticket": "2026012126000095",
           "fila": "SSG-MELHORIAS",
           "atendente": "Tiago Silva",
           "vezes_fechado": 2,
@@ -51,7 +44,7 @@
           "cliente": "AUTOZONE",
           "fila": "SSG",
           "atendente": "Carlos Fernandes",
-          "dias": 161.7,
+          "dias": 161.9,
           "criado": "2025-11-10T16:00:28"
         }
       ],
@@ -72,6 +65,25 @@
           "abertos": 5,
           "aguardando_terceiros": 6,
           "ativos_total": 12
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Weskley_Silva",
+      "severity": "warn",
+      "category": "capacidade",
+      "title": "Weskley Silva com carga real de 7 tickets",
+      "summary": "Weskley Silva tem 7 tickets ativos sob sua responsabilidade: 6 em atendimento + 1 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Weskley Silva",
+          "carga_real": 7,
+          "em_atendimento": 6,
+          "abertos": 1,
+          "aguardando_terceiros": 2,
+          "ativos_total": 9
         }
       ],
       "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
@@ -101,19 +113,19 @@
       "severity": "warn",
       "category": "distribuicao",
       "title": "Fila SSG concentrada em AUTOZONE",
-      "summary": "6 de 10 tickets silenciosos na fila SSG (60%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
+      "summary": "9 de 15 tickets silenciosos na fila SSG (60%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
       "evidence": [
         {
           "fila": "SSG",
           "cliente_top": "AUTOZONE",
-          "n_top": 6,
-          "n_total": 10,
+          "n_top": 9,
+          "n_total": 15,
           "pct_top": 0.6,
           "distribuicao": {
-            "AUTOZONE": 6,
+            "AUTOZONE": 9,
+            "ALMEIDA JR": 3,
             "NSX": 2,
-            "nicole.g@grupometalnox.com.br": 1,
-            "ALMEIDA JR": 1
+            "nicole.g@grupometalnox.com.br": 1
           }
         }
       ],
