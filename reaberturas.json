@@ -1,7 +1,7 @@
 {
-  "generated_at": 1776855004,
-  "generated_at_iso": "2026-04-22T10:50:04Z",
-  "count": 4,
+  "generated_at": 1776873186,
+  "generated_at_iso": "2026-04-22T15:53:06Z",
+  "count": 6,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,18 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026031626000378",
+      "cliente": "rodrigo.pinheiro@groundwork.com.br",
+      "fila": "GWMS",
+      "estado_atual": "MELHORIA",
+      "prioridade": "3 normal",
+      "atendente": "Adriano Luiz",
+      "criado": "2026-03-16T14:40:19",
+      "modificado": "2026-04-22T11:20:58",
+      "vezes_fechado": 3,
+      "assunto": "Alteração de e-mail no disparo de relatório do BH  que ocorre todo dia 6 - Teletex"
+    },
     {
       "ticket": "2026012626000148",
       "cliente": "NSX",
@@ -37,6 +49,30 @@
       "assunto": "Levantamento Referente Cotação de cambio para importações"
     },
     {
+      "ticket": "2026032526000459",
+      "cliente": "luana.ledoux@totvs.com.br",
+      "fila": "GWMS",
+      "estado_atual": "EM ATENDIMENTO",
+      "prioridade": "1 very low",
+      "atendente": "Marcio Guimaraes",
+      "criado": "2026-03-25T16:20:08",
+      "modificado": "2026-04-22T10:36:34",
+      "vezes_fechado": 1,
+      "assunto": "Ativar SNMPv3 equipamentos TOTVS"
+    },
+    {
+      "ticket": "2026042026000073",
+      "cliente": "DKT",
+      "fila": "PROTHEUS",
+      "estado_atual": "EM ATENDIMENTO",
+      "prioridade": "5 very high",
+      "atendente": "Jean Pierre Rocha",
+      "criado": "2026-04-20T08:31:48",
+      "modificado": "2026-04-22T09:14:40",
+      "vezes_fechado": 1,
+      "assunto": "E-mails do portal não estão disparando"
+    },
+    {
       "ticket": "2026041426000101",
       "cliente": "postmaster@autozone.com",
       "fila": "SSG",
@@ -47,18 +83,6 @@
       "modificado": "2026-04-22T05:00:16",
       "vezes_fechado": 1,
       "assunto": "Your message could not be delivered"
-    },
-    {
-      "ticket": "2026032526000459",
-      "cliente": "luana.ledoux@totvs.com.br",
-      "fila": "GWMS",
-      "estado_atual": "RETORNO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Marcio Guimaraes",
-      "criado": "2026-03-25T16:20:08",
-      "modificado": "2026-04-20T09:17:59",
-      "vezes_fechado": 1,
-      "assunto": "Ativar SNMPv3 equipamentos TOTVS"
     }
   ],
   "janela_dias": 90
