@@ -2635,7 +2635,7 @@ input[type=file]{display:none}
       <div id="csat-content">
         <div class="grid2" style="margin-bottom:14px">
           <div class="card">
-            <div class="card-title">Score geral</div>
+            <div class="card-title">Score geral <span class="card-title-right" style="font-size:10px;color:var(--muted)" id="csat-context">—</span></div>
             <div class="csat-gauge-wrap">
               <div>
                 <div class="csat-score-big" id="csat-score-num">—</div>
@@ -8574,15 +8574,24 @@ function renderCSAT() {
   if(emEl) emEl.style.display='none';
   if(ctEl) ctEl.style.display='';
 
+  // Usa a conta selecionada no seletor CS (csCurrentKey) antes do filtro global.
+  // Fallback: activeCliente global. Sem nenhum dos dois: todos.
+  var acctKey = csCurrentKey || activeCliente || '';
   var allClosed = RAW_DATA.filter(function(t){
     if(!ticketInFilter(t)) return false;
     if(activeFilaOP!=='all'&&t.fila!==activeFilaOP) return false;
-    if(activeCliente&&t.cli_id!==activeCliente) return false;
+    if(acctKey&&t.cli_id!==acctKey) return false;
     return t.estado && (t.estado.indexOf('Fechado')!==-1 || t.estado.indexOf('Resolvido')!==-1);
   });
 
   var globalScore = calcCSATProxy(allClosed);
   var sl = csatLabel(globalScore);
+  // Indicador de contexto (quem está sendo medido)
+  var ctxEl = document.getElementById('csat-context');
+  if(ctxEl){
+    if(acctKey && EMPRESAS[acctKey]) ctxEl.textContent = 'conta: ' + (EMPRESAS[acctKey].nome || acctKey);
+    else ctxEl.textContent = 'carteira completa';
+  }
 
   // Score display
   var numEl = document.getElementById('csat-score-num');
