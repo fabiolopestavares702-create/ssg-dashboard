@@ -1,7 +1,7 @@
 {
-  "generated_at": 1776965199,
-  "generated_at_iso": "2026-04-23T17:26:39Z",
-  "count": 188,
+  "generated_at": 1776966646,
+  "generated_at_iso": "2026-04-23T17:50:46Z",
+  "count": 185,
   "filas": [
     "DATASUL",
     "DBA",
@@ -13,28 +13,52 @@
   ],
   "rows": [
     {
+      "ticket": "2026042326000111",
+      "cliente": "PECVAL",
+      "fila": "DATASUL",
+      "estado": "EM ATENDIMENTO",
+      "prioridade": "3 normal",
+      "atendente": "Guilherme Rosa",
+      "criado": "2026-04-23T07:39:58",
+      "modificado": "2026-04-23T14:50:31",
+      "idade_dias": 0,
+      "assunto": "Arquivos XML e ASN's não estão sendo direcionados para pasta de envio"
+    },
+    {
       "ticket": "2026042326000148",
       "cliente": "vinicius.vedove@groundwork.com.br",
       "fila": "GWMS",
-      "estado": "EM ATENDIMENTO",
+      "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
       "atendente": "Bruno Fagundes",
       "criado": "2026-04-23T08:35:14",
-      "modificado": "2026-04-23T14:23:28",
+      "modificado": "2026-04-23T14:46:02",
       "idade_dias": 0,
       "assunto": "Cliente - Fadel: Alteração de Nome de Host"
     },
     {
-      "ticket": "2026042326000362",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
-      "estado": "OPEN",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-23T14:15:18",
-      "modificado": "2026-04-23T14:22:57",
+      "ticket": "2026042226000462",
+      "cliente": "TJBA",
+      "fila": "GWMS",
+      "estado": "RETORNO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Thiago Trufelli",
+      "criado": "2026-04-22T16:47:06",
+      "modificado": "2026-04-23T14:30:53",
       "idade_dias": 0,
-      "assunto": "DESVINCULO"
+      "assunto": "Solicitação de Ajuste - Dashboard: Infrastructure / PJE Geral"
+    },
+    {
+      "ticket": "2026042226000364",
+      "cliente": "TJBA",
+      "fila": "GWMS",
+      "estado": "RETORNO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Thiago Trufelli",
+      "criado": "2026-04-22T14:12:10",
+      "modificado": "2026-04-23T14:28:50",
+      "idade_dias": 1,
+      "assunto": "Ajuste de Monitoramento - Hosts ADP001 e ADP002"
     },
     {
       "ticket": "2026042326000353",
@@ -205,18 +229,6 @@
       "assunto": "RE1001 apresentando erro no Datasul"
     },
     {
-      "ticket": "2026042326000111",
-      "cliente": "PECVAL",
-      "fila": "DATASUL",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Guilherme Rosa",
-      "criado": "2026-04-23T07:39:58",
-      "modificado": "2026-04-23T13:04:35",
-      "idade_dias": 0,
-      "assunto": "Arquivos XML e ASN's não estão sendo direcionados para pasta de envio"
-    },
-    {
       "ticket": "2026042226000551",
       "cliente": "vinicius.eroico@groundwork.com.br",
       "fila": "GWMS",
@@ -239,18 +251,6 @@
       "modificado": "2026-04-23T11:58:00",
       "idade_dias": 6,
       "assunto": "Verificação do antivírus "
-    },
-    {
-      "ticket": "2026042226000408",
-      "cliente": "rudson.pereira@teletex.com",
-      "fila": "GWMS",
-      "estado": "OPEN",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-22T15:25:21",
-      "modificado": "2026-04-23T11:45:12",
-      "idade_dias": 0,
-      "assunto": "Alteração de apontamento"
     },
     {
       "ticket": "2026042226000159",
@@ -313,18 +313,6 @@
       "assunto": "Configurar Programa"
     },
     {
-      "ticket": "2026012926000455",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "RETORNO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-29T18:25:55",
-      "modificado": "2026-04-23T11:25:20",
-      "idade_dias": 83,
-      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
-    },
-    {
       "ticket": "2026041726000034",
       "cliente": "weskley.silva@groundwork.com.br",
       "fila": "SSG",
@@ -335,6 +323,18 @@
       "modificado": "2026-04-23T11:25:20",
       "idade_dias": 6,
       "assunto": "Re: 30.000 documentos em fila de processamento"
+    },
+    {
+      "ticket": "2026012926000455",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "RETORNO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-01-29T18:25:55",
+      "modificado": "2026-04-23T11:25:20",
+      "idade_dias": 83,
+      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
     },
     {
       "ticket": "2026042326000246",
@@ -395,18 +395,6 @@
       "modificado": "2026-04-23T11:05:17",
       "idade_dias": 92,
       "assunto": "Contabilização offline dos titulos gerados por planilha"
-    },
-    {
-      "ticket": "2026042226000462",
-      "cliente": "TJBA",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Thiago Trufelli",
-      "criado": "2026-04-22T16:47:06",
-      "modificado": "2026-04-23T10:58:53",
-      "idade_dias": 0,
-      "assunto": "Solicitação de Ajuste - Dashboard: Infrastructure / PJE Geral"
     },
     {
       "ticket": "2026032326000221",
@@ -669,7 +657,7 @@
       "atendente": "Pedro Luiz",
       "criado": "2026-04-22T14:30:14",
       "modificado": "2026-04-23T08:19:40",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Ajuste no plugin de monitoramento gw_check_oracle.py, modo:autoextend_disabled"
     },
     {
@@ -721,6 +709,18 @@
       "assunto": "AUTOZONE - SRV-SQL-PRD - Disk:G: - 26042305144087"
     },
     {
+      "ticket": "2026041726000071",
+      "cliente": "joalyson.oliveira@teletex.com",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-17T08:55:11",
+      "modificado": "2026-04-23T05:00:17",
+      "idade_dias": 6,
+      "assunto": "Verificação cases gerados via automação GW x SN"
+    },
+    {
       "ticket": "2026041726000356",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -745,18 +745,6 @@
       "assunto": "Refaz saldos - PD8 - USGAAP"
     },
     {
-      "ticket": "2026041726000098",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-17T09:37:23",
-      "modificado": "2026-04-23T05:00:17",
-      "idade_dias": 6,
-      "assunto": "Ajuste boleto - Cessão de espaço"
-    },
-    {
       "ticket": "2026041526000501",
       "cliente": "matheusvieira@mevieira.com.br",
       "fila": "DBA",
@@ -767,6 +755,18 @@
       "modificado": "2026-04-23T05:00:17",
       "idade_dias": 7,
       "assunto": "Dual Duarte - Configuração ODBC"
+    },
+    {
+      "ticket": "2026041726000098",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-17T09:37:23",
+      "modificado": "2026-04-23T05:00:17",
+      "idade_dias": 6,
+      "assunto": "Ajuste boleto - Cessão de espaço"
     },
     {
       "ticket": "2026041726000301",
@@ -781,54 +781,6 @@
       "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
     },
     {
-      "ticket": "2026041726000071",
-      "cliente": "joalyson.oliveira@teletex.com",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-17T08:55:11",
-      "modificado": "2026-04-23T05:00:17",
-      "idade_dias": 6,
-      "assunto": "Verificação cases gerados via automação GW x SN"
-    },
-    {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 9,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
-    },
-    {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 6,
-      "assunto": "Compartilhamento documentos One Drive"
-    },
-    {
-      "ticket": "2026032626000073",
-      "cliente": "AUMOVIO",
-      "fila": "DATASUL",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Guilherme Rosa",
-      "criado": "2026-03-26T07:22:06",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 28,
-      "assunto": "Cadastro bancario de fornecedor"
-    },
-    {
       "ticket": "2026041526000065",
       "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
@@ -839,18 +791,6 @@
       "modificado": "2026-04-23T05:00:16",
       "idade_dias": 8,
       "assunto": "BERNECK - Remoção do monitoramento."
-    },
-    {
-      "ticket": "2026040826000168",
-      "cliente": "FINPEC",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-08T10:40:08",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 15,
-      "assunto": "Zeramento 12/2025."
     },
     {
       "ticket": "2026041326000523",
@@ -865,6 +805,42 @@
       "assunto": "Netflow"
     },
     {
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 6,
+      "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 9,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+    },
+    {
+      "ticket": "2026032626000073",
+      "cliente": "AUMOVIO",
+      "fila": "DATASUL",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Guilherme Rosa",
+      "criado": "2026-03-26T07:22:06",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 28,
+      "assunto": "Cadastro bancario de fornecedor"
+    },
+    {
       "ticket": "2026040926000121",
       "cliente": "andrei.honorio@teletex.com",
       "fila": "GWMS",
@@ -875,6 +851,30 @@
       "modificado": "2026-04-23T05:00:16",
       "idade_dias": 14,
       "assunto": "UNIMED-CURITIBA | Solicitação de mudança para o cliente Unimed "
+    },
+    {
+      "ticket": "2026040826000168",
+      "cliente": "FINPEC",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-08T10:40:08",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 15,
+      "assunto": "Zeramento 12/2025."
+    },
+    {
+      "ticket": "2026041526000387",
+      "cliente": "cyntia.maia@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Marcio Guimaraes",
+      "criado": "2026-04-15T14:15:06",
+      "modificado": "2026-04-23T05:00:15",
+      "idade_dias": 8,
+      "assunto": "Alinhamento: Processo de Contatos Telefônicos"
     },
     {
       "ticket": "2026041626000161",
@@ -889,18 +889,6 @@
       "assunto": "Filial Comendador Gomes/MG"
     },
     {
-      "ticket": "2026041526000538",
-      "cliente": "andrei.honorio@teletex.com",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Marcio Guimaraes",
-      "criado": "2026-04-15T17:20:11",
-      "modificado": "2026-04-23T05:00:15",
-      "idade_dias": 7,
-      "assunto": "BERNECK | Migração do ambiente Berneck para o monitoramento interno Teletex."
-    },
-    {
       "ticket": "2026031326000169",
       "cliente": "GroundWork",
       "fila": "GWMS",
@@ -913,6 +901,18 @@
       "assunto": "Revisão de alertas FADEL"
     },
     {
+      "ticket": "2026041526000538",
+      "cliente": "andrei.honorio@teletex.com",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Marcio Guimaraes",
+      "criado": "2026-04-15T17:20:11",
+      "modificado": "2026-04-23T05:00:15",
+      "idade_dias": 7,
+      "assunto": "BERNECK | Migração do ambiente Berneck para o monitoramento interno Teletex."
+    },
+    {
       "ticket": "2026041426000183",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -923,18 +923,6 @@
       "modificado": "2026-04-23T05:00:15",
       "idade_dias": 9,
       "assunto": "RES: RES: RES: RES: RES: RES: RES: [EXTERNAL] Re: AZ - PAGAR - Erro Rateio cartão de crédito"
-    },
-    {
-      "ticket": "2026041526000387",
-      "cliente": "cyntia.maia@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Marcio Guimaraes",
-      "criado": "2026-04-15T14:15:06",
-      "modificado": "2026-04-23T05:00:15",
-      "idade_dias": 8,
-      "assunto": "Alinhamento: Processo de Contatos Telefônicos"
     },
     {
       "ticket": "2026042226000471",
@@ -1117,18 +1105,6 @@
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042215432332"
     },
     {
-      "ticket": "2026041226000052",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "OPEN",
-      "prioridade": "1 very low",
-      "atendente": "Luciano Katsumi Shiraishi",
-      "criado": "2026-04-12T09:40:17",
-      "modificado": "2026-04-22T16:26:40",
-      "idade_dias": 11,
-      "assunto": "PAM_PLASTICOS - GWMS-Server - Disk:/var - 26041209382118"
-    },
-    {
       "ticket": "2026042226000417",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -1149,7 +1125,7 @@
       "atendente": "Guilherme Rosa",
       "criado": "2026-04-17T14:50:28",
       "modificado": "2026-04-22T16:20:06",
-      "idade_dias": 5,
+      "idade_dias": 6,
       "assunto": "Atualizar banco de dados - Versão de testes (homologação)"
     },
     {
@@ -1175,18 +1151,6 @@
       "modificado": "2026-04-22T15:56:38",
       "idade_dias": 5,
       "assunto": "PROBLEMA AO ACESSAR"
-    },
-    {
-      "ticket": "2026042226000364",
-      "cliente": "TJBA",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Thiago Trufelli",
-      "criado": "2026-04-22T14:12:10",
-      "modificado": "2026-04-22T15:32:30",
-      "idade_dias": 1,
-      "assunto": "Ajuste de Monitoramento - Hosts ADP001 e ADP002"
     },
     {
       "ticket": "2026031826000329",
@@ -1233,7 +1197,7 @@
       "atendente": "Sergio Luiz Glovatinski Jr",
       "criado": "2026-04-22T14:45:15",
       "modificado": "2026-04-22T14:48:24",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042214420125"
     },
     {
@@ -1377,7 +1341,7 @@
       "atendente": "Adriano Luiz",
       "criado": "2026-03-16T14:40:19",
       "modificado": "2026-04-22T11:20:58",
-      "idade_dias": 37,
+      "idade_dias": 38,
       "assunto": "Alteração de e-mail no disparo de relatório do BH  que ocorre todo dia 6 - Teletex"
     },
     {
@@ -1437,7 +1401,7 @@
       "atendente": "Diego Cardoso",
       "criado": "2026-04-14T14:29:18",
       "modificado": "2026-04-22T10:52:52",
-      "idade_dias": 8,
+      "idade_dias": 9,
       "assunto": "excluçao de mediçao loja 7653"
     },
     {
@@ -1701,7 +1665,7 @@
       "atendente": "Weskley Silva",
       "criado": "2025-06-24T14:45:09",
       "modificado": "2026-04-20T16:24:29",
-      "idade_dias": 302,
+      "idade_dias": 303,
       "assunto": "Novo Processo Compras"
     },
     {
@@ -1725,7 +1689,7 @@
       "atendente": "Sergio Luiz Glovatinski Jr",
       "criado": "2026-03-04T14:30:09",
       "modificado": "2026-04-20T13:36:06",
-      "idade_dias": 49,
+      "idade_dias": 50,
       "assunto": "Criar dados para ambiente demo Protheus"
     },
     {
@@ -1821,7 +1785,7 @@
       "atendente": "Geyson Albano",
       "criado": "2026-03-26T14:45:52",
       "modificado": "2026-04-19T09:54:31",
-      "idade_dias": 27,
+      "idade_dias": 28,
       "assunto": "V3 NETLEX"
     },
     {
@@ -2253,7 +2217,7 @@
       "atendente": "George Eivazian",
       "criado": "2026-02-12T14:31:46",
       "modificado": "2026-03-23T09:54:16",
-      "idade_dias": 69,
+      "idade_dias": 70,
       "assunto": "CRIAÇÃO DE LP's DE BAIXA E TRANSFERENCIA DE ATIVOS FIXO"
     },
     {
