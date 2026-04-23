@@ -1,7 +1,7 @@
 {
-  "generated_at": 1776966643,
-  "generated_at_iso": "2026-04-23T17:50:43Z",
-  "count": 7,
+  "generated_at": 1776972064,
+  "generated_at_iso": "2026-04-23T19:21:04Z",
+  "count": 8,
   "filas": [
     "DATASUL",
     "DBA",
@@ -47,6 +47,18 @@
       "modificado": "2026-03-26T11:52:50",
       "vezes_fechado": 2,
       "assunto": "Levantamento Referente Cotação de cambio para importações"
+    },
+    {
+      "ticket": "2026041226000043",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "DBA",
+      "estado_atual": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-12T09:15:14",
+      "modificado": "2026-04-23T15:28:52",
+      "vezes_fechado": 1,
+      "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
     },
     {
       "ticket": "2026040726000384",
