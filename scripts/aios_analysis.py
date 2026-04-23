@@ -167,6 +167,75 @@ def processar_xlsx(path):
 
     return tickets
 
+# ── Leitura do historico_completo.json (fonte GWMS/MySQL OTRS) ─────
+def processar_json_rows(rows):
+    """Converte rows do historico_completo.json pro formato que calcular_metricas espera.
+    rows = list of dicts com keys: num, criado, fechado, estado, prioridade, fila,
+           atendente, cli_id, cli_user, servico, resp_min_bh, sol_min_bh, etc."""
+    tickets = []
+    for r in rows:
+        if not r:
+            continue
+        # Estado: vem em inglês raw do OTRS; traduz pro padrão SSG
+        est_raw = (r.get("estado") or "").lower().strip()
+        est_map = {
+            "new": "Aberto", "open": "Aberto",
+            "closed successful": "Fechado", "closed unsuccessful": "Fechado s/ Êxito",
+            "resolvido": "Resolvido", "aguardando cliente": "Aguardando Cliente",
+            "aguardando atendente (interno)": "Aguardando Interno",
+            "retorno cliente": "Retorno Cliente",
+            "em atendimento": "Em Atendimento",
+            "aguardando agentes externos": "Aguardando Externo",
+            "melhoria": "Fechado s/ Êxito", "gmud": "Fechado s/ Êxito",
+            "cancelado": "Fechado s/ Êxito",
+            "fechado sem êxito (auto)": "Fechado s/ Êxito",
+            "classificado": "Aberto", "pending reminder": "Aguardando Cliente",
+        }
+        estado = est_map.get(est_raw, "Aberto")
+
+        prior_raw = (r.get("prioridade") or "").lower().strip()
+        prior_map = {
+            "1 very low": "Muito Baixa", "2 low": "Baixa", "3 normal": "Normal",
+            "4 high": "Alta", "5 very high": "Muito Alta",
+        }
+        prior = prior_map.get(prior_raw, "Normal")
+
+        try:
+            resp_min = float(r.get("resp_min_bh") or 0) or None
+        except:
+            resp_min = None
+        try:
+            sol_h = round(float(r.get("sol_min_bh") or 0) / 60, 1) or None
+        except:
+            sol_h = None
+
+        criado_raw = r.get("criado")
+        criado = None
+        if criado_raw:
+            try:
+                criado = datetime.fromisoformat(str(criado_raw).replace(" ", "T"))
+            except:
+                criado = None
+
+        # Cliente canônico — usa cli_id do OTRS (customer_id da empresa)
+        cli_id = str(r.get("cli_id") or "").strip()
+        # Filtra clientes internos (monitoramento@groundwork.com.br etc)
+        if "@" in cli_id and any(d in cli_id.lower() for d in ["groundwork.com.br", "ssg.com.br"]):
+            cli = None
+        else:
+            cli = cli_id or None
+
+        servico = str(r.get("servico") or "").split("::")[-1].strip() or "Outros"
+
+        tickets.append({
+            "estado": estado, "prior": prior,
+            "cli": cli, "servico": servico,
+            "resp_min": resp_min, "sol_h": sol_h,
+            "criado": criado,
+        })
+    return tickets
+
+
 # ── Métricas ─────────────────────────────────────────────────
 def calcular_metricas(tickets):
     total    = len(tickets)

@@ -420,6 +420,25 @@ def main() -> None:
         log(f"ERRO em gwms-insights.json: {e}")
         failures.append("gwms-insights.json")
 
+    # ── AIOS insights (Resumo de Gestão, Riscos Op, Riscos Cli, CS) ──
+    # Migrado de aios_analysis.py (que lia XLSX) — agora consome direto
+    # as rows do historico_completo que acabamos de gerar.
+    try:
+        import aios_analysis
+        hist_rows = collected.get("historico_completo.json", [])
+        if hist_rows:
+            tickets = aios_analysis.processar_json_rows(hist_rows)
+            m = aios_analysis.calcular_metricas(tickets)
+            aios_ins = aios_analysis.gerar_insights(m)
+            log(f"aios-insights.json: health={m['health']} · {len(aios_ins.get('riscos_operacionais',[]))} riscos op · {len(aios_ins.get('riscos_clientes',[]))} clientes")
+            payload = json.dumps(aios_ins, ensure_ascii=False, indent=2, default=str).encode("utf-8")
+            github_upload("aios-insights.json", payload, f"chore: sync aios-insights (health={m['health']})")
+        else:
+            log("AVISO: historico_completo vazio, pulando aios-insights")
+    except Exception as e:
+        log(f"ERRO em aios-insights.json: {e}")
+        failures.append("aios-insights.json")
+
     if failures:
         print(f"FALHAS: {failures}", file=sys.stderr)
         sys.exit(1)
