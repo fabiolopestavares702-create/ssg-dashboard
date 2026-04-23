@@ -228,8 +228,37 @@ def q_historico_completo(session: requests.Session) -> list[dict]:
     LIMIT 5000
     """
     rows = query_mysql(session, sql)
+
+    # ─── Busca transições de estado de todos os tickets em 1 query ────
+    # Usado pra calcular sol_min_bh com exclusão de tempo "aguardando cliente",
+    # replicando o cálculo do Znuny.
+    state_sql = f"""
+    SELECT
+      t.tn                                          AS tn,
+      DATE_FORMAT(th.create_time, '%Y-%m-%dT%H:%i:%s') AS dt,
+      th.state_id                                   AS state_id
+    FROM ticket t
+    JOIN queue q ON t.queue_id = q.id
+    JOIN ticket_history th ON th.ticket_id = t.id
+    WHERE q.name IN ({FILAS_SQL})
+      AND t.create_time >= DATE_SUB(NOW(), INTERVAL 4 MONTH)
+      AND th.history_type_id = 27
+    ORDER BY t.tn, th.create_time
+    """
+    transitions_raw = query_mysql(session, state_sql)
+    transitions_by_tn: dict = {}
+    for tr in transitions_raw:
+        tn = str(tr.get("tn"))
+        if tn not in transitions_by_tn:
+            transitions_by_tn[tn] = []
+        transitions_by_tn[tn].append(tr)
+    log(f"  transições de estado: {len(transitions_raw)} linhas ({len(transitions_by_tn)} tickets)")
+
     # Pós-processa: horas úteis em minutos (sol_min e resp_min_bh)
-    # Business hours: Seg–Sex 08h–18h (mesma regra do calcBusinessHoursH em JS)
+    # Business hours: Seg–Sex 8h–12h + 13h–18h (pausa almoço excluída)
+    WAIT_STATE_IDS = {6, 7, 8, 11, 12, 13, 16, 20}  # aguardando cliente/interno/externo + pending + melhoria + gmud
+    CLOSED_STATE_IDS = {2, 3, 5, 9, 17, 18, 19}
+
     def _parse_dt(s):
         if not s:
             return None
@@ -238,19 +267,17 @@ def q_historico_completo(session: requests.Session) -> list[dict]:
         except Exception:
             return None
 
-    def _business_minutes(start: datetime, end: datetime) -> int | None:
-        """Horas úteis compatível com Znuny: Seg-Sex 8h-12h + 13h-18h (9h/dia,
-        pausa almoço 12-13 excluída)."""
+    def _business_minutes(start, end):
+        """Horas úteis Seg-Sex 8-12 + 13-18 (9h/dia)."""
         if not start or not end or end <= start:
             return 0 if end == start else None
-        # Dois blocos por dia: manhã (8-12) e tarde (13-18)
         BLOCKS = [(8, 12), (13, 18)]
         total = 0
         cur = start.replace(hour=0, minute=0, second=0, microsecond=0)
         max_days = 400
         while cur < end and max_days > 0:
             max_days -= 1
-            if cur.weekday() < 5:  # Seg-Sex
+            if cur.weekday() < 5:
                 for bs, be in BLOCKS:
                     b_start = cur.replace(hour=bs)
                     b_end = cur.replace(hour=be)
@@ -261,19 +288,62 @@ def q_historico_completo(session: requests.Session) -> list[dict]:
             cur = cur.replace(hour=0) + timedelta(days=1)
         return total
 
+    def _compute_sol_min_bh_active(ticket_start, transitions, ticket_end):
+        """Calcula minutos úteis APENAS nos estados não-wait e não-closed.
+        transitions = lista ordenada de dicts {dt, state_id}.
+        ticket_end = quando foi primeiro fechado (máximo do intervalo)."""
+        if not ticket_start or not transitions:
+            return None
+        # Segmentos [start, end, state_id]. O primeiro segmento antes de qualquer
+        # StateUpdate usa estado "inicial" (assumido não-wait, tipicamente new/open)
+        segments = []
+        prev_time = ticket_start
+        prev_state = None  # estado inicial: não-wait
+        for tr in transitions:
+            dt = _parse_dt(tr.get("dt"))
+            sid = tr.get("state_id")
+            if dt is None:
+                continue
+            if dt <= prev_time:  # pula transições fora de ordem
+                prev_time = dt
+                prev_state = sid
+                continue
+            segments.append((prev_time, dt, prev_state))
+            prev_time = dt
+            prev_state = sid
+            if sid in CLOSED_STATE_IDS:
+                break
+        # Se não entrou em closed e ainda temos ticket_end, adiciona segmento final
+        if segments and prev_state not in CLOSED_STATE_IDS and ticket_end and prev_time < ticket_end:
+            segments.append((prev_time, ticket_end, prev_state))
+        total = 0
+        for s, e, st in segments:
+            if st in CLOSED_STATE_IDS:
+                break
+            if st in WAIT_STATE_IDS:
+                continue  # tempo parado, não conta
+            bm = _business_minutes(s, e)
+            if bm:
+                total += bm
+        return total
+
     for r in rows:
         cr = _parse_dt(r.get("criado"))
         fe = _parse_dt(r.get("fechado"))
         resp_raw = r.get("resp_min_raw")
-        # Solução em minutos (wall-clock) e em minutos úteis
+        tn = str(r.get("num"))
+        trans = transitions_by_tn.get(tn, [])
+
+        # sol_min_raw (wall-clock criado → fechado)
         if cr and fe and fe > cr:
             r["sol_min_raw"] = int((fe - cr).total_seconds() // 60)
-            r["sol_min_bh"] = _business_minutes(cr, fe)
+            # sol_min_bh com exclusão de estados wait (replicando Znuny)
+            r["sol_min_bh"] = _compute_sol_min_bh_active(cr, trans, fe)
         else:
             r["sol_min_raw"] = None
             r["sol_min_bh"] = None
-        # Primeira resposta: resp_min_raw já vem em minutos wall-clock.
-        # resp_min_bh = horas úteis entre criado e primeira resposta.
+
+        # resp_min_bh — primeira resposta em horas úteis
         if resp_raw is not None and cr:
             fr = cr + timedelta(minutes=int(resp_raw))
             r["resp_min_bh"] = _business_minutes(cr, fr)
