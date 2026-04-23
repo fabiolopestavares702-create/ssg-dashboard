@@ -9736,6 +9736,101 @@ function renderResumo(){
 }
 
 var _autoFetching=false;
+// ─── DATA SOURCE — feature flag XLSX vs JSON (historico_completo) ────────
+// Escolha via URL (?source=json) ou localStorage (ssg_source='json'). Default: xlsx.
+function _getDataSource(){
+  try{
+    var q=new URLSearchParams(location.search).get('source');
+    if(q==='json'||q==='xlsx') return q;
+    var ls=localStorage.getItem('ssg_source');
+    if(ls==='json'||ls==='xlsx') return ls;
+  }catch(e){}
+  return 'xlsx';
+}
+// Converte historico_completo.json row → formato compatível com parseR (keys tipo XLSX)
+// Traduz estados raw do OTRS pros nomes que o EM2 mapping reconhece.
+var _STATE_OTRS_TO_XLSX = {
+  'new':'aberto',
+  'open':'aberto',
+  'closed successful':'fechado com êxito',
+  'closed unsuccessful':'fechado sem êxito (auto)',
+  'resolvido':'resolvido',
+  'aguardando cliente':'aguardando cliente',
+  'aguardando atendente (interno)':'aguardando atendente (interno)',
+  'retorno cliente':'retorno cliente',
+  'em atendimento':'em atendimento',
+  'aguardando agentes externos':'aguardando agentes externos',
+  'melhoria':'melhoria',
+  'gmud':'gmud',
+  'cancelado':'cancelado',
+  'classificado':'classificado',
+  'removed':'aberto',
+  'merged':'fechado com êxito',
+  'pending reminder':'aguardando cliente',
+  'pending auto close+':'fechado com êxito',
+  'pending auto close-':'fechado sem êxito (auto)',
+  'fechado sem êxito (auto)':'fechado sem êxito (auto)'
+};
+function _adaptJsonRowToXlsx(r){
+  var estRaw=(r.estado||'').toLowerCase().trim();
+  var estMapped=_STATE_OTRS_TO_XLSX[estRaw]||estRaw;
+  return {
+    'Número do Chamado': r.num||'',
+    'Criado': r.criado||'',
+    'Fechado': r.fechado||'',
+    'Estado': estMapped,
+    'Prioridade': r.prioridade||'',
+    'Fila': r.fila||'',
+    'Atendente': r.atendente||'',
+    'PrimeiroNome': r.primeiro_nome||'',
+    'ÚltimoNome': r.ultimo_nome||'',
+    'ID do Cliente': r.cli_id||'',
+    'Nome do Cliente': r.cli_user||r.cli_id||'',
+    'Assunto': r.assunto||'',
+    'Serviço': r.servico||'',
+    'Primeira Resposta em Minutos': r.resp_min_bh!=null?r.resp_min_bh:'',
+    'Tempo de solução em minutos': r.sol_min_bh!=null?r.sol_min_bh:''
+  };
+}
+function autoFetchJSON(){
+  if(_autoFetching)return;
+  _autoFetching=true;
+  var dot=document.getElementById('auto-sync-dot');
+  var lbl=document.getElementById('auto-sync-lbl');
+  if(dot)dot.style.background='var(--warn)';
+  if(lbl)lbl.textContent='Sync JSON…';
+  fetch("historico_completo.json?v="+Date.now())
+    .then(function(r){if(!r.ok)throw new Error('not ok');return r.json();})
+    .then(function(d){
+      _autoFetching=false;
+      var rows=(d.rows||[]).map(_adaptJsonRowToXlsx);
+      var _sm=activeMonth,_sf=activeFilaOP,_sfc=activeFilaCli,_sc=activeCliente,_srs=activeRangeStart,_sre=activeRangeEnd;
+      rebuildAll(parseR(rows));
+      if(_sm!=='all'||_sf!=='all'||_sc||_srs){
+        activeMonth=_sm;activeFilaOP=_sf;activeFilaCli=_sfc;activeCliente=_sc;activeRangeStart=_srs;activeRangeEnd=_sre;
+        buildMonthFilter();
+        Object.keys(rendered).forEach(function(k){rendered[k]=false;});
+        Object.keys(CH).forEach(function(k){if(CH[k]){CH[k].destroy();CH[k]=null;}});
+        var _aOp=document.querySelector('#view-op .sec.on');
+        if(_aOp){rendered[_aOp.id]=true;renderSec(_aOp.id);}
+        renderAlertas();computeInsights();
+      }
+      var hm=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      if(dot)dot.style.background='var(--ok)';
+      if(lbl)lbl.textContent='Sync JSON '+hm;
+    })
+    .catch(function(e){
+      _autoFetching=false;
+      if(dot)dot.style.background='var(--danger)';
+      if(lbl)lbl.textContent='Falha JSON — fallback XLSX';
+      console.warn('JSON fetch failed, falling back to XLSX:',e);
+      autoFetchXLS();  // fallback seguro
+    });
+}
+function autoFetchData(){
+  if(_getDataSource()==='json') return autoFetchJSON();
+  return autoFetchXLS();
+}
 function autoFetchXLS(){
   if(_autoFetching)return;
   _autoFetching=true;
@@ -9772,8 +9867,8 @@ function autoFetchXLS(){
       if(lbl)lbl.textContent='Falha no sync';
     });
 }
-setTimeout(autoFetchXLS, 600);
-setInterval(autoFetchXLS, 10 * 60 * 1000);
+setTimeout(autoFetchData, 600);
+setInterval(autoFetchData, 10 * 60 * 1000);
 
 // ════════════════════════════════════════════════════════════
 // AI LAYER — análise gerada em tempo real a partir dos dados
