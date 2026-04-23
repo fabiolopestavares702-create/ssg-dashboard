@@ -1,9 +1,9 @@
 {
-  "generated_at": 1776887842,
-  "generated_at_iso": "2026-04-22T19:57:22Z",
+  "generated_at": 1776961862,
+  "generated_at_iso": "2026-04-23T16:31:02Z",
   "counts": {
-    "crit": 0,
-    "warn": 6,
+    "crit": 2,
+    "warn": 4,
     "ok": 0
   },
   "insights": [
@@ -19,7 +19,7 @@
           "fila": "SSG-MELHORIAS",
           "atendente": "Tiago Silva",
           "vezes_fechado": 2,
-          "estado_atual": "AGUARDANDO CLIENTE"
+          "estado_atual": "GMUD"
         },
         {
           "ticket": "2026012626000166",
@@ -30,6 +30,44 @@
         }
       ],
       "recommendation": "Revisar critério de encerramento com Tiago, Vilante. Audit de 5 tickets por atendente pra entender se fechamento está sendo prematuro.",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Marcio_Guimaraes",
+      "severity": "crit",
+      "category": "capacidade",
+      "title": "Marcio Guimaraes com carga real de 9 tickets",
+      "summary": "Marcio Guimaraes tem 9 tickets ativos sob sua responsabilidade: 3 em atendimento + 6 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Marcio Guimaraes",
+          "carga_real": 9,
+          "em_atendimento": 3,
+          "abertos": 6,
+          "aguardando_terceiros": 2,
+          "ativos_total": 11
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Sergio_Luiz_Glovatinski_Jr",
+      "severity": "crit",
+      "category": "capacidade",
+      "title": "Sergio Luiz Glovatinski Jr com carga real de 11 tickets",
+      "summary": "Sergio Luiz Glovatinski Jr tem 11 tickets ativos sob sua responsabilidade: 2 em atendimento + 9 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Sergio Luiz Glovatinski Jr",
+          "carga_real": 11,
+          "em_atendimento": 2,
+          "abertos": 9,
+          "aguardando_terceiros": 0,
+          "ativos_total": 11
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
       "impact_estimate": "médio"
     },
     {
@@ -52,57 +90,19 @@
       "impact_estimate": "médio"
     },
     {
-      "id": "sobrecarga_Luciano_Katsumi_Shiraishi",
+      "id": "sobrecarga_Thiago_Trufelli",
       "severity": "warn",
       "category": "capacidade",
-      "title": "Luciano Katsumi Shiraishi com carga real de 7 tickets",
-      "summary": "Luciano Katsumi Shiraishi tem 7 tickets ativos sob sua responsabilidade: 0 em atendimento + 7 abertos (além de 1 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "title": "Thiago Trufelli com carga real de 5 tickets",
+      "summary": "Thiago Trufelli tem 5 tickets ativos sob sua responsabilidade: 2 em atendimento + 3 abertos (além de 4 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
       "evidence": [
         {
-          "atendente": "Luciano Katsumi Shiraishi",
-          "carga_real": 7,
-          "em_atendimento": 0,
-          "abertos": 7,
-          "aguardando_terceiros": 1,
-          "ativos_total": 8
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
-    {
-      "id": "sobrecarga_Marcio_Guimaraes",
-      "severity": "warn",
-      "category": "capacidade",
-      "title": "Marcio Guimaraes com carga real de 5 tickets",
-      "summary": "Marcio Guimaraes tem 5 tickets ativos sob sua responsabilidade: 4 em atendimento + 1 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Marcio Guimaraes",
+          "atendente": "Thiago Trufelli",
           "carga_real": 5,
-          "em_atendimento": 4,
-          "abertos": 1,
-          "aguardando_terceiros": 2,
-          "ativos_total": 7
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
-    {
-      "id": "sobrecarga_Sergio_Luiz_Glovatinski_Jr",
-      "severity": "warn",
-      "category": "capacidade",
-      "title": "Sergio Luiz Glovatinski Jr com carga real de 6 tickets",
-      "summary": "Sergio Luiz Glovatinski Jr tem 6 tickets ativos sob sua responsabilidade: 2 em atendimento + 4 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Sergio Luiz Glovatinski Jr",
-          "carga_real": 6,
           "em_atendimento": 2,
-          "abertos": 4,
-          "aguardando_terceiros": 0,
-          "ativos_total": 6
+          "abertos": 3,
+          "aguardando_terceiros": 4,
+          "ativos_total": 9
         }
       ],
       "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
