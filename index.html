@@ -9736,8 +9736,9 @@ function renderResumo(){
 }
 
 var _autoFetching=false;
-// ─── DATA SOURCE — feature flag XLSX vs JSON (historico_completo) ────────
-// Escolha via URL (?source=json) ou localStorage (ssg_source='json'). Default: xlsx.
+// ─── DATA SOURCE — JSON é default (fonte: MySQL OTRS via GWMS, sempre fresh) ──
+// Opt-out via URL (?source=xlsx) ou localStorage (ssg_source='xlsx') caso queira
+// voltar ao XLSX do pipeline Znuny (snapshot com cache, pode estar defasado).
 function _getDataSource(){
   try{
     var q=new URLSearchParams(location.search).get('source');
@@ -9745,7 +9746,7 @@ function _getDataSource(){
     var ls=localStorage.getItem('ssg_source');
     if(ls==='json'||ls==='xlsx') return ls;
   }catch(e){}
-  return 'xlsx';
+  return 'json';  // default: banco de dados direto
 }
 // Converte historico_completo.json row → formato compatível com parseR (keys tipo XLSX)
 // Traduz estados raw do OTRS pros nomes que o EM2 mapping reconhece.
