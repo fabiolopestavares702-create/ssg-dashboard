@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-23T17:50:55.608333",
+  "generated_at": "2026-04-23T19:21:15.270105",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 78%</strong>, com margem para melhoria.<br><br>O volume de <strong>80 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (33.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 61.0h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>26% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>81 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.8h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>quarta-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>26% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -14,7 +14,7 @@
       {
         "label": "Risco de SLA",
         "value": "Médio",
-        "sub": "1ª resposta: 33.0 min",
+        "sub": "1ª resposta: 34.0 min",
         "color": "var(--warn)"
       },
       {
@@ -46,13 +46,13 @@
   "riscos_operacionais": [
     {
       "titulo": "Tempo de primeira resposta acima da meta",
-      "desc": "Mediana de 33.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
+      "desc": "Mediana de 34.0 min contra meta de 30 min. Tendência de deterioração se não houver intervenção.",
       "nivel": "medium",
       "confianca": 78
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "80 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "81 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
@@ -102,11 +102,11 @@
     },
     {
       "cliente": "FADEL",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 310 chamados (14% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Infraestrutura e Cloud</strong> concentra 43% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 309 chamados (14% do total). <strong>1 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>Infraestrutura e Cloud</strong> concentra 43% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "310 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "309 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -126,11 +126,11 @@
     },
     {
       "cliente": "ALMEIDA JR",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 204 chamados (9% do total). <strong>2 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 95% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 202 chamados (9% do total). <strong>2 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 95% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "204 chamados (9% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "202 chamados (9% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
