@@ -1,9 +1,9 @@
 {
-  "generated_at": 1776964104,
-  "generated_at_iso": "2026-04-23T17:08:24Z",
+  "generated_at": 1776965206,
+  "generated_at_iso": "2026-04-23T17:26:46Z",
   "counts": {
     "crit": 1,
-    "warn": 6,
+    "warn": 7,
     "ok": 0
   },
   "insights": [
@@ -112,14 +112,33 @@
       "id": "sobrecarga_Marcio_Guimaraes",
       "severity": "warn",
       "category": "capacidade",
-      "title": "Marcio Guimaraes com carga real de 5 tickets",
-      "summary": "Marcio Guimaraes tem 5 tickets ativos sob sua responsabilidade: 3 em atendimento + 2 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "title": "Marcio Guimaraes com carga real de 6 tickets",
+      "summary": "Marcio Guimaraes tem 6 tickets ativos sob sua responsabilidade: 3 em atendimento + 3 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
       "evidence": [
         {
           "atendente": "Marcio Guimaraes",
-          "carga_real": 5,
+          "carga_real": 6,
           "em_atendimento": 3,
-          "abertos": 2,
+          "abertos": 3,
+          "aguardando_terceiros": 2,
+          "ativos_total": 8
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Eduardo_Candido",
+      "severity": "warn",
+      "category": "capacidade",
+      "title": "Eduardo Candido com carga real de 5 tickets",
+      "summary": "Eduardo Candido tem 5 tickets ativos sob sua responsabilidade: 0 em atendimento + 5 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Eduardo Candido",
+          "carga_real": 5,
+          "em_atendimento": 0,
+          "abertos": 5,
           "aguardando_terceiros": 2,
           "ativos_total": 7
         }
