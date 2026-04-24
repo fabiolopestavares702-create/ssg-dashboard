@@ -1,37 +1,12 @@
 {
-  "generated_at": 1777040690,
-  "generated_at_iso": "2026-04-24T14:24:50Z",
+  "generated_at": 1777045769,
+  "generated_at_iso": "2026-04-24T15:49:29Z",
   "counts": {
     "crit": 1,
-    "warn": 6,
+    "warn": 5,
     "ok": 0
   },
   "insights": [
-    {
-      "id": "reaberturas_recorrentes_NSX",
-      "severity": "warn",
-      "category": "qualidade",
-      "title": "Padrão de reabertura recorrente em NSX",
-      "summary": "2 tickets reabertos 2× ou mais nos últimos 90d em NSX, concentrados em PROTHEUS, SSG-MELHORIAS. Indica fechamento prematuro ou escopo mal definido.",
-      "evidence": [
-        {
-          "ticket": "2026012626000148",
-          "fila": "SSG-MELHORIAS",
-          "atendente": "Tiago Silva",
-          "vezes_fechado": 2,
-          "estado_atual": "GMUD"
-        },
-        {
-          "ticket": "2026012626000166",
-          "fila": "PROTHEUS",
-          "atendente": "Vilante Marques Alves",
-          "vezes_fechado": 2,
-          "estado_atual": "RETORNO CLIENTE"
-        }
-      ],
-      "recommendation": "Revisar critério de encerramento com Tiago, Vilante. Audit de 5 tickets por atendente pra entender se fechamento está sendo prematuro.",
-      "impact_estimate": "médio"
-    },
     {
       "id": "sobrecarga_Tiago_Silva",
       "severity": "warn",
@@ -132,16 +107,16 @@
       "severity": "warn",
       "category": "distribuicao",
       "title": "Fila SSG concentrada em AUTOZONE",
-      "summary": "10 de 16 tickets silenciosos na fila SSG (62%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
+      "summary": "9 de 15 tickets silenciosos na fila SSG (60%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
       "evidence": [
         {
           "fila": "SSG",
           "cliente_top": "AUTOZONE",
-          "n_top": 10,
-          "n_total": 16,
-          "pct_top": 0.62,
+          "n_top": 9,
+          "n_total": 15,
+          "pct_top": 0.6,
           "distribuicao": {
-            "AUTOZONE": 10,
+            "AUTOZONE": 9,
             "GDBR": 2,
             "NSX": 1,
             "FINPEC": 1,
