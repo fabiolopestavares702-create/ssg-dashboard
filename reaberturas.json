@@ -1,7 +1,7 @@
 {
-  "generated_at": 1776989397,
-  "generated_at_iso": "2026-04-24T00:09:57Z",
-  "count": 8,
+  "generated_at": 1777002746,
+  "generated_at_iso": "2026-04-24T03:52:26Z",
+  "count": 9,
   "filas": [
     "DATASUL",
     "DBA",
@@ -47,6 +47,18 @@
       "modificado": "2026-03-26T11:52:50",
       "vezes_fechado": 2,
       "assunto": "Levantamento Referente Cotação de cambio para importações"
+    },
+    {
+      "ticket": "2026041626000125",
+      "cliente": "SERVENG",
+      "fila": "DBA",
+      "estado_atual": "RETORNO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-16T08:05:08",
+      "modificado": "2026-04-23T21:45:24",
+      "vezes_fechado": 1,
+      "assunto": "ENC: Indisponibilidade do Serviço de Workflow de Medição"
     },
     {
       "ticket": "2026041226000043",
