@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777066171,
-  "generated_at_iso": "2026-04-24T21:29:31Z",
-  "count": 180,
+  "generated_at": 1777069480,
+  "generated_at_iso": "2026-04-24T22:24:40Z",
+  "count": 182,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,42 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042426000404",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T18:50:13",
+      "modificado": "2026-04-24T18:52:14",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042418461227"
+    },
+    {
+      "ticket": "2026042426000397",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T18:45:13",
+      "modificado": "2026-04-24T18:51:32",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042418450227"
+    },
+    {
+      "ticket": "2026042226000159",
+      "cliente": "bucci.luana@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "OPEN",
+      "prioridade": "1 very low",
+      "atendente": "Luciano Katsumi Shiraishi",
+      "criado": "2026-04-22T09:30:16",
+      "modificado": "2026-04-24T18:48:48",
+      "idade_dias": 2,
+      "assunto": "Inclusão monitoramento das maquinas - Portal de cliente"
+    },
     {
       "ticket": "2026042426000379",
       "cliente": "TJBA",
@@ -865,18 +901,6 @@
       "assunto": "Auxilio com otimização de fonte API REST DASH_API01"
     },
     {
-      "ticket": "2026042226000239",
-      "cliente": "bruno.fagundes@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T11:15:10",
-      "modificado": "2026-04-24T05:00:16",
-      "idade_dias": 2,
-      "assunto": "Revisão TOTVS Network"
-    },
-    {
       "ticket": "2026041726000356",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -887,6 +911,18 @@
       "modificado": "2026-04-24T05:00:16",
       "idade_dias": 7,
       "assunto": "Contabilização offline"
+    },
+    {
+      "ticket": "2026042226000239",
+      "cliente": "bruno.fagundes@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T11:15:10",
+      "modificado": "2026-04-24T05:00:16",
+      "idade_dias": 2,
+      "assunto": "Revisão TOTVS Network"
     },
     {
       "ticket": "2026042226000221",
@@ -913,16 +949,16 @@
       "assunto": "Alteração Threshold Discos Servidor SRV-SQL-PRD - Cliente AUTOZONE"
     },
     {
-      "ticket": "2026041726000301",
+      "ticket": "2026041626000483",
       "cliente": "AUTOZONE",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
+      "prioridade": "4 high",
       "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-17T15:50:27",
+      "criado": "2026-04-16T18:07:06",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
+      "idade_dias": 8,
+      "assunto": "Refaz saldos - PD8 - USGAAP"
     },
     {
       "ticket": "2026041426000254",
@@ -937,30 +973,6 @@
       "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
     },
     {
-      "ticket": "2026041626000483",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-16T18:07:06",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 8,
-      "assunto": "Refaz saldos - PD8 - USGAAP"
-    },
-    {
-      "ticket": "2026032626000073",
-      "cliente": "AUMOVIO",
-      "fila": "DATASUL",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Guilherme Rosa",
-      "criado": "2026-03-26T07:22:06",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 29,
-      "assunto": "Cadastro bancario de fornecedor"
-    },
-    {
       "ticket": "2026042226000131",
       "cliente": "eder.oliveira@totvs.com.br",
       "fila": "GWMS",
@@ -971,6 +983,18 @@
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 2,
       "assunto": "Acesso - Monitoramentos TI"
+    },
+    {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 11,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
     },
     {
       "ticket": "2026041726000098",
@@ -1021,16 +1045,16 @@
       "assunto": "Alteração de data em monitoramento de certificado."
     },
     {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
+      "fila": "INFRAESTUTURA",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
+      "prioridade": "4 high",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T16:21:22",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 11,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+      "idade_dias": 7,
+      "assunto": "PROBLEMA AO ACESSAR"
     },
     {
       "ticket": "2026041626000447",
@@ -1057,16 +1081,16 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
+      "ticket": "2026032626000073",
+      "cliente": "AUMOVIO",
+      "fila": "DATASUL",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
+      "prioridade": "3 normal",
+      "atendente": "Guilherme Rosa",
+      "criado": "2026-03-26T07:22:06",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "PROBLEMA AO ACESSAR"
+      "idade_dias": 29,
+      "assunto": "Cadastro bancario de fornecedor"
     },
     {
       "ticket": "2026042026000215",
@@ -1079,6 +1103,18 @@
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 4,
       "assunto": "Revisão de ativos de rede da ARCO"
+    },
+    {
+      "ticket": "2026041726000301",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-17T15:50:27",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 7,
+      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
     },
     {
       "ticket": "2026041726000071",
@@ -1367,18 +1403,6 @@
       "modificado": "2026-04-23T13:12:03",
       "idade_dias": 17,
       "assunto": "Liberar Modo Financeiro"
-    },
-    {
-      "ticket": "2026042226000159",
-      "cliente": "bucci.luana@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "OPEN",
-      "prioridade": "1 very low",
-      "atendente": "Luciano Katsumi Shiraishi",
-      "criado": "2026-04-22T09:30:16",
-      "modificado": "2026-04-23T11:41:14",
-      "idade_dias": 2,
-      "assunto": "Inclusão monitoramento das maquinas - Portal de cliente"
     },
     {
       "ticket": "2026042326000282",
@@ -1989,7 +2013,7 @@
       "atendente": "Pedro Luiz",
       "criado": "2026-04-10T18:35:22",
       "modificado": "2026-04-14T16:59:59",
-      "idade_dias": 13,
+      "idade_dias": 14,
       "assunto": "BUG reload/restart centreon"
     },
     {
