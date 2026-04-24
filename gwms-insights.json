@@ -1,59 +1,21 @@
 {
-  "generated_at": 1777052413,
-  "generated_at_iso": "2026-04-24T17:40:13Z",
+  "generated_at": 1777055504,
+  "generated_at_iso": "2026-04-24T18:31:44Z",
   "counts": {
-    "crit": 1,
-    "warn": 5,
+    "crit": 2,
+    "warn": 3,
     "ok": 0
   },
   "insights": [
     {
-      "id": "sobrecarga_Tiago_Silva",
-      "severity": "warn",
-      "category": "capacidade",
-      "title": "Tiago Silva com carga real de 5 tickets",
-      "summary": "Tiago Silva tem 5 tickets ativos sob sua responsabilidade: 5 em atendimento + 0 abertos (além de 5 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Tiago Silva",
-          "carga_real": 5,
-          "em_atendimento": 5,
-          "abertos": 0,
-          "aguardando_terceiros": 5,
-          "ativos_total": 11
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
-    {
-      "id": "sobrecarga_Marcio_Guimaraes",
-      "severity": "warn",
-      "category": "capacidade",
-      "title": "Marcio Guimaraes com carga real de 7 tickets",
-      "summary": "Marcio Guimaraes tem 7 tickets ativos sob sua responsabilidade: 4 em atendimento + 3 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Marcio Guimaraes",
-          "carga_real": 7,
-          "em_atendimento": 4,
-          "abertos": 3,
-          "aguardando_terceiros": 2,
-          "ativos_total": 9
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
-    {
-      "id": "sobrecarga_Jean_Pierre_Rocha",
+      "id": "sobrecarga_Sergio_Luiz_Glovatinski_Jr",
       "severity": "crit",
       "category": "capacidade",
-      "title": "Jean Pierre Rocha com carga real de 9 tickets",
-      "summary": "Jean Pierre Rocha tem 9 tickets ativos sob sua responsabilidade: 1 em atendimento + 8 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "title": "Sergio Luiz Glovatinski Jr com carga real de 9 tickets",
+      "summary": "Sergio Luiz Glovatinski Jr tem 9 tickets ativos sob sua responsabilidade: 1 em atendimento + 8 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
       "evidence": [
         {
-          "atendente": "Jean Pierre Rocha",
+          "atendente": "Sergio Luiz Glovatinski Jr",
           "carga_real": 9,
           "em_atendimento": 1,
           "abertos": 8,
@@ -84,19 +46,38 @@
       "impact_estimate": "médio"
     },
     {
-      "id": "sobrecarga_Sergio_Luiz_Glovatinski_Jr",
-      "severity": "warn",
+      "id": "sobrecarga_Jean_Pierre_Rocha",
+      "severity": "crit",
       "category": "capacidade",
-      "title": "Sergio Luiz Glovatinski Jr com carga real de 6 tickets",
-      "summary": "Sergio Luiz Glovatinski Jr tem 6 tickets ativos sob sua responsabilidade: 1 em atendimento + 5 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "title": "Jean Pierre Rocha com carga real de 9 tickets",
+      "summary": "Jean Pierre Rocha tem 9 tickets ativos sob sua responsabilidade: 1 em atendimento + 8 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
       "evidence": [
         {
-          "atendente": "Sergio Luiz Glovatinski Jr",
-          "carga_real": 6,
+          "atendente": "Jean Pierre Rocha",
+          "carga_real": 9,
           "em_atendimento": 1,
-          "abertos": 5,
+          "abertos": 8,
           "aguardando_terceiros": 0,
-          "ativos_total": 6
+          "ativos_total": 9
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Marcio_Guimaraes",
+      "severity": "warn",
+      "category": "capacidade",
+      "title": "Marcio Guimaraes com carga real de 6 tickets",
+      "summary": "Marcio Guimaraes tem 6 tickets ativos sob sua responsabilidade: 4 em atendimento + 2 abertos (além de 2 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Marcio Guimaraes",
+          "carga_real": 6,
+          "em_atendimento": 4,
+          "abertos": 2,
+          "aguardando_terceiros": 2,
+          "ativos_total": 8
         }
       ],
       "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
@@ -107,20 +88,20 @@
       "severity": "warn",
       "category": "distribuicao",
       "title": "Fila SSG concentrada em AUTOZONE",
-      "summary": "9 de 15 tickets silenciosos na fila SSG (60%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
+      "summary": "9 de 14 tickets silenciosos na fila SSG (64%) são do cliente AUTOZONE. Concentração alta pode indicar SLA subdimensionado ou problema recorrente.",
       "evidence": [
         {
           "fila": "SSG",
           "cliente_top": "AUTOZONE",
           "n_top": 9,
-          "n_total": 15,
-          "pct_top": 0.6,
+          "n_total": 14,
+          "pct_top": 0.64,
           "distribuicao": {
             "AUTOZONE": 9,
             "GDBR": 2,
             "NSX": 1,
             "FINPEC": 1,
-            "FADEL": 1
+            "ALMEIDA JR": 1
           }
         }
       ],
