@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777019133,
-  "generated_at_iso": "2026-04-24T08:25:33Z",
-  "count": 2226,
+  "generated_at": 1777025310,
+  "generated_at_iso": "2026-04-24T10:08:30Z",
+  "count": 2227,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,26 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "num": "2026042426000057",
+      "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Errors - POST incompleto - 26042404560319",
+      "criado": "2026-04-24T05:00:08",
+      "modificado": "2026-04-24T05:44:51",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
     {
       "num": "2026042426000048",
       "assunto": "ARCO - GWMS-SERVER - ARCO61024 - Process:conhost.exe - 26042402321439",
@@ -933,26 +953,6 @@
       "resp_min_bh": 12
     },
     {
-      "num": "2026042326000022",
-      "assunto": "ERRO NA COMPEMSAÇÃO CONTROLE DE CAMBIO/CONTAS A PAGAR",
-      "criado": "2026-04-23T00:15:09",
-      "modificado": "2026-04-23T09:30:25",
-      "fila": "SSG",
-      "estado": "aguardando atendente (interno)",
-      "prioridade": "3 normal",
-      "atendente": "Diego Cardoso",
-      "primeiro_nome": "Diego",
-      "ultimo_nome": "Cardoso",
-      "cli_id": "GDBR",
-      "cli_user": "erwins.almeida@gdbr-tg.com.br",
-      "servico": "Serviço de Sustentação Groundwork::ERP Protheus",
-      "fechado": null,
-      "resp_min_raw": 516,
-      "sol_min_raw": null,
-      "sol_min_bh": null,
-      "resp_min_bh": 51
-    },
-    {
       "num": "2026042326000013",
       "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:P12_AUTOZONE - User Expiration - 26042300134514",
       "criado": "2026-04-23T00:15:09",
@@ -971,6 +971,26 @@
       "sol_min_raw": null,
       "sol_min_bh": null,
       "resp_min_bh": 105
+    },
+    {
+      "num": "2026042326000022",
+      "assunto": "ERRO NA COMPEMSAÇÃO CONTROLE DE CAMBIO/CONTAS A PAGAR",
+      "criado": "2026-04-23T00:15:09",
+      "modificado": "2026-04-23T09:30:25",
+      "fila": "SSG",
+      "estado": "aguardando atendente (interno)",
+      "prioridade": "3 normal",
+      "atendente": "Diego Cardoso",
+      "primeiro_nome": "Diego",
+      "ultimo_nome": "Cardoso",
+      "cli_id": "GDBR",
+      "cli_user": "erwins.almeida@gdbr-tg.com.br",
+      "servico": "Serviço de Sustentação Groundwork::ERP Protheus",
+      "fechado": null,
+      "resp_min_raw": 516,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": 51
     },
     {
       "num": "2026042226000631",
