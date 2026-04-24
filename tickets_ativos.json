@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777069480,
-  "generated_at_iso": "2026-04-24T22:24:40Z",
-  "count": 182,
+  "generated_at": 1777072188,
+  "generated_at_iso": "2026-04-24T23:09:48Z",
+  "count": 184,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,30 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042426000413",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T19:45:20",
+      "modificado": "2026-04-24T19:53:36",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042419431577"
+    },
+    {
+      "ticket": "2026042426000422",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T19:50:21",
+      "modificado": "2026-04-24T19:53:31",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042419500931"
+    },
     {
       "ticket": "2026042426000404",
       "cliente": "monitoramento@groundwork.com.br",
@@ -901,30 +925,6 @@
       "assunto": "Auxilio com otimização de fonte API REST DASH_API01"
     },
     {
-      "ticket": "2026041726000356",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-17T16:27:41",
-      "modificado": "2026-04-24T05:00:16",
-      "idade_dias": 7,
-      "assunto": "Contabilização offline"
-    },
-    {
-      "ticket": "2026042226000239",
-      "cliente": "bruno.fagundes@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T11:15:10",
-      "modificado": "2026-04-24T05:00:16",
-      "idade_dias": 2,
-      "assunto": "Revisão TOTVS Network"
-    },
-    {
       "ticket": "2026042226000221",
       "cliente": "jordan.feitoza@braveo.com.br",
       "fila": "GWMS",
@@ -935,6 +935,18 @@
       "modificado": "2026-04-24T05:00:16",
       "idade_dias": 2,
       "assunto": "Alteração Interface Usage Graphics "
+    },
+    {
+      "ticket": "2026041726000356",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-17T16:27:41",
+      "modificado": "2026-04-24T05:00:16",
+      "idade_dias": 7,
+      "assunto": "Contabilização offline"
     },
     {
       "ticket": "2026042226000471",
@@ -949,40 +961,16 @@
       "assunto": "Alteração Threshold Discos Servidor SRV-SQL-PRD - Cliente AUTOZONE"
     },
     {
-      "ticket": "2026041626000483",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-16T18:07:06",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 8,
-      "assunto": "Refaz saldos - PD8 - USGAAP"
-    },
-    {
-      "ticket": "2026041426000254",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Joao Santos",
-      "criado": "2026-04-14T14:00:11",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 10,
-      "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
-    },
-    {
-      "ticket": "2026042226000131",
-      "cliente": "eder.oliveira@totvs.com.br",
+      "ticket": "2026042226000239",
+      "cliente": "bruno.fagundes@groundwork.com.br",
       "fila": "GWMS",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
       "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T09:25:14",
-      "modificado": "2026-04-24T05:00:15",
+      "criado": "2026-04-22T11:15:10",
+      "modificado": "2026-04-24T05:00:16",
       "idade_dias": 2,
-      "assunto": "Acesso - Monitoramentos TI"
+      "assunto": "Revisão TOTVS Network"
     },
     {
       "ticket": "2026041326000452",
@@ -997,28 +985,16 @@
       "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
     },
     {
-      "ticket": "2026041726000098",
-      "cliente": "ALMEIDA JR",
+      "ticket": "2026041726000301",
+      "cliente": "AUTOZONE",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-17T09:37:23",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-17T15:50:27",
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 7,
-      "assunto": "Ajuste boleto - Cessão de espaço"
-    },
-    {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "Compartilhamento documentos One Drive"
+      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
     },
     {
       "ticket": "2026040926000121",
@@ -1045,16 +1021,16 @@
       "assunto": "Alteração de data em monitoramento de certificado."
     },
     {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
+      "ticket": "2026041626000483",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-16T18:07:06",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "PROBLEMA AO ACESSAR"
+      "idade_dias": 8,
+      "assunto": "Refaz saldos - PD8 - USGAAP"
     },
     {
       "ticket": "2026041626000447",
@@ -1105,16 +1081,16 @@
       "assunto": "Revisão de ativos de rede da ARCO"
     },
     {
-      "ticket": "2026041726000301",
-      "cliente": "AUTOZONE",
+      "ticket": "2026041726000098",
+      "cliente": "ALMEIDA JR",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-17T15:50:27",
+      "prioridade": "4 high",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-17T09:37:23",
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 7,
-      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
+      "assunto": "Ajuste boleto - Cessão de espaço"
     },
     {
       "ticket": "2026041726000071",
@@ -1151,6 +1127,54 @@
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 17,
       "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
+    },
+    {
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 7,
+      "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
+      "ticket": "2026041426000254",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Joao Santos",
+      "criado": "2026-04-14T14:00:11",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 10,
+      "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
+    },
+    {
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T16:21:22",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 7,
+      "assunto": "PROBLEMA AO ACESSAR"
+    },
+    {
+      "ticket": "2026042226000131",
+      "cliente": "eder.oliveira@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T09:25:14",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 2,
+      "assunto": "Acesso - Monitoramentos TI"
     },
     {
       "ticket": "2026040826000168",
@@ -1941,7 +1965,7 @@
       "atendente": "Marcelo David",
       "criado": "2026-04-01T20:02:59",
       "modificado": "2026-04-17T12:38:09",
-      "idade_dias": 22,
+      "idade_dias": 23,
       "assunto": "Configurar Compilador"
     },
     {
