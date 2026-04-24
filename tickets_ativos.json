@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777072188,
-  "generated_at_iso": "2026-04-24T23:09:48Z",
+  "generated_at": 1777075012,
+  "generated_at_iso": "2026-04-24T23:56:52Z",
   "count": 184,
   "filas": [
     "DATASUL",
@@ -849,7 +849,7 @@
       "atendente": "Sergio Luiz Glovatinski Jr",
       "criado": "2026-04-23T20:50:07",
       "modificado": "2026-04-24T08:17:50",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - Alertas WARNING - 26042320491792"
     },
     {
