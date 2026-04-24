@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777002748,
-  "generated_at_iso": "2026-04-24T03:52:28Z",
-  "count": 178,
+  "generated_at": 1777011155,
+  "generated_at_iso": "2026-04-24T06:12:35Z",
+  "count": 185,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,90 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042426000048",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T02:35:10",
+      "modificado": "2026-04-24T03:01:09",
+      "idade_dias": 0,
+      "assunto": "ARCO - GWMS-SERVER - ARCO61024 - Process:conhost.exe - 26042402321439"
+    },
+    {
+      "ticket": "2026042426000039",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "CLASSIFICADO",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Eroico",
+      "criado": "2026-04-24T02:25:09",
+      "modificado": "2026-04-24T02:32:01",
+      "idade_dias": 0,
+      "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:Jobs - 26042402184081"
+    },
+    {
+      "ticket": "2026042426000021",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T02:25:08",
+      "modificado": "2026-04-24T02:30:32",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042402210984"
+    },
+    {
+      "ticket": "2026042326000541",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-23T23:45:09",
+      "modificado": "2026-04-24T02:23:10",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042323420843"
+    },
+    {
+      "ticket": "2026042426000011",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T00:45:16",
+      "modificado": "2026-04-24T02:22:44",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Check Times - 26042400400979"
+    },
+    {
+      "ticket": "2026042326000531",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-23T22:45:22",
+      "modificado": "2026-04-24T02:22:37",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042322443493"
+    },
+    {
+      "ticket": "2026042326000522",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-23T22:45:21",
+      "modificado": "2026-04-24T02:22:30",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042322431929"
+    },
     {
       "ticket": "2026042326000041",
       "cliente": "GDBR",
@@ -805,18 +889,6 @@
       "assunto": "AD - Manutenção nos grupos de Internet "
     },
     {
-      "ticket": "2026041626000483",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-16T18:07:06",
-      "modificado": "2026-04-23T05:00:17",
-      "idade_dias": 7,
-      "assunto": "Refaz saldos - PD8 - USGAAP"
-    },
-    {
       "ticket": "2026041726000356",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -829,16 +901,16 @@
       "assunto": "Contabilização offline"
     },
     {
-      "ticket": "2026041726000071",
-      "cliente": "joalyson.oliveira@teletex.com",
-      "fila": "GWMS",
+      "ticket": "2026041626000483",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-17T08:55:11",
+      "prioridade": "4 high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-16T18:07:06",
       "modificado": "2026-04-23T05:00:17",
-      "idade_dias": 6,
-      "assunto": "Verificação cases gerados via automação GW x SN"
+      "idade_dias": 7,
+      "assunto": "Refaz saldos - PD8 - USGAAP"
     },
     {
       "ticket": "2026041726000098",
@@ -865,6 +937,18 @@
       "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
     },
     {
+      "ticket": "2026041726000071",
+      "cliente": "joalyson.oliveira@teletex.com",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-17T08:55:11",
+      "modificado": "2026-04-23T05:00:17",
+      "idade_dias": 6,
+      "assunto": "Verificação cases gerados via automação GW x SN"
+    },
+    {
       "ticket": "2026041526000501",
       "cliente": "matheusvieira@mevieira.com.br",
       "fila": "DBA",
@@ -875,18 +959,6 @@
       "modificado": "2026-04-23T05:00:17",
       "idade_dias": 8,
       "assunto": "Dual Duarte - Configuração ODBC"
-    },
-    {
-      "ticket": "2026041326000523",
-      "cliente": "TJBA",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Thiago Trufelli",
-      "criado": "2026-04-13T18:25:39",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 10,
-      "assunto": "Netflow"
     },
     {
       "ticket": "2026032626000073",
@@ -901,28 +973,16 @@
       "assunto": "Cadastro bancario de fornecedor"
     },
     {
-      "ticket": "2026040826000168",
-      "cliente": "FINPEC",
-      "fila": "SSG",
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "3 normal",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-08T10:40:08",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
       "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 15,
-      "assunto": "Zeramento 12/2025."
-    },
-    {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 10,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+      "idade_dias": 6,
+      "assunto": "Compartilhamento documentos One Drive"
     },
     {
       "ticket": "2026040926000121",
@@ -937,18 +997,6 @@
       "assunto": "UNIMED-CURITIBA | Solicitação de mudança para o cliente Unimed "
     },
     {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
-      "modificado": "2026-04-23T05:00:16",
-      "idade_dias": 6,
-      "assunto": "Compartilhamento documentos One Drive"
-    },
-    {
       "ticket": "2026041526000065",
       "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
@@ -961,28 +1009,40 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
-      "ticket": "2026041626000161",
+      "ticket": "2026041326000523",
+      "cliente": "TJBA",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Thiago Trufelli",
+      "criado": "2026-04-13T18:25:39",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 10,
+      "assunto": "Netflow"
+    },
+    {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 10,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+    },
+    {
+      "ticket": "2026040826000168",
       "cliente": "FINPEC",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "3 normal",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-16T08:50:16",
-      "modificado": "2026-04-23T05:00:15",
-      "idade_dias": 7,
-      "assunto": "Filial Comendador Gomes/MG"
-    },
-    {
-      "ticket": "2026041526000387",
-      "cliente": "cyntia.maia@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Marcio Guimaraes",
-      "criado": "2026-04-15T14:15:06",
-      "modificado": "2026-04-23T05:00:15",
-      "idade_dias": 8,
-      "assunto": "Alinhamento: Processo de Contatos Telefônicos"
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-08T10:40:08",
+      "modificado": "2026-04-23T05:00:16",
+      "idade_dias": 15,
+      "assunto": "Zeramento 12/2025."
     },
     {
       "ticket": "2026031326000169",
@@ -997,16 +1057,16 @@
       "assunto": "Revisão de alertas FADEL"
     },
     {
-      "ticket": "2026041426000183",
-      "cliente": "AUTOZONE",
+      "ticket": "2026041626000161",
+      "cliente": "FINPEC",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "3 normal",
-      "atendente": "Cristiano Scaranci",
-      "criado": "2026-04-14T11:00:22",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-16T08:50:16",
       "modificado": "2026-04-23T05:00:15",
-      "idade_dias": 9,
-      "assunto": "RES: RES: RES: RES: RES: RES: RES: [EXTERNAL] Re: AZ - PAGAR - Erro Rateio cartão de crédito"
+      "idade_dias": 7,
+      "assunto": "Filial Comendador Gomes/MG"
     },
     {
       "ticket": "2026041526000538",
@@ -1019,6 +1079,30 @@
       "modificado": "2026-04-23T05:00:15",
       "idade_dias": 8,
       "assunto": "BERNECK | Migração do ambiente Berneck para o monitoramento interno Teletex."
+    },
+    {
+      "ticket": "2026041526000387",
+      "cliente": "cyntia.maia@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Marcio Guimaraes",
+      "criado": "2026-04-15T14:15:06",
+      "modificado": "2026-04-23T05:00:15",
+      "idade_dias": 8,
+      "assunto": "Alinhamento: Processo de Contatos Telefônicos"
+    },
+    {
+      "ticket": "2026041426000183",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Cristiano Scaranci",
+      "criado": "2026-04-14T11:00:22",
+      "modificado": "2026-04-23T05:00:15",
+      "idade_dias": 9,
+      "assunto": "RES: RES: RES: RES: RES: RES: RES: [EXTERNAL] Re: AZ - PAGAR - Erro Rateio cartão de crédito"
     },
     {
       "ticket": "2026042226000471",
