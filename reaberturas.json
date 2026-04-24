@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777040679,
-  "generated_at_iso": "2026-04-24T14:24:39Z",
-  "count": 8,
+  "generated_at": 1777045760,
+  "generated_at_iso": "2026-04-24T15:49:20Z",
+  "count": 7,
   "filas": [
     "DATASUL",
     "DBA",
@@ -35,18 +35,6 @@
       "modificado": "2026-04-23T20:01:25",
       "vezes_fechado": 2,
       "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
-    },
-    {
-      "ticket": "2026012626000166",
-      "cliente": "NSX",
-      "fila": "PROTHEUS",
-      "estado_atual": "RETORNO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vilante Marques Alves",
-      "criado": "2026-01-26T11:38:03",
-      "modificado": "2026-03-26T11:52:50",
-      "vezes_fechado": 2,
-      "assunto": "Levantamento Referente Cotação de cambio para importações"
     },
     {
       "ticket": "2026041226000043",
