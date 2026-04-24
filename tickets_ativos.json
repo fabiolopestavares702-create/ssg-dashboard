@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777062609,
-  "generated_at_iso": "2026-04-24T20:30:09Z",
-  "count": 177,
+  "generated_at": 1777066171,
+  "generated_at_iso": "2026-04-24T21:29:31Z",
+  "count": 180,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,90 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042426000379",
+      "cliente": "TJBA",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-24T18:08:58",
+      "modificado": "2026-04-24T18:24:51",
+      "idade_dias": 0,
+      "assunto": "Ajuste Monitoramento -  ADP001 ao ADP021"
+    },
+    {
+      "ticket": "2026042426000146",
+      "cliente": "paulo.filho@arcoeducacao.com.br",
+      "fila": "GWMS",
+      "estado": "EM ATENDIMENTO",
+      "prioridade": "1 very low",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-24T10:20:10",
+      "modificado": "2026-04-24T18:05:27",
+      "idade_dias": 0,
+      "assunto": "Adição Monitoria - OCI Docker Conector Sensedia "
+    },
+    {
+      "ticket": "2026010826000262",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "EM ATENDIMENTO",
+      "prioridade": "5 very high",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-01-08T16:09:01",
+      "modificado": "2026-04-24T18:04:41",
+      "idade_dias": 106,
+      "assunto": "Atualização tabela Imposto de Renda - 2026"
+    },
+    {
+      "ticket": "2026042226000168",
+      "cliente": "guilherme.jonck@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "OPEN",
+      "prioridade": "3 normal",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-22T10:00:21",
+      "modificado": "2026-04-24T18:04:36",
+      "idade_dias": 2,
+      "assunto": "Desenvolvimento do gw/v2"
+    },
+    {
+      "ticket": "2026041726000034",
+      "cliente": "weskley.silva@groundwork.com.br",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-04-17T07:50:21",
+      "modificado": "2026-04-24T17:59:08",
+      "idade_dias": 7,
+      "assunto": "Re: 30.000 documentos em fila de processamento"
+    },
+    {
+      "ticket": "2026042426000351",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "OPEN",
+      "prioridade": "1 very low",
+      "atendente": "Sergio Luiz Glovatinski Jr",
+      "criado": "2026-04-24T17:50:06",
+      "modificado": "2026-04-24T17:58:31",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042417454242"
+    },
+    {
+      "ticket": "2026042426000361",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "OPEN",
+      "prioridade": "1 very low",
+      "atendente": "Sergio Luiz Glovatinski Jr",
+      "criado": "2026-04-24T17:50:07",
+      "modificado": "2026-04-24T17:57:35",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042417460797"
+    },
     {
       "ticket": "2026041726000114",
       "cliente": "GroundWork",
@@ -193,30 +277,6 @@
       "assunto": "Unimed - Gerenciamento de dashboards"
     },
     {
-      "ticket": "2026042426000146",
-      "cliente": "paulo.filho@arcoeducacao.com.br",
-      "fila": "GWMS",
-      "estado": "EM ATENDIMENTO",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-24T10:20:10",
-      "modificado": "2026-04-24T16:08:11",
-      "idade_dias": 0,
-      "assunto": "Adição Monitoria - OCI Docker Conector Sensedia "
-    },
-    {
-      "ticket": "2026042226000168",
-      "cliente": "guilherme.jonck@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "EM ATENDIMENTO",
-      "prioridade": "3 normal",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-22T10:00:21",
-      "modificado": "2026-04-24T16:07:42",
-      "idade_dias": 2,
-      "assunto": "Desenvolvimento do gw/v2"
-    },
-    {
       "ticket": "2026042326000246",
       "cliente": "wildirson.pires@totvs.com.br",
       "fila": "GWMS",
@@ -227,18 +287,6 @@
       "modificado": "2026-04-24T16:04:37",
       "idade_dias": 1,
       "assunto": "Monitoramento X10"
-    },
-    {
-      "ticket": "2026010826000262",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "RETORNO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-01-08T16:09:01",
-      "modificado": "2026-04-24T15:55:14",
-      "idade_dias": 106,
-      "assunto": "Atualização tabela Imposto de Renda - 2026"
     },
     {
       "ticket": "2026042426000137",
@@ -273,20 +321,8 @@
       "atendente": "Marcio Guimaraes",
       "criado": "2026-04-23T18:00:06",
       "modificado": "2026-04-24T15:10:07",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Inserir Servidor Monitoramento"
-    },
-    {
-      "ticket": "2026041726000034",
-      "cliente": "weskley.silva@groundwork.com.br",
-      "fila": "SSG",
-      "estado": "RETORNO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-17T07:50:21",
-      "modificado": "2026-04-24T15:05:07",
-      "idade_dias": 7,
-      "assunto": "Re: 30.000 documentos em fila de processamento"
     },
     {
       "ticket": "2026042226000613",
@@ -357,7 +393,7 @@
       "atendente": "Pedro Luiz",
       "criado": "2026-04-15T18:11:21",
       "modificado": "2026-04-24T14:21:57",
-      "idade_dias": 8,
+      "idade_dias": 9,
       "assunto": "Descoberta de Topologia automática"
     },
     {
@@ -573,7 +609,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2025-12-17T18:17:04",
       "modificado": "2026-04-24T10:55:25",
-      "idade_dias": 127,
+      "idade_dias": 128,
       "assunto": "Paginação das páginas de Pedidos, Clientes e Títulos, melhorar a paginação para carga mais rápida"
     },
     {
@@ -877,6 +913,18 @@
       "assunto": "Alteração Threshold Discos Servidor SRV-SQL-PRD - Cliente AUTOZONE"
     },
     {
+      "ticket": "2026041726000301",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-17T15:50:27",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 7,
+      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
+    },
+    {
       "ticket": "2026041426000254",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -889,16 +937,16 @@
       "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
     },
     {
-      "ticket": "2026041726000301",
+      "ticket": "2026041626000483",
       "cliente": "AUTOZONE",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
+      "prioridade": "4 high",
       "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-17T15:50:27",
+      "criado": "2026-04-16T18:07:06",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "INSERT/ SELECT - TIPO 9 - 17.04 - W1 PD09"
+      "idade_dias": 8,
+      "assunto": "Refaz saldos - PD8 - USGAAP"
     },
     {
       "ticket": "2026032626000073",
@@ -925,16 +973,28 @@
       "assunto": "Acesso - Monitoramentos TI"
     },
     {
-      "ticket": "2026041626000483",
-      "cliente": "AUTOZONE",
+      "ticket": "2026041726000098",
+      "cliente": "ALMEIDA JR",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "4 high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-16T18:07:06",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-17T09:37:23",
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 7,
-      "assunto": "Refaz saldos - PD8 - USGAAP"
+      "assunto": "Ajuste boleto - Cessão de espaço"
+    },
+    {
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
+      "modificado": "2026-04-24T05:00:15",
+      "idade_dias": 7,
+      "assunto": "Compartilhamento documentos One Drive"
     },
     {
       "ticket": "2026040926000121",
@@ -947,18 +1007,6 @@
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 15,
       "assunto": "UNIMED-CURITIBA | Solicitação de mudança para o cliente Unimed "
-    },
-    {
-      "ticket": "2026041726000098",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-17T09:37:23",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "Ajuste boleto - Cessão de espaço"
     },
     {
       "ticket": "2026042226000113",
@@ -1009,16 +1057,16 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
       "fila": "INFRAESTUTURA",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
+      "prioridade": "4 high",
       "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
+      "criado": "2026-04-17T16:21:22",
       "modificado": "2026-04-24T05:00:15",
       "idade_dias": 7,
-      "assunto": "Compartilhamento documentos One Drive"
+      "assunto": "PROBLEMA AO ACESSAR"
     },
     {
       "ticket": "2026042026000215",
@@ -1045,18 +1093,6 @@
       "assunto": "Verificação cases gerados via automação GW x SN"
     },
     {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
-      "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 7,
-      "assunto": "PROBLEMA AO ACESSAR"
-    },
-    {
       "ticket": "2026041326000523",
       "cliente": "TJBA",
       "fila": "GWMS",
@@ -1065,7 +1101,7 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-04-13T18:25:39",
       "modificado": "2026-04-24T05:00:15",
-      "idade_dias": 10,
+      "idade_dias": 11,
       "assunto": "Netflow"
     },
     {
@@ -1081,18 +1117,6 @@
       "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
     },
     {
-      "ticket": "2026011226000209",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-12T10:18:38",
-      "modificado": "2026-04-24T05:00:14",
-      "idade_dias": 102,
-      "assunto": "RETENÇÃO INSS"
-    },
-    {
       "ticket": "2026040826000168",
       "cliente": "FINPEC",
       "fila": "SSG",
@@ -1103,6 +1127,18 @@
       "modificado": "2026-04-24T05:00:14",
       "idade_dias": 16,
       "assunto": "Zeramento 12/2025."
+    },
+    {
+      "ticket": "2026011226000209",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Tiago Silva",
+      "criado": "2026-01-12T10:18:38",
+      "modificado": "2026-04-24T05:00:14",
+      "idade_dias": 102,
+      "assunto": "RETENÇÃO INSS"
     },
     {
       "ticket": "2026012626000148",
@@ -1185,7 +1221,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-01-29T18:25:55",
       "modificado": "2026-04-23T16:14:25",
-      "idade_dias": 84,
+      "idade_dias": 85,
       "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
     },
     {
@@ -1773,7 +1809,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2026-04-20T17:35:23",
       "modificado": "2026-04-20T18:13:02",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Alteração de senha AD"
     },
     {
@@ -1929,7 +1965,7 @@
       "atendente": "Diego Cardoso",
       "criado": "2026-02-20T17:54:10",
       "modificado": "2026-04-14T17:34:07",
-      "idade_dias": 62,
+      "idade_dias": 63,
       "assunto": "Atualização Moeda RON não está acontecendo"
     },
     {
