@@ -3049,34 +3049,77 @@ function pct(a,b){return b>0?Math.round(a/b*100):0;}
 function avg(arr){return arr.length?arr.reduce(function(a,b){return a+b;},0)/arr.length:0;}
 
 // ════════════════════════════════════════════════════════════
-// THEME TOGGLE
+// THEME TOGGLE — 3 modos: Dark · Dark Soft · Light
+// Ciclo: dark → dark-soft → light → dark
+// Dark: alto contraste (command center / uso intenso)
+// Dark Soft: warm undertones, contraste reduzido, baixa fadiga
+// Light: fundo claro para ambientes com muita luz
 // ════════════════════════════════════════════════════════════
 (function(){
+  // Paleta modo claro (substitui vars do :root)
   var light={
     '--bg':'#f4f6f9','--bg2':'#ffffff','--bg3':'#eef0f4','--bg4':'#e2e6ed',
     '--border':'rgba(0,0,0,0.08)','--border2':'rgba(0,0,0,0.14)','--border3':'rgba(0,0,0,0.20)',
     '--text':'#111827','--muted':'#6b7280','--sub':'#4b5563'
   };
-  var saved=localStorage.getItem('ssg-theme');
-  if(saved==='light'){applyLight();}
-  function applyLight(){
-    var r=document.documentElement.style;
-    Object.keys(light).forEach(function(k){r.setProperty(k,light[k]);});
-    document.documentElement.setAttribute('data-theme','light');
-    var btn=document.getElementById('tb-theme-btn');
-    if(btn)btn.textContent='☀️';
-  }
-  function applyDark(){
+  // Paleta dark-soft: warm-neutral dark, menos brilho no texto,
+  // contraste reduzido pra sessões longas (8+h). Inspirado em Raycast/Linear.
+  var darkSoft={
+    '--bg':'#17181b','--bg2':'#1e2024','--bg3':'#25272c','--bg4':'#2d3036',
+    '--border':'rgba(245,240,230,0.07)','--border2':'rgba(245,240,230,0.12)','--border3':'rgba(245,240,230,0.18)',
+    '--text':'#e4e3de','--muted':'#8b8a85','--sub':'#a8a79f'
+  };
+  var THEMES=['dark','dark-soft','light'];
+  var ICONS={dark:'🌙','dark-soft':'🌗',light:'☀️'};
+  var LABELS={dark:'Modo escuro',
+              'dark-soft':'Modo suave · baixa fadiga',
+              light:'Modo claro'};
+
+  function clearAllOverrides(){
     var r=document.documentElement.style;
     Object.keys(light).forEach(function(k){r.removeProperty(k);});
-    document.documentElement.removeAttribute('data-theme');
-    var btn=document.getElementById('tb-theme-btn');
-    if(btn)btn.textContent='🌙';
+    Object.keys(darkSoft).forEach(function(k){r.removeProperty(k);});
   }
+  function applyVars(obj){
+    var r=document.documentElement.style;
+    Object.keys(obj).forEach(function(k){r.setProperty(k,obj[k]);});
+  }
+  function setBtnIcon(mode){
+    var btn=document.getElementById('tb-theme-btn');
+    if(!btn)return;
+    btn.textContent=ICONS[mode]||ICONS.dark;
+    btn.setAttribute('title',(LABELS[mode]||'Tema')+' · clique para alternar');
+  }
+  function applyMode(mode){
+    clearAllOverrides();
+    if(mode==='light'){
+      applyVars(light);
+      document.documentElement.setAttribute('data-theme','light');
+    }else if(mode==='dark-soft'){
+      applyVars(darkSoft);
+      document.documentElement.setAttribute('data-theme','dark-soft');
+    }else{
+      document.documentElement.removeAttribute('data-theme');
+    }
+    setBtnIcon(mode);
+    localStorage.setItem('ssg-theme',mode);
+  }
+
+  // Restaura modo salvo (compat com versão anterior: 'dark'/'light')
+  var saved=localStorage.getItem('ssg-theme');
+  if(saved&&THEMES.indexOf(saved)!==-1){applyMode(saved);}
+  else{applyMode('dark');} // default
+
   window.toggleTheme=function(){
-    var isDark=document.documentElement.getAttribute('data-theme')!=='light';
-    if(isDark){applyLight();localStorage.setItem('ssg-theme','light');}
-    else{applyDark();localStorage.setItem('ssg-theme','dark');}
+    var cur=localStorage.getItem('ssg-theme')||'dark';
+    var idx=THEMES.indexOf(cur);
+    if(idx===-1)idx=0;
+    var next=THEMES[(idx+1)%THEMES.length];
+    applyMode(next);
+  };
+  // API pública para setar modo específico (útil para eventual shortcut/UI)
+  window.setTheme=function(mode){
+    if(THEMES.indexOf(mode)!==-1)applyMode(mode);
   };
 })();
 
