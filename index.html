@@ -3062,12 +3062,14 @@ function avg(arr){return arr.length?arr.reduce(function(a,b){return a+b;},0)/arr
     '--border':'rgba(0,0,0,0.08)','--border2':'rgba(0,0,0,0.14)','--border3':'rgba(0,0,0,0.20)',
     '--text':'#111827','--muted':'#6b7280','--sub':'#4b5563'
   };
-  // Paleta dark-soft: warm-neutral dark, menos brilho no texto,
-  // contraste reduzido pra sessões longas (8+h). Inspirado em Raycast/Linear.
+  // Paleta dark-soft: cream-brown warm dark, claramente distinto do dark normal.
+  // Inspirado em Kindle Paperwhite / coffee-shop reading mode — bg ~+21pt mais
+  // claro que dark (#080b10), com undertone âmbar pra reduzir blue-light.
+  // Texto sepia (#dad4c4) reduz brilho mantendo contraste AAA contra o bg.
   var darkSoft={
-    '--bg':'#17181b','--bg2':'#1e2024','--bg3':'#25272c','--bg4':'#2d3036',
-    '--border':'rgba(245,240,230,0.07)','--border2':'rgba(245,240,230,0.12)','--border3':'rgba(245,240,230,0.18)',
-    '--text':'#e4e3de','--muted':'#8b8a85','--sub':'#a8a79f'
+    '--bg':'#23201a','--bg2':'#2c2922','--bg3':'#35312a','--bg4':'#3e3a32',
+    '--border':'rgba(245,235,210,0.07)','--border2':'rgba(245,235,210,0.13)','--border3':'rgba(245,235,210,0.20)',
+    '--text':'#dad4c4','--muted':'#9c9786','--sub':'#b5af9c'
   };
   var THEMES=['dark','dark-soft','light'];
   var ICONS={dark:'🌙','dark-soft':'🌗',light:'☀️'};
