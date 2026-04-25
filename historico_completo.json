@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777141791,
-  "generated_at_iso": "2026-04-25T18:29:51Z",
-  "count": 2260,
+  "generated_at": 1777145444,
+  "generated_at_iso": "2026-04-25T19:30:44Z",
+  "count": 2262,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,46 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "num": "2026042526000233",
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042516044188",
+      "criado": "2026-04-25T16:05:13",
+      "modificado": "2026-04-25T16:17:47",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
+    {
+      "num": "2026042526000224",
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042515580811",
+      "criado": "2026-04-25T16:00:12",
+      "modificado": "2026-04-25T16:17:45",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
     {
       "num": "2026042526000215",
       "assunto": "DKT - GWMS-SERVER - Notif Groups Relations - 26042515212118",
