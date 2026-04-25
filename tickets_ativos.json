@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777123088,
-  "generated_at_iso": "2026-04-25T13:18:08Z",
+  "generated_at": 1777126245,
+  "generated_at_iso": "2026-04-25T14:10:45Z",
   "count": 174,
   "filas": [
     "DATASUL",
@@ -45,7 +45,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-23T11:08:32",
       "modificado": "2026-04-25T10:00:16",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Verificação do alerta \"Error getting data\"."
     },
     {
@@ -105,7 +105,7 @@
       "atendente": "Dyalef Abreu Santos",
       "criado": "2026-04-23T11:01:21",
       "modificado": "2026-04-25T05:00:16",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
     },
     {
@@ -177,7 +177,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-22T11:05:08",
       "modificado": "2026-04-25T05:00:16",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Alteração Interface Usage Graphics "
     },
     {
@@ -405,7 +405,7 @@
       "atendente": "Robert Rodrigues dos Santos",
       "criado": "2026-04-08T10:40:08",
       "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 16,
+      "idade_dias": 17,
       "assunto": "Zeramento 12/2025."
     },
     {
@@ -441,7 +441,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-01-21T11:05:47",
       "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 93,
+      "idade_dias": 94,
       "assunto": "Contabilização offline dos titulos gerados por planilha"
     },
     {
@@ -465,7 +465,7 @@
       "atendente": "Vinicius Vedove",
       "criado": "2026-04-17T10:35:07",
       "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 7,
+      "idade_dias": 8,
       "assunto": "Compartilhamento documentos One Drive"
     },
     {
@@ -609,7 +609,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-24T10:20:10",
       "modificado": "2026-04-24T18:05:27",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Adição Monitoria - OCI Docker Conector Sensedia "
     },
     {
@@ -657,7 +657,7 @@
       "atendente": "Marcio Guimaraes",
       "criado": "2026-04-17T10:35:05",
       "modificado": "2026-04-24T17:06:32",
-      "idade_dias": 7,
+      "idade_dias": 8,
       "assunto": "Apontamentos de horas Guima - Abril 2024"
     },
     {
@@ -825,7 +825,7 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-04-23T10:45:12",
       "modificado": "2026-04-24T16:04:37",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Monitoramento X10"
     },
     {
@@ -1041,7 +1041,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-24T11:10:16",
       "modificado": "2026-04-24T11:25:06",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Ajuste nos plugins padrão da criticidade do output “Error getting data”"
     },
     {
@@ -1113,7 +1113,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2025-12-18T10:56:21",
       "modificado": "2026-04-24T10:54:42",
-      "idade_dias": 127,
+      "idade_dias": 128,
       "assunto": "Filtro em Pedidos/Notas Fiscais/Títulos - não busca ao preencher código parcialmente"
     },
     {
@@ -1161,7 +1161,7 @@
       "atendente": "Weskley Silva",
       "criado": "2025-07-30T10:35:20",
       "modificado": "2026-04-24T10:52:10",
-      "idade_dias": 268,
+      "idade_dias": 269,
       "assunto": "Organizar cód Fontes"
     },
     {
@@ -1305,7 +1305,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-01-26T10:21:55",
       "modificado": "2026-04-23T20:01:25",
-      "idade_dias": 88,
+      "idade_dias": 89,
       "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
     },
     {
@@ -1317,7 +1317,7 @@
       "atendente": "Guilherme Rosa",
       "criado": "2026-04-23T11:10:44",
       "modificado": "2026-04-23T18:24:56",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "RE1001 apresentando erro no Datasul"
     },
     {
@@ -1365,7 +1365,7 @@
       "atendente": "Debora Gomes",
       "criado": "2026-03-23T10:26:08",
       "modificado": "2026-04-23T10:57:51",
-      "idade_dias": 32,
+      "idade_dias": 33,
       "assunto": "Baixa Automática de Pagamento Grupo 80"
     },
     {
@@ -1377,7 +1377,7 @@
       "atendente": "Vilante Marques Alves",
       "criado": "2026-04-23T10:25:08",
       "modificado": "2026-04-23T10:41:12",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Ajuda com pacote de correção da Rotina FISA170 - PAM"
     },
     {
@@ -1557,7 +1557,7 @@
       "atendente": "Adriano Luiz",
       "criado": "2026-04-22T10:40:04",
       "modificado": "2026-04-22T11:20:33",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Revisão dashboards Admin OTRS"
     },
     {
@@ -1677,7 +1677,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-03-27T10:30:13",
       "modificado": "2026-04-21T12:01:27",
-      "idade_dias": 28,
+      "idade_dias": 29,
       "assunto": "Solicitação de API REST – Integração Protheus/ Inventário Físico"
     },
     {
@@ -1689,7 +1689,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-02-24T10:35:15",
       "modificado": "2026-04-21T12:00:04",
-      "idade_dias": 59,
+      "idade_dias": 60,
       "assunto": "Apoio Implantação: Conciliação Bancária Automática (Bradesco) - Protheus"
     },
     {
@@ -1713,7 +1713,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-04-06T10:25:14",
       "modificado": "2026-04-21T11:58:58",
-      "idade_dias": 18,
+      "idade_dias": 19,
       "assunto": "Retomada de Testes: Integração Contratos (Fluig x Protheus)"
     },
     {
