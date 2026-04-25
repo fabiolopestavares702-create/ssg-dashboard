@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777087555,
-  "generated_at_iso": "2026-04-25T03:25:55Z",
-  "count": 2241,
+  "generated_at": 1777094899,
+  "generated_at_iso": "2026-04-25T05:28:19Z",
+  "count": 2243,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,46 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "num": "2026042526000028",
+      "assunto": "GROUNDWORK - GROUNDWORK_VM-GWMSTLX-WBS01 - API:ces_broker_x_gwms_cstg - Check Times - 26042500422264",
+      "criado": "2026-04-25T00:45:17",
+      "modificado": "2026-04-25T01:50:20",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
+    {
+      "num": "2026042526000019",
+      "assunto": "PAM_PLASTICOS - GWMS-Server - Time - 26042500235041",
+      "criado": "2026-04-25T00:25:15",
+      "modificado": "2026-04-25T00:29:19",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
     {
       "num": "2026042426000441",
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Process:filebeat - 26042423294075",
