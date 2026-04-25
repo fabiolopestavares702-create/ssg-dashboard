@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777145439,
-  "generated_at_iso": "2026-04-25T19:30:39Z",
-  "count": 188,
+  "generated_at": 1777148450,
+  "generated_at_iso": "2026-04-25T20:20:50Z",
+  "count": 190,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,30 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042526000251",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-25T16:50:20",
+      "modificado": "2026-04-25T16:58:21",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - Alertas WARNING - 26042516491368"
+    },
+    {
+      "ticket": "2026042526000242",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-25T16:45:18",
+      "modificado": "2026-04-25T16:58:19",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042516423051"
+    },
     {
       "ticket": "2026042526000233",
       "cliente": "monitoramento@groundwork.com.br",
@@ -265,6 +289,18 @@
       "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Errors - POST incompleto - 26042504541456"
     },
     {
+      "ticket": "2026042326000255",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "2 low",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-23T11:01:21",
+      "modificado": "2026-04-25T05:00:16",
+      "idade_dias": 2,
+      "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
+    },
+    {
       "ticket": "2026042226000239",
       "cliente": "bruno.fagundes@groundwork.com.br",
       "fila": "GWMS",
@@ -309,7 +345,7 @@
       "atendente": "Bruno Fagundes",
       "criado": "2026-04-22T16:50:14",
       "modificado": "2026-04-25T05:00:16",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Alteração Threshold Discos Servidor SRV-SQL-PRD - Cliente AUTOZONE"
     },
     {
@@ -337,18 +373,6 @@
       "assunto": "UNIMED Curitiba - Ajustar Link"
     },
     {
-      "ticket": "2026042326000255",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-23T11:01:21",
-      "modificado": "2026-04-25T05:00:16",
-      "idade_dias": 2,
-      "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
-    },
-    {
       "ticket": "2026042226000481",
       "cliente": "eduardo.candido@groundwork.com.br",
       "fila": "GWMS",
@@ -357,7 +381,7 @@
       "atendente": "Marcio Guimaraes",
       "criado": "2026-04-22T17:00:14",
       "modificado": "2026-04-25T05:00:15",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Ticket para alteração do monitoramento ambiente de HOMOLOGAÇÃO da AUTOZONE"
     },
     {
@@ -373,18 +397,6 @@
       "assunto": "Acesso - Monitoramentos TI"
     },
     {
-      "ticket": "2026041626000214",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-16T09:38:46",
-      "modificado": "2026-04-25T05:00:15",
-      "idade_dias": 9,
-      "assunto": "Processo Workflow com aviso: Processo IGNORADO, FINALIZADO anteriormente"
-    },
-    {
       "ticket": "2026042226000061",
       "cliente": "bruno.lvieira@totvs.com.br",
       "fila": "GWMS",
@@ -397,16 +409,16 @@
       "assunto": "ALERTA SERVIDOR 172.0.0.37"
     },
     {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
+      "ticket": "2026041626000214",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
+      "prioridade": "5 very high",
+      "atendente": "Tiago Silva",
+      "criado": "2026-04-16T09:38:46",
       "modificado": "2026-04-25T05:00:15",
-      "idade_dias": 8,
-      "assunto": "PROBLEMA AO ACESSAR"
+      "idade_dias": 9,
+      "assunto": "Processo Workflow com aviso: Processo IGNORADO, FINALIZADO anteriormente"
     },
     {
       "ticket": "2026042226000113",
@@ -431,6 +443,18 @@
       "modificado": "2026-04-25T05:00:15",
       "idade_dias": 6,
       "assunto": "Adequação do monitoramento de Port-channels"
+    },
+    {
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T16:21:22",
+      "modificado": "2026-04-25T05:00:15",
+      "idade_dias": 8,
+      "assunto": "PROBLEMA AO ACESSAR"
     },
     {
       "ticket": "2026042326000013",
@@ -477,8 +501,20 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-04-22T16:47:06",
       "modificado": "2026-04-25T05:00:15",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Solicitação de Ajuste - Dashboard: Infrastructure / PJE Geral"
+    },
+    {
+      "ticket": "2026040726000384",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "2 low",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-07T14:54:52",
+      "modificado": "2026-04-25T05:00:14",
+      "idade_dias": 18,
+      "assunto": "Liberar Modo Financeiro"
     },
     {
       "ticket": "2026041426000129",
@@ -493,16 +529,16 @@
       "assunto": "Monitoramento - novos servidores"
     },
     {
-      "ticket": "2026020226000164",
+      "ticket": "2026012926000455",
       "cliente": "AUTOZONE",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-02-02T10:00:27",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-01-29T18:25:55",
       "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 82,
-      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
+      "idade_dias": 85,
+      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
     },
     {
       "ticket": "2026041626000447",
@@ -529,6 +565,18 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
+      "ticket": "2026020226000164",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-02-02T10:00:27",
+      "modificado": "2026-04-25T05:00:14",
+      "idade_dias": 82,
+      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
+    },
+    {
       "ticket": "2026041726000123",
       "cliente": "danielle.faria@groundwork.com.br",
       "fila": "INFRAESTUTURA",
@@ -539,6 +587,18 @@
       "modificado": "2026-04-25T05:00:14",
       "idade_dias": 8,
       "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-25T05:00:14",
+      "idade_dias": 12,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
     },
     {
       "ticket": "2026040826000168",
@@ -565,18 +625,6 @@
       "assunto": "Contabilização offline dos titulos gerados por planilha"
     },
     {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
-      "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 11,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
-    },
-    {
       "ticket": "2026041426000254",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -601,18 +649,6 @@
       "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
     },
     {
-      "ticket": "2026040726000384",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-07T14:54:52",
-      "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 18,
-      "assunto": "Liberar Modo Financeiro"
-    },
-    {
       "ticket": "2026041226000043",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "DBA",
@@ -623,18 +659,6 @@
       "modificado": "2026-04-25T05:00:14",
       "idade_dias": 13,
       "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
-    },
-    {
-      "ticket": "2026012926000455",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-29T18:25:55",
-      "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 85,
-      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
     },
     {
       "ticket": "2026042526000028",
@@ -849,7 +873,7 @@
       "atendente": "Robert Rodrigues dos Santos",
       "criado": "2026-04-24T16:50:19",
       "modificado": "2026-04-24T16:55:19",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "SCP NS - ERRO EFD REINF"
     },
     {
@@ -1089,7 +1113,7 @@
       "atendente": "Vilante Marques Alves",
       "criado": "2025-09-18T17:09:56",
       "modificado": "2026-04-24T14:20:22",
-      "idade_dias": 218,
+      "idade_dias": 219,
       "assunto": "Criação de títulos de impostos gerados pelo configurador de tributos"
     },
     {
@@ -1569,7 +1593,7 @@
       "atendente": "Robert Rodrigues dos Santos",
       "criado": "2026-01-27T16:44:15",
       "modificado": "2026-04-23T09:32:09",
-      "idade_dias": 87,
+      "idade_dias": 88,
       "assunto": "Novos TES – Aquisição de Ativo Imobilizado (Base Teste)"
     },
     {
@@ -1869,7 +1893,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-04-06T16:50:22",
       "modificado": "2026-04-21T11:59:28",
-      "idade_dias": 18,
+      "idade_dias": 19,
       "assunto": "Acesso de Visualização GCT - Banco de Conhecimento"
     },
     {
@@ -1941,7 +1965,7 @@
       "atendente": "Wiglas Reis",
       "criado": "2026-04-14T16:31:58",
       "modificado": "2026-04-20T14:54:45",
-      "idade_dias": 10,
+      "idade_dias": 11,
       "assunto": "Atualização de Windows UPdate - Apenas maquinas virtuais"
     },
     {
@@ -1977,7 +2001,7 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-04-17T16:35:14",
       "modificado": "2026-04-20T11:13:57",
-      "idade_dias": 7,
+      "idade_dias": 8,
       "assunto": "Erro \"PHP Warning\" no \"Deploy da stack GWMS\""
     },
     {
@@ -2037,7 +2061,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-02-12T17:18:11",
       "modificado": "2026-04-17T09:56:47",
-      "idade_dias": 71,
+      "idade_dias": 72,
       "assunto": "Fonte CFOP 2409"
     },
     {
@@ -2073,7 +2097,7 @@
       "atendente": "Wiglas Reis",
       "criado": "2026-04-14T16:35:28",
       "modificado": "2026-04-14T17:09:42",
-      "idade_dias": 10,
+      "idade_dias": 11,
       "assunto": "Segurança - Microsoft 365"
     },
     {
