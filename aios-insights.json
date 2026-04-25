@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T15:54:42.673035",
+  "generated_at": "2026-04-25T16:52:50.520657",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -31,7 +31,7 @@
       }
     ],
     "risco_principal": {
-      "label": "22 chamados +30 dias",
+      "label": "23 chamados +30 dias",
       "desc": "Chamados críticos sem resolução"
     },
     "oportunidade": {
@@ -57,7 +57,7 @@
       "confianca": 92
     },
     {
-      "titulo": "22 chamados abertos há mais de 30 dias",
+      "titulo": "23 chamados abertos há mais de 30 dias",
       "desc": "Chamados com aging superior a 30 dias representam risco de escalonamento pelo cliente e impacto direto no health score da conta.",
       "nivel": "high",
       "confianca": 95
