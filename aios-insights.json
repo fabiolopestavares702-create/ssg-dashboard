@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T21:53:13.091160",
+  "generated_at": "2026-04-25T22:44:20.463115",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -144,11 +144,11 @@
     },
     {
       "cliente": "GRUPO_METALNOX",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 117 chamados (5% do total). O módulo <strong>Serviço de Sustentação Groundwork</strong> concentra 79% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 118 chamados (5% do total). O módulo <strong>Serviço de Sustentação Groundwork</strong> concentra 79% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "117 chamados (5% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "118 chamados (5% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
