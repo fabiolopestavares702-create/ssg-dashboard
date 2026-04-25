@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-24T23:56:58.029019",
+  "generated_at": "2026-04-25T03:25:58.237173",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>90 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.6h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>26% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>90 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.3h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>26% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
