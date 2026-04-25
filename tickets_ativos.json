@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777111744,
-  "generated_at_iso": "2026-04-25T10:09:04Z",
+  "generated_at": 1777115125,
+  "generated_at_iso": "2026-04-25T11:05:25Z",
   "count": 169,
   "filas": [
     "DATASUL",
@@ -273,7 +273,7 @@
       "atendente": "Bruno Fagundes",
       "criado": "2026-04-15T07:25:20",
       "modificado": "2026-04-25T05:00:14",
-      "idade_dias": 9,
+      "idade_dias": 10,
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
@@ -573,7 +573,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-04-17T07:50:21",
       "modificado": "2026-04-24T17:59:08",
-      "idade_dias": 7,
+      "idade_dias": 8,
       "assunto": "Re: 30.000 documentos em fila de processamento"
     },
     {
@@ -1113,7 +1113,7 @@
       "atendente": "Guilherme Rosa",
       "criado": "2026-04-23T07:39:58",
       "modificado": "2026-04-24T10:45:12",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Arquivos XML e ASN's não estão sendo direcionados para pasta de envio"
     },
     {
@@ -1149,7 +1149,7 @@
       "atendente": "Bruno Fagundes",
       "criado": "2026-04-24T08:05:14",
       "modificado": "2026-04-24T09:47:01",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "SEBRAE - SRV_DW-BD-DEV - Disk:C: - 26042408025566"
     },
     {
