@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T15:04:14.857386",
+  "generated_at": "2026-04-25T15:54:42.673035",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -25,7 +25,7 @@
       },
       {
         "label": "Previsão 7 dias",
-        "value": "~210/semana",
+        "value": "~215/semana",
         "sub": "pico: segunda-feira 9h",
         "color": "var(--purple)"
       }
@@ -39,7 +39,7 @@
       "desc": "Foco no módulo Banco de Dados pode reduzir reincidências"
     },
     "previsao": {
-      "label": "~42/dia",
+      "label": "~43/dia",
       "desc": "pico: segunda-feira 9h"
     }
   },
