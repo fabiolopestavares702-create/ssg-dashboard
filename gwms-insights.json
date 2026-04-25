@@ -1,31 +1,12 @@
 {
-  "generated_at": 1777075017,
-  "generated_at_iso": "2026-04-24T23:56:57Z",
+  "generated_at": 1777087557,
+  "generated_at_iso": "2026-04-25T03:25:57Z",
   "counts": {
-    "crit": 2,
+    "crit": 1,
     "warn": 3,
     "ok": 0
   },
   "insights": [
-    {
-      "id": "sobrecarga_Sergio_Luiz_Glovatinski_Jr",
-      "severity": "crit",
-      "category": "capacidade",
-      "title": "Sergio Luiz Glovatinski Jr com carga real de 12 tickets",
-      "summary": "Sergio Luiz Glovatinski Jr tem 12 tickets ativos sob sua responsabilidade: 1 em atendimento + 11 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Sergio Luiz Glovatinski Jr",
-          "carga_real": 12,
-          "em_atendimento": 1,
-          "abertos": 11,
-          "aguardando_terceiros": 0,
-          "ativos_total": 12
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
     {
       "id": "sobrecarga_Thiago_Trufelli",
       "severity": "warn",
@@ -46,25 +27,6 @@
       "impact_estimate": "médio"
     },
     {
-      "id": "sobrecarga_Jean_Pierre_Rocha",
-      "severity": "crit",
-      "category": "capacidade",
-      "title": "Jean Pierre Rocha com carga real de 9 tickets",
-      "summary": "Jean Pierre Rocha tem 9 tickets ativos sob sua responsabilidade: 1 em atendimento + 8 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
-      "evidence": [
-        {
-          "atendente": "Jean Pierre Rocha",
-          "carga_real": 9,
-          "em_atendimento": 1,
-          "abertos": 8,
-          "aguardando_terceiros": 0,
-          "ativos_total": 9
-        }
-      ],
-      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
-      "impact_estimate": "médio"
-    },
-    {
       "id": "sobrecarga_Weskley_Silva",
       "severity": "warn",
       "category": "capacidade",
@@ -77,6 +39,25 @@
           "em_atendimento": 6,
           "abertos": 0,
           "aguardando_terceiros": 3,
+          "ativos_total": 9
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
+    {
+      "id": "sobrecarga_Jean_Pierre_Rocha",
+      "severity": "crit",
+      "category": "capacidade",
+      "title": "Jean Pierre Rocha com carga real de 9 tickets",
+      "summary": "Jean Pierre Rocha tem 9 tickets ativos sob sua responsabilidade: 1 em atendimento + 8 abertos (além de 0 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Jean Pierre Rocha",
+          "carga_real": 9,
+          "em_atendimento": 1,
+          "abertos": 8,
+          "aguardando_terceiros": 0,
           "ativos_total": 9
         }
       ],
