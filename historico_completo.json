@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777219218,
-  "generated_at_iso": "2026-04-26T16:00:18Z",
-  "count": 2292,
+  "generated_at": 1777222867,
+  "generated_at_iso": "2026-04-26T17:01:07Z",
+  "count": 2293,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,26 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "num": "2026042626000179",
+      "assunto": "GROUNDWORK - Alertas CRITICAL - 26042612092934",
+      "criado": "2026-04-26T12:10:06",
+      "modificado": "2026-04-26T13:16:15",
+      "fila": "GWMS",
+      "estado": "new",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "primeiro_nome": "Admin",
+      "ultimo_nome": "OTRS",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "",
+      "fechado": null,
+      "resp_min_raw": null,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": null
+    },
     {
       "num": "2026042626000161",
       "assunto": "#TOTVS-SERVERS - SP_MON-CENT01 - Check Core Services - 26042609441648",
