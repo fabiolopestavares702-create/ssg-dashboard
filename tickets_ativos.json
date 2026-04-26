@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777239929,
-  "generated_at_iso": "2026-04-26T21:45:29Z",
+  "generated_at": 1777242178,
+  "generated_at_iso": "2026-04-26T22:22:58Z",
   "count": 230,
   "filas": [
     "DATASUL",
@@ -277,6 +277,18 @@
       "assunto": "Unimed - Gerenciamento de dashboards"
     },
     {
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T16:21:22",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 9,
+      "assunto": "PROBLEMA AO ACESSAR"
+    },
+    {
       "ticket": "2026042326000424",
       "cliente": "elaine.vicente@teletex.com",
       "fila": "GWMS",
@@ -361,6 +373,18 @@
       "assunto": "SEBRAE - SRV_DW-BD-DEV - Disk:C: - 26042408025566"
     },
     {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 13,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+    },
+    {
       "ticket": "2026042226000113",
       "cliente": "vinicius.rbatista@totvs.com.br",
       "fila": "GWMS",
@@ -433,18 +457,6 @@
       "assunto": "Liberar Modo Financeiro"
     },
     {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 13,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
-    },
-    {
       "ticket": "2026041526000181",
       "cliente": "NSX",
       "fila": "PROTHEUS",
@@ -455,6 +467,18 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 11,
       "assunto": "Rollback exclusão de NF"
+    },
+    {
+      "ticket": "2026041226000043",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-12T09:15:14",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 14,
+      "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
     },
     {
       "ticket": "2026041726000034",
@@ -505,18 +529,6 @@
       "assunto": "Revisão TOTVS Network"
     },
     {
-      "ticket": "2026042226000131",
-      "cliente": "eder.oliveira@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T09:25:14",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 4,
-      "assunto": "Acesso - Monitoramentos TI"
-    },
-    {
       "ticket": "2026041726000123",
       "cliente": "danielle.faria@groundwork.com.br",
       "fila": "INFRAESTUTURA",
@@ -527,6 +539,18 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 9,
       "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
+      "ticket": "2026042226000131",
+      "cliente": "eder.oliveira@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T09:25:14",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 4,
+      "assunto": "Acesso - Monitoramentos TI"
     },
     {
       "ticket": "2026042126000071",
@@ -553,18 +577,6 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
-      "ticket": "2026041226000043",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-12T09:15:14",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 14,
-      "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
-    },
-    {
       "ticket": "2026020226000164",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -575,18 +587,6 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 83,
       "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
-    },
-    {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
-      "assunto": "PROBLEMA AO ACESSAR"
     },
     {
       "ticket": "2026040826000168",
@@ -637,6 +637,18 @@
       "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
     },
     {
+      "ticket": "2026031826000329",
+      "cliente": "rodrigo.koji@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Luciano Katsumi Shiraishi",
+      "criado": "2026-03-18T16:20:20",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 39,
+      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
+    },
+    {
       "ticket": "2026012926000455",
       "cliente": "AUTOZONE",
       "fila": "SSG",
@@ -659,18 +671,6 @@
       "modificado": "2026-04-26T05:00:11",
       "idade_dias": 25,
       "assunto": "V2- workflow de aprovação para lançamento contábil manual."
-    },
-    {
-      "ticket": "2026031826000329",
-      "cliente": "rodrigo.koji@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Luciano Katsumi Shiraishi",
-      "criado": "2026-03-18T16:20:20",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 39,
-      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
     },
     {
       "ticket": "2026041426000085",
@@ -957,7 +957,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T19:12:26",
       "modificado": "2026-04-25T19:22:16",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Monitoramento"
     },
     {
@@ -969,7 +969,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T19:05:15",
       "modificado": "2026-04-25T19:22:09",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - Alertas WARNING - 26042519025481"
     },
     {
@@ -1413,7 +1413,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-24T18:50:13",
       "modificado": "2026-04-24T18:52:14",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042418461227"
     },
     {
