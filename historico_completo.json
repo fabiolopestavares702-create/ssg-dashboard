@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777236620,
-  "generated_at_iso": "2026-04-26T20:50:20Z",
-  "count": 2286,
+  "generated_at": 1777239932,
+  "generated_at_iso": "2026-04-26T21:45:32Z",
+  "count": 2285,
   "filas": [
     "DATASUL",
     "DBA",
@@ -2753,26 +2753,6 @@
       "resp_min_bh": 12
     },
     {
-      "num": "2026042326000013",
-      "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:P12_AUTOZONE - User Expiration - 26042300134514",
-      "criado": "2026-04-23T00:15:09",
-      "modificado": "2026-04-26T05:00:14",
-      "fila": "DBA",
-      "estado": "aguardando cliente",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "primeiro_nome": "Eduardo",
-      "ultimo_nome": "Candido",
-      "cli_id": "monitoramento@groundwork.com.br",
-      "cli_user": "monitoramento@groundwork.com.br",
-      "servico": "Monitoramento & Observabilidade (GWMS)",
-      "fechado": null,
-      "resp_min_raw": 570,
-      "sol_min_raw": null,
-      "sol_min_bh": null,
-      "resp_min_bh": 105
-    },
-    {
       "num": "2026042326000022",
       "assunto": "ERRO NA COMPEMSAÇÃO CONTROLE DE CAMBIO/CONTAS A PAGAR",
       "criado": "2026-04-23T00:15:09",
@@ -2791,6 +2771,26 @@
       "sol_min_raw": null,
       "sol_min_bh": null,
       "resp_min_bh": 51
+    },
+    {
+      "num": "2026042326000013",
+      "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:P12_AUTOZONE - User Expiration - 26042300134514",
+      "criado": "2026-04-23T00:15:09",
+      "modificado": "2026-04-26T05:00:14",
+      "fila": "DBA",
+      "estado": "aguardando cliente",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "primeiro_nome": "Eduardo",
+      "ultimo_nome": "Candido",
+      "cli_id": "monitoramento@groundwork.com.br",
+      "cli_user": "monitoramento@groundwork.com.br",
+      "servico": "Monitoramento & Observabilidade (GWMS)",
+      "fechado": null,
+      "resp_min_raw": 570,
+      "sol_min_raw": null,
+      "sol_min_bh": null,
+      "resp_min_bh": 105
     },
     {
       "num": "2026042226000631",
@@ -45710,26 +45710,6 @@
       "resp_min_raw": 241,
       "sol_min_raw": 7254,
       "sol_min_bh": 1620,
-      "resp_min_bh": 0
-    },
-    {
-      "num": "2025122626000307",
-      "assunto": "Alteração de aprovação - Movidesk",
-      "criado": "2025-12-26T18:05:27",
-      "modificado": "2026-01-07T05:00:25",
-      "fila": "SSG",
-      "estado": "fechado sem êxito (auto)",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "primeiro_nome": "Dyalef",
-      "ultimo_nome": "Abreu Santos",
-      "cli_id": "ALMEIDA JR",
-      "cli_user": "integracao.almeidajunior",
-      "servico": "Serviço de Sustentação Groundwork::ERP Protheus",
-      "fechado": "2026-01-07T05:00:25",
-      "resp_min_raw": 50,
-      "sol_min_raw": 16494,
-      "sol_min_bh": 3780,
       "resp_min_bh": 0
     }
   ],
