@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-26T09:10:58.095349",
+  "generated_at": "2026-04-26T10:10:56.905882",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -72,11 +72,11 @@
   "riscos_clientes": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 313 chamados (14% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 312 chamados (14% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "313 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "312 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
