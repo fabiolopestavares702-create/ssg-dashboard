@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777239932,
-  "generated_at_iso": "2026-04-26T21:45:32Z",
-  "count": 2285,
+  "generated_at": 1777242182,
+  "generated_at_iso": "2026-04-26T22:23:02Z",
+  "count": 2284,
   "filas": [
     "DATASUL",
     "DBA",
@@ -45689,26 +45689,6 @@
       "fechado": "2025-12-31T19:45:12",
       "resp_min_raw": 326,
       "sol_min_raw": 6364,
-      "sol_min_bh": 1620,
-      "resp_min_bh": 0
-    },
-    {
-      "num": "2025122626000316",
-      "assunto": "AZ - Problema de Execução no Schedule HML Autozone",
-      "criado": "2025-12-26T18:50:23",
-      "modificado": "2025-12-31T19:45:12",
-      "fila": "DBA",
-      "estado": "closed successful",
-      "prioridade": "3 normal",
-      "atendente": "Bruno Montenegro",
-      "primeiro_nome": "Bruno",
-      "ultimo_nome": "Montenegro",
-      "cli_id": "ricardo.pinheiro@groundwork.com.br",
-      "cli_user": "ricardo.pinheiro@groundwork.com.br",
-      "servico": "Banco de Horas::Banco de Dados",
-      "fechado": "2025-12-31T19:45:12",
-      "resp_min_raw": 241,
-      "sol_min_raw": 7254,
       "sol_min_bh": 1620,
       "resp_min_bh": 0
     }
