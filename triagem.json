@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777242173,
-  "generated_at_iso": "2026-04-26T22:22:53Z",
+  "generated_at": 1777244926,
+  "generated_at_iso": "2026-04-26T23:08:46Z",
   "count": 1,
   "filas": [
     "DATASUL",
@@ -20,7 +20,7 @@
       "prioridade": "3 normal",
       "atendente": "Tiago Silva",
       "criado": "2026-04-26T15:56:52",
-      "triagem_min": 206,
+      "triagem_min": 251,
       "assunto": "falha depreciação de ativos (chamado lixo para teste da ferramenta)"
     }
   ]
