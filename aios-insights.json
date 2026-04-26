@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-26T17:57:32.010120",
+  "generated_at": "2026-04-26T19:08:53.452255",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
@@ -72,11 +72,11 @@
   "riscos_clientes": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 309 chamados (13% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 310 chamados (14% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "309 chamados (13% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "310 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
@@ -120,11 +120,11 @@
     },
     {
       "cliente": "ALMEIDA JR",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 202 chamados (9% do total). <strong>2 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 95% dos chamados desta conta — possível reincidência.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 201 chamados (9% do total). <strong>2 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. O módulo <strong>ERP Protheus</strong> concentra 95% dos chamados desta conta — possível reincidência.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "202 chamados (9% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "201 chamados (9% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
