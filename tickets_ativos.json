@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777216272,
-  "generated_at_iso": "2026-04-26T15:11:12Z",
+  "generated_at": 1777219215,
+  "generated_at_iso": "2026-04-26T16:00:15Z",
   "count": 226,
   "filas": [
     "DATASUL",
@@ -1113,7 +1113,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T12:50:12",
       "modificado": "2026-04-25T13:02:06",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - Alertas WARNING - 26042512471519"
     },
     {
@@ -1821,7 +1821,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2025-12-18T12:58:25",
       "modificado": "2026-04-24T10:54:16",
-      "idade_dias": 128,
+      "idade_dias": 129,
       "assunto": "Inclusão de pedidos - Alteração no conceito de exibição do campo \"Desconto Faseamento\""
     },
     {
@@ -2469,7 +2469,7 @@
       "atendente": "George Eivazian",
       "criado": "2026-04-01T12:19:14",
       "modificado": "2026-04-17T14:50:42",
-      "idade_dias": 24,
+      "idade_dias": 25,
       "assunto": "Implantação de um PE"
     },
     {
@@ -2565,7 +2565,7 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-03-27T12:20:10",
       "modificado": "2026-04-14T13:09:05",
-      "idade_dias": 29,
+      "idade_dias": 30,
       "assunto": "Ajuste Monitoria Grupo AD"
     },
     {
@@ -2625,7 +2625,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2026-04-08T12:24:13",
       "modificado": "2026-04-13T14:16:32",
-      "idade_dias": 17,
+      "idade_dias": 18,
       "assunto": "Verificar agendamentos de atualização dos gráficos"
     },
     {
@@ -2661,7 +2661,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-03-17T12:12:20",
       "modificado": "2026-04-09T18:13:14",
-      "idade_dias": 39,
+      "idade_dias": 40,
       "assunto": "CIAP - loja 150"
     },
     {
