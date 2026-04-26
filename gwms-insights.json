@@ -1,12 +1,31 @@
 {
-  "generated_at": 1777226251,
-  "generated_at_iso": "2026-04-26T17:57:31Z",
+  "generated_at": 1777230532,
+  "generated_at_iso": "2026-04-26T19:08:52Z",
   "counts": {
     "crit": 1,
-    "warn": 2,
+    "warn": 3,
     "ok": 0
   },
   "insights": [
+    {
+      "id": "sobrecarga_Tiago_Silva",
+      "severity": "warn",
+      "category": "capacidade",
+      "title": "Tiago Silva com carga real de 5 tickets",
+      "summary": "Tiago Silva tem 5 tickets ativos sob sua responsabilidade: 4 em atendimento + 1 abertos (além de 5 aguardando terceiros, que não consomem capacidade). Avaliar se há gargalo ou se é volume esperado para o atendente.",
+      "evidence": [
+        {
+          "atendente": "Tiago Silva",
+          "carga_real": 5,
+          "em_atendimento": 4,
+          "abertos": 1,
+          "aguardando_terceiros": 5,
+          "ativos_total": 11
+        }
+      ],
+      "recommendation": "Revisar prioridades com o atendente. Se mantido o volume, considerar redistribuição — mas atribuição depende de skill/fila (não sugiro automaticamente para evitar erro de matching).",
+      "impact_estimate": "médio"
+    },
     {
       "id": "sobrecarga_Weskley_Silva",
       "severity": "warn",
