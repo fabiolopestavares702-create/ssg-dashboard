@@ -1,12 +1,31 @@
 {
-  "generated_at": 1777230532,
-  "generated_at_iso": "2026-04-26T19:08:52Z",
+  "generated_at": 1777233354,
+  "generated_at_iso": "2026-04-26T19:55:54Z",
   "counts": {
     "crit": 1,
-    "warn": 3,
+    "warn": 4,
     "ok": 0
   },
   "insights": [
+    {
+      "id": "tickets_silenciosos_longos",
+      "severity": "warn",
+      "category": "sla",
+      "title": "1 ticket(s) silenciosos há mais de 60 dias",
+      "summary": "1 tickets abertos sem nenhuma interação há mais de 60 dias. Pode indicar tickets abandonados mesmo tendo sido tocados no passado.",
+      "evidence": [
+        {
+          "ticket": "2026013026000416",
+          "cliente": "AUTOZONE",
+          "fila": "SSG",
+          "atendente": "Carlos Fernandes",
+          "dias_silencio": 60.0,
+          "estado": "OPEN"
+        }
+      ],
+      "recommendation": "Revisar em bloco: cada atendente confirma se o ticket está ativo ou deve ser fechado/escalado.",
+      "impact_estimate": "médio"
+    },
     {
       "id": "sobrecarga_Tiago_Silva",
       "severity": "warn",
