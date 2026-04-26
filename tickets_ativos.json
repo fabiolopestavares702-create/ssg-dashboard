@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777204555,
-  "generated_at_iso": "2026-04-26T11:55:55Z",
-  "count": 223,
+  "generated_at": 1777209757,
+  "generated_at_iso": "2026-04-26T13:22:37Z",
+  "count": 226,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,6 +12,42 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
+    {
+      "ticket": "2026042626000151",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-26T09:45:07",
+      "modificado": "2026-04-26T10:09:01",
+      "idade_dias": 0,
+      "assunto": "WILLY - Alertas CRITICAL - 26042609433988"
+    },
+    {
+      "ticket": "2026042626000161",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-26T09:45:08",
+      "modificado": "2026-04-26T10:08:13",
+      "idade_dias": 0,
+      "assunto": "#TOTVS-SERVERS - SP_MON-CENT01 - Check Core Services - 26042609441648"
+    },
+    {
+      "ticket": "2026042626000142",
+      "cliente": "monitoramento@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "NEW",
+      "prioridade": "3 normal",
+      "atendente": "Admin OTRS",
+      "criado": "2026-04-26T08:45:20",
+      "modificado": "2026-04-26T09:14:00",
+      "idade_dias": 0,
+      "assunto": "GROUNDWORK - Alertas WARNING - 26042608434363"
+    },
     {
       "ticket": "2026042626000133",
       "cliente": "monitoramento@groundwork.com.br",
@@ -73,6 +109,18 @@
       "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Errors - POST incompleto - 26042604524494"
     },
     {
+      "ticket": "2026042326000148",
+      "cliente": "vinicius.vedove@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-23T08:35:14",
+      "modificado": "2026-04-26T05:00:15",
+      "idade_dias": 3,
+      "assunto": "Cliente - Fadel: Alteração de Nome de Host"
+    },
+    {
       "ticket": "2026042326000121",
       "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
@@ -83,18 +131,6 @@
       "modificado": "2026-04-26T05:00:15",
       "idade_dias": 3,
       "assunto": "UNIMED Curitiba - Ajustar Link"
-    },
-    {
-      "ticket": "2026042326000344",
-      "cliente": "weskley.silva@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-23T13:45:14",
-      "modificado": "2026-04-26T05:00:15",
-      "idade_dias": 2,
-      "assunto": "Acesso GWMS"
     },
     {
       "ticket": "2026042326000255",
@@ -109,16 +145,16 @@
       "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
     },
     {
-      "ticket": "2026042326000148",
-      "cliente": "vinicius.vedove@groundwork.com.br",
+      "ticket": "2026042326000344",
+      "cliente": "weskley.silva@groundwork.com.br",
       "fila": "GWMS",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
       "atendente": "Bruno Fagundes",
-      "criado": "2026-04-23T08:35:14",
+      "criado": "2026-04-23T13:45:14",
       "modificado": "2026-04-26T05:00:15",
-      "idade_dias": 3,
-      "assunto": "Cliente - Fadel: Alteração de Nome de Host"
+      "idade_dias": 2,
+      "assunto": "Acesso GWMS"
     },
     {
       "ticket": "2026042326000013",
@@ -143,6 +179,18 @@
       "modificado": "2026-04-26T05:00:14",
       "idade_dias": 3,
       "assunto": "Ticket para alteração do monitoramento ambiente de HOMOLOGAÇÃO da AUTOZONE"
+    },
+    {
+      "ticket": "2026042226000061",
+      "cliente": "bruno.lvieira@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T08:15:05",
+      "modificado": "2026-04-26T05:00:13",
+      "idade_dias": 4,
+      "assunto": "ALERTA SERVIDOR 172.0.0.37"
     },
     {
       "ticket": "2026042226000364",
@@ -181,64 +229,16 @@
       "assunto": "Unimed - Gerenciamento de dashboards"
     },
     {
-      "ticket": "2026042226000061",
-      "cliente": "bruno.lvieira@totvs.com.br",
+      "ticket": "2026041526000065",
+      "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
       "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T08:15:05",
-      "modificado": "2026-04-26T05:00:13",
-      "idade_dias": 4,
-      "assunto": "ALERTA SERVIDOR 172.0.0.37"
-    },
-    {
-      "ticket": "2026042126000071",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-21T13:48:10",
+      "criado": "2026-04-15T07:25:20",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 4,
-      "assunto": "Erro e perdendo a conexão."
-    },
-    {
-      "ticket": "2026041626000358",
-      "cliente": "GroundWork",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-16T15:00:06",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
-      "assunto": "RE: Agent GWMS"
-    },
-    {
-      "ticket": "2026020226000164",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-02-02T10:00:27",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 82,
-      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
-    },
-    {
-      "ticket": "2026042026000215",
-      "cliente": "bruno.fagundes@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-20T15:45:23",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 5,
-      "assunto": "Revisão de ativos de rede da ARCO"
+      "idade_dias": 11,
+      "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
       "ticket": "2026041726000338",
@@ -273,116 +273,8 @@
       "atendente": "Tiago Silva",
       "criado": "2026-04-16T09:38:46",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
+      "idade_dias": 10,
       "assunto": "Processo Workflow com aviso: Processo IGNORADO, FINALIZADO anteriormente"
-    },
-    {
-      "ticket": "2026041326000452",
-      "cliente": "eduardo.candido@groundwork.com.br",
-      "fila": "DBA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Eduardo Candido",
-      "criado": "2026-04-13T16:50:08",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 12,
-      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
-    },
-    {
-      "ticket": "2026042426000137",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-24T10:15:23",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 1,
-      "assunto": "INSERT/ SELECT - TIPO 9 - 24.04 - W2 PD09"
-    },
-    {
-      "ticket": "2026042326000246",
-      "cliente": "wildirson.pires@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Thiago Trufelli",
-      "criado": "2026-04-23T10:45:12",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 2,
-      "assunto": "Monitoramento X10"
-    },
-    {
-      "ticket": "2026041426000129",
-      "cliente": "sergio.batista@integrada.coop.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Guilherme Jonck",
-      "criado": "2026-04-14T09:45:11",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 11,
-      "assunto": "Monitoramento - novos servidores"
-    },
-    {
-      "ticket": "2026041726000187",
-      "cliente": "NSX",
-      "fila": "PROTHEUS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Geyson Albano",
-      "criado": "2026-04-17T11:54:04",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 8,
-      "assunto": "AVISO SEMANAL - WORKFLOW DE APROVACAO EMAIL"
-    },
-    {
-      "ticket": "2026042226000239",
-      "cliente": "bruno.fagundes@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T11:15:10",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 3,
-      "assunto": "Revisão TOTVS Network"
-    },
-    {
-      "ticket": "2026042226000131",
-      "cliente": "eder.oliveira@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-22T09:25:14",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 3,
-      "assunto": "Acesso - Monitoramentos TI"
-    },
-    {
-      "ticket": "2026041526000065",
-      "cliente": "servicedesk@teletex.com",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-15T07:25:20",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 11,
-      "assunto": "BERNECK - Remoção do monitoramento."
-    },
-    {
-      "ticket": "2026040726000384",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-07T14:54:52",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 18,
-      "assunto": "Liberar Modo Financeiro"
     },
     {
       "ticket": "2026041226000043",
@@ -393,20 +285,8 @@
       "atendente": "Eduardo Candido",
       "criado": "2026-04-12T09:15:14",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 13,
+      "idade_dias": 14,
       "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
-    },
-    {
-      "ticket": "2026041526000181",
-      "cliente": "NSX",
-      "fila": "PROTHEUS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Geyson Albano",
-      "criado": "2026-04-15T09:31:44",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 10,
-      "assunto": "Rollback exclusão de NF"
     },
     {
       "ticket": "2026042326000424",
@@ -421,16 +301,16 @@
       "assunto": "Acesso ao GWMS"
     },
     {
-      "ticket": "2026041726000034",
-      "cliente": "weskley.silva@groundwork.com.br",
+      "ticket": "2026042426000137",
+      "cliente": "AUTOZONE",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-17T07:50:21",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-24T10:15:23",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
-      "assunto": "Re: 30.000 documentos em fila de processamento"
+      "idade_dias": 2,
+      "assunto": "INSERT/ SELECT - TIPO 9 - 24.04 - W2 PD09"
     },
     {
       "ticket": "2026042226000471",
@@ -465,7 +345,7 @@
       "atendente": "Bruno Fagundes",
       "criado": "2026-04-22T09:10:12",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Alteração de data em monitoramento de certificado."
     },
     {
@@ -481,16 +361,16 @@
       "assunto": "SEBRAE - SRV_DW-BD-DEV - Disk:C: - 26042408025566"
     },
     {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
+      "ticket": "2026041726000187",
+      "cliente": "NSX",
+      "fila": "PROTHEUS",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
+      "prioridade": "5 very high",
+      "atendente": "Geyson Albano",
+      "criado": "2026-04-17T11:54:04",
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 8,
-      "assunto": "Compartilhamento documentos One Drive"
+      "assunto": "AVISO SEMANAL - WORKFLOW DE APROVACAO EMAIL"
     },
     {
       "ticket": "2026041926000067",
@@ -505,40 +385,172 @@
       "assunto": "Adequação do monitoramento de Port-channels"
     },
     {
-      "ticket": "2026041426000085",
+      "ticket": "2026041626000358",
+      "cliente": "GroundWork",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-16T15:00:06",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 9,
+      "assunto": "RE: Agent GWMS"
+    },
+    {
+      "ticket": "2026040726000384",
       "cliente": "ALMEIDA JR",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "2 low",
-      "atendente": "Debora Gomes",
-      "criado": "2026-04-14T08:50:46",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 12,
-      "assunto": "Problema de exclusão de título financeiro"
-    },
-    {
-      "ticket": "2026041426000254",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Joao Santos",
-      "criado": "2026-04-14T14:00:11",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 11,
-      "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
-    },
-    {
-      "ticket": "2026040726000419",
-      "cliente": "vinicius.eroico@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Joao Santos",
-      "criado": "2026-04-07T15:30:06",
-      "modificado": "2026-04-26T05:00:11",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-07T14:54:52",
+      "modificado": "2026-04-26T05:00:12",
       "idade_dias": 18,
-      "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
+      "assunto": "Liberar Modo Financeiro"
+    },
+    {
+      "ticket": "2026042026000215",
+      "cliente": "bruno.fagundes@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-20T15:45:23",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 5,
+      "assunto": "Revisão de ativos de rede da ARCO"
+    },
+    {
+      "ticket": "2026041526000181",
+      "cliente": "NSX",
+      "fila": "PROTHEUS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Geyson Albano",
+      "criado": "2026-04-15T09:31:44",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 11,
+      "assunto": "Rollback exclusão de NF"
+    },
+    {
+      "ticket": "2026041726000034",
+      "cliente": "weskley.silva@groundwork.com.br",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-04-17T07:50:21",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 9,
+      "assunto": "Re: 30.000 documentos em fila de processamento"
+    },
+    {
+      "ticket": "2026041326000452",
+      "cliente": "eduardo.candido@groundwork.com.br",
+      "fila": "DBA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Eduardo Candido",
+      "criado": "2026-04-13T16:50:08",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 12,
+      "assunto": "Testar SQL Audit em ambiente de Homologação AUTOZONE"
+    },
+    {
+      "ticket": "2026042326000246",
+      "cliente": "wildirson.pires@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Thiago Trufelli",
+      "criado": "2026-04-23T10:45:12",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 2,
+      "assunto": "Monitoramento X10"
+    },
+    {
+      "ticket": "2026041426000129",
+      "cliente": "sergio.batista@integrada.coop.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Guilherme Jonck",
+      "criado": "2026-04-14T09:45:11",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 12,
+      "assunto": "Monitoramento - novos servidores"
+    },
+    {
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 8,
+      "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
+      "ticket": "2026042126000071",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-21T13:48:10",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 4,
+      "assunto": "Erro e perdendo a conexão."
+    },
+    {
+      "ticket": "2026042226000239",
+      "cliente": "bruno.fagundes@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T11:15:10",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 3,
+      "assunto": "Revisão TOTVS Network"
+    },
+    {
+      "ticket": "2026042226000131",
+      "cliente": "eder.oliveira@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-22T09:25:14",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 4,
+      "assunto": "Acesso - Monitoramentos TI"
+    },
+    {
+      "ticket": "2026020226000164",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-02-02T10:00:27",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 83,
+      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
+    },
+    {
+      "ticket": "2026031826000329",
+      "cliente": "rodrigo.koji@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Luciano Katsumi Shiraishi",
+      "criado": "2026-03-18T16:20:20",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 38,
+      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
     },
     {
       "ticket": "2026040826000168",
@@ -565,28 +577,28 @@
       "assunto": "Contabilização offline dos titulos gerados por planilha"
     },
     {
-      "ticket": "2026031826000329",
-      "cliente": "rodrigo.koji@totvs.com.br",
+      "ticket": "2026041426000254",
+      "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
-      "atendente": "Luciano Katsumi Shiraishi",
-      "criado": "2026-03-18T16:20:20",
+      "atendente": "Joao Santos",
+      "criado": "2026-04-14T14:00:11",
       "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 38,
-      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
+      "idade_dias": 11,
+      "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
     },
     {
-      "ticket": "2026041626000447",
-      "cliente": "bruno.fagundes@groundwork.com.br",
+      "ticket": "2026040726000419",
+      "cliente": "vinicius.eroico@groundwork.com.br",
       "fila": "GWMS",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "1 very low",
-      "atendente": "Bruno Fagundes",
-      "criado": "2026-04-16T16:15:15",
+      "atendente": "Joao Santos",
+      "criado": "2026-04-07T15:30:06",
       "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 9,
-      "assunto": "Revisão Sebrae"
+      "idade_dias": 18,
+      "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
     },
     {
       "ticket": "2025073026000407",
@@ -623,6 +635,30 @@
       "modificado": "2026-04-26T05:00:11",
       "idade_dias": 24,
       "assunto": "V2- workflow de aprovação para lançamento contábil manual."
+    },
+    {
+      "ticket": "2026041426000085",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "2 low",
+      "atendente": "Debora Gomes",
+      "criado": "2026-04-14T08:50:46",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 12,
+      "assunto": "Problema de exclusão de título financeiro"
+    },
+    {
+      "ticket": "2026041626000447",
+      "cliente": "bruno.fagundes@groundwork.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Bruno Fagundes",
+      "criado": "2026-04-16T16:15:15",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 9,
+      "assunto": "Revisão Sebrae"
     },
     {
       "ticket": "2026042626000071",
@@ -1161,7 +1197,7 @@
       "atendente": "Bruno Montenegro",
       "criado": "2026-04-25T10:00:11",
       "modificado": "2026-04-25T10:11:00",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:Jobs - 26042509513257"
     },
     {
@@ -1173,7 +1209,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T10:00:09",
       "modificado": "2026-04-25T10:10:23",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "Telefone Errado no pop-up"
     },
     {
@@ -1197,7 +1233,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T09:50:06",
       "modificado": "2026-04-25T09:58:18",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - Alertas WARNING - 26042509473571"
     },
     {
@@ -1209,7 +1245,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T09:45:06",
       "modificado": "2026-04-25T09:58:12",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042509412281"
     },
     {
@@ -1281,7 +1317,7 @@
       "atendente": "Thiago Trufelli",
       "criado": "2026-03-11T09:55:13",
       "modificado": "2026-04-24T22:43:10",
-      "idade_dias": 45,
+      "idade_dias": 46,
       "assunto": "Atualizar o Grafana dos clientes para o Grafana 10"
     },
     {
@@ -1353,7 +1389,7 @@
       "atendente": "Luciano Katsumi Shiraishi",
       "criado": "2026-04-22T09:30:16",
       "modificado": "2026-04-24T18:48:48",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Inclusão monitoramento das maquinas - Portal de cliente"
     },
     {
@@ -1377,7 +1413,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-24T10:20:10",
       "modificado": "2026-04-24T18:05:27",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "Adição Monitoria - OCI Docker Conector Sensedia "
     },
     {
@@ -1401,7 +1437,7 @@
       "atendente": "Guilherme Jonck",
       "criado": "2026-04-22T10:00:21",
       "modificado": "2026-04-24T18:04:36",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Desenvolvimento do gw/v2"
     },
     {
@@ -1425,7 +1461,7 @@
       "atendente": "Robert Rodrigues dos Santos",
       "criado": "2026-04-13T09:10:28",
       "modificado": "2026-04-24T17:00:24",
-      "idade_dias": 12,
+      "idade_dias": 13,
       "assunto": "RES: RES: RES: RES: RES: RES: RES: RES: Chamado 135947 - EFD Reinf - Informações DLs"
     },
     {
@@ -1521,7 +1557,7 @@
       "atendente": "Joao Santos",
       "criado": "2026-04-15T10:00:23",
       "modificado": "2026-04-24T16:37:37",
-      "idade_dias": 10,
+      "idade_dias": 11,
       "assunto": "Apontamentos referente a calls internas."
     },
     {
@@ -1533,7 +1569,7 @@
       "atendente": "Eduardo Candido",
       "criado": "2026-04-24T09:35:22",
       "modificado": "2026-04-24T16:15:53",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "ENC: Configuração de WF - Ambiente RELEASE 2510 - PRJ"
     },
     {
@@ -1617,7 +1653,7 @@
       "atendente": "Geyson Albano",
       "criado": "2026-04-15T09:51:09",
       "modificado": "2026-04-24T14:21:52",
-      "idade_dias": 10,
+      "idade_dias": 11,
       "assunto": "V2 Customização PCC para trazer o anexo da NF no novo Titulo gerado"
     },
     {
@@ -1749,7 +1785,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-04-09T09:35:13",
       "modificado": "2026-04-24T10:56:39",
-      "idade_dias": 16,
+      "idade_dias": 17,
       "assunto": "Abertura de Projeto: API de Integração Contábil (Sistema de Arrecadação x Protheus CTB)"
     },
     {
@@ -1833,7 +1869,7 @@
       "atendente": "Eduardo Candido",
       "criado": "2026-04-24T09:15:21",
       "modificado": "2026-04-24T09:18:50",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:Jobs - 26042409115520"
     },
     {
@@ -1893,7 +1929,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-01-26T10:21:55",
       "modificado": "2026-04-23T20:01:25",
-      "idade_dias": 89,
+      "idade_dias": 90,
       "assunto": "Identificação no campo ORIGEM dos usuaários que fizeram Lançamento manual"
     },
     {
@@ -1929,7 +1965,7 @@
       "atendente": "Enzo Fucitalo",
       "criado": "2026-04-23T10:00:07",
       "modificado": "2026-04-23T14:56:19",
-      "idade_dias": 2,
+      "idade_dias": 3,
       "assunto": "Verificação de Banco de Dados | FLN - SFLNACLU-SQL02"
     },
     {
@@ -2049,7 +2085,7 @@
       "atendente": "Francisco Silva",
       "criado": "2026-04-22T09:15:12",
       "modificado": "2026-04-22T16:05:59",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Fazer carga para criar titulos de Imposto no financeiro"
     },
     {
@@ -2193,7 +2229,7 @@
       "atendente": "Gesiel Silva",
       "criado": "2026-04-16T09:20:09",
       "modificado": "2026-04-22T10:13:10",
-      "idade_dias": 9,
+      "idade_dias": 10,
       "assunto": "Parametrização financeira/contábil para aglutinação de títulos em fatura"
     },
     {
@@ -2253,7 +2289,7 @@
       "atendente": "Cristiano Scaranci",
       "criado": "2025-10-20T09:11:43",
       "modificado": "2026-04-22T08:40:32",
-      "idade_dias": 187,
+      "idade_dias": 188,
       "assunto": "RPA - Para Arquivos de DDA"
     },
     {
@@ -2385,7 +2421,7 @@
       "atendente": "Eduardo Souza",
       "criado": "2026-02-09T09:39:02",
       "modificado": "2026-04-20T11:18:25",
-      "idade_dias": 75,
+      "idade_dias": 76,
       "assunto": "URGENTEEEE- Centro de custos x ativos e passivos"
     },
     {
@@ -2409,7 +2445,7 @@
       "atendente": "Jean Pierre Rocha",
       "criado": "2026-04-20T09:28:03",
       "modificado": "2026-04-20T09:32:37",
-      "idade_dias": 5,
+      "idade_dias": 6,
       "assunto": "Página principal com erro de certificado: https://sfadkt.com/"
     },
     {
@@ -2601,7 +2637,7 @@
       "atendente": "Weskley Silva",
       "criado": "2026-04-09T09:15:10",
       "modificado": "2026-04-13T10:23:20",
-      "idade_dias": 16,
+      "idade_dias": 17,
       "assunto": "Solicitação de Ajuste - WebService WEBA016 (Inclusão de PA)"
     },
     {
@@ -2637,7 +2673,7 @@
       "atendente": "George Eivazian",
       "criado": "2026-04-01T09:14:12",
       "modificado": "2026-04-08T10:32:44",
-      "idade_dias": 24,
+      "idade_dias": 25,
       "assunto": "inconsistencia no Rateio"
     },
     {
