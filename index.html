@@ -4324,7 +4324,7 @@ function renderUtilizacao(data){
       :'Total ativos: '+ativos+' (trabalhando: '+cargaReal+' · aguardando: '+(r.aguardando||0)+')';
     var nomeLabel=(r.atendente||'—').split(' ').slice(0,3).join(' ');
     var otrsHref=r.login
-      ?'https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketSearch;Subaction=Search;OwnerSearch='+encodeURIComponent(r.login)+'&StateType=Open'+(filaAtiva?';Queues[]='+encodeURIComponent(filaAtiva):'')
+      ?'https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketSearch;Subaction=Search;OwnerSearch='+encodeURIComponent(r.login)+';StateType=Open'+(filaAtiva?';Queues[]='+encodeURIComponent(filaAtiva):'')
       :'';
     var nomeCell=otrsHref
       ?('<a href="'+otrsHref+'" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none" title="Abrir tickets de '+nomeLabel+(filaAtiva?' na fila '+filaAtiva:'')+' no OTRS">'+nomeLabel+'</a>')
