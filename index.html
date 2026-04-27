@@ -829,6 +829,8 @@ input[type=file]{display:none}
 .cap-ticket-link{font-family:var(--mono);font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.22);border-radius:4px;padding:1px 5px;text-decoration:none;transition:background .15s}
 .cap-ticket-link:hover{background:rgba(20,184,166,.22)}
 .cap-ticket-more{font-family:var(--mono);font-size:9px;color:var(--muted);padding:1px 4px;align-self:center}
+.cap-otrs-link{display:inline-block;font-family:var(--mono);font-size:9px;color:var(--muted);text-decoration:none;margin-top:6px;padding:2px 6px;border-radius:4px;border:1px solid var(--border);transition:all .15s}
+.cap-otrs-link:hover{color:var(--teal);border-color:var(--teal);background:rgba(20,184,166,.06)}
 .cap-card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cap-avatar-sm{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .cap-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -4904,7 +4906,8 @@ function renderTeamCapacity() {
         +(extra>0?'<span class="cap-ticket-more">+'+extra+'</span>':'')
         +'</div>';
     }
-    cardsHtml+='<a href="'+otrsUrl+'" target="_blank" rel="noopener" class="cap-card cap-card-link" title="'+titleAttr.replace(/"/g,'&quot;')+'">'
+    var nameSafe=String(a.n).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    cardsHtml+='<div class="cap-card cap-card-link" onclick="openAtendenteModal(\''+nameSafe+'\')" title="'+titleAttr.replace(/"/g,'&quot;')+'">'
       +'<div class="cap-card-head">'
         +'<div class="cap-avatar-sm" style="background:'+col+'22;color:'+col+'">'+initials+'</div>'
         +'<div class="cap-name">'+shortN+'</div>'
@@ -4914,7 +4917,8 @@ function renderTeamCapacity() {
       +'<div class="cap-bar-track"><div class="cap-bar-fill" style="width:'+a.barW+'%;background:'+barColors[a.status]+'"></div></div>'
       +'<span class="cap-status '+a.status+'">'+STATUS_LABEL[a.status]+'</span>'
       +ticketsHtml
-    +'</a>';
+      +'<a href="'+otrsUrl+'" target="_blank" rel="noopener" class="cap-otrs-link" onclick="event.stopPropagation()" title="Abrir no OTRS">↗ OTRS</a>'
+    +'</div>';
   });
   cardsHtml+='</div>';
   el.innerHTML='<div class="card-title">Capacidade da Equipe</div>'+sumHtml+cardsHtml;
@@ -8638,6 +8642,37 @@ function closeEstadoModal() {
 
 function handleEstadoOverlay(e) {
   if(e.target === document.getElementById('estado-overlay')) closeEstadoModal();
+}
+
+function openAtendenteModal(atendName) {
+  if(!atendName) return;
+  var openSt=['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
+  var filaAtiva=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?activeFilaOP:'';
+  var nameLow=atendName.toLowerCase();
+  var rows=(ALL_TICKETS||[]).filter(function(t){
+    if(!t.atend) return false;
+    if(String(t.atend).toLowerCase()!==nameLow) return false;
+    if(openSt.indexOf(t.estado)===-1) return false;
+    if(filaAtiva&&t.fila!==filaAtiva) return false;
+    return true;
+  });
+  rows.sort(function(a,b){
+    var av=a.criado||'',bv=b.criado||'';
+    if(av<bv) return 1; if(av>bv) return -1; return 0;
+  });
+  _estadoModalState.estado=atendName;
+  _estadoModalState.color='var(--teal)';
+  _estadoModalState.allRows=rows;
+  _estadoModalState.sortCol='criado';
+  _estadoModalState.sortDir=-1;
+  document.getElementById('estado-modal-dot').style.background='var(--teal)';
+  var titleTxt=atendName+(filaAtiva?' · fila '+filaAtiva:'');
+  document.getElementById('estado-modal-title').textContent=titleTxt;
+  document.getElementById('estado-modal-count').textContent=rows.length+' chamado'+(rows.length!==1?'s':'')+' em aberto';
+  document.getElementById('estado-search').value='';
+  renderEstadoTable(rows);
+  document.getElementById('estado-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('estado-search').focus(); }, 120);
 }
 
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeEstadoModal(); });
