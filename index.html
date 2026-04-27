@@ -453,6 +453,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .action-body{flex:1}
 .action-title{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:2px}
 .action-desc{font-size:11px;color:var(--sub);line-height:1.5}
+.action-tickets{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.action-ticket-link{font-family:var(--mono);font-size:10px;color:var(--teal);background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.25);border-radius:4px;padding:2px 7px;text-decoration:none;transition:background .15s}
+.action-ticket-link:hover{background:rgba(20,184,166,.22)}
+.action-ver-todos{font-family:var(--mono);font-size:10px;color:var(--warn);background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:2px 8px;cursor:pointer;transition:background .15s}
+.action-ver-todos:hover{background:rgba(245,158,11,.18)}
 
 /* ═══ SLA GAUGE ═══════════════════════════════════════════════ */
 .sla-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -4270,7 +4275,7 @@ function renderUtilizacao(data){
   // Utilização é por atendente (não filtra por cliente — dataset não tem cliente)
   // mas pode filtrar por fila se fosse necessário; por ora mostra agregado
   var rows=data.rows;
-  var over=rows.filter(function(r){return r.ativos_total>=8;}).length;
+  var over=rows.filter(function(r){return (r.em_atendimento||0)+(r.abertos||0)>=8;}).length;
   var tot=rows.reduce(function(s,r){return s+(r.ativos_total||0);},0);
   var setv=function(id,v){var e=g(id);if(e)e.textContent=v;};
   setv('at-util-kpi-ppl',rows.length);
@@ -4280,18 +4285,24 @@ function renderUtilizacao(data){
   setv('at-util-meta',rows.length+' atendentes · atualizado há '+(tsMin<1?'agora':tsMin+' min'));
   var trs=rows.map(function(r){
     var ativos=r.ativos_total||0;
-    var col=ativos>=8?'var(--danger)':(ativos>=5?'var(--warn)':'var(--ok)');
+    var cargaReal=(r.em_atendimento||0)+(r.abertos||0);
+    var col=cargaReal>=8?'var(--danger)':(cargaReal>=5?'var(--warn)':'var(--ok)');
     var tempo=r.em_atend_tempo_med_min?_fmtDuration(Math.round(r.em_atend_tempo_med_min)):'—';
+    var tooltip='Total ativos: '+ativos+' (trabalhando: '+cargaReal+' · aguardando: '+(r.aguardando||0)+')';
+    var nomeLabel=(r.atendente||'—').split(' ').slice(0,3).join(' ');
+    var nomeCell=r.login
+      ?('<a href="https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketSearch;Subaction=Search;OwnerSearch='+encodeURIComponent(r.login)+'&StateType=Open" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none" title="Abrir tickets ativos de '+nomeLabel+' no OTRS">'+nomeLabel+'</a>')
+      :nomeLabel;
     return '<tr>'
-      +'<td style="font-size:11px">'+(r.atendente||'—').split(' ').slice(0,3).join(' ')+'</td>'
-      +'<td style="color:'+col+';font-weight:700;font-family:var(--mono);font-size:11px;text-align:center">'+ativos+'</td>'
+      +'<td style="font-size:11px">'+nomeCell+'</td>'
+      +'<td title="'+tooltip+'" style="color:'+col+';font-weight:700;font-family:var(--mono);font-size:11px;text-align:center;cursor:default">'+cargaReal+'<span style="color:var(--muted);font-weight:400;font-size:9px"> /'+ativos+'</span></td>'
       +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.em_atendimento||0)+'</td>'
       +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.aguardando||0)+'</td>'
       +'<td style="font-family:var(--mono);font-size:11px;text-align:center">'+(r.abertos||0)+'</td>'
       +'<td style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+tempo+'</td>'
       +'</tr>';
   }).join('');
-  if(tbl) tbl.innerHTML='<thead><tr><th>Atendente</th><th>Ativos</th><th>Em atend.</th><th>Aguard.</th><th>Aberto</th><th>Tempo médio em atend.</th></tr></thead><tbody>'+trs+'</tbody>';
+  if(tbl) tbl.innerHTML='<thead><tr><th>Atendente</th><th title="Trabalhando/Total — cor baseada em tickets que exigem ação do atendente (em atend. + abertos)">Carga/Total</th><th>Em atend.</th><th>Aguard.</th><th>Aberto</th><th>Tempo médio em atend.</th></tr></thead><tbody>'+trs+'</tbody>';
   try{populateAtHero(data);}catch(e){console.warn('at hero:',e);}
 }
 function populateAtHero(data){
@@ -8311,21 +8322,36 @@ function renderOpActions(op) {
   if (!el) return;
   var actions = [];
   var total = op.total || 1;
-  var criticos = (OP.criticos || []).filter(function(c){
+
+  // Usa op.criticos (já filtrado por fila/cliente/mês) em vez do global OP.criticos
+  var criticos = (op.criticos || []).filter(function(c){
     return ['Aberto','Em Atendimento','Aguardando Interno'].indexOf(c.estado) !== -1;
   });
-  var mes = activeMonth;
-  var bloqTotal = (BLOQ_MESES[mes] || BLOQ_MESES['all'] || []).reduce(function(a,b){return a+b.n;},0);
-  var semResp = RESP30_MESES[mes] || 0;
+
+  // Bloqueados calculados do op.estado filtrado (fila-aware)
+  var est = op.estado || {};
+  var aguardCliente = est['Aguardando Cliente'] || 0;
+  var aguardInterno = est['Aguardando Interno'] || 0;
+  var bloqTotal = aguardCliente + aguardInterno + (est['Retorno Cliente'] || 0) + (est['Aguardando Externo'] || 0);
+
+  // semResp derivado do RAW_DATA com filtro de fila e mês ativos
+  var semResp = (RAW_DATA || []).filter(function(d){
+    return ticketInFilter(d) &&
+           (activeFilaOP === 'all' || d.fila === activeFilaOP) &&
+           (!activeCliente || d.cli_id === activeCliente) &&
+           d.resp_min != null && d.resp_min > 30;
+  }).length;
+
   var maTotal = (op.prior && op.prior['Muito Alta']) || 0;
-  var aguardCliente = (op.estado && op.estado['Aguardando Cliente']) || 0;
-  var aguardInterno = (op.estado && op.estado['Aguardando Interno']) || 0;
 
   // 1) Críticos em aberto (exige ação imediata)
   if (criticos.length > 0) {
-    actions.push({level:'crit',
+    actions.push({
+      level: 'crit',
       title: criticos.length + ' chamado' + (criticos.length>1?'s':'') + ' Muito Alta sem resolução',
-      desc: 'Verificar atendentes responsáveis e acionar resolução agora. Risco de SLA e insatisfação do cliente.'
+      desc: 'Verificar atendentes responsáveis e acionar resolução agora. Risco de SLA e insatisfação do cliente.',
+      tickets: criticos.slice(0,10).map(function(c){ return {num:c.num}; }),
+      verTodos: true
     });
   }
   // 2) Sem 1ª resposta dentro da meta
@@ -8364,6 +8390,8 @@ function renderOpActions(op) {
 
   if (actions.length === 0) { el.classList.remove('visible'); return; }
 
+  var OTRS_BASE = 'https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketZoom;TicketNumber=';
+
   var html = '<div class="actions-panel-head">'
     + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
     + '<span class="actions-panel-title">Ações Prioritárias</span>'
@@ -8371,9 +8399,22 @@ function renderOpActions(op) {
     + '</div>';
   html += actions.map(function(a){
     var label = a.level==='crit' ? 'CRÍTICO' : a.level==='atenc' ? 'ATENÇÃO' : 'INFO';
+    var ticketsHtml = '';
+    if (a.tickets && a.tickets.length) {
+      var shown = a.tickets.slice(0,5);
+      var extra = a.tickets.length - 5;
+      ticketsHtml = '<div class="action-tickets">'
+        + shown.map(function(t){
+            return '<a href="'+OTRS_BASE+encodeURIComponent(t.num)+'" target="_blank" rel="noopener" class="action-ticket-link">'+t.num+'</a>';
+          }).join('')
+        + (extra > 0
+            ? '<button class="action-ver-todos" onclick="goSec(\'op\',\'s-alertas\',document.querySelector(\'.nav[onclick*=\\\"s-alertas\\\"]\'))">+'+extra+' ver todos →</button>'
+            : (a.verTodos ? '<button class="action-ver-todos" onclick="goSec(\'op\',\'s-alertas\',document.querySelector(\'.nav[onclick*=\\\"s-alertas\\\"]\'))">ver alertas →</button>' : ''))
+        + '</div>';
+    }
     return '<div class="action-row">'
       + '<span class="action-badge '+a.level+'">'+label+'</span>'
-      + '<div class="action-body"><div class="action-title">'+a.title+'</div><div class="action-desc">'+a.desc+'</div></div>'
+      + '<div class="action-body"><div class="action-title">'+a.title+'</div><div class="action-desc">'+a.desc+'</div>'+ticketsHtml+'</div>'
       + '</div>';
   }).join('');
   el.innerHTML = html;
