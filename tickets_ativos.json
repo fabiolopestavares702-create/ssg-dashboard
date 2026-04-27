@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777247815,
-  "generated_at_iso": "2026-04-26T23:56:55Z",
-  "count": 231,
+  "generated_at": 1777262022,
+  "generated_at_iso": "2026-04-27T03:53:42Z",
+  "count": 178,
   "filas": [
     "DATASUL",
     "DBA",
@@ -12,18 +12,6 @@
     "SSG-MELHORIAS"
   ],
   "rows": [
-    {
-      "ticket": "2026042626000213",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T18:20:13",
-      "modificado": "2026-04-26T19:27:53",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042618183385"
-    },
     {
       "ticket": "2026042626000204",
       "cliente": "AUTOZONE",
@@ -49,30 +37,6 @@
       "assunto": "DKT - GWMS-SERVER - Grafana:Role Permissions - 26042615262228"
     },
     {
-      "ticket": "2026042626000188",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T14:20:23",
-      "modificado": "2026-04-26T16:06:00",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042614183616"
-    },
-    {
-      "ticket": "2026042626000179",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T12:10:06",
-      "modificado": "2026-04-26T13:16:15",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas CRITICAL - 26042612092934"
-    },
-    {
       "ticket": "2026042626000151",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -83,90 +47,6 @@
       "modificado": "2026-04-26T10:09:01",
       "idade_dias": 0,
       "assunto": "WILLY - Alertas CRITICAL - 26042609433988"
-    },
-    {
-      "ticket": "2026042626000161",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T09:45:08",
-      "modificado": "2026-04-26T10:08:13",
-      "idade_dias": 0,
-      "assunto": "#TOTVS-SERVERS - SP_MON-CENT01 - Check Core Services - 26042609441648"
-    },
-    {
-      "ticket": "2026042626000142",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T08:45:20",
-      "modificado": "2026-04-26T09:14:00",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042608434363"
-    },
-    {
-      "ticket": "2026042626000133",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T07:50:13",
-      "modificado": "2026-04-26T08:39:24",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042607474074"
-    },
-    {
-      "ticket": "2026042626000124",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T06:55:06",
-      "modificado": "2026-04-26T08:39:19",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042606511933"
-    },
-    {
-      "ticket": "2026042626000115",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T05:50:18",
-      "modificado": "2026-04-26T05:52:05",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042605472172"
-    },
-    {
-      "ticket": "2026042626000099",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T03:55:04",
-      "modificado": "2026-04-26T05:25:48",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042603524774"
-    },
-    {
-      "ticket": "2026042626000106",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T04:55:11",
-      "modificado": "2026-04-26T05:25:42",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Errors - POST incompleto - 26042604524494"
     },
     {
       "ticket": "2026042326000148",
@@ -181,18 +61,6 @@
       "assunto": "Cliente - Fadel: Alteração de Nome de Host"
     },
     {
-      "ticket": "2026042326000255",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-23T11:01:21",
-      "modificado": "2026-04-26T05:00:15",
-      "idade_dias": 3,
-      "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
-    },
-    {
       "ticket": "2026042326000121",
       "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
@@ -203,6 +71,18 @@
       "modificado": "2026-04-26T05:00:15",
       "idade_dias": 3,
       "assunto": "UNIMED Curitiba - Ajustar Link"
+    },
+    {
+      "ticket": "2026042326000255",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "2 low",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-23T11:01:21",
+      "modificado": "2026-04-26T05:00:15",
+      "idade_dias": 3,
+      "assunto": "Relatório do planejamento e orçamento - Informação Incompleta de NF AJ Midia"
     },
     {
       "ticket": "2026042326000344",
@@ -225,7 +105,7 @@
       "atendente": "Eduardo Candido",
       "criado": "2026-04-23T00:15:09",
       "modificado": "2026-04-26T05:00:14",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "AUTOZONE - SRV-SQL-PRD - SQL:P12_AUTOZONE - User Expiration - 26042300134514"
     },
     {
@@ -289,6 +169,18 @@
       "assunto": "Unimed - Gerenciamento de dashboards"
     },
     {
+      "ticket": "2026041726000123",
+      "cliente": "danielle.faria@groundwork.com.br",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T10:35:07",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 9,
+      "assunto": "Compartilhamento documentos One Drive"
+    },
+    {
       "ticket": "2026042326000424",
       "cliente": "elaine.vicente@teletex.com",
       "fila": "GWMS",
@@ -301,28 +193,16 @@
       "assunto": "Acesso ao GWMS"
     },
     {
-      "ticket": "2026040726000384",
-      "cliente": "ALMEIDA JR",
+      "ticket": "2026042226000613",
+      "cliente": "GDBR",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "2 low",
-      "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-07T14:54:52",
+      "prioridade": "3 normal",
+      "atendente": "Debora Gomes",
+      "criado": "2026-04-22T21:58:19",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 19,
-      "assunto": "Liberar Modo Financeiro"
-    },
-    {
-      "ticket": "2026041526000181",
-      "cliente": "NSX",
-      "fila": "PROTHEUS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Geyson Albano",
-      "criado": "2026-04-15T09:31:44",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 11,
-      "assunto": "Rollback exclusão de NF"
+      "idade_dias": 4,
+      "assunto": "NF'S BAIXADAS SEM POSIÇÃO APARENTE"
     },
     {
       "ticket": "2026042226000471",
@@ -337,6 +217,18 @@
       "assunto": "Alteração Threshold Discos Servidor SRV-SQL-PRD - Cliente AUTOZONE"
     },
     {
+      "ticket": "2026042426000137",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-24T10:15:23",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 2,
+      "assunto": "INSERT/ SELECT - TIPO 9 - 24.04 - W2 PD09"
+    },
+    {
       "ticket": "2026042226000221",
       "cliente": "jordan.feitoza@braveo.com.br",
       "fila": "GWMS",
@@ -347,6 +239,18 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 4,
       "assunto": "Alteração Interface Usage Graphics "
+    },
+    {
+      "ticket": "2026041726000338",
+      "cliente": "FADEL",
+      "fila": "INFRAESTUTURA",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Vinicius Vedove",
+      "criado": "2026-04-17T16:21:22",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 9,
+      "assunto": "PROBLEMA AO ACESSAR"
     },
     {
       "ticket": "2026042426000084",
@@ -385,18 +289,6 @@
       "assunto": "Alteração de data em monitoramento de certificado."
     },
     {
-      "ticket": "2026041726000034",
-      "cliente": "weskley.silva@groundwork.com.br",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-17T07:50:21",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
-      "assunto": "Re: 30.000 documentos em fila de processamento"
-    },
-    {
       "ticket": "2026041926000067",
       "cliente": "TJBA",
       "fila": "GWMS",
@@ -421,28 +313,40 @@
       "assunto": "RE: Agent GWMS"
     },
     {
-      "ticket": "2026041726000123",
-      "cliente": "danielle.faria@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
+      "ticket": "2026041726000187",
+      "cliente": "NSX",
+      "fila": "PROTHEUS",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T10:35:07",
+      "prioridade": "5 very high",
+      "atendente": "Geyson Albano",
+      "criado": "2026-04-17T11:54:04",
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 9,
-      "assunto": "Compartilhamento documentos One Drive"
+      "assunto": "AVISO SEMANAL - WORKFLOW DE APROVACAO EMAIL"
     },
     {
-      "ticket": "2026042126000071",
+      "ticket": "2026040726000384",
       "cliente": "ALMEIDA JR",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
+      "prioridade": "2 low",
       "atendente": "Dyalef Abreu Santos",
-      "criado": "2026-04-21T13:48:10",
+      "criado": "2026-04-07T14:54:52",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 5,
-      "assunto": "Erro e perdendo a conexão."
+      "idade_dias": 19,
+      "assunto": "Liberar Modo Financeiro"
+    },
+    {
+      "ticket": "2026041526000181",
+      "cliente": "NSX",
+      "fila": "PROTHEUS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Geyson Albano",
+      "criado": "2026-04-15T09:31:44",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 11,
+      "assunto": "Rollback exclusão de NF"
     },
     {
       "ticket": "2026042026000215",
@@ -457,28 +361,16 @@
       "assunto": "Revisão de ativos de rede da ARCO"
     },
     {
-      "ticket": "2026020226000164",
-      "cliente": "AUTOZONE",
+      "ticket": "2026041726000034",
+      "cliente": "weskley.silva@groundwork.com.br",
       "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-02-02T10:00:27",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 83,
-      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
-    },
-    {
-      "ticket": "2026041726000338",
-      "cliente": "FADEL",
-      "fila": "INFRAESTUTURA",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "4 high",
-      "atendente": "Vinicius Vedove",
-      "criado": "2026-04-17T16:21:22",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-04-17T07:50:21",
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 9,
-      "assunto": "PROBLEMA AO ACESSAR"
+      "assunto": "Re: 30.000 documentos em fila de processamento"
     },
     {
       "ticket": "2026041226000043",
@@ -491,30 +383,6 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 14,
       "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
-    },
-    {
-      "ticket": "2026042226000613",
-      "cliente": "GDBR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Debora Gomes",
-      "criado": "2026-04-22T21:58:19",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 3,
-      "assunto": "NF'S BAIXADAS SEM POSIÇÃO APARENTE"
-    },
-    {
-      "ticket": "2026041626000214",
-      "cliente": "ALMEIDA JR",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-16T09:38:46",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 10,
-      "assunto": "Processo Workflow com aviso: Processo IGNORADO, FINALIZADO anteriormente"
     },
     {
       "ticket": "2026042326000246",
@@ -541,18 +409,6 @@
       "assunto": "Monitoramento - novos servidores"
     },
     {
-      "ticket": "2026042426000137",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "5 very high",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-24T10:15:23",
-      "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 2,
-      "assunto": "INSERT/ SELECT - TIPO 9 - 24.04 - W2 PD09"
-    },
-    {
       "ticket": "2026042226000239",
       "cliente": "bruno.fagundes@groundwork.com.br",
       "fila": "GWMS",
@@ -563,6 +419,18 @@
       "modificado": "2026-04-26T05:00:12",
       "idade_dias": 4,
       "assunto": "Revisão TOTVS Network"
+    },
+    {
+      "ticket": "2026020226000164",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "5 very high",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-02-02T10:00:27",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 83,
+      "assunto": "AZ | Inclusão das TESs no LP - Documento de Entrada"
     },
     {
       "ticket": "2026042226000131",
@@ -577,6 +445,18 @@
       "assunto": "Acesso - Monitoramentos TI"
     },
     {
+      "ticket": "2026042126000071",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "4 high",
+      "atendente": "Dyalef Abreu Santos",
+      "criado": "2026-04-21T13:48:10",
+      "modificado": "2026-04-26T05:00:12",
+      "idade_dias": 5,
+      "assunto": "Erro e perdendo a conexão."
+    },
+    {
       "ticket": "2026041526000065",
       "cliente": "servicedesk@teletex.com",
       "fila": "GWMS",
@@ -589,16 +469,40 @@
       "assunto": "BERNECK - Remoção do monitoramento."
     },
     {
-      "ticket": "2026041726000187",
-      "cliente": "NSX",
-      "fila": "PROTHEUS",
+      "ticket": "2026041626000214",
+      "cliente": "ALMEIDA JR",
+      "fila": "SSG",
       "estado": "AGUARDANDO CLIENTE",
       "prioridade": "5 very high",
-      "atendente": "Geyson Albano",
-      "criado": "2026-04-17T11:54:04",
+      "atendente": "Tiago Silva",
+      "criado": "2026-04-16T09:38:46",
       "modificado": "2026-04-26T05:00:12",
-      "idade_dias": 9,
-      "assunto": "AVISO SEMANAL - WORKFLOW DE APROVACAO EMAIL"
+      "idade_dias": 10,
+      "assunto": "Processo Workflow com aviso: Processo IGNORADO, FINALIZADO anteriormente"
+    },
+    {
+      "ticket": "2026040826000168",
+      "cliente": "FINPEC",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Robert Rodrigues dos Santos",
+      "criado": "2026-04-08T10:40:08",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 18,
+      "assunto": "Zeramento 12/2025."
+    },
+    {
+      "ticket": "2025073026000407",
+      "cliente": "ECAD",
+      "fila": "SSG-MELHORIAS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Weskley Silva",
+      "criado": "2025-07-30T10:35:20",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 270,
+      "assunto": "Organizar cód Fontes"
     },
     {
       "ticket": "2026041426000254",
@@ -613,18 +517,6 @@
       "assunto": "AUTOZONE - GWMS-Server - Disks Queue Length - 26041413581068"
     },
     {
-      "ticket": "2026012926000455",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-01-29T18:25:55",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 87,
-      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
-    },
-    {
       "ticket": "2026040726000419",
       "cliente": "vinicius.eroico@groundwork.com.br",
       "fila": "GWMS",
@@ -635,6 +527,30 @@
       "modificado": "2026-04-26T05:00:11",
       "idade_dias": 19,
       "assunto": "Adicionar servidor ao monitoramento - POC GWMS for TOTVS - ELETTROMEC"
+    },
+    {
+      "ticket": "2026031826000329",
+      "cliente": "rodrigo.koji@totvs.com.br",
+      "fila": "GWMS",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Luciano Katsumi Shiraishi",
+      "criado": "2026-03-18T16:20:20",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 39,
+      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
+    },
+    {
+      "ticket": "2026012926000455",
+      "cliente": "AUTOZONE",
+      "fila": "SSG",
+      "estado": "AGUARDANDO CLIENTE",
+      "prioridade": "3 normal",
+      "atendente": "Tiago Silva",
+      "criado": "2026-01-29T18:25:55",
+      "modificado": "2026-04-26T05:00:11",
+      "idade_dias": 87,
+      "assunto": "LP - TES COMPLEMENTO DE ICMS + IPI"
     },
     {
       "ticket": "2026040126000313",
@@ -673,30 +589,6 @@
       "assunto": "Contabilização offline dos titulos gerados por planilha"
     },
     {
-      "ticket": "2026031826000329",
-      "cliente": "rodrigo.koji@totvs.com.br",
-      "fila": "GWMS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "1 very low",
-      "atendente": "Luciano Katsumi Shiraishi",
-      "criado": "2026-03-18T16:20:20",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 39,
-      "assunto": "#TOTVS-SERVERS - Adicionar servidores"
-    },
-    {
-      "ticket": "2026040826000168",
-      "cliente": "FINPEC",
-      "fila": "SSG",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Robert Rodrigues dos Santos",
-      "criado": "2026-04-08T10:40:08",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 18,
-      "assunto": "Zeramento 12/2025."
-    },
-    {
       "ticket": "2026041626000447",
       "cliente": "bruno.fagundes@groundwork.com.br",
       "fila": "GWMS",
@@ -707,30 +599,6 @@
       "modificado": "2026-04-26T05:00:11",
       "idade_dias": 10,
       "assunto": "Revisão Sebrae"
-    },
-    {
-      "ticket": "2025073026000407",
-      "cliente": "ECAD",
-      "fila": "SSG-MELHORIAS",
-      "estado": "AGUARDANDO CLIENTE",
-      "prioridade": "3 normal",
-      "atendente": "Weskley Silva",
-      "criado": "2025-07-30T10:35:20",
-      "modificado": "2026-04-26T05:00:11",
-      "idade_dias": 270,
-      "assunto": "Organizar cód Fontes"
-    },
-    {
-      "ticket": "2026042626000071",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T02:55:17",
-      "modificado": "2026-04-26T03:18:28",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042602502580"
     },
     {
       "ticket": "2026042626000081",
@@ -757,78 +625,6 @@
       "assunto": "AUTOZONE - SRV-JUMP-PRD - Memory Ram - 26042601154978"
     },
     {
-      "ticket": "2026042626000053",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T01:45:07",
-      "modificado": "2026-04-26T02:24:18",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042601432427"
-    },
-    {
-      "ticket": "2026042626000062",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T01:55:09",
-      "modificado": "2026-04-26T02:24:11",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042601524495"
-    },
-    {
-      "ticket": "2026042626000035",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T00:55:20",
-      "modificado": "2026-04-26T01:08:12",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042600501552"
-    },
-    {
-      "ticket": "2026042626000017",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T00:25:16",
-      "modificado": "2026-04-26T00:55:48",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042600242043"
-    },
-    {
-      "ticket": "2026042626000026",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-26T00:45:19",
-      "modificado": "2026-04-26T00:55:40",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Check Times - 26042600422996"
-    },
-    {
-      "ticket": "2026042526000466",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T23:50:12",
-      "modificado": "2026-04-25T23:50:42",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042523493611"
-    },
-    {
       "ticket": "2026042526000457",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -837,7 +633,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T23:10:08",
       "modificado": "2026-04-25T23:21:44",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "#TOTVS-SERVERS - Alertas CRITICAL - 26042523063074"
     },
     {
@@ -849,7 +645,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T22:55:08",
       "modificado": "2026-04-25T22:57:46",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042522510320"
     },
     {
@@ -861,7 +657,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T22:55:07",
       "modificado": "2026-04-25T22:57:40",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "#TOTVS-SERVERS - Alertas UNKNOWN - 26042522500471"
     },
     {
@@ -873,7 +669,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T22:50:04",
       "modificado": "2026-04-25T22:50:40",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "#TOTVS-SERVERS - Alertas CRITICAL - 26042522483615"
     },
     {
@@ -885,80 +681,8 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T22:50:06",
       "modificado": "2026-04-25T22:50:34",
-      "idade_dias": 0,
+      "idade_dias": 1,
       "assunto": "#TOTVS-SERVERS - SP_CLOUD_EXADATA_MXMCORP_X10 - Oracle:MXMCORP:Triggers - 26042522491893"
-    },
-    {
-      "ticket": "2026042526000395",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T22:45:03",
-      "modificado": "2026-04-25T22:50:28",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042522443974"
-    },
-    {
-      "ticket": "2026042526000386",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T21:55:17",
-      "modificado": "2026-04-25T22:01:03",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042521525910"
-    },
-    {
-      "ticket": "2026042526000377",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T21:50:16",
-      "modificado": "2026-04-25T22:00:12",
-      "idade_dias": 0,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042521462963"
-    },
-    {
-      "ticket": "2026042526000368",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T20:55:09",
-      "modificado": "2026-04-25T21:10:52",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042520531395"
-    },
-    {
-      "ticket": "2026042526000359",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T20:50:09",
-      "modificado": "2026-04-25T21:10:48",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042520462083"
-    },
-    {
-      "ticket": "2026042526000341",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T19:50:21",
-      "modificado": "2026-04-25T20:16:18",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042519475872"
     },
     {
       "ticket": "2026042526000331",
@@ -973,138 +697,6 @@
       "assunto": "Monitoramento"
     },
     {
-      "ticket": "2026042526000322",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T19:05:15",
-      "modificado": "2026-04-25T19:22:09",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042519025481"
-    },
-    {
-      "ticket": "2026042526000313",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T18:45:13",
-      "modificado": "2026-04-25T18:55:45",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas CRITICAL - 26042518434642"
-    },
-    {
-      "ticket": "2026042526000304",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T18:15:09",
-      "modificado": "2026-04-25T18:55:41",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042518122947"
-    },
-    {
-      "ticket": "2026042526000297",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T18:05:11",
-      "modificado": "2026-04-25T18:08:27",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042517594214"
-    },
-    {
-      "ticket": "2026042526000288",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T17:55:09",
-      "modificado": "2026-04-25T18:08:24",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042517533441"
-    },
-    {
-      "ticket": "2026042526000279",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T17:50:06",
-      "modificado": "2026-04-25T18:08:20",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042517463171"
-    },
-    {
-      "ticket": "2026042526000261",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T17:45:05",
-      "modificado": "2026-04-25T18:08:16",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042517415923"
-    },
-    {
-      "ticket": "2026042526000251",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T16:50:20",
-      "modificado": "2026-04-25T16:58:21",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042516491368"
-    },
-    {
-      "ticket": "2026042526000242",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T16:45:18",
-      "modificado": "2026-04-25T16:58:19",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042516423051"
-    },
-    {
-      "ticket": "2026042526000233",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T16:05:13",
-      "modificado": "2026-04-25T16:17:47",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042516044188"
-    },
-    {
-      "ticket": "2026042526000224",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T16:00:12",
-      "modificado": "2026-04-25T16:17:45",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042515580811"
-    },
-    {
       "ticket": "2026042526000215",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "INFRAESTUTURA",
@@ -1115,126 +707,6 @@
       "modificado": "2026-04-25T15:28:45",
       "idade_dias": 1,
       "assunto": "DKT - GWMS-SERVER - Notif Groups Relations - 26042515212118"
-    },
-    {
-      "ticket": "2026042526000199",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T14:45:03",
-      "modificado": "2026-04-25T14:54:43",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042514440936"
-    },
-    {
-      "ticket": "2026042526000206",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "INFRAESTUTURA",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T14:50:04",
-      "modificado": "2026-04-25T14:54:40",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042514494224"
-    },
-    {
-      "ticket": "2026042526000181",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T13:55:17",
-      "modificado": "2026-04-25T14:01:29",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042513530991"
-    },
-    {
-      "ticket": "2026042526000171",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T13:50:16",
-      "modificado": "2026-04-25T14:01:25",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042513461099"
-    },
-    {
-      "ticket": "2026042526000162",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T12:50:12",
-      "modificado": "2026-04-25T13:02:06",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042512471519"
-    },
-    {
-      "ticket": "2026042526000126",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T11:45:22",
-      "modificado": "2026-04-25T12:27:18",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042511444849"
-    },
-    {
-      "ticket": "2026042526000144",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T12:10:04",
-      "modificado": "2026-04-25T12:27:14",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_VM-GWMSTLX-PNCE01 - Check Backup Clientes - 26042512084793"
-    },
-    {
-      "ticket": "2026042526000135",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T12:05:03",
-      "modificado": "2026-04-25T12:27:07",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_AZ-SRV-APP-01 - MysqlHealth:OTRS Communication Log Fails - 26042512041197"
-    },
-    {
-      "ticket": "2026042526000117",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T11:45:21",
-      "modificado": "2026-04-25T12:27:03",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042511433918"
-    },
-    {
-      "ticket": "2026042526000108",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T10:50:14",
-      "modificado": "2026-04-25T11:41:46",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042510460692"
     },
     {
       "ticket": "2026042526000091",
@@ -1285,30 +757,6 @@
       "assunto": "Verificação do alerta \"Error getting data\"."
     },
     {
-      "ticket": "2026042526000064",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T09:50:06",
-      "modificado": "2026-04-25T09:58:18",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - Alertas WARNING - 26042509473571"
-    },
-    {
-      "ticket": "2026042526000055",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T09:45:06",
-      "modificado": "2026-04-25T09:58:12",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042509412281"
-    },
-    {
       "ticket": "2026042526000046",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -1321,30 +769,6 @@
       "assunto": "DKT - GWMS-SERVER - Influxdb Check Writes - 26042507342934"
     },
     {
-      "ticket": "2026042526000037",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T04:55:09",
-      "modificado": "2026-04-25T05:50:43",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_Web-Server - API:ces_broker_x_gwms_cstg - Errors - POST incompleto - 26042504541456"
-    },
-    {
-      "ticket": "2026042526000028",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-25T00:45:17",
-      "modificado": "2026-04-25T01:50:20",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_VM-GWMSTLX-WBS01 - API:ces_broker_x_gwms_cstg - Check Times - 26042500422264"
-    },
-    {
       "ticket": "2026042526000019",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "GWMS",
@@ -1353,7 +777,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-25T00:25:15",
       "modificado": "2026-04-25T00:29:19",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "PAM_PLASTICOS - GWMS-Server - Time - 26042500235041"
     },
     {
@@ -1365,7 +789,7 @@
       "atendente": "Admin OTRS",
       "criado": "2026-04-24T23:30:08",
       "modificado": "2026-04-25T00:20:58",
-      "idade_dias": 1,
+      "idade_dias": 2,
       "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Process:filebeat - 26042423294075"
     },
     {
@@ -1379,66 +803,6 @@
       "modificado": "2026-04-24T22:43:10",
       "idade_dias": 46,
       "assunto": "Atualizar o Grafana dos clientes para o Grafana 10"
-    },
-    {
-      "ticket": "2026042426000431",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-24T21:45:15",
-      "modificado": "2026-04-24T21:46:19",
-      "idade_dias": 1,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042421422696"
-    },
-    {
-      "ticket": "2026042426000413",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-24T19:45:20",
-      "modificado": "2026-04-24T19:53:36",
-      "idade_dias": 2,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042419431577"
-    },
-    {
-      "ticket": "2026042426000422",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-24T19:50:21",
-      "modificado": "2026-04-24T19:53:31",
-      "idade_dias": 2,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042419500931"
-    },
-    {
-      "ticket": "2026042426000404",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-24T18:50:13",
-      "modificado": "2026-04-24T18:52:14",
-      "idade_dias": 2,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load: Top 5 process - 26042418461227"
-    },
-    {
-      "ticket": "2026042426000397",
-      "cliente": "monitoramento@groundwork.com.br",
-      "fila": "GWMS",
-      "estado": "NEW",
-      "prioridade": "3 normal",
-      "atendente": "Admin OTRS",
-      "criado": "2026-04-24T18:45:13",
-      "modificado": "2026-04-24T18:51:32",
-      "idade_dias": 2,
-      "assunto": "GROUNDWORK - GROUNDWORK_ELK-Server - Load - 26042418450227"
     },
     {
       "ticket": "2026042226000159",
@@ -1917,7 +1281,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-04-23T00:27:00",
       "modificado": "2026-04-24T10:37:52",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "ROBÔ DACTE DE COMPRA"
     },
     {
@@ -1941,7 +1305,7 @@
       "atendente": "Robert Rodrigues dos Santos",
       "criado": "2026-04-22T22:43:28",
       "modificado": "2026-04-24T09:05:57",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "CASAS DECIMAIS IMPOSTO DE PIS E COFINS - NOTAS FISCAIS SAIDAS."
     },
     {
@@ -1977,7 +1341,7 @@
       "atendente": "Tiago Silva",
       "criado": "2026-04-23T00:20:00",
       "modificado": "2026-04-24T07:43:04",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "Auxilio com otimização de fonte API REST DASH_API01"
     },
     {
@@ -2097,7 +1461,7 @@
       "atendente": "Diego Cardoso",
       "criado": "2026-04-23T00:15:09",
       "modificado": "2026-04-23T09:30:25",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "ERRO NA COMPEMSAÇÃO CONTROLE DE CAMBIO/CONTAS A PAGAR"
     },
     {
@@ -2109,7 +1473,7 @@
       "atendente": "Diego Cardoso",
       "criado": "2026-04-22T22:06:01",
       "modificado": "2026-04-23T09:26:31",
-      "idade_dias": 3,
+      "idade_dias": 4,
       "assunto": "LANÇAMENTO NCC NÃO ESTA AMARRANDO NF E NÃO ESTA GERANDO MOVIMENTO NO CONTÁBIL"
     },
     {
