@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777288630,
-  "generated_at_iso": "2026-04-27T11:17:10Z",
-  "count": 1,
+  "generated_at": 1777294593,
+  "generated_at_iso": "2026-04-27T12:56:33Z",
+  "count": 0,
   "filas": [
     "DATASUL",
     "DBA",
@@ -11,17 +11,5 @@
     "SSG",
     "SSG-MELHORIAS"
   ],
-  "rows": [
-    {
-      "ticket": "2026042626000204",
-      "cliente": "AUTOZONE",
-      "fila": "SSG",
-      "estado": "OPEN",
-      "prioridade": "3 normal",
-      "atendente": "Tiago Silva",
-      "criado": "2026-04-26T15:56:52",
-      "triagem_min": 980,
-      "assunto": "falha depreciação de ativos (chamado lixo para teste da ferramenta)"
-    }
-  ]
+  "rows": []
 }
