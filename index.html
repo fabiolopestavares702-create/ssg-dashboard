@@ -823,6 +823,12 @@ input[type=file]{display:none}
 .cap-grid{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0}
 .cap-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;min-width:130px;flex:1;max-width:200px;cursor:default}
 .cap-card:hover{border-color:var(--border2)}
+.cap-card-link{text-decoration:none;color:inherit;cursor:pointer;display:block;transition:transform .12s,border-color .12s,background .12s}
+.cap-card-link:hover{border-color:var(--teal);background:rgba(20,184,166,.04);transform:translateY(-1px)}
+.cap-tickets{display:flex;flex-wrap:wrap;gap:3px;margin-top:7px;padding-top:7px;border-top:1px dashed var(--border)}
+.cap-ticket-link{font-family:var(--mono);font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.22);border-radius:4px;padding:1px 5px;text-decoration:none;transition:background .15s}
+.cap-ticket-link:hover{background:rgba(20,184,166,.22)}
+.cap-ticket-more{font-family:var(--mono);font-size:9px;color:var(--muted);padding:1px 4px;align-self:center}
 .cap-card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cap-avatar-sm{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .cap-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -4863,6 +4869,25 @@ function renderTeamCapacity() {
     +'<span class="cap-sum-item" style="color:var(--danger)">Sobrecarregados: <strong>'+nSob+'</strong></span>'
     +'<span class="cap-sum-item" style="color:var(--ok)">Disponíveis: <strong>'+nDis+'</strong></span>'
     +'</div>';
+
+  // Maps de login (UTIL_DATA) e tickets ao vivo (TICKETS_ATIVOS_DATA)
+  var filaAtiva=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?activeFilaOP:'';
+  var loginMap={};
+  if(typeof UTIL_DATA!=='undefined'&&UTIL_DATA&&UTIL_DATA.rows){
+    UTIL_DATA.rows.forEach(function(r){if(r.atendente&&r.login)loginMap[r.atendente]=r.login;});
+  }
+  var ticketsMap={};
+  if(typeof TICKETS_ATIVOS_DATA!=='undefined'&&TICKETS_ATIVOS_DATA&&TICKETS_ATIVOS_DATA.rows){
+    TICKETS_ATIVOS_DATA.rows.forEach(function(r){
+      if(!r.atendente) return;
+      if(filaAtiva&&r.fila!==filaAtiva) return;
+      if(!ticketsMap[r.atendente]) ticketsMap[r.atendente]=[];
+      ticketsMap[r.atendente].push(r);
+    });
+  }
+  var OTRS_BASE_SEARCH='https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketSearch;Subaction=Search;StateType=Open';
+  var OTRS_BASE_ZOOM='https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketZoom;TicketNumber=';
+
   // Cards
   var cardsHtml='<div class="cap-grid">';
   list.forEach(function(a){
@@ -4871,7 +4896,23 @@ function renderTeamCapacity() {
     var col=PAL[colorIdx];
     var shortN=a.n.split(' ').slice(0,2).join(' ');
     var respTxt=a.rm!=null?fmtRespTxt(Math.round(a.rm)):'—';
-    cardsHtml+='<div class="cap-card" title="1ª resp: '+respTxt+' | Total: '+a.t+'">'
+    var login=loginMap[a.n];
+    var tix=ticketsMap[a.n]||[];
+    var otrsUrl=OTRS_BASE_SEARCH
+      +(login?';OwnerSearch='+encodeURIComponent(login):'')
+      +(filaAtiva?';Queues[]='+encodeURIComponent(filaAtiva):'');
+    var titleAttr='1ª resp: '+respTxt+' | Total: '+a.t
+      +(tix.length?' | Tickets: '+tix.slice(0,8).map(function(t){return t.ticket;}).join(', ')+(tix.length>8?'...':''):'');
+    var ticketsHtml='';
+    if(tix.length){
+      var shown=tix.slice(0,3);
+      var extra=tix.length-shown.length;
+      ticketsHtml='<div class="cap-tickets">'
+        +shown.map(function(t){return '<a href="'+OTRS_BASE_ZOOM+encodeURIComponent(t.ticket)+'" target="_blank" rel="noopener" class="cap-ticket-link" onclick="event.stopPropagation()">'+t.ticket+'</a>';}).join('')
+        +(extra>0?'<span class="cap-ticket-more">+'+extra+'</span>':'')
+        +'</div>';
+    }
+    cardsHtml+='<a href="'+otrsUrl+'" target="_blank" rel="noopener" class="cap-card cap-card-link" title="'+titleAttr.replace(/"/g,'&quot;')+'">'
       +'<div class="cap-card-head">'
         +'<div class="cap-avatar-sm" style="background:'+col+'22;color:'+col+'">'+initials+'</div>'
         +'<div class="cap-name">'+shortN+'</div>'
@@ -4880,7 +4921,8 @@ function renderTeamCapacity() {
       +'<div class="cap-lbl">abertos</div>'
       +'<div class="cap-bar-track"><div class="cap-bar-fill" style="width:'+a.barW+'%;background:'+barColors[a.status]+'"></div></div>'
       +'<span class="cap-status '+a.status+'">'+STATUS_LABEL[a.status]+'</span>'
-    +'</div>';
+      +ticketsHtml
+    +'</a>';
   });
   cardsHtml+='</div>';
   el.innerHTML='<div class="card-title">Capacidade da Equipe</div>'+sumHtml+cardsHtml;
