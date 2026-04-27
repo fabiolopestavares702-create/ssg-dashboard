@@ -4884,6 +4884,9 @@ function renderTeamCapacity() {
 }
 
 function renderAt(){
+  // Sempre popula o hero imediatamente com dados disponíveis para evitar race condition
+  // com fetchTicketsAtivos (TICKETS_ATIVOS_DATA pode chegar depois de renderUtilizacao)
+  if(UTIL_DATA) try{populateAtHero(UTIL_DATA);}catch(e){}
   if(!UTIL_DATA||(Date.now()/1000-UTIL_DATA.generated_at)>300) fetchUtilizacao();
   else renderUtilizacao(UTIL_DATA);
   var atendFiltrado=(getActiveOP().atend||OP.atend);
@@ -8263,7 +8266,17 @@ var TICKETS_ATIVOS_DATA=null;
 function fetchTicketsAtivos(){
   fetch('tickets_ativos.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
-    .then(function(d){TICKETS_ATIVOS_DATA=d;try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}})
+    .then(function(d){
+      TICKETS_ATIVOS_DATA=d;
+      try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}
+      // Re-render at-hero se o tab Atendentes estiver ativo e há filtro de fila
+      try{
+        var satEl=document.getElementById('s-at');
+        if(satEl&&satEl.classList.contains('on')&&UTIL_DATA){
+          populateAtHero(UTIL_DATA);
+        }
+      }catch(e){}
+    })
     .catch(function(){});
 }
 // Busca no load e a cada 10min
