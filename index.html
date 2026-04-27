@@ -820,14 +820,11 @@ input[type=file]{display:none}
 .churn-score-fill.medio{background:#eab308}
 .churn-score-fill.baixo{background:#22c55e}
 
-.cap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:4px 0}
-.cap-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:default;display:flex;flex-direction:column}
+.cap-grid{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0}
+.cap-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;min-width:130px;flex:1;max-width:200px;cursor:default}
 .cap-card:hover{border-color:var(--border2)}
-.cap-card-link{cursor:pointer;transition:transform .12s,border-color .12s,background .12s}
-.cap-card-link:hover{border-color:var(--teal);background:rgba(20,184,166,.04);transform:translateY(-1px)}
-.cap-card-footer{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding-top:6px}
-.cap-otrs-link{font-family:var(--mono);font-size:9px;color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:4px;border:1px solid var(--border);transition:all .15s;white-space:nowrap}
-.cap-otrs-link:hover{color:var(--teal);border-color:var(--teal);background:rgba(20,184,166,.06)}
+.cap-name-link{color:var(--text);text-decoration:none;border-bottom:1px dotted transparent;transition:color .15s,border-color .15s}
+.cap-name-link:hover{color:var(--teal);border-bottom-color:var(--teal)}
 .cap-card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cap-avatar-sm{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .cap-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -4892,23 +4889,20 @@ function renderTeamCapacity() {
     var otrsUrl=OTRS_BASE_SEARCH
       +(login?';OwnerSearch='+encodeURIComponent(login):'')
       +(filaAtiva?';Queues[]='+encodeURIComponent(filaAtiva):'');
-    var titleAttr='1ª resp: '+respTxt+' | Total: '+a.t+' · clique para ver chamados';
-    var nameSafe=String(a.n).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    var titleAttr='1ª resp: '+respTxt+' | Total: '+a.t;
     var hasTickets=a.ab>0;
-    cardsHtml+='<div class="cap-card'+(hasTickets?' cap-card-link':'')+'"'
-      +(hasTickets?' onclick="openAtendenteModal(\''+nameSafe+'\')"':'')
-      +' title="'+titleAttr.replace(/"/g,'&quot;')+'">'
+    var nameHtml=hasTickets
+      ? '<a href="'+otrsUrl+'" target="_blank" rel="noopener" class="cap-name cap-name-link" title="Ver chamados de '+shortN+(filaAtiva?' na fila '+filaAtiva:'')+' no OTRS">'+shortN+'</a>'
+      : '<div class="cap-name">'+shortN+'</div>';
+    cardsHtml+='<div class="cap-card" title="'+titleAttr.replace(/"/g,'&quot;')+'">'
       +'<div class="cap-card-head">'
         +'<div class="cap-avatar-sm" style="background:'+col+'22;color:'+col+'">'+initials+'</div>'
-        +'<div class="cap-name">'+shortN+'</div>'
+        +nameHtml
       +'</div>'
       +'<div class="cap-count" style="color:'+barColors[a.status]+'">'+a.ab+'</div>'
       +'<div class="cap-lbl">abertos</div>'
       +'<div class="cap-bar-track"><div class="cap-bar-fill" style="width:'+a.barW+'%;background:'+barColors[a.status]+'"></div></div>'
-      +'<div class="cap-card-footer">'
-        +'<span class="cap-status '+a.status+'">'+STATUS_LABEL[a.status]+'</span>'
-        +(hasTickets?'<a href="'+otrsUrl+'" target="_blank" rel="noopener" class="cap-otrs-link" onclick="event.stopPropagation()" title="Abrir no OTRS">OTRS ↗</a>':'')
-      +'</div>'
+      +'<span class="cap-status '+a.status+'">'+STATUS_LABEL[a.status]+'</span>'
     +'</div>';
   });
   cardsHtml+='</div>';
