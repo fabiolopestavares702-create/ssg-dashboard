@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-27T03:53:47.979863",
+  "generated_at": "2026-04-27T06:33:42.072249",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>81 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.7h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>25% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>80 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.7h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>25% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -52,7 +52,7 @@
     },
     {
       "titulo": "Volume crítico de chamados bloqueados",
-      "desc": "81 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
+      "desc": "80 chamados parados aguardando resposta ou ação interna. Representa gargalo operacional que impede o fechamento do backlog.",
       "nivel": "high",
       "confianca": 92
     },
