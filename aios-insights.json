@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-26T23:57:01.922354",
+  "generated_at": "2026-04-27T03:53:47.979863",
   "periodo": "2026-04",
   "version": "1.0",
   "resumo_gestao": {
-    "narrativa": "A operação apresenta <strong>taxa de conclusão de 77%</strong>, com margem para melhoria.<br><br>O volume de <strong>81 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.7h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>25% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
+    "narrativa": "A operação apresenta <strong>taxa de conclusão de 79%</strong>, com margem para melhoria.<br><br>O volume de <strong>81 chamados bloqueados</strong> está crítico e exige triagem imediata.<br><br>A <strong>primeira resposta (34.0 min)</strong> está acima da meta de 30 min, mas controlável.<br><br>O tempo médio de <strong>solução de 60.7h</strong> é elevado — revisar os chamados mais antigos deve ser prioridade.<br><br>O pico de volume ocorre na <strong>segunda-feira às 9h</strong> — dimensionar equipe para esse intervalo pode reduzir o SLA médio.<br><br>O módulo <strong>Banco de Dados</strong> concentra <strong>25% dos chamados</strong> — avaliar capacitação técnica ou documentação de auto-atendimento.",
     "kpis": [
       {
         "label": "Score Operacional",
@@ -25,7 +25,7 @@
       },
       {
         "label": "Previsão 7 dias",
-        "value": "~215/semana",
+        "value": "~210/semana",
         "sub": "pico: segunda-feira 9h",
         "color": "var(--purple)"
       }
@@ -39,7 +39,7 @@
       "desc": "Foco no módulo Banco de Dados pode reduzir reincidências"
     },
     "previsao": {
-      "label": "~43/dia",
+      "label": "~42/dia",
       "desc": "pico: segunda-feira 9h"
     }
   },
@@ -72,11 +72,11 @@
   "riscos_clientes": [
     {
       "cliente": "AUTOZONE",
-      "narrativa": "Conta com <strong>volume acima da média</strong> — 308 chamados (13% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
+      "narrativa": "Conta com <strong>volume acima da média</strong> — 308 chamados (14% do total). <strong>8 chamado(s) aberto(s) há mais de 30 dias</strong> — risco imediato de escalonamento. <strong>57% dos chamados com prioridade crítica</strong> — padrão acima do normal.",
       "riscos": [
         {
           "titulo": "Volume acima da média do período",
-          "desc": "308 chamados (13% do total). Verificar se há problema sistêmico ou sazonalidade.",
+          "desc": "308 chamados (14% do total). Verificar se há problema sistêmico ou sazonalidade.",
           "nivel": "medium",
           "confianca": 78
         },
