@@ -1,6 +1,6 @@
 {
-  "generated_at": 1777271612,
-  "generated_at_iso": "2026-04-27T06:33:32Z",
+  "generated_at": 1777280848,
+  "generated_at_iso": "2026-04-27T09:07:28Z",
   "count": 5,
   "filas": [
     "DATASUL",
@@ -32,7 +32,7 @@
       "prioridade": "1 very low",
       "atendente": "Eduardo Candido",
       "criado": "2026-04-12T09:15:14",
-      "modificado": "2026-04-26T05:00:12",
+      "modificado": "2026-04-27T05:00:09",
       "vezes_fechado": 1,
       "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
     },
@@ -44,7 +44,7 @@
       "prioridade": "2 low",
       "atendente": "Dyalef Abreu Santos",
       "criado": "2026-04-07T14:54:52",
-      "modificado": "2026-04-26T05:00:12",
+      "modificado": "2026-04-27T05:00:09",
       "vezes_fechado": 1,
       "assunto": "Liberar Modo Financeiro"
     },
