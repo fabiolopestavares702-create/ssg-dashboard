@@ -56,6 +56,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-sub{font-size:10px;color:var(--muted);margin-top:1px}
 .tb-divider{width:1px;height:24px;background:var(--border);flex-shrink:0}
 
+/* ── Banner dados desatualizados ── */
+#stale-alert{display:none;position:fixed;top:52px;left:0;right:0;z-index:199;
+  background:#c0392b;color:#fff;text-align:center;
+  padding:8px 16px;font-size:12px;font-weight:600;letter-spacing:.2px;
+  box-shadow:0 3px 10px rgba(0,0,0,.4);animation:stale-in .3s ease;}
+#stale-alert.show{display:flex;align-items:center;justify-content:center;gap:8px;}
+#stale-alert-close{cursor:pointer;opacity:.75;font-size:15px;margin-left:12px;line-height:1;}
+#stale-alert-close:hover{opacity:1;}
+@keyframes stale-in{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
 /* Mode switcher */
 .tb-mode{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;margin:0 auto}
 .tb-btn{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:var(--font);transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -1538,6 +1548,11 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
 </div>
 
 <!-- ════════════════ TOPBAR ════════════════ -->
+<div id="stale-alert" role="alert">
+  <span>🔴</span>
+  <span id="stale-alert-msg">Dados desatualizados — sincronização pode estar falhando.</span>
+  <span id="stale-alert-close" onclick="document.getElementById('stale-alert').classList.remove('show')" title="Fechar">✕</span>
+</div>
 <div class="topbar">
   <div class="tb-brand">
     <div class="tb-logo">
@@ -10681,6 +10696,25 @@ function autoFetchJSON(){
       if(dot)dot.style.background='var(--ok)';
       if(lbl)lbl.textContent='Sync JSON '+hm;
       gwLogActivity('abriu','dashboard');
+      // ── Alerta dados desatualizados ──
+      (function(){
+        var alertEl=document.getElementById('stale-alert');
+        var alertMsg=document.getElementById('stale-alert-msg');
+        if(!alertEl||!alertMsg) return;
+        var iso=d.generated_at_iso;
+        if(!iso){alertEl.classList.remove('show');return;}
+        var genDate=new Date(iso);
+        var ageMin=(Date.now()-genDate.getTime())/60000;
+        var LIMITE=30; // minutos
+        if(ageMin>LIMITE){
+          var ageStr=ageMin>90?Math.round(ageMin/60)+'h '+Math.round(ageMin%60)+'min':Math.round(ageMin)+'min';
+          var genStr=genDate.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+          alertMsg.textContent='Dados parados há '+ageStr+' — última sync às '+genStr+'. Verifique o GWMS Sync no GitHub Actions.';
+          alertEl.classList.add('show');
+        } else {
+          alertEl.classList.remove('show');
+        }
+      })();
     })
     .catch(function(e){
       _autoFetching=false;
