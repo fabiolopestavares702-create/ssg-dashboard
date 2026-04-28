@@ -83,9 +83,13 @@ export default async function handler(req, res) {
   const fullQuery = product ? `${product} ${query}` : query;
   const auth      = Buffer.from(`${email}:${pass}`).toString('base64');
 
-  // ── Duas fontes em paralelo: ────────────────────────────────────────────
-  // 1) totvscst.zendesk.com  → CST (autenticado, inclui artigos restritos)
-  // 2) centraldeatendimento.totvs.com → Central de Atendimento (público)
+  // User-Agent obrigatório para o TDN (bloqueia user-agents que parecem bots)
+  const BROWSER_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36';
+
+  // ── Três fontes em paralelo: ────────────────────────────────────────────
+  // 1) totvscst.zendesk.com               → CST (autenticado, inclui restritos)
+  // 2) centraldeatendimento.totvs.com     → Central de Atendimento (público)
+  // 3) tdn.totvs.com (Confluence público) → Documentação técnica TDN
   // ────────────────────────────────────────────────────────────────────────
 
   const cstUrl = new URL('https://totvscst.zendesk.com/api/v2/search.json');
@@ -99,7 +103,15 @@ export default async function handler(req, res) {
   caUrl.searchParams.set('per_page', String(per_page));
   caUrl.searchParams.set('page',     String(page));
 
-  function mapResult(a, source) {
+  // TDN usa Confluence CQL — escapar aspas duplas no termo de busca
+  const tdnQuery = fullQuery.trim().replace(/"/g, '\\"');
+  const tdnUrl = new URL('https://tdn.totvs.com/rest/api/content/search');
+  tdnUrl.searchParams.set('cql',    `type=page AND text~"${tdnQuery}"`);
+  tdnUrl.searchParams.set('limit',  String(per_page));
+  tdnUrl.searchParams.set('start',  String((page - 1) * per_page));
+  tdnUrl.searchParams.set('expand', 'version,space');
+
+  function mapZendesk(a, source) {
     return {
       id:         a.id,
       title:      a.title || '(sem título)',
@@ -111,39 +123,59 @@ export default async function handler(req, res) {
     };
   }
 
+  function mapTdn(p) {
+    const space = p.space?.name || p.space?.key || 'TDN';
+    return {
+      id:         p.id,
+      title:      p.title || '(sem título)',
+      snippet:    space + ' — ' + (p.title || ''),  // body é grande, buscar no expand
+      url:        'https://tdn.totvs.com' + (p._links?.webui || '/pages/viewpage.action?pageId=' + p.id),
+      updated_at: p.version?.when || null,
+      labels:     space ? [space] : [],
+      source:     'tdn',
+    };
+  }
+
   try {
-    // Buscar nas duas bases em paralelo. Se uma falhar, mantém a outra.
-    const [cstRes, caRes] = await Promise.allSettled([
+    // Buscar nas três bases em paralelo. Se uma falhar, mantém as outras.
+    const [cstRes, caRes, tdnRes] = await Promise.allSettled([
       fetch(cstUrl.toString(), {
         headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' },
       }).then(r => r.ok ? r.json() : { results: [], count: 0 }),
       fetch(caUrl.toString(), {
         headers: { 'Content-Type': 'application/json' },
       }).then(r => r.ok ? r.json() : { results: [], count: 0 }),
+      fetch(tdnUrl.toString(), {
+        headers: { 'User-Agent': BROWSER_UA, 'Accept': 'application/json' },
+      }).then(r => r.ok ? r.json() : { results: [], size: 0, totalSize: 0 }),
     ]);
 
     const cstData = cstRes.status === 'fulfilled' ? cstRes.value : { results: [], count: 0 };
     const caData  = caRes.status  === 'fulfilled' ? caRes.value  : { results: [], count: 0 };
+    const tdnData = tdnRes.status === 'fulfilled' ? tdnRes.value : { results: [], totalSize: 0 };
 
-    const cstResults = (cstData.results || []).map(a => mapResult(a, 'cst'));
-    const caResults  = (caData.results  || []).map(a => mapResult(a, 'central'));
+    const cstResults = (cstData.results || []).map(a => mapZendesk(a, 'cst'));
+    const caResults  = (caData.results  || []).map(a => mapZendesk(a, 'central'));
+    const tdnResults = (tdnData.results || []).map(mapTdn);
 
-    // Intercalar resultados das duas fontes (1 de cada por vez)
+    // Intercalar resultados das três fontes (round-robin)
     const results = [];
-    const max = Math.max(cstResults.length, caResults.length);
+    const max = Math.max(cstResults.length, caResults.length, tdnResults.length);
     for (let i = 0; i < max; i++) {
       if (cstResults[i]) results.push(cstResults[i]);
       if (caResults[i])  results.push(caResults[i]);
+      if (tdnResults[i]) results.push(tdnResults[i]);
     }
 
     const out = {
-      count:      (cstData.count || 0) + (caData.count || 0),
+      count:      (cstData.count || 0) + (caData.count || 0) + (tdnData.totalSize || tdnData.size || 0),
       page:       page,
-      page_count: Math.max(cstData.page_count || 1, caData.page_count || 1),
+      page_count: Math.max(cstData.page_count || 1, caData.page_count || 1, Math.ceil((tdnData.totalSize || 0) / per_page) || 1),
       results,
       sources: {
-        cst:     cstData.count || 0,
-        central: caData.count  || 0,
+        cst:     cstData.count   || 0,
+        central: caData.count    || 0,
+        tdn:     tdnData.totalSize || tdnData.size || 0,
       },
     };
 

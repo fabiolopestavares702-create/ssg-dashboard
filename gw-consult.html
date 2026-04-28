@@ -245,6 +245,7 @@
   }
   .src-cst     { background: rgba(99,102,241,.15); color: #818cf8; border:1px solid rgba(99,102,241,.3); }
   .src-central { background: rgba(34,197,94,.15);  color: #4ade80; border:1px solid rgba(34,197,94,.3); }
+  .src-tdn     { background: rgba(245,158,11,.15); color: #fbbf24; border:1px solid rgba(245,158,11,.3); }
 
   /* ── Article expand ── */
   .btn-expand {
@@ -642,12 +643,13 @@ function renderResults(data) {
   var cleanQ = removeStopWords(lastQuery);
   html += '<span class="results-count"><strong>' + totalCount.toLocaleString('pt-BR') + '</strong> artigos para <em>"' + escHtml(cleanQ) + '"</em>';
   if (activeProduct) html += ' · <strong>' + activeProduct + '</strong>';
-  // Breakdown das fontes (CST + Central)
+  // Breakdown das fontes (CST + Central + TDN)
   if (data.sources) {
     var src = data.sources;
     var parts = [];
     if (src.cst)     parts.push('<span class="src-badge src-cst">CST</span> ' + src.cst.toLocaleString('pt-BR'));
     if (src.central) parts.push('<span class="src-badge src-central">CENTRAL</span> ' + src.central.toLocaleString('pt-BR'));
+    if (src.tdn)     parts.push('<span class="src-badge src-tdn">TDN</span> ' + src.tdn.toLocaleString('pt-BR'));
     if (parts.length) html += '<br><span style="font-size:11px;color:var(--muted);margin-top:4px;display:inline-block">' + parts.join(' · ') + '</span>';
   }
   html += '</span>';
@@ -660,9 +662,10 @@ function renderResults(data) {
     var labels = (r.labels || []).slice(0, 3);
 
     var src = r.source || 'cst';
-    var srcBadge = src === 'central'
-      ? '<span class="src-badge src-central" title="Central de Atendimento TOTVS">CENTRAL</span>'
-      : '<span class="src-badge src-cst" title="Central de Suporte TOTVS - CST">CST</span>';
+    var srcBadge;
+    if (src === 'central')   srcBadge = '<span class="src-badge src-central" title="Central de Atendimento TOTVS">CENTRAL</span>';
+    else if (src === 'tdn')  srcBadge = '<span class="src-badge src-tdn"     title="TOTVS Developer Network">TDN</span>';
+    else                     srcBadge = '<span class="src-badge src-cst"     title="Central de Suporte TOTVS - CST">CST</span>';
 
     html += '<div class="card">';
     html += '<a class="card-title" href="' + r.url + '" target="_blank" rel="noopener">' + srcBadge + ' ' + escHtml(r.title) + ' ↗</a>';
