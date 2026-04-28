@@ -9471,11 +9471,16 @@ function renderCSAT() {
     '</div>';
   }).join('');
 
-  // Per-client scores
+  // Per-client scores — usa RAW_DATA+ticketInFilter para respeitar filtro de mês/range/fila
   var clientScores = [];
   Object.keys(EMPRESAS).forEach(function(k){
     if(!k||k.indexOf('@')!==-1||!EMPRESAS[k].total) return;
-    var tks = EMPRESAS[k].tickets || [];
+    var tks = RAW_DATA.filter(function(t){
+      if(!ticketInFilter(t)) return false;
+      if(activeFilaOP!=='all'&&t.fila!==activeFilaOP) return false;
+      if(t.cli_id!==k) return false;
+      return t.estado&&(t.estado.indexOf('Fechado')!==-1||t.estado.indexOf('Resolvido')!==-1);
+    });
     var score = calcCSATProxy(tks);
     if(score !== null) clientScores.push({nome:EMPRESAS[k].nome, score:score, total:tks.length, id:k});
   });
@@ -11592,7 +11597,7 @@ var _notifTab = 'all';
 function buildNotifications() {
   var notifs = [];
   var now = new Date();
-  var isAb = function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+  var isAb = isOpenState; // canônico — antes era redefinido localmente
 
   // ── SLA vencidos e urgentes ──────────────────────────────
   if(typeof RAW_DATA !== 'undefined' && RAW_DATA && RAW_DATA.length) {
