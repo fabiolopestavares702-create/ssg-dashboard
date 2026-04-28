@@ -1,8 +1,8 @@
 name: GWMS Sync
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'   # a cada 10 min — mesmo ritmo do pipeline Znuny
+  # Cron foi movido para cron-job.org (GitHub Actions schedule atrasa 1-2h em horário de pico).
+  # Trigger externo: https://console.cron-job.org → POST /actions/workflows/gwms-sync.yml/dispatches
   workflow_dispatch:
 
 jobs:
