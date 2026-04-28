@@ -231,6 +231,47 @@
   }
   .btn-view:hover { background: var(--accent); color: #fff; }
 
+  /* ── Article expand ── */
+  .btn-expand {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .btn-expand:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-expand:disabled { opacity: .55; cursor: wait; }
+  .card-body {
+    display: none;
+    margin: 14px 0 6px;
+    padding: 16px 18px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+  .card-body.show { display: block; animation: fade-in .2s ease; }
+  @keyframes fade-in { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+  .card-body table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 12px; }
+  .card-body th, .card-body td { border: 1px solid var(--border); padding: 7px 10px; text-align: left; vertical-align: top; }
+  .card-body th { background: var(--surface); font-weight: 600; }
+  .card-body tr:nth-child(even) td { background: rgba(255,255,255,.03); }
+  .card-body h1,.card-body h2,.card-body h3,.card-body h4 { font-size: 13px; font-weight: 700; margin: 14px 0 6px; color: var(--text); }
+  .card-body ul,.card-body ol { padding-left: 22px; margin: 6px 0; }
+  .card-body li { margin-bottom: 3px; }
+  .card-body a { color: var(--accent); }
+  .card-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .card-body p { margin: 6px 0; }
+  .card-body strong,.card-body b { color: var(--text); }
+
   /* ── Pagination ── */
   .pagination {
     display: flex;
@@ -598,12 +639,16 @@ function renderResults(data) {
     html += '<div class="card">';
     html += '<a class="card-title" href="' + r.url + '" target="_blank" rel="noopener">' + escHtml(r.title) + ' ↗</a>';
     if (snippet) html += '<div class="card-snippet">' + r.snippet.substring(0, 320) + '...</div>';
+    html += '<div class="card-body"></div>';
     html += '<div class="card-footer">';
     html += '<div class="card-labels">';
     labels.forEach(function(l) { html += '<span class="label">' + escHtml(l) + '</span>'; });
     html += '</div>';
     if (date) html += '<span class="card-date">Atualizado ' + date + '</span>';
-    html += '<a class="btn-view" href="' + r.url + '" target="_blank" rel="noopener">Ver solução ↗</a>';
+    html += '<div style="display:flex;gap:8px;align-items:center">';
+    html += '<button class="btn-expand" onclick="expandCard(' + r.id + ', this)">Expandir ▼</button>';
+    html += '<a class="btn-view" href="' + r.url + '" target="_blank" rel="noopener">Ver ↗</a>';
+    html += '</div>';
     html += '</div></div>';
   });
 
@@ -626,6 +671,41 @@ function showError(msg) {
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Expandir artigo completo inline ──────────────────────────────────────
+function expandCard(id, btn) {
+  var card = btn.closest('.card');
+  var body = card.querySelector('.card-body');
+
+  // Já carregado — apenas alterna visibilidade
+  if (body.dataset.loaded === '1') {
+    var open = body.classList.toggle('show');
+    btn.textContent = open ? 'Recolher ▲' : 'Expandir ▼';
+    return;
+  }
+
+  // Primeira vez — busca na API
+  btn.textContent = 'Carregando…';
+  btn.disabled = true;
+
+  fetch('/api/article-body?id=' + id)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.error) throw new Error(d.error);
+      body.innerHTML = d.body || '<em>Conteúdo não disponível.</em>';
+      body.dataset.loaded = '1';
+      body.classList.add('show');
+      btn.textContent = 'Recolher ▲';
+      btn.disabled = false;
+    })
+    .catch(function() {
+      body.innerHTML = '<p style="color:#e74c3c">Não foi possível carregar o artigo. <a href="' + btn.closest('.card').querySelector('.card-title').href + '" target="_blank">Abrir no Zendesk ↗</a></p>';
+      body.dataset.loaded = '1';
+      body.classList.add('show');
+      btn.textContent = 'Expandir ▼';
+      btn.disabled = false;
+    });
 }
 
 // ── Identificação do usuário ─────────────────────────────────────────────
