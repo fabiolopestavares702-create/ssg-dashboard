@@ -642,6 +642,14 @@ function renderResults(data) {
   var cleanQ = removeStopWords(lastQuery);
   html += '<span class="results-count"><strong>' + totalCount.toLocaleString('pt-BR') + '</strong> artigos para <em>"' + escHtml(cleanQ) + '"</em>';
   if (activeProduct) html += ' · <strong>' + activeProduct + '</strong>';
+  // Breakdown das fontes (CST + Central)
+  if (data.sources) {
+    var src = data.sources;
+    var parts = [];
+    if (src.cst)     parts.push('<span class="src-badge src-cst">CST</span> ' + src.cst.toLocaleString('pt-BR'));
+    if (src.central) parts.push('<span class="src-badge src-central">CENTRAL</span> ' + src.central.toLocaleString('pt-BR'));
+    if (parts.length) html += '<br><span style="font-size:11px;color:var(--muted);margin-top:4px;display:inline-block">' + parts.join(' · ') + '</span>';
+  }
   html += '</span>';
   html += '<span>Página ' + currentPage + ' de ' + pageCount + '</span>';
   html += '</div>';
