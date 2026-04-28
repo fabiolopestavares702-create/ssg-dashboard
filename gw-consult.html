@@ -521,12 +521,46 @@ function doSearch(page) {
   fetchResults(q, activeProduct, currentPage);
 }
 
+// ── Stop words PT-BR ────────────────────────────────────────────────────
+var STOP_WORDS = new Set([
+  // artigos
+  'o','a','os','as','um','uma','uns','umas',
+  // preposições e contrações
+  'de','do','da','dos','das','em','no','na','nos','nas',
+  'ao','à','aos','às','pelo','pela','pelos','pelas',
+  'por','para','com','sem','sob','sobre','entre','até',
+  'após','ante','perante','contra','desde','pra','pro',
+  'num','numa','nuns','numas','desse','dessa','desses','dessas',
+  'nesse','nessa','nesses','nessas','neste','nesta','nestes','nestas',
+  // conjunções
+  'e','ou','mas','porém','contudo','todavia','entretanto',
+  'que','se','porque','quando','como','também','nem','pois',
+  'então','portanto','logo','assim','ainda','já','só','seu','sua',
+  // pronomes / verbos auxiliares comuns
+  'eu','tu','ele','ela','nós','vós','eles','elas',
+  'me','te','lhe','nos','vos','isso','isto','aquilo',
+  'esse','essa','esses','essas','este','esta','estes','estas',
+  'não','é','são','foi','era','eram','ser','ter','há','ai',
+]);
+
+function removeStopWords(text) {
+  var words  = text.trim().split(/\s+/);
+  var clean  = words.filter(function(w) {
+    return w.length > 1 && !STOP_WORDS.has(w.toLowerCase());
+  });
+  return clean.length > 0 ? clean.join(' ') : text.trim(); // nunca retorna vazio
+}
+
 function fetchResults(query, product, page) {
   var area = document.getElementById('resultsArea');
-  area.innerHTML = '<div class="state-box"><div class="spinner"></div><p>Consultando base TOTVS...</p></div>';
+  var cleanQuery = removeStopWords(query);
+  var hint = cleanQuery !== query.trim()
+    ? '<p style="font-size:11px;color:var(--muted);margin-top:6px">🔍 Buscando por: <strong style="color:var(--accent)">' + escHtml(cleanQuery) + '</strong></p>'
+    : '';
+  area.innerHTML = '<div class="state-box"><div class="spinner"></div><p>Consultando base TOTVS...</p>' + hint + '</div>';
 
   var atendente = localStorage.getItem('gwoogle_user') || '';
-  var url = '/api/totvs-search?query=' + encodeURIComponent(query) + '&per_page=10&page=' + page;
+  var url = '/api/totvs-search?query=' + encodeURIComponent(cleanQuery) + '&per_page=10&page=' + page;
   if (product)    url += '&product='    + encodeURIComponent(product);
   if (atendente)  url += '&atendente='  + encodeURIComponent(atendente);
 
@@ -549,8 +583,9 @@ function renderResults(data) {
 
   var pageCount = data.page_count || 1;
   var html = '<div class="results-header">';
-  html += '<span class="results-count"><strong>' + totalCount.toLocaleString('pt-BR') + '</strong> artigos encontrados';
-  if (activeProduct) html += ' em <strong>' + activeProduct + '</strong>';
+  var cleanQ = removeStopWords(lastQuery);
+  html += '<span class="results-count"><strong>' + totalCount.toLocaleString('pt-BR') + '</strong> artigos para <em>"' + escHtml(cleanQ) + '"</em>';
+  if (activeProduct) html += ' · <strong>' + activeProduct + '</strong>';
   html += '</span>';
   html += '<span>Página ' + currentPage + ' de ' + pageCount + '</span>';
   html += '</div>';
