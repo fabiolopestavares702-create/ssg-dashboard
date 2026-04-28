@@ -3707,7 +3707,7 @@ function renderAlertas(){
   var mes = activeMonth;
   var critTodos;
   if(activeRangeStart && activeRangeEnd) {
-    var isAbRA=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+    var isAbRA = isOpenState; // fonte canônica
     critTodos=(RAW_DATA||[]).filter(function(d){
       return d.criado&&isAbRA(d.estado)&&ticketInFilter(d)&&(!activeCliente||d.cli_id===activeCliente)&&(activeFilaOP==='all'||d.fila===activeFilaOP);
     }).map(function(d){
@@ -4506,14 +4506,14 @@ function renderCh(){
   var total=_op2.total||0,fechados=_op2.fechados||0;
   var muitaAlta=_op2.prior&&_op2.prior['Muito Alta']||0;
   var aguardCli=_op2.estado&&_op2.estado['Aguardando Cliente']||0;
-  var taxa=total>0?Math.round(fechados/total*100):0;
+  var taxa=pct(fechados,total);
   var el=function(id){return document.getElementById(id);};
   if(el('ch-kpi-total'))el('ch-kpi-total').textContent=total;
   if(el('ch-kpi-bloq')){el('ch-kpi-bloq').textContent=aguardCli;if(el('ch-kpi-bloq-sub'))el('ch-kpi-bloq-sub').textContent=Math.round(aguardCli/(total||1)*100)+'% do total';}
   if(el('ch-kpi-ma')){el('ch-kpi-ma').textContent=muitaAlta;if(el('ch-kpi-ma-sub'))el('ch-kpi-ma-sub').textContent=Math.round(muitaAlta/(total||1)*100)+'% do volume';}
   if(el('ch-kpi-taxa')){el('ch-kpi-taxa').textContent=taxa+'%';el('ch-kpi-taxa').style.color=taxa>=70?'var(--ok)':taxa>=50?'var(--warn)':'var(--danger)';if(el('ch-kpi-taxa-sub'))el('ch-kpi-taxa-sub').textContent=fechados+' de '+total+' chamados';}
   var alertEl=el('ch-alert-bloq'),alertTxt=el('ch-alert-bloq-txt');
-  if(alertEl&&alertTxt){var pctB=total>0?Math.round(aguardCli/total*100):0;if(pctB>=30){alertEl.style.display='flex';alertTxt.textContent='Atenção: '+aguardCli+' chamados ('+pctB+'%) aguardando retorno do cliente.';}else{alertEl.style.display='none';}}
+  if(alertEl&&alertTxt){var pctB=pct(aguardCli,total);if(pctB>=30){alertEl.style.display='flex';alertTxt.textContent='Atenção: '+aguardCli+' chamados ('+pctB+'%) aguardando retorno do cliente.';}else{alertEl.style.display='none';}}
   var media=V.length>0?Math.round(V.reduce(function(a,b){return a+b;},0)/V.length*10)/10:0;
   var picoIdx=V.indexOf(Math.max.apply(null,V));
   var picoVal=Math.max.apply(null,V.concat([0]));
@@ -5483,9 +5483,9 @@ function renderSlaContrato(d){
 }
 
 function getInfDataFromRaw(){
-  var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+  var isAb = isOpenState; // fonte canônica
   // Para taxa de conclusão: inclui auto-fechamento. SLA usa calcSLA() abaixo (que filtra).
-  var isFe=function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+  var isFe = isClosedAnyState; // fonte canônica
   var mN={'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
   var rows=RAW_DATA.filter(function(d){
     if(!d.criado)return false;
@@ -5529,7 +5529,7 @@ function renderInf(){
   var total=_op.total||0;
   var fechados=_op.fechados||0;
   var abertos=_op.abertos||0;
-  var taxa=total>0?Math.round(fechados/total*100):0;
+  var taxa=pct(fechados,total);
   var resp=_op.resp_med!=null?Math.round(_op.resp_med):null;
   var sol=_op.sol_med!=null?Math.round(_op.sol_med*10)/10:null;
   var metaResp=resp!=null&&resp<=30;
@@ -5663,8 +5663,8 @@ function rebuildAll(data){
     // OP
     var dm={};data.forEach(function(d){if(!d.criado)return;var k=d.criado.toISOString().slice(0,10);dm[k]=(dm[k]||0)+1;});
     OP.byDay=Object.keys(dm).sort().map(function(k){return{d:k,n:dm[k]};});
-    var isAberto=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
-    var isFechado=function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+    var isAberto = isOpenState; // fonte canônica
+    var isFechado = isClosedAnyState; // fonte canônica
     var eM={},pM={},sM={},cM={},mM={},hM={};
     var aM={};
     data.forEach(function(d){
@@ -5682,8 +5682,8 @@ function rebuildAll(data){
     // SLA usa fonte única (calcSLA): sol_h_bh + estados de sucesso (Fechado/Resolvido).
     // 'Fechado s/ Êxito' (auto-fechamento) é contabilizado em fechados pra fins de
     // taxa de conclusão, mas NÃO entra no cálculo de tempo médio / SLA.
-    var isAberto=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
-    var isFechado=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ Êxito';};
+    var isAberto = isOpenState; // fonte canônica
+    var isFechado = isClosedAnyState; // fonte canônica
     OP.total=data.length;
     OP.abertos=data.filter(function(d){return isAberto(d.estado);}).length;
     OP.fechados=data.filter(function(d){return isFechado(d.estado);}).length;
@@ -5765,10 +5765,10 @@ function rebuildAll(data){
       var empIds=Object.keys(buckets).filter(function(id){return id&&id.indexOf('@')===-1&&buckets[id].length>0;});
       empIds.forEach(function(id){
         var sub=buckets[id];if(!sub||!sub.length)return;
-        var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+        var isAb = isOpenState; // fonte canônica
         // Inclui auto-fechamento na contagem de fechados (taxa de conclusão),
         // mas calcSLA() abaixo exclui do tempo médio / SLA — fonte única de verdade.
-        var isFe=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ Êxito';};
+        var isFe = isClosedAnyState; // fonte canônica
         var byM={},est={},pr={},svc2={};
         sub.forEach(function(d){
           if(d.criado){var mk3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][d.criado.getMonth()]+'/'+String(d.criado.getFullYear()).slice(2);byM[mk3]=(byM[mk3]||0)+1;}
@@ -5890,7 +5890,7 @@ function rebuildAll(data){
         }
 
         // Reconstruir OP_FILAS com breakdown por mês
-        var isAb2=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
+        var isAb2 = isOpenState; // fonte canônica
         var isFe2=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ Êxito';};
         var pad3=function(n){return n<10?'0'+n:String(n);};
         var now3=new Date();
@@ -6332,6 +6332,18 @@ function isAutoClosedForSLA(e){
   var le=String(e).toLowerCase();
   return le.indexOf('fechado sem êxito')===0 || le.indexOf('fechado sem exito')===0 ||
          le==='cancelado' || le==='melhoria' || le==='gmud' || le==='agrupado';
+}
+// Helper canônico: ticket está em qualquer estado de fechamento?
+// Inclui sucesso real (Fechado/Resolvido) E auto-fechamento (Fechado s/ Êxito).
+// Usar em "taxa de conclusão" e contagem de "fechados". Para SLA de tempo,
+// usar isClosedOKForSLA (que exclui auto-fechados).
+function isClosedAnyState(e){
+  return isClosedOKForSLA(e) || isAutoClosedForSLA(e);
+}
+// Helper canônico: ticket está em algum estado aberto/em-andamento?
+function isOpenState(e){
+  if(!e) return false;
+  return ['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;
 }
 
 // KPI 1 — First Response Time (mediana, em minutos)
@@ -6970,8 +6982,8 @@ function exportPDF(){
   var priorMax=Math.max.apply(null,priorOrder.map(function(k){return d.prior[k]||0;}).concat([1]));
 
   // ── Separar tickets
-  var isAberto=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
-  var isFechado=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ Êxito';};
+  var isAberto = isOpenState; // fonte canônica
+  var isFechado = isClosedAnyState; // fonte canônica
   var tAbertos=d.tickets.filter(function(t){return isAberto(t.estado);});
   var tFechados=d.tickets.filter(function(t){return isFechado(t.estado);});
 
@@ -7461,8 +7473,8 @@ function ticketInFilter(d) {
 }
 
 function buildOPFromRange() {
-  var isAbR = function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
-  var isFR  = function(e){return['Fechado','Resolvido','Fechado s/ Êxito'].indexOf(e)!==-1;};
+  var isAbR = isOpenState; // fonte canônica
+  var isFR = isClosedAnyState; // fonte canônica
   var rows = (RAW_DATA||[]).filter(function(d){
     if(!d.criado) return false;
     if(!ticketInFilter(d)) return false;
@@ -7746,7 +7758,7 @@ function getActiveOP() {
       var estadoEmp = {};
       empTickets.forEach(function(t){ if(t.estado) estadoEmp[t.estado]=(estadoEmp[t.estado]||0)+1; });
       // Helpers de estado
-      var isAbertoE = function(e){ return ['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1; };
+      var isAbertoE = isOpenState; // fonte canônica
       var isFechadoE = function(e){ return e==='Fechado'||e==='Resolvido'||e.indexOf('Fechado s')===0; };
       // Totais do recorte
       var totalEmp    = useFilaFilter ? empTickets.length                                                      : (emp.total    || 0);
@@ -8272,7 +8284,7 @@ function fmtRespTxt(min) {
 function updateKPIs(op) {
   var total=op.total||0,ab=op.abertos||0,fe=op.fechados||0;
   var maTotal=(op.prior&&op.prior['Muito Alta'])||0;
-  var taxa=total>0?Math.round(fe/total*100):0;
+  var taxa=pct(fe,total);
   var bloqE=['Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
   var bloq=bloqE.reduce(function(s,e){return s+(op.estado&&op.estado[e]||0);},0);
   if(!bloq)bloq=getActiveBloqList().reduce(function(a,b){return a+b.n;},0);
@@ -10186,8 +10198,8 @@ function renderBacklogTable(rows) {
 </div>
 <script>
 // ── helpers de estado (usados em múltiplos módulos deste bloco) ─
-var isAb=function(e){return['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'].indexOf(e)!==-1;};
-var isFe=function(e){return e==='Fechado'||e==='Resolvido'||e==='Fechado s/ \u00caxito';};
+var isAb = isOpenState; // fonte canônica
+var isFe = isClosedAnyState; // fonte canônica
 // ════════════════════════════════════════════════════════════
 // RESUMO DE GESTÃO
 // ════════════════════════════════════════════════════════════
@@ -10207,9 +10219,9 @@ function renderResumo(){
   var aguardInt=estado['Aguardando Interno']||0;
   var emAtend=estado['Em Atendimento']||0;
   var prioMA=prior['Muito Alta']||0;
-  var taxaConc=total>0?Math.round(fechados/total*100):0;
-  var pctAbertos=total>0?Math.round(abertos/total*100):0;
-  var pctMA=total>0?Math.round(prioMA/total*100):0;
+  var taxaConc=pct(fechados,total);
+  var pctAbertos=pct(abertos,total);
+  var pctMA=pct(prioMA,total);
   var numCrit=(OP.criticos||[]).length;
   // ── by_day reconstruído a partir do RAW_DATA com todos os filtros ativos ──
   // Garante que Tendência/Ritmo/Previsão usem exatamente o conjunto filtrado
@@ -10359,16 +10371,20 @@ function renderResumo(){
   H+='<div class="rg-kpi-sub">estimativa baseada no ritmo atual</div></div>';
   H+='</div>';
 
-  // Linha 3: KPIs principais (8 cards)
+  // Linha 3: KPIs principais (8 cards) — exibe "—" quando escopo sem amostra
   H+='<div class="rg-kpi-grid">';
+  var _emptyScope = !total || total===0;
+  var _solDisp = (solMedian!=null) ? (solMedian+'h') : (solMed>0 ? solMed+'h' : '—');
+  var _solSub  = (solMedian!=null) ? ('mediana · média '+solMed+'h') : 'média dos encerrados';
+  var _solCol  = (solMedian!=null ? solMedian : solMed);
   var kArr=[
     {l:'Total de Chamados',v:total,s:'no período',c:'var(--blue)'},
-    {l:'Chamados Fechados',v:fechados,s:taxaConc+'% de conclusão',c:'var(--ok)'},
-    {l:'Em Aberto',v:abertos,s:pctAbertos+'% do volume',c:pctAbertos>30?'var(--danger)':pctAbertos>20?'var(--warn)':'var(--sub)'},
+    {l:'Chamados Fechados',v:fechados,s:(_emptyScope?'sem dados':taxaConc+'% de conclusão'),c:'var(--ok)'},
+    {l:'Em Aberto',v:abertos,s:(_emptyScope?'sem dados':pctAbertos+'% do volume'),c:_emptyScope?'var(--sub)':pctAbertos>30?'var(--danger)':pctAbertos>20?'var(--warn)':'var(--sub)'},
     {l:'Bloqueados',v:totalBloq,s:'aguardando alguma ação',c:totalBloq>20?'var(--danger)':totalBloq>10?'var(--warn)':'var(--sub)'},
     {l:'Conformidade SLA',v:(slaGeral!=null?slaGeral+'%':'—'),s:(slaSample>0?slaSample+' resolvidos · '+autoClosed+' auto-fechados':'sem amostra'),c:slaGeral==null?'var(--sub)':slaGeral>=90?'var(--ok)':slaGeral>=70?'var(--warn)':'var(--danger)'},
-    {l:'Tempo de Solução',v:solMed+'h',s:'média dos encerrados',c:solMed<=40?'var(--ok)':solMed<=60?'var(--warn)':'var(--danger)'},
-    {l:'Prioridade Muito Alta',v:prioMA,s:pctMA+'% do volume',c:pctMA>40?'var(--danger)':pctMA>30?'var(--warn)':'var(--sub)'},
+    {l:'Tempo de Solução',v:_solDisp,s:_solSub,c:_solCol==null||_solCol===0?'var(--sub)':_solCol<=40?'var(--ok)':_solCol<=60?'var(--warn)':'var(--danger)'},
+    {l:'Prioridade Muito Alta',v:prioMA,s:(_emptyScope?'sem dados':pctMA+'% do volume'),c:_emptyScope?'var(--sub)':pctMA>40?'var(--danger)':pctMA>30?'var(--warn)':'var(--sub)'},
     {l:'Críticos em Aberto',v:numCrit,s:'mais antigos sem solução',c:numCrit>20?'var(--danger)':numCrit>5?'var(--warn)':'var(--sub)'}
   ];
   kArr.forEach(function(k){H+='<div class="rg-kpi"><div class="rg-kpi-lbl">'+k.l+'</div><div class="rg-kpi-val" style="color:'+k.c+'">'+k.v+'</div><div class="rg-kpi-sub">'+k.s+'</div></div>';});
@@ -10610,9 +10626,9 @@ function computeInsights(){
   var aguardCli=estado['Aguardando Cliente']||0;
   var aguardInt=estado['Aguardando Interno']||0;
   var prioMA=prior['Muito Alta']||0;
-  var taxaConc=total>0?Math.round(fechados/total*100):0;
-  var pctAbertos=total>0?Math.round(abertos/total*100):0;
-  var pctMA=total>0?Math.round(prioMA/total*100):0;
+  var taxaConc=pct(fechados,total);
+  var pctAbertos=pct(abertos,total);
+  var pctMA=pct(prioMA,total);
   var criticos=OP.criticos||[];
   var atendData=op.atend||OP.atend||[];
 
