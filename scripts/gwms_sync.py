@@ -346,23 +346,29 @@ def q_utilizacao(session: requests.Session) -> list[dict]:
 def github_upload(path: str, payload_bytes: bytes, message: str) -> None:
     token = os.environ["DEPLOY_TOKEN"]
     repo = os.environ["GH_REPO"]
+    # Branch separada da production (default: 'data') pra não estourar o limite
+    # de 100 deployments/dia do Vercel free tier — Vercel ignora pushes nessa
+    # branch via vercel.json git.deploymentEnabled.data=false.
+    branch = os.environ.get("GH_BRANCH", "data")
     api = f"https://api.github.com/repos/{repo}/contents/{path}"
+    params = {"ref": branch}
     headers = {
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github+json",
     }
-    sha_resp = requests.get(api, headers=headers, timeout=15)
+    sha_resp = requests.get(api, headers=headers, params=params, timeout=15)
     sha = sha_resp.json().get("sha") if sha_resp.status_code == 200 else None
     body = {
         "message": message,
         "content": base64.b64encode(payload_bytes).decode(),
+        "branch": branch,
     }
     if sha:
         body["sha"] = sha
     put = requests.put(api, headers=headers, json=body, timeout=60)
     if put.status_code not in (200, 201):
         raise RuntimeError(f"Upload {path} falhou: HTTP {put.status_code} — {put.text[:300]}")
-    log(f"Upload {path} OK ({put.status_code})")
+    log(f"Upload {path} OK ({put.status_code}) [branch={branch}]")
 
 
 def make_envelope(rows: list, extra=None) -> dict:

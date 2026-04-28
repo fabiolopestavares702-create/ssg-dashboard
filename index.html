@@ -4169,7 +4169,7 @@ function renderSilenciosos(data){
   if(tbl) tbl.innerHTML='<thead><tr><th>Ticket</th><th>Cliente</th><th>Fila</th><th>Estado</th><th>Atendente</th><th>Criado</th><th>Modificado</th><th>Silêncio</th></tr></thead><tbody>'+trs+'</tbody>';
 }
 function fetchSilenciosos(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/silenciosos.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/silenciosos.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){SILENC_DATA=d;renderSilenciosos(d);})
     .catch(function(){renderSilenciosos(null);});
@@ -4229,7 +4229,7 @@ function renderTriagem(data){
   if(tbl) tbl.innerHTML='<thead><tr><th>Ticket</th><th>Cliente</th><th>Fila</th><th>Atendente</th><th>Criado</th><th>Em triagem</th></tr></thead><tbody>'+trs+'</tbody>';
 }
 function fetchTriagem(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/triagem.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/triagem.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){TRI_DATA=d;renderTriagem(d);})
     .catch(function(){renderTriagem(null);});
@@ -4274,7 +4274,7 @@ function renderReaberturas(data){
   if(tbl) tbl.innerHTML='<thead><tr><th>Ticket</th><th>Cliente</th><th>Fila</th><th>Estado</th><th>Atendente</th><th>Vezes fechado</th><th>Modificado</th></tr></thead><tbody>'+trs+'</tbody>';
 }
 function fetchReaberturas(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/reaberturas.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/reaberturas.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){REAB_DATA=d;renderReaberturas(d);})
     .catch(function(){renderReaberturas(null);});
@@ -4372,7 +4372,7 @@ function populateAtHero(data){
   }
 }
 function fetchUtilizacao(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/utilizacao.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/utilizacao.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){UTIL_DATA=d;renderUtilizacao(d);})
     .catch(function(){renderUtilizacao(null);});
@@ -4502,7 +4502,7 @@ function renderIALive(data){
   if(cards) cards.innerHTML=html;
 }
 function fetchIALive(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/gwms-insights.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/gwms-insights.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){IAL_DATA=d;renderIALive(d);})
     .catch(function(){renderIALive(null);});
@@ -8643,7 +8643,7 @@ function openTicketDetail(num){
 // Carrega tickets ativos do GWMS (estado ao vivo)
 var TICKETS_ATIVOS_DATA=null;
 function fetchTicketsAtivos(){
-  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/tickets_ativos.json?v='+Date.now())
+  fetch('https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/tickets_ativos.json?v='+Date.now())
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){TICKETS_ATIVOS_DATA=d;try{applyLiveKPIs();}catch(e){console.warn('live kpis:',e);}})
     .catch(function(){});
@@ -10676,7 +10676,7 @@ function autoFetchJSON(){
   var lbl=document.getElementById('auto-sync-lbl');
   if(dot)dot.style.background='var(--warn)';
   if(lbl)lbl.textContent='Sync JSON…';
-  fetch("https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/historico_completo.json?v="+Date.now())
+  fetch("https://raw.githubusercontent.com/ssg-create/ssg-dashboard/data/historico_completo.json?v="+Date.now())
     .then(function(r){if(!r.ok)throw new Error('not ok');return r.json();})
     .then(function(d){
       _autoFetching=false;
