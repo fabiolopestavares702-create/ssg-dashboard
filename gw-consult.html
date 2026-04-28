@@ -383,7 +383,11 @@
     <span class="logo-name"><span class="c1">G</span><span class="c2">W</span><span class="c3">o</span><span class="c4">o</span><span class="c5">g</span><span class="c6">l</span><span class="c7">e</span></span>
     <span class="logo-sub">Base de Conhecimento TOTVS</span>
   </div>
-  <div class="header-right">powered by <span>TOTVS Central do Conhecimento</span></div>
+  <div class="header-right" style="display:flex;align-items:center;gap:12px;">
+    <span id="userLabel" style="font-size:12px;color:var(--muted);">👤 <span id="userName">—</span></span>
+    <button onclick="changeUser()" style="font-size:11px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:3px 8px;cursor:pointer;">Trocar</button>
+    <span style="color:var(--muted);">powered by <span style="color:var(--text);">TOTVS</span></span>
+  </div>
 </header>
 
 <div class="hero">
@@ -521,8 +525,10 @@ function fetchResults(query, product, page) {
   var area = document.getElementById('resultsArea');
   area.innerHTML = '<div class="state-box"><div class="spinner"></div><p>Consultando base TOTVS...</p></div>';
 
+  var atendente = localStorage.getItem('gwoogle_user') || '';
   var url = '/api/totvs-search?query=' + encodeURIComponent(query) + '&per_page=10&page=' + page;
-  if (product) url += '&product=' + encodeURIComponent(product);
+  if (product)    url += '&product='    + encodeURIComponent(product);
+  if (atendente)  url += '&atendente='  + encodeURIComponent(atendente);
 
   fetch(url)
     .then(function(r) { return r.json(); })
@@ -587,8 +593,29 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── Identificação do usuário ─────────────────────────────────────────────
+function initUser() {
+  var saved = localStorage.getItem('gwoogle_user');
+  if (!saved) {
+    saved = (prompt('Qual é o seu nome? (para registrar quem está usando o GWoogle)') || '').trim();
+    if (saved) localStorage.setItem('gwoogle_user', saved);
+  }
+  var el = document.getElementById('userName');
+  if (el) el.textContent = saved || 'anônimo';
+}
+
+function changeUser() {
+  var name = (prompt('Novo nome:') || '').trim();
+  if (name) {
+    localStorage.setItem('gwoogle_user', name);
+    var el = document.getElementById('userName');
+    if (el) el.textContent = name;
+  }
+}
+
 // Init
 renderQuickTags();
+initUser();
 </script>
 </body>
 </html>
