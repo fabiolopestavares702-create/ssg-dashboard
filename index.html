@@ -10267,10 +10267,14 @@ function renderResumo(){
     if(d<=2)age0_2++;else if(d<=7)age3_7++;else if(d<=30)age8_30++;else age30p++;
   });
 
-  // ── Conformidade SLA (estimativa) ────────────────────────
-  var slaResp=respMed<=30?100:respMed<=60?Math.round(100-(respMed-30)/30*40):Math.max(10,Math.round(60-(respMed-60)/60*40));
-  var slaSol=solMed<=48?100:solMed<=72?85:solMed<=96?65:solMed<=120?45:25;
-  var slaGeral=Math.round((slaResp*0.5)+(slaSol*0.5));
+  // ── Conformidade SLA — fonte única (calcSLA via getActiveOP)
+  // Antes: heurística cega (slaResp/slaSol) que mostrava 91% quando real era 64%.
+  // Agora: usa op.sla_pct (% real dentro de 48h úteis sobre chamados resolvidos com sucesso).
+  var slaGeral = (op.sla_pct!=null) ? op.sla_pct : null;
+  var solMedian = op.sol_median!=null ? op.sol_median : null;
+  var solP90    = op.sol_p90!=null ? op.sol_p90 : null;
+  var autoClosed = op.auto_closed!=null ? op.auto_closed : 0;
+  var slaSample = (op.sla && op.sla.sample_size) ? op.sla.sample_size : 0;
 
   // ── Health Score (0–100) ──────────────────────────────────
   var scoreResp=respMed<=30?100:respMed<=45?85:respMed<=60?70:respMed<=90?50:30;
@@ -10362,7 +10366,7 @@ function renderResumo(){
     {l:'Chamados Fechados',v:fechados,s:taxaConc+'% de conclusão',c:'var(--ok)'},
     {l:'Em Aberto',v:abertos,s:pctAbertos+'% do volume',c:pctAbertos>30?'var(--danger)':pctAbertos>20?'var(--warn)':'var(--sub)'},
     {l:'Bloqueados',v:totalBloq,s:'aguardando alguma ação',c:totalBloq>20?'var(--danger)':totalBloq>10?'var(--warn)':'var(--sub)'},
-    {l:'Conformidade SLA',v:slaGeral+'%',s:'resposta + solução estimada',c:slaGeral>=90?'var(--ok)':slaGeral>=70?'var(--warn)':'var(--danger)'},
+    {l:'Conformidade SLA',v:(slaGeral!=null?slaGeral+'%':'—'),s:(slaSample>0?slaSample+' resolvidos · '+autoClosed+' auto-fechados':'sem amostra'),c:slaGeral==null?'var(--sub)':slaGeral>=90?'var(--ok)':slaGeral>=70?'var(--warn)':'var(--danger)'},
     {l:'Tempo de Solução',v:solMed+'h',s:'média dos encerrados',c:solMed<=40?'var(--ok)':solMed<=60?'var(--warn)':'var(--danger)'},
     {l:'Prioridade Muito Alta',v:prioMA,s:pctMA+'% do volume',c:pctMA>40?'var(--danger)':pctMA>30?'var(--warn)':'var(--sub)'},
     {l:'Críticos em Aberto',v:numCrit,s:'mais antigos sem solução',c:numCrit>20?'var(--danger)':numCrit>5?'var(--warn)':'var(--sub)'}
@@ -10627,14 +10631,20 @@ function computeInsights(){
   var avgDaily=byDay.length>0?Math.round(byDay.reduce(function(a,b){return a+b.n;},0)/byDay.length):0;
   var weeklyForecast=avgDaily*5;
 
-  // SLA estimado
-  var slaResp=respMed<=30?100:respMed<=60?Math.round(100-(respMed-30)/30*40):Math.max(10,Math.round(60-(respMed-60)/60*40));
-  var slaSol=solMed<=48?100:solMed<=72?85:solMed<=96?65:solMed<=120?45:25;
-  var slaGeral=Math.round(slaResp*0.5+slaSol*0.5);
+  // SLA — fonte única (calcSLA via getActiveOP). Antes: heurística respMed/solMed
+  // mostrava 91% quando real era 64%. Agora: % real dentro de 48h úteis.
+  var slaGeral  = (op.sla_pct!=null) ? op.sla_pct : null;
+  var solMedian = op.sol_median!=null ? op.sol_median : null;
+  var solP90    = op.sol_p90!=null ? op.sol_p90 : null;
+  var autoClosed= op.auto_closed!=null ? op.auto_closed : 0;
+  var slaSample = (op.sla && op.sla.sample_size) ? op.sla.sample_size : 0;
+  // criticos do escopo: usa op.criticos quando vier (range mode), senão OP global
+  // Antes: criticos sempre vinha de OP global, ignorando filtros.
+  var criticosScope = (op.criticos && op.criticos.length>=0) ? op.criticos : criticos;
 
-  // Aging
+  // Aging — usa criticosScope (respeita filtro quando disponível)
   var age30p=0;
-  criticos.forEach(function(c){var m=String(c.idade||'').match(/(\d+)/);if(m&&parseInt(m[1])>30)age30p++;});
+  criticosScope.forEach(function(c){var m=String(c.idade||'').match(/(\d+)/);if(m&&parseInt(m[1])>30)age30p++;});
 
   // Health score unificado (operacional)
   var healthScore=calcUnifiedScore({total:total,fechados:fechados,abertos:abertos,resp_med:respMed,solucao_med_h:solMed,estados:estado,prior:prior});
@@ -10645,18 +10655,27 @@ function computeInsights(){
   var respH=fmtRespTxt(respMed);
 
   // ── RESUMO DE GESTÃO ─────────────────────────────────────
+  // Narrativa usa apenas dados do escopo (op = getActiveOP) e SLA real (calcSLA).
+  // Antes: misturava heurística e podia citar agregado global.
   var narrativa='No período analisado foram registrados <strong>'+total+' chamados</strong> com taxa de conclusão de <strong>'+taxaConc+'%</strong>. ';
   if(taxaConc>=80)narrativa+='Performance <strong>excelente</strong> de resolução. ';
   else if(taxaConc>=60)narrativa+='Performance <strong>satisfatória</strong>, com espaço para melhoria. ';
   else narrativa+='Taxa de conclusão <strong>abaixo do esperado</strong> — requer ação. ';
-  if(abertos>0)narrativa+='Há <strong>'+abertos+' chamados em aberto</strong> ('+pctAbertos+'%). ';
+  if(abertos>0)narrativa+='Há <strong>'+abertos+' chamados em aberto</strong> ('+pct(abertos,total)+'%). ';
   if(totalBloq>10)narrativa+='<strong>'+totalBloq+' chamados bloqueados</strong> — nível crítico, ação imediata necessária. ';
   else if(totalBloq>0)narrativa+=totalBloq+' chamados bloqueados. ';
-  narrativa+='Tempo de 1ª resposta: <strong>'+respH+'</strong>. Solução média: <strong>'+solMed+'h</strong>.';
+  narrativa+='Tempo de 1ª resposta: <strong>'+respH+'</strong>. ';
+  if(solMedian!=null) narrativa+='Solução mediana: <strong>'+solMedian+'h</strong> (média '+solMed+'h). ';
+  else if(solMed) narrativa+='Solução média: <strong>'+solMed+'h</strong>. ';
+  if(slaGeral!=null) narrativa+='SLA: <strong>'+slaGeral+'%</strong> dentro de 48h úteis ('+slaSample+' resolvidos).';
+  if(autoClosed>0) narrativa+=' '+autoClosed+' auto-fechados por inatividade — não computados no SLA.';
 
+  // Risco principal — prioriza estouro de SLA real (calcSLA), depois heurísticas
   var riscoPrincipal=null;
-  if(pctMA>40)riscoPrincipal={label:'Alta concentração crítica',desc:pctMA+'% dos chamados em Muito Alta — risco operacional elevado'};
+  if(slaGeral!=null && slaGeral<70 && slaSample>=3) riscoPrincipal={label:'SLA abaixo da meta',desc:slaGeral+'% dentro de 48h em '+slaSample+' resolvidos — mediana '+(solMedian||solMed)+'h'};
+  else if(pctMA>40)riscoPrincipal={label:'Alta concentração crítica',desc:pctMA+'% dos chamados em Muito Alta — risco operacional elevado'};
   else if(totalBloq>20)riscoPrincipal={label:'Backlog bloqueado crítico',desc:totalBloq+' chamados aguardando ação — SLA em risco'};
+  else if(solMedian!=null && solMedian>48)riscoPrincipal={label:'Tempo de solução elevado',desc:'Mediana de '+solMedian+'h — acima do SLA de 48h'};
   else if(solMed>60)riscoPrincipal={label:'Tempo de solução elevado',desc:'Média de '+solMed+'h para encerrar — acima do ideal'};
   else if(pctAbertos>25)riscoPrincipal={label:'Alto volume em aberto',desc:pctAbertos+'% do total sem resolução — monitorar aging'};
   else if(trendPct>20)riscoPrincipal={label:'Volume crescente',desc:trendPct+'% de aumento esta semana — avaliar capacidade'};
@@ -10664,7 +10683,7 @@ function computeInsights(){
 
   var oportunidade=null;
   if(aguardCli>5)oportunidade={label:'Retorno de clientes',desc:aguardCli+' chamados aguardando cliente — fechamentos rápidos disponíveis'};
-  else if(taxaConc>=80&&slaGeral>=80)oportunidade={label:'Alta performance',desc:'Taxa de resolução e SLA acima de 80% — apresentar resultados ao cliente'};
+  else if(taxaConc>=80 && slaGeral!=null && slaGeral>=80)oportunidade={label:'Alta performance',desc:'Taxa de resolução '+taxaConc+'% e SLA '+slaGeral+'% — apresentar resultados ao cliente'};
   else if(atendData.length>0){
     var top=atendData.slice().sort(function(a,b){return(b.f/Math.max(b.t,1))-(a.f/Math.max(a.t,1));});
     oportunidade={label:'Melhor prática disponível',desc:'Atendente '+top[0].n+' com maior taxa — replicar método para a equipe'};
@@ -10674,19 +10693,28 @@ function computeInsights(){
 
   var kpis=[
     {label:'Health Score',value:healthScore,sub:healthLabel,color:healthColor},
-    {label:'Conformidade SLA',value:slaGeral+'%',sub:respMed<=30?'meta de resposta OK':'resposta acima da meta',color:slaGeral>=85?'#10b981':slaGeral>=65?'#f59e0b':'#f43f5e'},
+    {label:'Conformidade SLA',
+     value:(slaGeral!=null?slaGeral+'%':'—'),
+     sub:(slaSample>0?slaSample+' resolvidos · '+autoClosed+' auto-fechados':'sem amostra'),
+     color:slaGeral==null?'#8892a4':slaGeral>=85?'#10b981':slaGeral>=65?'#f59e0b':'#f43f5e'},
     {label:'Taxa de Resolução',value:taxaConc+'%',sub:fechados+' de '+total+' encerrados',color:taxaConc>=80?'#10b981':taxaConc>=60?'#f59e0b':'#f43f5e'},
     {label:'Tendência',value:(trendPct>0?'↑':trendPct<0?'↓':'→')+' '+Math.abs(trendPct)+'%',sub:'volume vs semana anterior',color:trendPct>15?'#f43f5e':trendPct<-10?'#10b981':'#8892a4'}
   ];
 
   // ── RISCOS OPERACIONAIS ──────────────────────────────────
   var riscosOp=[];
+  // SLA real (calcSLA) toma precedência sobre médias
+  if(slaGeral!=null && slaSample>=3 && slaGeral<70)riscosOp.push({titulo:'SLA fora da meta',desc:slaGeral+'% dentro de 48h em '+slaSample+' resolvidos — meta 90%',nivel:'high',confianca:95});
+  else if(slaGeral!=null && slaSample>=3 && slaGeral<85)riscosOp.push({titulo:'SLA abaixo da meta',desc:slaGeral+'% dentro de 48h — meta 90%',nivel:'medium',confianca:85});
   if(pctMA>40)riscosOp.push({titulo:'Concentração crítica de prioridades',desc:prioMA+' chamados Muito Alta ('+pctMA+'%) — SLA em risco',nivel:'high',confianca:92});
   else if(pctMA>25)riscosOp.push({titulo:'Prioridades críticas elevadas',desc:prioMA+' chamados Muito Alta ('+pctMA+'%) — monitorar',nivel:'medium',confianca:80});
   if(totalBloq>20)riscosOp.push({titulo:'Backlog bloqueado crítico',desc:totalBloq+' chamados parados — ação interna ou externa necessária',nivel:'high',confianca:95});
   else if(totalBloq>10)riscosOp.push({titulo:'Chamados bloqueados acima do normal',desc:totalBloq+' bloqueados — revisar dependências',nivel:'medium',confianca:85});
-  if(solMed>72)riscosOp.push({titulo:'Tempo de solução muito elevado',desc:'Média de '+solMed+'h — revisar SLA e distribuição',nivel:'high',confianca:88});
-  else if(solMed>48)riscosOp.push({titulo:'Tempo de solução acima do ideal',desc:solMed+'h médio — acompanhar chamados com maior aging',nivel:'medium',confianca:75});
+  // Tempo: prefere mediana (representativa) sobre média (sensível a outliers)
+  var tempoRef = solMedian!=null ? solMedian : solMed;
+  var tempoLbl = solMedian!=null ? 'mediana' : 'média';
+  if(tempoRef>72)riscosOp.push({titulo:'Tempo de solução muito elevado',desc:tempoLbl+' de '+tempoRef+'h — revisar SLA e distribuição',nivel:'high',confianca:88});
+  else if(tempoRef>48)riscosOp.push({titulo:'Tempo de solução acima do ideal',desc:tempoRef+'h '+tempoLbl+' — acompanhar chamados com maior aging',nivel:'medium',confianca:75});
   if(respMed>60)riscosOp.push({titulo:'1ª resposta fora da meta',desc:respMed+' min — meta é 30 min. Risco de insatisfação imediata',nivel:'high',confianca:90});
   else if(respMed>30)riscosOp.push({titulo:'1ª resposta acima da meta',desc:respMed+' min médio — ligeiramente acima dos 30 min',nivel:'medium',confianca:78});
   if(trendPct>20)riscosOp.push({titulo:'Volume crescendo rapidamente',desc:trendPct+'% de aumento vs semana anterior — avaliar capacidade',nivel:'high',confianca:82});
@@ -10696,11 +10724,21 @@ function computeInsights(){
   if(riscosOp.length===0)riscosOp.push({titulo:'Operação dentro dos parâmetros',desc:'Nenhum risco crítico ou médio detectado. Manter monitoramento.',nivel:'low',confianca:88});
 
   // ── RISCOS POR CLIENTE ───────────────────────────────────
+  // Quando há cliente filtrado, mostra só ele (com escopo do filtro). Senão, top 8 piores no agregado.
+  // Quando há mês filtrado mas sem cliente, usa snapshot do mês via getFilteredEmpresa pra cada top.
   var riscosClientes=[];
-  var empIds=Object.keys(EMPRESAS).filter(function(k){return k&&k.indexOf('@')===-1&&EMPRESAS[k].total>0;});
-  empIds.sort(function(a,b){return calcUnifiedScore(EMPRESAS[a])-calcUnifiedScore(EMPRESAS[b]);});
-  empIds.slice(0,8).forEach(function(k){
-    var d=EMPRESAS[k];
+  var empIds;
+  if(typeof activeCliente!=='undefined' && activeCliente && EMPRESAS[activeCliente]){
+    empIds = [activeCliente];
+  } else {
+    empIds = Object.keys(EMPRESAS).filter(function(k){return k&&k.indexOf('@')===-1&&EMPRESAS[k].total>0;});
+    empIds.sort(function(a,b){return calcUnifiedScore(EMPRESAS[a])-calcUnifiedScore(EMPRESAS[b]);});
+    empIds = empIds.slice(0,8);
+  }
+  empIds.forEach(function(k){
+    // Aplica filtros de mês/fila/range no snapshot do cliente, para refletir escopo ativo
+    var dRaw = EMPRESAS[k];
+    var d = (typeof getFilteredEmpresa==='function') ? (getFilteredEmpresa(dRaw) || dRaw) : dRaw;
     var sc=calcUnifiedScore(d);
     var tc=d.total>0?Math.round(d.fechados/d.total*100):0;
     var ap=d.total>0?Math.round(d.abertos/d.total*100):0;
@@ -10722,9 +10760,11 @@ function computeInsights(){
   });
 
   // ── CS INSIGHTS ─────────────────────────────────────────
+  // Mesmo padrão dos riscos por cliente: respeita activeCliente; senão top 8 globais.
   var csInsights=[];
-  empIds.slice(0,8).forEach(function(k){
-    var d=EMPRESAS[k];
+  empIds.forEach(function(k){
+    var dRaw=EMPRESAS[k];
+    var d = (typeof getFilteredEmpresa==='function') ? (getFilteredEmpresa(dRaw) || dRaw) : dRaw;
     var sc=calcUnifiedScore(d);
     var tc=d.total>0?Math.round(d.fechados/d.total*100):0;
     var aci=(d.estados&&d.estados['Aguardando Cliente'])||0;
