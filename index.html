@@ -215,6 +215,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-alerts{display:flex;align-items:center;gap:8px;margin-left:auto}
 .tb-alert-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s}
 .tb-alert-pill:hover{opacity:.8}
+/* K13: chip de filtros ativos — visível em todas as abas, clique reseta */
+.tb-filter-chip{display:none;align-items:center;gap:6px;padding:4px 10px 4px 8px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,rgba(232,98,42,.18),rgba(232,98,42,.08));border:1px solid rgba(232,98,42,.4);color:#E8622A;transition:all .15s;white-space:nowrap;max-width:340px;overflow:hidden;text-overflow:ellipsis}
+.tb-filter-chip.on{display:inline-flex}
+.tb-filter-chip:hover{background:linear-gradient(135deg,rgba(232,98,42,.28),rgba(232,98,42,.14));transform:translateY(-1px)}
+.tb-filter-chip .tb-fc-icon{font-size:11px;line-height:1}
+.tb-filter-chip .tb-fc-x{margin-left:4px;opacity:.6;font-size:10px;font-weight:700;line-height:1}
+.tb-filter-chip:hover .tb-fc-x{opacity:1}
 .tap-danger{background:rgba(244,63,94,.12);color:var(--danger);border:1px solid rgba(244,63,94,.2)}
 .tap-warn{background:rgba(245,158,11,.12);color:var(--warn);border:1px solid rgba(245,158,11,.2)}
 .tap-ok{background:rgba(16,185,129,.12);color:var(--ok);border:1px solid rgba(16,185,129,.2)}
@@ -1580,6 +1587,12 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
     <div class="tb-alert-pill tap-danger" id="pill-sla-vencendo" style="display:none" onclick="goSec('op','s-alertas',document.querySelector('.nav[onclick*=s-alertas]'))">
       <div class="tb-dot" style="background:var(--danger)"></div>
       <span id="pill-sla-txt">0 vencendo</span>
+    </div>
+    <!-- K13: chip de filtros ativos — visível em todas as abas, clique reseta -->
+    <div class="tb-filter-chip" id="tb-filter-chip" onclick="resetAllFilters()" title="Clique para limpar todos os filtros">
+      <span class="tb-fc-icon">📍</span>
+      <span id="tb-fc-text">filtros ativos</span>
+      <span class="tb-fc-x">✕</span>
     </div>
     <div class="tb-divider"></div>
     <div class="tb-ai-badge" id="tb-ai-badge" style="display:none">
@@ -3533,10 +3546,14 @@ function populateSlHero(op){
   var okCount=resps.filter(function(v){return v<=META;}).length;
   var totalResp=resps.length;
   var pctMeta=totalResp?Math.round((okCount/totalResp)*100):0;
+  // K11: rotular explicitamente como 1ª resposta — antes ficava ambíguo
+  // com o "% Dentro do SLA" de Solução (que é cálculo diferente, calcSLA).
+  // textContent não interpreta entidades, então usamos < literal.
+  var statusLbl = pctMeta+'% · 1ª RESP <30min';
   var status, cls;
-  if(pctMeta>=80){status=pctMeta+'% NA META';cls='';}
-  else if(pctMeta>=60){status=pctMeta+'% NA META';cls='sl-s-warn';}
-  else {status=pctMeta+'% NA META';cls='sl-s-crit';}
+  if(pctMeta>=80){status=statusLbl;cls='';}
+  else if(pctMeta>=60){status=statusLbl;cls='sl-s-warn';}
+  else {status=statusLbl;cls='sl-s-crit';}
   hero.textContent=status;
   if(cls){hero.classList.add(cls);if(ring)ring.classList.add(cls);}
   var abertosAbr=atend.reduce(function(s,a){return s+(a.ab||0);},0);
@@ -5579,6 +5596,63 @@ function buildBloqEntry(estadoObj){
     {l:'Outros bloqueados',n:estadoObj['Aberto']||0,c:'var(--muted)'}];
 }
 
+// K13: atualiza o chip "Filtros ativos" no topbar conforme escopo atual.
+// Mostra cliente, mês/range e fila. Esconde quando não há filtro ativo.
+function updateFilterChip(){
+  var chip = document.getElementById('tb-filter-chip');
+  var txt  = document.getElementById('tb-fc-text');
+  if(!chip || !txt) return;
+  var parts = [];
+  // Cliente
+  if(typeof activeCliente!=='undefined' && activeCliente){
+    var nm = (typeof EMPRESAS!=='undefined' && EMPRESAS[activeCliente] && EMPRESAS[activeCliente].nome)
+            || (typeof ENM2!=='undefined' && ENM2[activeCliente]) || activeCliente;
+    parts.push(nm);
+  }
+  // Mês ou range customizado
+  if(typeof activeRangeStart!=='undefined' && activeRangeStart && activeRangeEnd){
+    var fmtD = function(d){return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2);};
+    parts.push(fmtD(activeRangeStart)+'–'+fmtD(activeRangeEnd));
+  } else if(typeof activeMonth!=='undefined' && activeMonth && activeMonth!=='all'){
+    var mNames = {'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
+    var p = String(activeMonth).split('-');
+    if(p.length===2 && mNames[p[1]]) parts.push(mNames[p[1]]+'/'+p[0].slice(2));
+    else parts.push(activeMonth);
+  }
+  // Fila
+  if(typeof activeFilaOP!=='undefined' && activeFilaOP && activeFilaOP!=='all'){
+    parts.push(activeFilaOP);
+  }
+  if(parts.length){
+    txt.textContent = parts.join(' · ');
+    chip.classList.add('on');
+  } else {
+    chip.classList.remove('on');
+  }
+}
+
+// K13: limpa todos os filtros (chamado ao clicar no chip)
+function resetAllFilters(){
+  if(typeof setClienteGlobal==='function') setClienteGlobal('');
+  if(typeof activeMonth!=='undefined') activeMonth='all';
+  if(typeof activeFilaOP!=='undefined') activeFilaOP='all';
+  if(typeof activeFilaCli!=='undefined') activeFilaCli='all';
+  if(typeof activeRangeStart!=='undefined'){activeRangeStart=null;activeRangeEnd=null;}
+  if(typeof rendered!=='undefined') Object.keys(rendered).forEach(function(k){rendered[k]=false;});
+  if(typeof CH!=='undefined') Object.keys(CH).forEach(function(k){if(CH[k]){CH[k].destroy();CH[k]=null;}});
+  if(typeof buildMonthFilter==='function') buildMonthFilter();
+  if(typeof buildFilaBtns==='function'){
+    try{buildFilaBtns('fila-btns-op','all',setFilaOP);}catch(e){console.warn('[resetAllFilters] fila op:',e);}
+    try{buildFilaBtns('fila-btns-cli','all',setFilaCli);}catch(e){console.warn('[resetAllFilters] fila cli:',e);}
+  }
+  // Re-render aba ativa
+  var sel = document.querySelector('#view-op .sec.on') || document.querySelector('#view-cli .sec.on') || document.querySelector('#view-cs .sec.on');
+  if(sel && typeof renderSec==='function'){try{renderSec(sel.id);}catch(e){console.warn('[resetAllFilters] renderSec:',e);}}
+  if(typeof renderAlertas==='function') try{renderAlertas();}catch(e){console.warn('[resetAllFilters] renderAlertas:',e);}
+  if(typeof computeInsights==='function') try{computeInsights();}catch(e){console.warn('[resetAllFilters] computeInsights:',e);}
+  updateFilterChip();
+}
+
 // Lista de bloqueados FIEL ao escopo ativo (cli + mês + fila + range customizado).
 // Antes: vários consumidores faziam BLOQ_MESES[activeMonth] || BLOQ_MESES['all'],
 // que VAZAVA o agregado global quando o range customizado não tinha dados.
@@ -7577,6 +7651,7 @@ function applyDateRange(mode) {
     if(csKey) loadCS(csKey); else renderCSHealthList();
   }
   computeInsights();
+  if(typeof updateFilterChip==='function') updateFilterChip();
 }
 
 function openSettings() {
@@ -7700,6 +7775,7 @@ function setMonth(m) {
   var vAcoes = document.getElementById('view-acoes');
   if(vAcoes && vAcoes.classList.contains('on')) renderAcoes();
   computeInsights();
+  if(typeof updateFilterChip==='function') updateFilterChip();
 }
 
 // Filtered data getter
@@ -7903,6 +7979,7 @@ function setFilaOP(fila) {
   var vAcoesF = document.getElementById('view-acoes');
   if(vAcoesF && vAcoesF.classList.contains('on')) renderAcoes();
   computeInsights();
+  if(typeof updateFilterChip==='function') updateFilterChip();
 }
 
 function setFilaCli(fila) {
@@ -7919,6 +7996,7 @@ function setFilaCli(fila) {
   renderInf();
   renderAlertas();
   computeInsights();
+  if(typeof updateFilterChip==='function') updateFilterChip();
 }
 
 function getFilteredDays() {
@@ -8061,6 +8139,7 @@ function setClienteGlobal(key) {
   var vAcoesCG = document.getElementById('view-acoes');
   if(vAcoesCG && vAcoesCG.classList.contains('on')) renderAcoes();
   computeInsights();
+  if(typeof updateFilterChip==='function') updateFilterChip();
 }
 
 // Filtered empresa getter - filters tickets by month
