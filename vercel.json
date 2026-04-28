@@ -1,4 +1,14 @@
 {
   "version": 2,
-  "ignoreCommand": "git log -1 --pretty=%s | grep -qE '^chore: sync' && exit 0 || exit 1"
+  "ignoreCommand": "git log -1 --pretty=%s | grep -qE '^chore: sync' && exit 0 || exit 1",
+  "rewrites": [
+    { "source": "/historico_completo.json", "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/historico_completo.json" },
+    { "source": "/tickets_ativos.json",     "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/tickets_ativos.json" },
+    { "source": "/utilizacao.json",         "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/utilizacao.json" },
+    { "source": "/gwms-insights.json",      "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/gwms-insights.json" },
+    { "source": "/aios-insights.json",      "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/aios-insights.json" },
+    { "source": "/silenciosos.json",        "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/silenciosos.json" },
+    { "source": "/triagem.json",            "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/triagem.json" },
+    { "source": "/reaberturas.json",        "destination": "https://raw.githubusercontent.com/ssg-create/ssg-dashboard/main/reaberturas.json" }
+  ]
 }
