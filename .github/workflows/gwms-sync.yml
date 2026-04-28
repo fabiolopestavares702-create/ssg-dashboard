@@ -9,6 +9,8 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -24,16 +26,14 @@ jobs:
 
       - name: Validar secrets obrigatórios
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          GH_REPO:      ${{ secrets.GH_REPO }}
-          GWMS_USER:    ${{ secrets.GWMS_USER }}
-          GWMS_PASS:    ${{ secrets.GWMS_PASS }}
+          GH_REPO:   ${{ secrets.GH_REPO }}
+          GWMS_USER: ${{ secrets.GWMS_USER }}
+          GWMS_PASS: ${{ secrets.GWMS_PASS }}
         run: |
           MISSING=""
-          [ -z "$DEPLOY_TOKEN" ] && MISSING="$MISSING DEPLOY_TOKEN"
-          [ -z "$GH_REPO" ]      && MISSING="$MISSING GH_REPO"
-          [ -z "$GWMS_USER" ]    && MISSING="$MISSING GWMS_USER"
-          [ -z "$GWMS_PASS" ]    && MISSING="$MISSING GWMS_PASS"
+          [ -z "$GH_REPO" ]   && MISSING="$MISSING GH_REPO"
+          [ -z "$GWMS_USER" ] && MISSING="$MISSING GWMS_USER"
+          [ -z "$GWMS_PASS" ] && MISSING="$MISSING GWMS_PASS"
           if [ -n "$MISSING" ]; then
             echo "ERRO: secrets ausentes:$MISSING"
             exit 1
@@ -44,6 +44,6 @@ jobs:
         env:
           GWMS_USER:    ${{ secrets.GWMS_USER }}
           GWMS_PASS:    ${{ secrets.GWMS_PASS }}
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          DEPLOY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO:      ${{ secrets.GH_REPO }}
         run: python scripts/gwms_sync.py
