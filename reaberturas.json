@@ -1,7 +1,7 @@
 {
-  "generated_at": 1777294595,
-  "generated_at_iso": "2026-04-27T12:56:35Z",
-  "count": 5,
+  "generated_at": 1777402196,
+  "generated_at_iso": "2026-04-28T18:49:56Z",
+  "count": 6,
   "filas": [
     "DATASUL",
     "DBA",
@@ -25,6 +25,18 @@
       "assunto": "Alteração de e-mail no disparo de relatório do BH  que ocorre todo dia 6 - Teletex"
     },
     {
+      "ticket": "2026042026000199",
+      "cliente": "valdeson.silva.ma@riopiranhas.com.br",
+      "fila": "GWMS",
+      "estado_atual": "AGUARDANDO CLIENTE",
+      "prioridade": "1 very low",
+      "atendente": "Thiago Trufelli",
+      "criado": "2026-04-20T15:15:20",
+      "modificado": "2026-04-28T14:34:08",
+      "vezes_fechado": 2,
+      "assunto": "Solicitação de controle de  fila de impressão"
+    },
+    {
       "ticket": "2026041226000043",
       "cliente": "monitoramento@groundwork.com.br",
       "fila": "DBA",
@@ -32,7 +44,7 @@
       "prioridade": "1 very low",
       "atendente": "Eduardo Candido",
       "criado": "2026-04-12T09:15:14",
-      "modificado": "2026-04-27T05:00:09",
+      "modificado": "2026-04-28T15:46:14",
       "vezes_fechado": 1,
       "assunto": "AUTOZONE - SRV-MASTER-PRD - AppServer:.Z11-TOTVS-P12-Autozone_S12-12031-FECHAMENTO - 26041209095268"
     },
@@ -44,7 +56,7 @@
       "prioridade": "2 low",
       "atendente": "Dyalef Abreu Santos",
       "criado": "2026-04-07T14:54:52",
-      "modificado": "2026-04-27T05:00:09",
+      "modificado": "2026-04-28T05:00:16",
       "vezes_fechado": 1,
       "assunto": "Liberar Modo Financeiro"
     },
