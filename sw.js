@@ -1,6 +1,6 @@
 // SSG Operations Center — Service Worker
 // ⚠️ Incrementar CACHE_VERSION a cada deploy para forçar atualização nos clientes
-const CACHE_VERSION = '20260427-1';
+const CACHE_VERSION = '20260427-2';
 const CACHE = 'ssg-' + CACHE_VERSION;
 const PRECACHE = [
   './index.html',

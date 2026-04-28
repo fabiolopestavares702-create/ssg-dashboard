@@ -7741,6 +7741,13 @@ function getActiveOP() {
         fechados: fechadosEmp,
         resp_med: emp.resp_med || 0,
         sol_med:  emp.sol_med  || emp.solucao_med_h || 0,
+        // Propaga struct SLA + campos derivados (fonte única calcSLA)
+        sla:         emp.sla            || null,
+        sol_med_bh:  emp.sol_med_bh     != null ? emp.sol_med_bh     : (emp.sla?emp.sla.avg_h:null),
+        sol_median:  emp.solucao_median_h != null ? emp.solucao_median_h : (emp.sol_median != null ? emp.sol_median : (emp.sla?emp.sla.median_h:null)),
+        sol_p90:     emp.solucao_p90_h    != null ? emp.solucao_p90_h    : (emp.sol_p90    != null ? emp.sol_p90    : (emp.sla?emp.sla.p90_h:null)),
+        sla_pct:     emp.sla_pct        != null ? emp.sla_pct          : (emp.sla?emp.sla.pct_within_sla:null),
+        auto_closed: emp.auto_closed    != null ? emp.auto_closed      : (emp.sla?emp.sla.auto_closed_count:0),
         estado:   Object.keys(estadoEmp).length ? estadoEmp : (emp.estado || emp.estados || {}),
         prior:    priorEmp,
         svc:      emp.svc      || emp.servicos || {},
@@ -7789,6 +7796,13 @@ function getActiveOP() {
     fechados: base.fechados != null ? base.fechados : 0,
     resp_med: base.resp_med != null ? base.resp_med : 0,
     sol_med:  base.sol_med  != null ? base.sol_med  : (base.sol_med_h || 0),
+    // Propaga struct SLA + campos derivados (fonte única calcSLA)
+    sla:         base.sla         || null,
+    sol_med_bh:  base.sol_med_bh  != null ? base.sol_med_bh  : (base.sla?base.sla.avg_h:null),
+    sol_median:  base.sol_median  != null ? base.sol_median  : (base.sla?base.sla.median_h:null),
+    sol_p90:     base.sol_p90     != null ? base.sol_p90     : (base.sla?base.sla.p90_h:null),
+    sla_pct:     base.sla_pct     != null ? base.sla_pct     : (base.sla?base.sla.pct_within_sla:null),
+    auto_closed: base.auto_closed != null ? base.auto_closed : (base.sla?base.sla.auto_closed_count:0),
     estado:   base.estado   || base.estados  || {},
     prior:    base.prior    || {},
     svc:      base.svc      || base.servicos || {},
@@ -8020,6 +8034,41 @@ function getFilteredEmpresa(d) {
     });
     return Object.keys(m).sort().map(function(k){return {d:k,n:m[k]};});
   };
+  // Helper — calcula SLA struct fiel ao escopo (cli + mês + fila + range) via RAW_DATA.
+  // Garante que mediana/p90/% SLA refletem o filtro ativo, não o agregado da empresa toda.
+  var _buildSlaFiltered = function(cliId) {
+    if(typeof RAW_DATA==='undefined' || !RAW_DATA || !RAW_DATA.length) return null;
+    var rs = RAW_DATA.filter(function(t){
+      if(!t || !t.criado) return false;
+      if(cliId && t.cli_id !== cliId) return false;
+      if(activeFilaOP && activeFilaOP !== 'all' && t.fila !== activeFilaOP) return false;
+      if(activeRangeStart && activeRangeEnd) {
+        if(!ticketInFilter(t)) return false;
+      } else if(activeMonth && activeMonth !== 'all') {
+        if(!(t.criado instanceof Date) || isNaN(t.criado)) return false;
+        if(t.criado.toISOString().slice(0,7) !== activeMonth) return false;
+      }
+      return true;
+    });
+    return calcSLA(rs);
+  };
+  // Empacota todos os campos derivados de SLA num objeto pra mesclar nos returns
+  var _slaFields = function(cliId){
+    var s = _buildSlaFiltered(cliId);
+    if(!s) return {};
+    return {
+      sla: s,
+      solucao_med_h:    s.avg_h,
+      solucao_median_h: s.median_h,
+      solucao_p90_h:    s.p90_h,
+      sol_med:          s.avg_h,
+      sol_med_bh:       s.avg_h,
+      sol_median:       s.median_h,
+      sol_p90:          s.p90_h,
+      sla_pct:          s.pct_within_sla,
+      auto_closed:      s.auto_closed_count
+    };
+  };
   // Range mode: filter from RAW_DATA for accurate results
   if(activeRangeStart && activeRangeEnd) {
     var rTix=(RAW_DATA||[]).filter(function(t){return t.cli_id===d.id&&ticketInFilter(t)&&(activeFilaOP==='all'||t.fila===activeFilaOP);});
@@ -8040,13 +8089,13 @@ function getFilteredEmpresa(d) {
       fechados:rTix.filter(function(t){return isFGFE(t.estado);}).length,
       tickets:tixGFE, estados:estGFE, by_mes:{},
       by_day:_bdr, byDay:_bdr
-    });
+    }, _slaFields(d.id));
   }
   if(activeMonth==='all') {
     if(activeFilaOP === 'all') {
       // Sem filtros extras — mas ainda precisa garantir by_day filtrado por cliente
       var _bdC = _buildByDayFiltered(d.id);
-      return Object.assign({},d,{by_day:_bdC, byDay:_bdC});
+      return Object.assign({},d,{by_day:_bdC, byDay:_bdC}, _slaFields(d.id));
     }
     // Fila ativa mesmo sem filtro de mês — filtra tickets e reconstrói
     var allTix = (d.tickets||[]).filter(function(t){ return t.fila === activeFilaOP; });
@@ -8060,7 +8109,7 @@ function getFilteredEmpresa(d) {
       fechados:allTix.filter(function(t){return isFeAll(t.estado);}).length,
       tickets:allTix, estados:estAll,
       by_day:_bdF, byDay:_bdF
-    });
+    }, _slaFields(d.id));
   }
 
   var mParts = activeMonth.split('-');
@@ -8076,7 +8125,10 @@ function getFilteredEmpresa(d) {
 
   // If no data for this month, return empty
   if(total === 0 && !d.by_mes[mKey]) {
-    return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},by_mes:{}});
+    return Object.assign({},d,{total:0,abertos:0,fechados:0,tickets:[],estados:{},by_mes:{},
+      sla:null,solucao_med_h:null,solucao_median_h:null,solucao_p90_h:null,
+      sol_med:null,sol_med_bh:null,sol_median:null,sol_p90:null,sla_pct:null,auto_closed:0
+    });
   }
 
   // Filter the sample tickets we have by month for the timeline
@@ -8117,7 +8169,7 @@ function getFilteredEmpresa(d) {
     by_mes: newByMes,
     by_day: _bdMM,
     byDay: _bdMM
-  });
+  }, _slaFields(d.id));
 }
 
 // Sync month filter visibility with mode
