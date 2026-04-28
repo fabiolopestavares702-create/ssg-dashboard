@@ -3539,10 +3539,16 @@ function populateClHero(op){
   clientesReais.forEach(function(k){if(cli[k]>topN){topN=cli[k];topK=k;}});
   var topPct=total>0?Math.round((topN/total)*100):0;
   hero.textContent=totalCli+' CLIENTES';
+  var _clOtrs='https://atendimento.groundwork.com.br/otrs/index.pl';
+  var _clKey=activeCliente||topK;
+  var _clOtrsUrl=_clKey
+    ?_clOtrs+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open;CustomerID='+encodeURIComponent(_clKey)
+    :_clOtrs+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open';
   if(sub){
     sub.innerHTML=
       '<strong>'+total.toLocaleString('pt-BR')+'</strong> chamados no período · '
-      +'top: <strong>'+(topK||'—')+'</strong> com <strong>'+topN+'</strong> ('+topPct+'% do volume)';
+      +'top: <strong>'+(topK||'—')+'</strong> com <strong>'+topN+'</strong> ('+topPct+'% do volume)'
+      +' · <a href="'+_clOtrsUrl+'" target="_blank" rel="noopener" style="color:var(--teal);font-size:11px;text-decoration:none;font-family:var(--mono)">↗ OTRS</a>';
   }
   if(meta)meta.textContent='distribuição por cliente e módulo ERP';
   if(ringNum)ringNum.textContent=totalCli;
@@ -3573,12 +3579,16 @@ function populateAlertasHero(totalCrit,totalBloq,semResp,bloqExato){
   if(hero){hero.classList.remove('al-s-ok','al-s-warn');hero.textContent=status;if(cls)hero.classList.add(cls);}
   if(ring){ring.classList.remove('al-s-ok','al-s-warn');if(cls)ring.classList.add(cls);}
   if(sub){
+    var _alOtrs='https://atendimento.groundwork.com.br/otrs/index.pl';
+    var _alFilaQ=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?';Queues[]='+encodeURIComponent(activeFilaOP):'';
+    var _alUrl=_alOtrs+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open;PriorityIDs[]=5'+_alFilaQ;
     sub.innerHTML=
       '<strong>'+totalCrit+'</strong> muito alta em aberto · '
       +'<strong>'+totalBloq+'</strong> bloqueados ('+bloqExato+' com aging) · '
       +'<strong>'+semResp+'</strong> sem 1ª resposta &gt;30min'
       +(criticosIA?' · <strong style="color:var(--gw)">'+criticosIA+' crítico'+(criticosIA===1?'':'s')+' IA</strong>':'')
-      +liveTag;
+      +liveTag
+      +' · <a href="'+_alUrl+'" target="_blank" rel="noopener" style="color:var(--teal);font-size:11px;text-decoration:none;font-family:var(--mono)">↗ OTRS</a>';
   }
   if(meta){
     var d=new Date();
@@ -3989,8 +3999,9 @@ function openAtendProfile(nome) {
         var idade=diff===null?'—':diff===0?'hoje':diff+'d';
         var dt=t.criado?p2f(t.criado.getDate())+'/'+p2f(t.criado.getMonth()+1):'—';
         var agingColor=diff===null?'var(--muted)':diff>7?'var(--danger)':diff>3?'var(--warn)':'var(--ok)';
+        var _tkUrl='https://atendimento.groundwork.com.br/otrs/index.pl?Action=AgentTicketZoom;TicketNumber='+encodeURIComponent(t.num);
         return '<tr>'+
-          '<td style="font-family:var(--mono);color:var(--muted)">#'+t.num+'</td>'+
+          '<td style="font-family:var(--mono)"><a href="'+_tkUrl+'" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none">#'+t.num+'</a></td>'+
           '<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(t.assunto||'—')+'</td>'+
           '<td>'+ePill(t.estado)+'</td>'+
           '<td style="font-size:10px;color:var(--muted)">'+dt+'</td>'+
@@ -4274,7 +4285,8 @@ function renderUtilizacao(data){
   setv('at-util-meta',rows.length+' atendentes · atualizado há '+(tsMin<1?'agora':tsMin+' min'));
   var trs=rows.map(function(r){
     var ativos=r.ativos_total||0;
-    var col=ativos>=8?'var(--danger)':(ativos>=5?'var(--warn)':'var(--ok)');
+    var cargaReal=(r.em_atendimento||0)+(r.abertos||0);
+    var col=cargaReal>=8?'var(--danger)':(cargaReal>=5?'var(--warn)':'var(--ok)');
     var tempo=r.em_atend_tempo_med_min?_fmtDuration(Math.round(r.em_atend_tempo_med_min)):'—';
     return '<tr>'
       +'<td style="font-size:11px">'+(r.atendente||'—').split(' ').slice(0,3).join(' ')+'</td>'
@@ -4770,7 +4782,10 @@ function renderTeamCapacity() {
     +'</div>';
   });
   cardsHtml+='</div>';
-  el.innerHTML='<div class="card-title">Capacidade da Equipe</div>'+sumHtml+cardsHtml;
+  var _atOtrs='https://atendimento.groundwork.com.br/otrs/index.pl';
+  var _atFilaQ=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all')?';Queues[]='+encodeURIComponent(activeFilaOP):'';
+  var _atLink='<a href="'+_atOtrs+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open'+_atFilaQ+'" target="_blank" rel="noopener" style="margin-left:auto;font-size:10px;color:var(--teal);font-family:var(--mono);text-decoration:none;opacity:.8">↗ ver no OTRS</a>';
+  el.innerHTML='<div class="card-title" style="display:flex;align-items:center">Capacidade da Equipe'+_atLink+'</div>'+sumHtml+cardsHtml;
 }
 
 function renderAt(){
@@ -8762,9 +8777,20 @@ function renderOpActions(op) {
 
   // 1) Críticos em aberto (exige ação imediata)
   if (criticos.length > 0) {
+    var _OTRS='https://atendimento.groundwork.com.br/otrs/index.pl';
+    var _filaQ=(activeFilaOP&&activeFilaOP!=='all')?';Queues[]='+encodeURIComponent(activeFilaOP):'';
+    var _shown=criticos.slice(0,5);
+    var _links=_shown.map(function(c){
+      var u=_OTRS+'?Action=AgentTicketZoom;TicketNumber='+encodeURIComponent(c.num);
+      return '<a href="'+u+'" target="_blank" rel="noopener" style="color:var(--teal);font-family:var(--mono);font-size:10px;text-decoration:none;margin-right:4px">#'+c.num+'</a>';
+    }).join('');
+    var _verTodos=criticos.length>5
+      ?'<a href="'+_OTRS+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open;PriorityIDs[]=5'+_filaQ+'" target="_blank" rel="noopener" style="color:var(--warn);font-size:10px;text-decoration:underline;margin-left:4px">ver todos ('+criticos.length+')</a>'
+      :'';
     actions.push({level:'crit',
       title: criticos.length + ' chamado' + (criticos.length>1?'s':'') + ' Muito Alta sem resolução',
-      desc: 'Verificar atendentes responsáveis e acionar resolução agora. Risco de SLA e insatisfação do cliente.'
+      desc: 'Verificar atendentes responsáveis e acionar resolução agora. Risco de SLA e insatisfação do cliente.',
+      links: _links+_verTodos
     });
   }
   // 2) Sem 1ª resposta dentro da meta
@@ -8810,9 +8836,10 @@ function renderOpActions(op) {
     + '</div>';
   html += actions.map(function(a){
     var label = a.level==='crit' ? 'CRÍTICO' : a.level==='atenc' ? 'ATENÇÃO' : 'INFO';
+    var linksHtml = a.links ? '<div style="margin-top:6px;line-height:1.8">'+a.links+'</div>' : '';
     return '<div class="action-row">'
       + '<span class="action-badge '+a.level+'">'+label+'</span>'
-      + '<div class="action-body"><div class="action-title">'+a.title+'</div><div class="action-desc">'+a.desc+'</div></div>'
+      + '<div class="action-body"><div class="action-title">'+a.title+'</div><div class="action-desc">'+a.desc+'</div>'+linksHtml+'</div>'
       + '</div>';
   }).join('');
   el.innerHTML = html;
