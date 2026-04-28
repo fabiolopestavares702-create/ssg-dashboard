@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GW Consult — Base de Conhecimento TOTVS</title>
+<title>GWoogle — Base de Conhecimento TOTVS</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -43,7 +43,18 @@
     border-radius: 6px;
     letter-spacing: .5px;
   }
-  .logo-name { font-size: 17px; font-weight: 600; color: var(--text); }
+  .logo-name {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .logo-name .c1 { color: #4f8ef7; }
+  .logo-name .c2 { color: #f45b5b; }
+  .logo-name .c3 { color: #f5a623; }
+  .logo-name .c4 { color: #4f8ef7; }
+  .logo-name .c5 { color: #3ecf8e; }
+  .logo-name .c6 { color: #f45b5b; }
+  .logo-name .c7 { color: #f5a623; }
   .logo-sep { color: var(--border); font-size: 20px; }
   .logo-sub { font-size: 13px; color: var(--muted); }
   .header-right { font-size: 12px; color: var(--muted); }
@@ -51,10 +62,21 @@
 
   /* ── Hero search ── */
   .hero {
-    background: linear-gradient(160deg, #161a2e 0%, #0f1117 60%);
+    background: linear-gradient(160deg, #12172e 0%, #161024 50%, #0f1117 100%);
     border-bottom: 1px solid var(--border);
     padding: 40px 32px 32px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 200px;
+    background: radial-gradient(ellipse, rgba(79,142,247,.12) 0%, transparent 70%);
+    pointer-events: none;
   }
   .hero h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
   .hero p { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
@@ -249,6 +271,100 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* ── Tutorial ── */
+  .tutorial {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 32px;
+  }
+  .tutorial-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .tutorial h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .step:nth-child(1) .step-num { background: #4f8ef7; }
+  .step:nth-child(2) .step-num { background: #f5a623; }
+  .step:nth-child(3) .step-num { background: #3ecf8e; }
+  .step:nth-child(4) .step-num { background: #f45b5b; }
+  .step:nth-child(1) { border-top: 2px solid #4f8ef7; }
+  .step:nth-child(2) { border-top: 2px solid #f5a623; }
+  .step:nth-child(3) { border-top: 2px solid #3ecf8e; }
+  .step:nth-child(4) { border-top: 2px solid #f45b5b; }
+  .step-num {
+    width: 28px; height: 28px;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .step h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .step p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .example-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .example-box h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 14px;
+  }
+  .example-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .example-row:last-child { margin-bottom: 0; }
+  .ex-label {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  .ex-label.ticket  { border-color: var(--warn);   color: var(--warn); }
+  .ex-label.busca   { border-color: var(--accent);  color: var(--accent); }
+  .ex-label.filtro  { border-color: var(--accent2); color: var(--accent2); }
+  .ex-label.result  { border-color: var(--ok);      color: var(--ok); }
+  .ex-val { color: var(--text); line-height: 1.5; }
+  .ex-val em { color: var(--accent); font-style: normal; font-weight: 600; }
+
   /* ── Responsivo ── */
   @media (max-width: 600px) {
     header { padding: 0 16px; }
@@ -264,7 +380,7 @@
   <div class="logo">
     <span class="logo-badge">GW</span>
     <span class="logo-sep">|</span>
-    <span class="logo-name">Consult</span>
+    <span class="logo-name"><span class="c1">G</span><span class="c2">W</span><span class="c3">o</span><span class="c4">o</span><span class="c5">g</span><span class="c6">l</span><span class="c7">e</span></span>
     <span class="logo-sub">Base de Conhecimento TOTVS</span>
   </div>
   <div class="header-right">powered by <span>TOTVS Central do Conhecimento</span></div>
@@ -300,6 +416,55 @@
     </div>
   </div>
 </main>
+
+<!-- ── Tutorial de uso ── -->
+<div class="tutorial">
+  <div class="tutorial-inner">
+    <h2>Como usar o GWoogle</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Abra o chamado</h3>
+        <p>No OTRS, veja o assunto e a descrição do ticket que está trabalhando.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Escolha o produto</h3>
+        <p>Clique no filtro: Datasul, Protheus, Linha RM ou Backoffice conforme o sistema do cliente.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Busque o problema</h3>
+        <p>Digite o erro, módulo ou função. Quanto mais específico, melhor o resultado.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Leia a solução</h3>
+        <p>Clique em "Ver solução ↗" e aplique o passo a passo do artigo no chamado.</p>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <h3>Exemplo real — como transformar um ticket em busca</h3>
+      <div class="example-row">
+        <span class="ex-label ticket">Ticket</span>
+        <span class="ex-val">Cliente relata que ao faturar NF de industrialização no Datasul aparece <em>erro 56556</em> e a nota não é gerada.</span>
+      </div>
+      <div class="example-row">
+        <span class="ex-label filtro">Filtro</span>
+        <span class="ex-val">Selecione <em>Datasul</em></span>
+      </div>
+      <div class="example-row">
+        <span class="ex-label busca">Busca</span>
+        <span class="ex-val">Digite: <em>erro 56556 faturamento industrialização</em></span>
+      </div>
+      <div class="example-row">
+        <span class="ex-label result">Resultado</span>
+        <span class="ex-val">Artigo <em>"DT Erro faturamento NF industrialização"</em> — SITUAÇÃO + SOLUÇÃO em 3 minutos.</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 var activeProduct = '';
