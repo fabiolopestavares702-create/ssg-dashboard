@@ -10284,14 +10284,18 @@ var isFe = isClosedAnyState; // fonte canônica
 // ════════════════════════════════════════════════════════════
 function renderResumo(){
   // ── Dados base ────────────────────────────────────────────
+  // BUG FIX: usar `op.X != null ? op.X : ...` em vez de `op.X || OP.X`
+  // porque op.total=0 (range vazio) caía em OP.total (global), gerando
+  // narrativa "2215 chamados com 0% taxa". Agora respeita o escopo.
   var op=getActiveOP();
-  var total=op.total||OP.total||0;
+  var total=op.total!=null?op.total:(OP.total||0);
   var fechados=op.fechados!=null?op.fechados:(OP.fechados||0);
   var abertos=op.abertos!=null?op.abertos:(OP.abertos||0);
   var solMed=op.sol_med!=null?op.sol_med:(OP.sol_med||0);
   var respMed=op.resp_med!=null?op.resp_med:(OP.resp_med||0);
-  var prior=op.prior||OP.prior||{};
-  var estado=op.estado||OP.estado||{};
+  // Quando o escopo é vazio (total=0), zera prior/estado também
+  var prior=(op.total!=null&&op.total===0)?{}:(op.prior||OP.prior||{});
+  var estado=(op.total!=null&&op.total===0)?{}:(op.estado||OP.estado||{});
   var bloqData=getActiveBloqList();
   var totalBloq=bloqData.reduce(function(a,b){return a+b.n;},0);
   var aguardCli=estado['Aguardando Cliente']||0;
@@ -10690,9 +10694,12 @@ setInterval(autoFetchData, 10 * 60 * 1000);
 var AI_DATA = null;
 
 function computeInsights(){
+  // BUG FIX (idem renderResumo): op.total=0 (range vazio) caía em
+  // OP.total. Agora respeita o escopo e aborta quando vazio,
+  // deixando AI_DATA null pra renderIAResumo exibir aiNoData().
   var op=getActiveOP();
-  var total=op.total||OP.total||0;
-  if(!total)return;
+  var total=op.total!=null?op.total:(OP.total||0);
+  if(!total){AI_DATA=null;return;}
 
   var fechados=op.fechados!=null?op.fechados:(OP.fechados||0);
   var abertos=op.abertos!=null?op.abertos:(OP.abertos||0);
