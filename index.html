@@ -3728,7 +3728,23 @@ function renderAlertas(){
   _alertState = {criticos:critFiltrados, filtroAtend:'all', filtroFila:filaAtiva};
   var totalCrit = critFiltrados.length;
   var totalBloq = getActiveBloqList().reduce(function(a,b){return a+b.n;},0);
-  var semResp = RESP30_MESES[mes]||0;
+  // Fix: RESP30_MESES é indexado só por mês — quando há filtro de fila/cliente/range
+  // ativo, recalcula do RAW_DATA respeitando o escopo (mesmo padrão de getActiveBloqList).
+  var _hasCliA=(typeof activeCliente!=='undefined'&&activeCliente);
+  var _hasFilaA=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all');
+  var _hasRangeA=(typeof activeRangeStart!=='undefined'&&activeRangeStart&&activeRangeEnd);
+  var semResp;
+  if((_hasCliA||_hasFilaA||_hasRangeA)&&typeof RAW_DATA!=='undefined'&&RAW_DATA){
+    semResp=RAW_DATA.filter(function(t){
+      if(!t||t.resp_min==null||t.resp_min<=30)return false;
+      if(_hasCliA&&t.cli_id!==activeCliente)return false;
+      if(_hasFilaA&&t.fila!==activeFilaOP)return false;
+      if(typeof ticketInFilter==='function'&&!ticketInFilter(t))return false;
+      return true;
+    }).length;
+  }else{
+    semResp=RESP30_MESES[mes]||0;
+  }
   var estadosBloq=['Aguardando Cliente','Aguardando Interno','Retorno Cliente','Aguardando Externo'];
   var bloqExato=critFiltrados.filter(function(c){return estadosBloq.indexOf(c.estado)!==-1&&c.idade!=='hoje';}).length;
 
@@ -4998,14 +5014,17 @@ function renderCl(){
   var evoEl=document.getElementById('cli-evolucao');if(!evoEl)return;
   var mNames5={'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
   var mL5={};mO5.forEach(function(k){var p=k.split('-');mL5[k]=mNames5[p[1]]+'/'+(p[0].slice(2));});
-  var topCli=Object.keys(OP.cli||{}).filter(function(k){return(Object.values(ENM2).indexOf(k)!==-1||ENM2[k])&&k.indexOf('@')===-1;}).sort(function(a,b){return(OP.cli[b]||0)-(OP.cli[a]||0);}).slice(0,5);
+  // Fix: usa getActiveOP().cli (escopo filtrado por fila/cliente/range) em vez de
+  // OP.cli (global) — antes TOP 5 vazava clientes que só existem em outras filas.
+  var _opCli=(typeof getActiveOP==='function'?(getActiveOP()||{}).cli:null)||OP.cli||{};
+  var topCli=Object.keys(_opCli).filter(function(k){return(Object.values(ENM2).indexOf(k)!==-1||ENM2[k])&&k.indexOf('@')===-1;}).sort(function(a,b){return(_opCli[b]||0)-(_opCli[a]||0);}).slice(0,5);
   if(!topCli.length){evoEl.innerHTML='';return;}
   var html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="text-align:left;padding:8px 10px;font-size:9.5px;font-weight:600;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Empresa</th>';
   mO5.forEach(function(k){html+='<th style="text-align:right;padding:8px 10px;font-size:9.5px;font-weight:600;color:'+(activeMonth===k?'var(--teal)':'var(--muted)')+';text-transform:uppercase;border-bottom:1px solid var(--border)">'+mL5[k]+'</th>';});
   html+='<th style="text-align:right;padding:8px 10px;font-size:9.5px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Total</th><th style="text-align:right;padding:8px 10px;font-size:9.5px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Tendência</th></tr></thead><tbody>';
   topCli.forEach(function(k,ri){
     var vals=mO5.map(function(mk6){var m=OP_MESES[mk6];return m&&m.cli&&m.cli[k]!=null?m.cli[k]:0;});
-    var total5=(OP.cli&&OP.cli[k])||vals.reduce(function(a,b){return a+b;},0);
+    var total5=(_opCli&&_opCli[k])||vals.reduce(function(a,b){return a+b;},0);
     var maxV5=Math.max.apply(null,vals.concat([1]));
     var pts5=vals.map(function(v,si){return(6+si*(60-12)/Math.max(mO5.length-1,1))+','+(20-Math.round(v/maxV5*14));}).join(' ');
     var col5=PAL[ri%PAL.length];
@@ -5464,7 +5483,11 @@ function renderHealthScore(d){
   var pC={'Muito Alta':'#f43f5e','Alta':'#f59e0b','Normal':'#4f8ef7','Baixa':'#00d4a8','Muito Baixa':'#5a6278'};
   mk('c-prior-co','doughnut',pK,[{data:pV,backgroundColor:pK.map(function(k){return pC[k]||TK;}),borderWidth:0}],{cutout:'62%',plugins:{legend:{display:true,position:'right',labels:{color:'#8892a4',font:{size:10},boxWidth:8,padding:6}}}});
   // Comparativo com média geral
-  var mediaGeral={taxa:OP&&OP.total>0?Math.round((OP.fechados||0)/OP.total*100):62,resp:OP&&OP.resp_med>0?Math.round(OP.resp_med):8,sol:OP&&(OP.sol_med||OP.sol_med_h)>0?Math.round(OP.sol_med||OP.sol_med_h):54};var taxa=pct(d.fechados,d.total);
+  // Fix: usa getActiveOP() (escopo filtrado) em vez de OP global — antes label dizia
+  // "Fila: X" mas o número era a média de TODAS as filas. Quando há filtro de fila/
+  // cliente/range, o benchmark precisa ser do escopo, não do agregado global.
+  var _opG=(typeof getActiveOP==='function'?getActiveOP():null)||OP||{};
+  var mediaGeral={taxa:_opG&&_opG.total>0?Math.round((_opG.fechados||0)/_opG.total*100):62,resp:_opG&&_opG.resp_med>0?Math.round(_opG.resp_med):8,sol:_opG&&(_opG.sol_med||_opG.sol_med_h)>0?Math.round(_opG.sol_med||_opG.sol_med_h):54};var taxa=pct(d.fechados,d.total);
   document.getElementById('hs-comp').innerHTML=[
     {l:'Taxa de resolução',emp:taxa+'%',geral:mediaGeral.taxa+'%',melhor:taxa>=mediaGeral.taxa},
     {l:'1ª Resposta mediana',emp:(d.resp_med!=null?fmtRespTxt(d.resp_med):'—'),geral:fmtRespTxt(mediaGeral.resp),melhor:d.resp_med<=mediaGeral.resp},
