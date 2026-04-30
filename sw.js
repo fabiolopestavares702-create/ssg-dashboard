@@ -1,6 +1,6 @@
 // SSG Operations Center — Service Worker
 // ⚠️ Incrementar CACHE_VERSION a cada deploy para forçar atualização nos clientes
-const CACHE_VERSION = '20260430-7';
+const CACHE_VERSION = '20260430-8';
 const CACHE = 'ssg-' + CACHE_VERSION;
 
 // Apenas assets imutáveis vão pro precache (libs, ícones).

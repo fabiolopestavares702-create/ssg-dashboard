@@ -4421,11 +4421,18 @@ function populateAtHero(data){
     return;
   }
   var rows=data.rows;
-  // Filtra por fila ativa: só atendentes com tickets nessa fila
-  if(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all'&&typeof TICKETS_ATIVOS_DATA!=='undefined'&&TICKETS_ATIVOS_DATA&&TICKETS_ATIVOS_DATA.rows){
-    var _filaAtend={};
-    TICKETS_ATIVOS_DATA.rows.forEach(function(r){if(r.fila===activeFilaOP&&r.atendente)_filaAtend[r.atendente]=true;});
-    rows=rows.filter(function(r){return _filaAtend[r.atendente];});
+  // Filtra por escopo (fila + cliente): só atendentes com ticket ativo nesse escopo
+  var _hasFila=(typeof activeFilaOP!=='undefined'&&activeFilaOP&&activeFilaOP!=='all');
+  var _hasCli=(typeof activeCliente!=='undefined'&&activeCliente);
+  if((_hasFila||_hasCli) && typeof TICKETS_ATIVOS_DATA!=='undefined' && TICKETS_ATIVOS_DATA && TICKETS_ATIVOS_DATA.rows){
+    var _scopeAtend={};
+    TICKETS_ATIVOS_DATA.rows.forEach(function(r){
+      if(!r.atendente) return;
+      if(_hasFila && r.fila!==activeFilaOP) return;
+      if(_hasCli && r.cli_id!==activeCliente) return;
+      _scopeAtend[r.atendente]=true;
+    });
+    rows=rows.filter(function(r){return _scopeAtend[r.atendente];});
   }
   if(!rows.length){
     hero.textContent='SEM DADOS';
@@ -4475,6 +4482,7 @@ function _refreshAllHeroes(){
   var op=(typeof getActiveOP==='function')?getActiveOP():(typeof OP!=='undefined'?OP:null);
   try{if(typeof populateClHero==='function'&&op)populateClHero(op);}catch(e){console.warn('refreshHeroes cl:',e);}
   try{if(typeof populateBkHero==='function'&&op)populateBkHero(op);}catch(e){console.warn('refreshHeroes bk:',e);}
+  try{if(typeof populateSlHero==='function'&&op)populateSlHero(op);}catch(e){console.warn('refreshHeroes sl:',e);}
   try{if(typeof populateFvHero==='function')populateFvHero();}catch(e){console.warn('refreshHeroes fv:',e);}
   try{
     if(typeof UTIL_DATA!=='undefined'&&UTIL_DATA&&UTIL_DATA.rows){
@@ -6187,6 +6195,10 @@ function rebuildAll(data){
         var vAcoesRB = document.getElementById('view-acoes');
         if(vAcoesRB && vAcoesRB.classList.contains('on')) renderAcoes();
         setTimeout(computeInsights,200);
+        // Refresh dos heroes secundários e detecções DENTRO do setTimeout interno —
+        // garante que OP/OP_FILAS/OP_MESES já estão prontos. Antes era chamado fora,
+        // criando race condition (cl-hero e bk-hero ficavam zerados no init).
+        setTimeout(function(){if(typeof _refreshAllHeroes==='function')_refreshAllHeroes();},250);
         setProgress(100,'✓ Importação concluída!');
         setTimeout(function(){setProgress(0,'');closeImport();},1500);
       },200);
