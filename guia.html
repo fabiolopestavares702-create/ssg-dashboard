@@ -207,6 +207,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <a href="#cenarios" class="toc-a">5. Cenários de uso</a>
     <a href="#sync" class="toc-a">6. Sincronização</a>
     <a href="#dicas" class="toc-a">7. Dicas</a>
+    <a href="#arq" class="toc-a">8. Arquitetura</a>
   </div>
 </div>
 
@@ -691,6 +692,98 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <div class="tip-row">
       <div class="tip-ico">🔍</div>
       <div class="tip-txt"><strong>GWoogle — busca paralela TOTVS:</strong> ferramenta complementar em <a href="https://gw-command.vercel.app/gw-consult.html" target="_blank">gw-command.vercel.app/gw-consult.html</a>. Pesquisa simultânea em CST (Zendesk), Central de Atendimento e TDN (documentação técnica). Útil quando atendente precisa achar artigo/solução rápido sem trocar de aba 3 vezes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     8. ARQUITETURA
+────────────────────────────────────────── -->
+<div class="sec" id="arq">
+  <div class="sec-hdr">
+    <div class="sec-num">8</div>
+    <div><div class="sec-ttl">Como o sistema funciona por trás</div><div class="sec-sub">Útil quando você precisa entender por que algo travou</div></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--sub);margin-bottom:18px">Os dados que você vê no dashboard percorrem 5 etapas — cada uma rodando em um lugar diferente, todas automáticas. Saber a sequência ajuda a localizar onde olhar quando algo não bate.</p>
+
+  <div class="flow" style="margin-bottom:20px">
+    <div class="flow-step">
+      <div class="flow-box">OTRS/Znuny<span>banco MySQL</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box">cron-job.org<span>dispara a cada 10min</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box">GitHub Actions<span>extrai + analisa</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box hi">Repo de dados<span>JSONs salvos</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box hi">Vercel<span>dashboard live</span></div>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:18px">
+    <div class="callout-ico">🏗️</div>
+    <div class="callout-body">
+      <strong>Por que dois repositórios?</strong> O dashboard fica em um repo (<code style="background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px">ssg-dashboard</code>), e os dados em outro (<code style="background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px">ssg-dashboard-data</code>).<br><br>
+      O sync grava ~720 vezes por dia — se gravasse no mesmo repo do site, a Vercel tentava re-publicar a cada gravação e estourava a quota gratuita em 3-7h. Separando, o repo de dados pode receber milhões de gravações sem afetar o site. Solução desenhada em 30/04/2026 — quota nunca mais é um problema.
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <div class="card-bar" style="background:var(--blue)"></div>
+      <div class="c-ico">⏱️</div>
+      <div class="c-name">Quem dispara o sync</div>
+      <div class="c-desc"><strong>cron-job.org</strong> — serviço externo gratuito que faz uma chamada HTTP no GitHub a cada 10min, on-time (sem atraso). Backup interno do GitHub Actions cobre se o cron-job.org cair.</div>
+      <div class="c-tag">EXTERNO · GRATUITO · ON-TIME</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--purple)"></div>
+      <div class="c-ico">⚙️</div>
+      <div class="c-name">Quem extrai os dados</div>
+      <div class="c-desc"><strong>GitHub Actions</strong> — script Python que conecta no MySQL do OTRS via VPN/Grafana API, processa os tickets dos últimos 4 meses, gera os 8 JSONs e grava no repo de dados.</div>
+      <div class="c-tag">PYTHON · 4 MESES DE JANELA</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--teal)"></div>
+      <div class="c-ico">📦</div>
+      <div class="c-name">Onde ficam os dados</div>
+      <div class="c-desc">Repo público <strong>ssg-dashboard-data</strong> — 8 arquivos JSON: histórico completo, tickets ativos, utilização por atendente, insights ao vivo, silenciosos, triagem, reaberturas, aios.</div>
+      <div class="c-tag">8 JSONs · ATUALIZADOS A CADA 10MIN</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--ok)"></div>
+      <div class="c-ico">🌐</div>
+      <div class="c-name">Quem serve o site</div>
+      <div class="c-desc"><strong>Vercel</strong> — hospeda o HTML/CSS/JS e faz proxy dos JSONs (busca do repo de dados quando o navegador pede). Atualização do site é instantânea quando algum código muda.</div>
+      <div class="c-tag">VERCEL · CDN GLOBAL</div>
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:18px">
+    <div class="callout-ico">🩺</div>
+    <div class="callout-body">
+      <strong>Onde olhar quando algo trava (em ordem):</strong><br>
+      1. <strong>Banner vermelho "dados parados há ___ min"</strong> no topo do dashboard — confirma que o sync não rodou. Se aparecer, sintoma → causa nas etapas abaixo.<br>
+      2. <strong>cron-job.org não está disparando</strong> → email pra Fabio Tavares (token vencido ou job desativado).<br>
+      3. <strong>GitHub Actions falhou</strong> → erro no script Python (acesso ao MySQL, JSON malformado etc). Sistema envia email automático.<br>
+      4. <strong>Vercel fora do ar</strong> → raríssimo, status em <a href="https://www.vercel-status.com" target="_blank">vercel-status.com</a>.<br><br>
+      Em 99% dos casos: causa #1 ou #2. Resolução típica em 5min.
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:12px">
+    <div class="callout-ico">🔒</div>
+    <div class="callout-body">
+      <strong>Sobre privacidade:</strong> os JSONs ficam em repo público porque a Vercel precisa acessá-los sem autenticação. Não há credenciais, senhas, ou dados sensíveis dos clientes nos arquivos — só números, prazos e códigos de tickets do próprio OTRS interno. O acesso ao dashboard em si fica protegido por senha (<code style="background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px">ssg2026</code>).
     </div>
   </div>
 </div>
