@@ -1002,6 +1002,25 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
 .ial-ring-core{display:flex;flex-direction:column;align-items:center;gap:2px;z-index:1}
 .ial-ring-num{font-family:'Syne',sans-serif;font-size:42px;font-weight:700;color:var(--ial-text);line-height:1}
 .ial-ring-lbl{font-family:var(--mono);font-size:9px;color:var(--ial-muted);text-transform:uppercase;letter-spacing:.18em}
+/* ── DETECÇÕES AUTOMÁTICAS (aba IA, abaixo do resumo) ── */
+.adv-section-title{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:18px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:8px}
+.adv-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.adv-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%}
+.adv-card-crit::before{background:#f43f5e;box-shadow:0 0 10px rgba(244,63,94,.5)}
+.adv-card-warn::before{background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.4)}
+.adv-card-info::before{background:#4f8ef7}
+.adv-card-ok::before{background:#10b981}
+.adv-card-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:8px}
+.adv-card-crit .adv-card-tag{background:rgba(244,63,94,.12);color:#f43f5e}
+.adv-card-warn .adv-card-tag{background:rgba(245,158,11,.12);color:#f59e0b}
+.adv-card-info .adv-card-tag{background:rgba(79,142,247,.12);color:#4f8ef7}
+.adv-card-ok .adv-card-tag{background:rgba(16,185,129,.12);color:#10b981}
+.adv-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.4}
+.adv-card-desc{font-size:12px;color:var(--sub);line-height:1.55;margin-bottom:8px}
+.adv-card-acao{font-size:11px;color:var(--teal);font-family:var(--mono);border-top:1px dashed var(--border);padding-top:8px;margin-top:4px}
+.adv-card-acao::before{content:"→ ";color:var(--muted)}
+.adv-empty{font-size:12px;color:var(--muted);font-style:italic;padding:16px;text-align:center;border:1px dashed var(--border);border-radius:8px}
 /* ── STATS STRIP ─────────────────────────────────────────── */
 .ial-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
 .ial-stat{background:rgba(20,29,40,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--ial-border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .3s}
@@ -2771,6 +2790,7 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
     <!-- RESUMO DE GESTÃO IA -->
     <div id="ia-resumo" class="sec on">
       <div id="ia-resumo-content"></div>
+      <div id="ia-detect-content" style="margin-top:24px"></div>
     </div>
 
     <!-- SINAIS AO VIVO (GWMS) — tema Groundwork futurista -->
@@ -4399,6 +4419,7 @@ function _refreshAllHeroes(){
       fetchUtilizacao();
     }
   }catch(e){console.warn('refreshHeroes at:',e);}
+  try{if(typeof renderAdvancedDetections==='function')renderAdvancedDetections();}catch(e){console.warn('refreshHeroes adv:',e);}
 }
 
 // ─── Sinais Ao Vivo — renderiza gwms-insights.json ──────────────────────────
@@ -11310,6 +11331,352 @@ setTimeout(autoFetchData, 600);
 setInterval(autoFetchData, 10 * 60 * 1000);
 
 // ════════════════════════════════════════════════════════════
+// DETECÇÕES AUTOMÁTICAS — 20 regras pra Groundwork (2026-04-30)
+// Cada regra = função pura, recebe ctx, retorna {nivel,titulo,desc,acao}|null.
+// Total isolamento: se algo aqui quebrar, o resto da aba IA não é afetado.
+// ════════════════════════════════════════════════════════════
+
+function _advFmtMin(m){if(m==null||isNaN(m))return '—';if(m<60)return Math.round(m)+'min';var h=Math.floor(m/60),r=Math.round(m%60);return r>0?h+'h '+r+'min':h+'h';}
+function _advMedian(arr){if(!arr.length)return null;var s=arr.slice().sort(function(a,b){return a-b;});var m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+function _advClassByLevel(n){return n==='crit'?'adv-card-crit':(n==='warn'?'adv-card-warn':(n==='ok'?'adv-card-ok':'adv-card-info'));}
+function _advTagByLevel(n){return n==='crit'?'CRÍTICO':(n==='warn'?'ATENÇÃO':(n==='ok'?'OK':'INFO'));}
+
+// 1. Fila com pior 1ª resposta
+function _advRule_filaPiorSLA(ctx){
+  if(ctx.activeFilaOP!=='all') return null;
+  var perFila={};
+  ctx.raw.forEach(function(t){
+    if(!t.fila || t.resp_min==null) return;
+    if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return;
+    if(!perFila[t.fila]) perFila[t.fila]=[];
+    perFila[t.fila].push(t.resp_min);
+  });
+  var ranked=Object.keys(perFila).map(function(f){return {fila:f,n:perFila[f].length,med:_advMedian(perFila[f])};}).filter(function(r){return r.n>=10 && r.med!=null;});
+  if(ranked.length<2) return null;
+  ranked.sort(function(a,b){return b.med-a.med;});
+  var pior=ranked[0], melhor=ranked[ranked.length-1];
+  if(pior.med<60) return null;
+  var ratio=Math.round(pior.med/Math.max(melhor.med,1));
+  return {nivel:pior.med>120?'crit':'warn',titulo:'Fila '+pior.fila+' com pior 1ª resposta',desc:'Mediana '+_advFmtMin(pior.med)+' em '+pior.n+' chamados — '+ratio+'× pior que '+melhor.fila+' ('+_advFmtMin(melhor.med)+').',acao:'Revisar capacidade e processo de triagem em '+pior.fila};
+}
+
+// 2. Sem 1ª resposta há >30min (live)
+function _advRule_semRespostaLive(ctx){
+  if(!ctx.LIVE || !ctx.LIVE.rows) return null;
+  var rows=ctx.LIVE.rows.filter(function(t){
+    if(t.resp_min!=null && t.resp_min<=30) return false;
+    if(ctx.activeFilaOP!=='all' && t.fila!==ctx.activeFilaOP) return false;
+    if(ctx.activeCliente && t.cli_id!==ctx.activeCliente) return false;
+    return true;
+  });
+  if(rows.length===0) return {nivel:'ok',titulo:'1ª resposta sob controle',desc:'Nenhum ticket aguardando >30min no escopo atual.',acao:'Manter padrão'};
+  if(rows.length<5) return null;
+  return {nivel:rows.length>=20?'crit':'warn',titulo:rows.length+' chamados sem 1ª resposta há >30min',desc:'Tickets na fila inicial sem atendimento — risco de SLA contratual.',acao:'Disparar triagem agora'};
+}
+
+// 3. Sem resposta há >2 dias (severo, live)
+function _advRule_semRespostaLongo(ctx){
+  if(!ctx.LIVE || !ctx.LIVE.rows) return null;
+  var hojeMs=Date.now();
+  var rows=ctx.LIVE.rows.filter(function(t){
+    if(!t.criado) return false;
+    var idadeDias=(hojeMs-new Date(t.criado).getTime())/86400000;
+    if(idadeDias<2) return false;
+    if(t.resp_min!=null && t.resp_min<=30) return false;
+    if(ctx.activeFilaOP!=='all' && t.fila!==ctx.activeFilaOP) return false;
+    if(ctx.activeCliente && t.cli_id!==ctx.activeCliente) return false;
+    return true;
+  });
+  if(rows.length===0) return null;
+  return {nivel:'crit',titulo:rows.length+' chamados há >2 dias sem resposta',desc:'Tickets críticos abandonados — impacto direto em NPS e SLA contratual.',acao:'Atender pessoalmente; revisar processo de pickup'};
+}
+
+// 4. SLA por fila — quem está abaixo da meta
+function _advRule_slaPorFila(ctx){
+  if(ctx.activeFilaOP!=='all') return null;
+  if(typeof OP_FILAS==='undefined') return null;
+  var META=80, ruins=[];
+  Object.keys(OP_FILAS).forEach(function(f){
+    var fd=OP_FILAS[f], pct=fd&&fd.sla&&fd.sla.pct_within_sla, sample=fd&&fd.sla&&fd.sla.sample_size;
+    if(pct!=null && sample>=10 && pct<META) ruins.push({f:f,pct:pct,n:sample});
+  });
+  if(!ruins.length) return null;
+  ruins.sort(function(a,b){return a.pct-b.pct;});
+  var top=ruins.slice(0,3);
+  return {nivel:top[0].pct<50?'crit':'warn',titulo:top.length+' fila'+(top.length===1?'':'s')+' abaixo da meta de SLA (48h úteis)',desc:top.map(function(r){return r.f+' '+r.pct+'% ('+r.n+' resolvidos)';}).join(' · '),acao:'Revisar capacidade e priorização nessas filas'};
+}
+
+// 5. Atendentes mais lentos em 1ª resposta
+function _advRule_atendentesLentos(ctx){
+  var atend=ctx.op.atend||[];
+  var ranked=atend.filter(function(a){return a.t>=10 && a.rm!=null;}).map(function(a){return {n:a.n,rm:a.rm,t:a.t};});
+  if(ranked.length<3) return null;
+  ranked.sort(function(a,b){return b.rm-a.rm;});
+  var top3=ranked.slice(0,3).filter(function(a){return a.rm>60;});
+  if(!top3.length) return null;
+  return {nivel:top3[0].rm>180?'crit':'warn',titulo:'Atendentes com 1ª resposta mais lenta',desc:top3.map(function(a){return (a.n||'?').split(' ')[0]+' '+_advFmtMin(a.rm)+' ('+a.t+')';}).join(' · '),acao:'Acompanhar carga e treinamento'};
+}
+
+// 6. Atendente em sobrecarga
+function _advRule_atendenteSobrecarga(ctx){
+  if(!ctx.UTIL || !ctx.UTIL.rows) return null;
+  var rows=ctx.UTIL.rows.filter(function(r){return ((r.em_atendimento||0)+(r.abertos||0))>=8;});
+  if(ctx.activeFilaOP!=='all' && ctx.LIVE && ctx.LIVE.rows){
+    var atFila={};
+    ctx.LIVE.rows.forEach(function(t){if(t.fila===ctx.activeFilaOP && t.atendente) atFila[t.atendente]=true;});
+    rows=rows.filter(function(r){return atFila[r.atendente];});
+  }
+  if(!rows.length) return null;
+  rows.sort(function(a,b){return ((b.em_atendimento||0)+(b.abertos||0))-((a.em_atendimento||0)+(a.abertos||0));});
+  var nomes=rows.slice(0,3).map(function(r){return (r.atendente||'?').split(' ')[0]+' ('+((r.em_atendimento||0)+(r.abertos||0))+')';});
+  return {nivel:rows.length>=3?'crit':'warn',titulo:rows.length+' atendente'+(rows.length===1?'':'s')+' em sobrecarga (≥8 ativos)',desc:nomes.join(' · '),acao:'Remanejar carga ou priorizar pickup'};
+}
+
+// 7. Atendente em folga
+function _advRule_atendenteFolga(ctx){
+  if(!ctx.UTIL || !ctx.UTIL.rows) return null;
+  var rows=ctx.UTIL.rows.filter(function(r){return ((r.em_atendimento||0)+(r.abertos||0))<=2;});
+  if(ctx.activeFilaOP!=='all' && ctx.LIVE && ctx.LIVE.rows){
+    var atFila={};
+    ctx.LIVE.rows.forEach(function(t){if(t.fila===ctx.activeFilaOP && t.atendente) atFila[t.atendente]=true;});
+    rows=rows.filter(function(r){return atFila[r.atendente];});
+  }
+  if(rows.length<3) return null;
+  return {nivel:'info',titulo:rows.length+' atendentes com baixa carga (≤2 ativos)',desc:'Possível capacidade ociosa — verificar disponibilidade real.',acao:'Considerar remanejar pra fila sobrecarregada'};
+}
+
+// 8. Distribuição desigual
+function _advRule_distribuicaoDesigual(ctx){
+  if(!ctx.UTIL || !ctx.UTIL.rows || ctx.UTIL.rows.length<5) return null;
+  var cargas=ctx.UTIL.rows.map(function(r){return (r.em_atendimento||0)+(r.abertos||0);});
+  var avg=cargas.reduce(function(s,n){return s+n;},0)/cargas.length;
+  if(avg<2) return null;
+  var sd=Math.sqrt(cargas.reduce(function(s,n){return s+Math.pow(n-avg,2);},0)/cargas.length);
+  var cv=sd/avg;
+  if(cv<0.6) return null;
+  return {nivel:'warn',titulo:'Distribuição desigual de carga',desc:'Coeficiente de variação '+(cv*100).toFixed(0)+'% — média '+avg.toFixed(1)+', desvio '+sd.toFixed(1)+'. Há grande diferença entre quem atende mais e menos.',acao:'Revisar critério de atribuição de tickets'};
+}
+
+// 9. Atendente líder em fechamento
+function _advRule_atendenteLider(ctx){
+  var atend=ctx.op.atend||[];
+  var ranked=atend.filter(function(a){return a.t>=10;}).map(function(a){return {n:a.n,t:a.t,f:a.f,taxa:a.t>0?(a.f/a.t)*100:0};});
+  if(ranked.length<3) return null;
+  ranked.sort(function(a,b){return b.taxa-a.taxa;});
+  var top=ranked[0];
+  if(top.taxa<90) return null;
+  return {nivel:'ok',titulo:'Atendente referência: '+(top.n||'?').split(' ')[0],desc:top.taxa.toFixed(0)+'% de fechamento em '+top.t+' chamados — método pode ser replicado.',acao:'Compartilhar prática com a equipe'};
+}
+
+// 10. Concentração de volume em 1 cliente
+function _advRule_concentracaoCliente(ctx){
+  if(ctx.activeCliente) return null;
+  var cli=ctx.op.cli||{}, total=ctx.op.total||0;
+  if(total<50) return null;
+  var top=Object.keys(cli).map(function(k){return {k:k,n:cli[k]};}).sort(function(a,b){return b.n-a.n;})[0];
+  if(!top) return null;
+  var pct=(top.n/total)*100;
+  if(pct<25) return null;
+  return {nivel:pct>=40?'warn':'info',titulo:'Concentração de volume em '+top.k,desc:top.k+' representa '+pct.toFixed(0)+'% do volume ('+top.n+' de '+total+'). Risco de churn = impacto material.',acao:'Plano de retenção e diversificação de carteira'};
+}
+
+// 11. Cliente em escalada
+function _advRule_clienteEscalada(ctx){
+  if(ctx.activeCliente) return null;
+  if(typeof OP_MESES==='undefined') return null;
+  var meses=Object.keys(OP_MESES).filter(function(k){return k!=='all' && /^\d{4}-\d{2}$/.test(k);}).sort();
+  if(meses.length<2) return null;
+  var atual=meses[meses.length-1], prev=meses[meses.length-2];
+  var cliA=OP_MESES[atual]&&OP_MESES[atual].cli||{}, cliP=OP_MESES[prev]&&OP_MESES[prev].cli||{};
+  var alertas=[];
+  Object.keys(cliA).forEach(function(c){
+    var a=cliA[c], p=cliP[c]||0;
+    if(a>=10 && p>0 && a/p>=1.5) alertas.push({c:c,a:a,p:p,pct:Math.round((a/p-1)*100)});
+  });
+  if(!alertas.length) return null;
+  alertas.sort(function(x,y){return y.pct-x.pct;});
+  var top=alertas.slice(0,3);
+  return {nivel:'warn',titulo:top.length+' cliente'+(top.length===1?'':'s')+' em escalada de volume',desc:top.map(function(t){return t.c+' '+t.p+'→'+t.a+' (+'+t.pct+'%)';}).join(' · ')+' — '+prev+' vs '+atual,acao:'Conversa CS pra entender causa raiz'};
+}
+
+// 12. Cliente silenciando
+function _advRule_clienteSilencioso(ctx){
+  if(ctx.activeCliente) return null;
+  if(typeof OP_MESES==='undefined') return null;
+  var meses=Object.keys(OP_MESES).filter(function(k){return k!=='all' && /^\d{4}-\d{2}$/.test(k);}).sort();
+  if(meses.length<2) return null;
+  var atual=meses[meses.length-1], prev=meses[meses.length-2];
+  var cliA=OP_MESES[atual]&&OP_MESES[atual].cli||{}, cliP=OP_MESES[prev]&&OP_MESES[prev].cli||{};
+  var alertas=[];
+  Object.keys(cliP).forEach(function(c){
+    var a=cliA[c]||0, p=cliP[c];
+    if(p>=15 && (a/p)<=0.4) alertas.push({c:c,a:a,p:p,pct:Math.round((1-a/p)*100)});
+  });
+  if(!alertas.length) return null;
+  alertas.sort(function(x,y){return y.pct-x.pct;});
+  var top=alertas.slice(0,3);
+  return {nivel:'warn',titulo:top.length+' cliente'+(top.length===1?'':'s')+' silenciando',desc:top.map(function(t){return t.c+' '+t.p+'→'+t.a+' (-'+t.pct+'%)';}).join(' · ')+' — possível migração ou churn',acao:'CS investigar e fazer outreach'};
+}
+
+// 13. Clientes com solução lenta
+function _advRule_clienteSlaRuim(ctx){
+  if(ctx.activeCliente) return null;
+  var perCli={};
+  ctx.raw.forEach(function(t){
+    if(!t.cli_id || t.sol_h_bh==null) return;
+    if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return;
+    if(!perCli[t.cli_id]) perCli[t.cli_id]=[];
+    perCli[t.cli_id].push(t.sol_h_bh);
+  });
+  var ranked=Object.keys(perCli).filter(function(c){return perCli[c].length>=5;}).map(function(c){return {c:c,n:perCli[c].length,med:_advMedian(perCli[c])};});
+  if(ranked.length<3) return null;
+  ranked.sort(function(a,b){return b.med-a.med;});
+  var ruins=ranked.filter(function(r){return r.med>72;}).slice(0,3);
+  if(!ruins.length) return null;
+  return {nivel:'warn',titulo:ruins.length+' cliente'+(ruins.length===1?'':'s')+' com solução lenta (>72h úteis)',desc:ruins.map(function(r){return r.c+' med '+r.med.toFixed(1)+'h ('+r.n+')';}).join(' · '),acao:'Prioridade alta em fila pra esses clientes'};
+}
+
+// 14. Bloqueados antigos (Aguardando Cliente >7d)
+function _advRule_bloqueadosAntigos(ctx){
+  var hoje=Date.now();
+  var bloq=ctx.raw.filter(function(t){
+    if(t.estado!=='Aguardando Cliente') return false;
+    if(!t.modificado) return false;
+    if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return false;
+    return ((hoje-new Date(t.modificado).getTime())/86400000)>7;
+  });
+  if(!bloq.length) return null;
+  return {nivel:bloq.length>=20?'warn':'info',titulo:bloq.length+' chamados aguardando cliente há >7 dias',desc:'Risco de auto-fechamento sem resolução real. Esses tickets impactam métricas mas estão "esperando".',acao:'Disparar follow-up via CS ou aceitar fechamento'};
+}
+
+// 15. Críticos antigos
+function _advRule_criticosAntigos(ctx){
+  var hoje=Date.now();
+  var crit=ctx.raw.filter(function(t){
+    if(t.prior!=='Muito Alta') return false;
+    if(!t.criado) return false;
+    if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return false;
+    var aberto=['Aberto','Em Atendimento','Aguardando Cliente','Aguardando Interno','Aguardando Externo','Retorno Cliente'].indexOf(t.estado)!==-1;
+    if(!aberto) return false;
+    return ((hoje-new Date(t.criado).getTime())/86400000)>3;
+  });
+  if(!crit.length) return null;
+  return {nivel:'crit',titulo:crit.length+' críticos abertos há >3 dias',desc:'Prioridade Muito Alta sem resolução é falha grave de SLA contratual.',acao:'Triagem imediata e escalada'};
+}
+
+// 16. Fila com aging crescente — placeholder (depende de cálculo complexo)
+function _advRule_filaAgingCrescente(ctx){return null;}
+
+// 17. Fila com volume crescente
+function _advRule_filaVolumeCrescente(ctx){
+  if(typeof OP_FILAS==='undefined' || typeof OP_MESES==='undefined') return null;
+  var meses=Object.keys(OP_MESES).filter(function(k){return k!=='all' && /^\d{4}-\d{2}$/.test(k);}).sort();
+  if(meses.length<2) return null;
+  var atual=meses[meses.length-1], prev=meses[meses.length-2];
+  var crescentes=[];
+  Object.keys(OP_FILAS).forEach(function(f){
+    var fd=OP_FILAS[f];
+    var atualN=fd&&fd.por_mes&&fd.por_mes[atual]&&fd.por_mes[atual].total||0;
+    var prevN=fd&&fd.por_mes&&fd.por_mes[prev]&&fd.por_mes[prev].total||0;
+    if(prevN>=20 && atualN/Math.max(prevN,1)>=1.4) crescentes.push({f:f,a:atualN,p:prevN,pct:Math.round((atualN/prevN-1)*100)});
+  });
+  if(!crescentes.length) return null;
+  crescentes.sort(function(a,b){return b.pct-a.pct;});
+  var top=crescentes.slice(0,3);
+  return {nivel:'warn',titulo:top.length+' fila'+(top.length===1?'':'s')+' com volume crescendo',desc:top.map(function(t){return t.f+' '+t.p+'→'+t.a+' (+'+t.pct+'%)';}).join(' · ')+' — '+prev+' vs '+atual,acao:'Avaliar capacidade adicional'};
+}
+
+// 18. Fila com volume decrescente
+function _advRule_filaVolumeDecrescente(ctx){
+  if(typeof OP_FILAS==='undefined' || typeof OP_MESES==='undefined') return null;
+  var meses=Object.keys(OP_MESES).filter(function(k){return k!=='all' && /^\d{4}-\d{2}$/.test(k);}).sort();
+  if(meses.length<2) return null;
+  var atual=meses[meses.length-1], prev=meses[meses.length-2];
+  var dec=[];
+  Object.keys(OP_FILAS).forEach(function(f){
+    var fd=OP_FILAS[f];
+    var atualN=fd&&fd.por_mes&&fd.por_mes[atual]&&fd.por_mes[atual].total||0;
+    var prevN=fd&&fd.por_mes&&fd.por_mes[prev]&&fd.por_mes[prev].total||0;
+    if(prevN>=30 && (atualN/Math.max(prevN,1))<=0.6) dec.push({f:f,a:atualN,p:prevN,pct:Math.round((1-atualN/prevN)*100)});
+  });
+  if(!dec.length) return null;
+  dec.sort(function(a,b){return b.pct-a.pct;});
+  var top=dec.slice(0,3);
+  return {nivel:'info',titulo:top.length+' fila'+(top.length===1?'':'s')+' com volume caindo',desc:top.map(function(t){return t.f+' '+t.p+'→'+t.a+' (-'+t.pct+'%)';}).join(' · ')+' — capacidade ociosa potencial',acao:'Considerar remanejamento de equipe'};
+}
+
+// 19. Aguardando cliente — oportunidade
+function _advRule_aguardandoCliente(ctx){
+  var rows=ctx.raw.filter(function(t){
+    if(t.estado!=='Aguardando Cliente') return false;
+    if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return false;
+    return true;
+  });
+  if(rows.length<5) return null;
+  return {nivel:'info',titulo:rows.length+' aguardando retorno do cliente',desc:'Fechamentos rápidos disponíveis — só precisam de resposta do cliente pra concluir.',acao:'CS empurrar follow-up'};
+}
+
+// 20. Auto-fechamento alto
+function _advRule_autoFechadosAltos(ctx){
+  var auto=ctx.op.auto_closed||0, total=ctx.op.total||0;
+  if(total<30 || auto<5) return null;
+  var pct=(auto/total)*100;
+  if(pct<10) return null;
+  return {nivel:pct>=20?'warn':'info',titulo:'Auto-fechamento por inatividade alto: '+pct.toFixed(0)+'% ('+auto+' de '+total+')',desc:'Tickets fechados sem confirmação real — revisar se solução foi adequada.',acao:'Revisar processo de "Aguardando Cliente" → encerramento automático'};
+}
+
+function computeAdvancedInsights(){
+  if(typeof RAW_DATA==='undefined'||!RAW_DATA||!RAW_DATA.length) return [];
+  var op=(typeof getActiveOP==='function')?getActiveOP():(typeof OP!=='undefined'?OP:{});
+  var ctx={
+    op:op,
+    raw:RAW_DATA,
+    UTIL:(typeof UTIL_DATA!=='undefined')?UTIL_DATA:null,
+    LIVE:(typeof TICKETS_ATIVOS_DATA!=='undefined')?TICKETS_ATIVOS_DATA:null,
+    activeMonth:(typeof activeMonth!=='undefined')?activeMonth:'all',
+    activeFilaOP:(typeof activeFilaOP!=='undefined')?activeFilaOP:'all',
+    activeCliente:(typeof activeCliente!=='undefined')?activeCliente:''
+  };
+  var rules=[_advRule_filaPiorSLA,_advRule_semRespostaLive,_advRule_semRespostaLongo,_advRule_slaPorFila,_advRule_atendentesLentos,_advRule_atendenteSobrecarga,_advRule_atendenteFolga,_advRule_distribuicaoDesigual,_advRule_atendenteLider,_advRule_concentracaoCliente,_advRule_clienteEscalada,_advRule_clienteSilencioso,_advRule_clienteSlaRuim,_advRule_bloqueadosAntigos,_advRule_criticosAntigos,_advRule_filaAgingCrescente,_advRule_filaVolumeCrescente,_advRule_filaVolumeDecrescente,_advRule_aguardandoCliente,_advRule_autoFechadosAltos];
+  var out=[];
+  rules.forEach(function(rule){try{var r=rule(ctx);if(r)out.push(r);}catch(e){console.warn('advRule failed:',rule.name||'?',e);}});
+  return out;
+}
+
+function renderAdvancedDetections(){
+  var el=document.getElementById('ia-detect-content');
+  if(!el) return;
+  var detections=[];
+  try{detections=computeAdvancedInsights();}catch(e){console.warn('renderAdv:',e);return;}
+  if(!detections||!detections.length){
+    el.innerHTML='<div class="adv-section-title">Detecções Automáticas</div><div class="adv-empty">Sem detecções no escopo atual. Tente outro período ou limpar filtros.</div>';
+    return;
+  }
+  var order={crit:1,warn:2,info:3,ok:4};
+  detections.sort(function(a,b){return (order[a.nivel]||9)-(order[b.nivel]||9);});
+  var crit=detections.filter(function(d){return d.nivel==='crit';}).length;
+  var warn=detections.filter(function(d){return d.nivel==='warn';}).length;
+  var info=detections.filter(function(d){return d.nivel==='info';}).length;
+  var ok=detections.filter(function(d){return d.nivel==='ok';}).length;
+  var html='<div class="adv-section-title">Detecções Automáticas · '+detections.length+' sinais '
+    +(crit?'<span style="color:#f43f5e">· '+crit+' crítico'+(crit===1?'':'s')+'</span> ':'')
+    +(warn?'<span style="color:#f59e0b">· '+warn+' alerta'+(warn===1?'':'s')+'</span> ':'')
+    +(info?'<span style="color:#4f8ef7">· '+info+' info</span> ':'')
+    +(ok?'<span style="color:#10b981">· '+ok+' ok</span> ':'')
+    +'</div><div class="adv-grid">';
+  detections.forEach(function(d){
+    html+='<div class="adv-card '+_advClassByLevel(d.nivel)+'">'
+      +'<div class="adv-card-tag">'+_advTagByLevel(d.nivel)+'</div>'
+      +'<div class="adv-card-title">'+(d.titulo||'')+'</div>'
+      +'<div class="adv-card-desc">'+(d.desc||'')+'</div>'
+      +(d.acao?'<div class="adv-card-acao">'+d.acao+'</div>':'')
+      +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ════════════════════════════════════════════════════════════
 // AI LAYER — análise gerada em tempo real a partir dos dados
 // ════════════════════════════════════════════════════════════
 var AI_DATA = null;
@@ -12085,6 +12452,7 @@ function renderExecutiveReport() {
 
 function renderIA(){
   renderIAResumo();
+  try{if(typeof renderAdvancedDetections==='function')renderAdvancedDetections();}catch(e){console.warn('advDetect:',e);}
   renderIAOp();
   renderIACli();
   renderIACS();
