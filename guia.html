@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Uso — SSG Operations Center</title>
+<style>
+:root{
+  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2536;--bg4:#242c3d;
+  --border:#2a3350;--text:#e2e8f5;--sub:#8892a4;--muted:#5a6278;
+  --blue:#4f8ef7;--teal:#00d4a8;--ok:#10b981;--warn:#f59e0b;
+  --danger:#f43f5e;--purple:#8b5cf6;--orange:#f97316;
+  --radius:12px; --gap:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.65}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── HOMOLOGATION BANNER ── */
+.hom-banner{
+  background:repeating-linear-gradient(135deg,rgba(245,158,11,.08) 0px,rgba(245,158,11,.08) 10px,transparent 10px,transparent 20px);
+  border-bottom:2px solid var(--warn);
+  padding:14px 24px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.hom-icon{font-size:20px;flex-shrink:0}
+.hom-text{flex:1;min-width:200px}
+.hom-title{font-size:13px;font-weight:800;color:var(--warn);letter-spacing:.5px;text-transform:uppercase}
+.hom-desc{font-size:12px;color:var(--sub);margin-top:2px}
+.hom-badge{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--warn);white-space:nowrap;flex-shrink:0}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#0f1117 0%,#1a1f35 60%,#0f1117 100%);
+  border-bottom:1px solid var(--border);
+  padding:40px 24px 36px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;top:-100px;right:-60px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,168,.09) 0%,transparent 70%);pointer-events:none;
+}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.hero-eye{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-size:clamp(24px,5vw,34px);font-weight:800;margin-bottom:10px}
+.hero-title span{color:var(--teal)}
+.hero-sub{color:var(--sub);font-size:15px;max-width:520px;margin-bottom:20px}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 13px;font-size:11px;font-weight:600;color:var(--sub)}
+.chip.green{border-color:rgba(16,185,129,.35);color:var(--ok);background:rgba(16,185,129,.07)}
+.chip.blue{border-color:rgba(79,142,247,.35);color:var(--blue);background:rgba(79,142,247,.07)}
+
+/* ── NAV ÍNDICE ── */
+.toc{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;white-space:nowrap}
+.toc-inner{max-width:860px;margin:0 auto;display:flex;gap:0}
+.toc-a{display:inline-block;padding:12px 16px;font-size:12px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;cursor:pointer;text-decoration:none}
+.toc-a:hover{color:var(--text);border-color:var(--teal)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:860px;margin:0 auto;padding:36px 24px 80px}
+
+/* ── SECTION ── */
+.sec{margin-bottom:52px;scroll-margin-top:56px}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.sec-num{width:30px;height:30px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--teal);flex-shrink:0}
+.sec-ttl{font-size:18px;font-weight:700}
+.sec-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ── CALLOUT ── */
+.callout{border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.callout.tip{background:rgba(0,212,168,.07);border:1px solid rgba(0,212,168,.22)}
+.callout.warn{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22)}
+.callout.info{background:rgba(79,142,247,.07);border:1px solid rgba(79,142,247,.22)}
+.callout.danger{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.22)}
+.callout-ico{font-size:18px;flex-shrink:0;padding-top:1px}
+.callout-body{font-size:13px;color:var(--sub);line-height:1.6}
+.callout-body strong{color:var(--text)}
+
+/* ── GRID ── */
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:580px){.g2,.g3{grid-template-columns:1fr}}
+@media(max-width:760px){.g3{grid-template-columns:1fr 1fr}}
+
+/* ── CARD ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden}
+.card-bar{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px}
+.c-ico{font-size:22px;margin-bottom:8px}
+.c-name{font-size:13px;font-weight:700;margin-bottom:5px}
+.c-desc{font-size:12px;color:var(--sub);line-height:1.55}
+.c-tag{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--muted);margin-top:9px;letter-spacing:.3px}
+
+/* ── TAB VISUAL ── */
+.tabs-vis{display:flex;gap:6px;flex-wrap:wrap;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;margin-bottom:18px}
+.tab-v{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:700;color:var(--muted);cursor:default;border:1px solid transparent;transition:all .15s}
+.tab-v.on{background:rgba(0,212,168,.13);border-color:rgba(0,212,168,.35);color:var(--teal)}
+
+/* ── FILTRO BOX ── */
+.fbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px}
+.fbox-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.fbox-ico{font-size:20px}
+.fbox-name{font-size:14px;font-weight:700}
+.fbox-where{font-size:10px;font-weight:700;color:var(--muted);background:var(--bg3);border-radius:5px;padding:3px 10px;margin-left:auto;letter-spacing:.3px;text-transform:uppercase}
+.fbox-desc{font-size:13px;color:var(--sub);margin-bottom:14px;line-height:1.6}
+.flist{display:flex;flex-direction:column;gap:9px}
+.fi{display:flex;align-items:flex-start;gap:10px}
+.fi-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.fi-t{font-size:13px;color:var(--sub);line-height:1.5}
+.fi-t strong{color:var(--text)}
+
+/* ── FLOW VISUAL ── */
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:16px 0}
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:80px}
+.flow-box{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 14px;text-align:center;width:100%;font-size:11px;font-weight:700;color:var(--text);line-height:1.4}
+.flow-box span{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px}
+.flow-box.hi{background:rgba(0,212,168,.1);border-color:rgba(0,212,168,.3);color:var(--teal)}
+.flow-arrow{color:var(--muted);font-size:16px;padding:0 4px;flex-shrink:0;margin-top:-12px}
+@media(max-width:500px){.flow{flex-direction:column;align-items:flex-start}.flow-arrow{transform:rotate(90deg);margin:0 auto}}
+
+/* ── KPI TABLE ── */
+.ktbl{width:100%;border-collapse:collapse}
+.ktbl th{text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border)}
+.ktbl td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;vertical-align:top;line-height:1.5}
+.ktbl tr:last-child td{border-bottom:none}
+.ktbl tr:hover td{background:rgba(255,255,255,.02)}
+.kn{font-weight:700;color:var(--text);white-space:nowrap}
+.kdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;flex-shrink:0}
+.kmeta{font-size:11px;color:var(--muted)}
+
+/* ── SCENARIO ── */
+.scene{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.scene-hdr{display:flex;align-items:center;gap:12px;padding:13px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.scene-letter{width:24px;height:24px;border-radius:6px;background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--purple);flex-shrink:0}
+.scene-title{font-size:13px;font-weight:700}
+.scene-body{padding:16px 18px}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:10px;align-items:flex-start}
+.step-n{font-size:10px;font-weight:800;color:var(--purple);background:rgba(139,92,246,.1);border-radius:5px;padding:2px 7px;flex-shrink:0;margin-top:2px;min-width:22px;text-align:center}
+.step-t{font-size:13px;color:var(--sub);line-height:1.55}
+.step-t strong{color:var(--text)}
+.step-t .hl{color:var(--teal);font-weight:700}
+
+/* ── SYNC DEMO ── */
+.sync-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sync-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:11px 16px;flex-wrap:wrap;gap:10px}
+.sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sdot.g{background:#10b981;box-shadow:0 0 8px #10b98155}
+.sdot.y{background:#f59e0b;box-shadow:0 0 8px #f59e0b55}
+.sdot.r{background:#f43f5e;box-shadow:0 0 8px #f43f5e55}
+.sdot.gr{background:#5a6278}
+.slbl{font-size:12px;color:var(--sub);flex:1;min-width:160px}
+.smeaning{font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;white-space:nowrap}
+.sm-ok{background:rgba(16,185,129,.12);color:var(--ok)}
+.sm-warn{background:rgba(245,158,11,.12);color:var(--warn)}
+.sm-danger{background:rgba(244,63,94,.12);color:var(--danger)}
+.sm-muted{background:var(--bg4);color:var(--muted)}
+
+/* ── QUEUES ── */
+.queue-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.q{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--sub)}
+.q.hi{border-color:rgba(79,142,247,.35);color:var(--blue);background:rgba(79,142,247,.07)}
+
+/* ── DICA RÁPIDA ── */
+.tip-list{display:flex;flex-direction:column;gap:10px}
+.tip-row{display:flex;gap:12px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px 16px}
+.tip-ico{font-size:20px;flex-shrink:0}
+.tip-txt{font-size:13px;color:var(--sub);line-height:1.55}
+.tip-txt strong{color:var(--text)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center;color:var(--muted);font-size:11px}
+hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+/* PRINT */
+@media print{
+  .hom-banner{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .toc{display:none}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eye">Groundwork · SSG Operations Center</div>
+    <h1 class="hero-title">Guia de <span>Usabilidade</span></h1>
+    <p class="hero-sub">Tudo que você precisa para navegar, filtrar e interpretar os dados do dashboard operacional — sem precisar de treinamento.</p>
+    <div class="hero-chips">
+      <span class="chip green">✓ Atualizado a cada 10min automaticamente</span>
+      <span class="chip blue">Dados extraídos do OTRS/Znuny</span>
+      <span class="chip">Exclusivo para líderes Groundwork</span>
+    </div>
+  </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="toc">
+  <div class="toc-inner">
+    <a href="#acesso" class="toc-a">1. Acesso</a>
+    <a href="#abas" class="toc-a">2. As 5 abas</a>
+    <a href="#filtros" class="toc-a">3. Filtros</a>
+    <a href="#kpis" class="toc-a">4. KPIs</a>
+    <a href="#cenarios" class="toc-a">5. Cenários de uso</a>
+    <a href="#sync" class="toc-a">6. Sincronização</a>
+    <a href="#dicas" class="toc-a">7. Dicas</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ──────────────────────────────────────────
+     1. ACESSO
+────────────────────────────────────────── -->
+<div class="sec" id="acesso">
+  <div class="sec-hdr">
+    <div class="sec-num">1</div>
+    <div><div class="sec-ttl">Como acessar</div><div class="sec-sub">URL, dispositivos e requisitos</div></div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-ico">🌐</div>
+    <div class="callout-body">
+      <strong>URL de acesso:</strong><br>
+      <a href="https://gw-command.vercel.app" target="_blank">https://gw-command.vercel.app</a><br><br>
+      Funciona em qualquer navegador moderno (Chrome, Edge, Safari, Firefox). Não requer VPN nem instalação. A URL antiga (<code style="font-size:11px;color:var(--muted)">ssg-create.github.io/ssg-dashboard</code>) ainda funciona — redireciona automaticamente.
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-ico">🔑</div>
+    <div class="callout-body">
+      <strong>Senha de acesso:</strong> &nbsp;<code style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 10px;font-size:13px;font-weight:700;color:var(--warn);letter-spacing:1px">ssg2026</code><br><br>
+      Ao abrir o link, uma tela de senha será exibida. Digite a senha acima e pressione <strong>Enter</strong> ou clique em <strong>Entrar</strong>. A senha fica salva na sessão — não precisa digitar novamente enquanto o navegador estiver aberto.
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="callout tip" style="margin:0">
+      <div class="callout-ico">📱</div>
+      <div class="callout-body"><strong>Celular e tablet</strong> — o dashboard é responsivo. Salve a URL como favorito no celular para verificações rápidas fora do escritório.</div>
+    </div>
+    <div class="callout tip" style="margin:0">
+      <div class="callout-ico">⭐</div>
+      <div class="callout-body"><strong>Salve como favorito</strong> — os dados atualizam sozinhos a cada 10min. Basta abrir o link para ver os números mais recentes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     2. AS 5 ABAS
+────────────────────────────────────────── -->
+<div class="sec" id="abas">
+  <div class="sec-hdr">
+    <div class="sec-num">2</div>
+    <div><div class="sec-ttl">As 5 abas principais</div><div class="sec-sub">Cada aba tem um objetivo diferente</div></div>
+  </div>
+
+  <div class="tabs-vis">
+    <div class="tab-v on">Operação Interna</div>
+    <div class="tab-v">Portal do Cliente</div>
+    <div class="tab-v">Customer Success</div>
+    <div class="tab-v">Resumo de Gestão</div>
+    <div class="tab-v">IA</div>
+  </div>
+
+  <div class="grid g2" style="margin-bottom:12px">
+    <div class="card">
+      <div class="card-bar" style="background:var(--blue)"></div>
+      <div class="c-ico">📊</div>
+      <div class="c-name">Operação Interna</div>
+      <div class="c-desc">Visão geral da operação: volume de tickets, status das filas, atendentes, alertas críticos, SLA e mapa de carga. <strong>Use para entender como a operação está agora.</strong></div>
+      <div class="c-tag">VOLUME · ATENDENTES · SLA · ALERTAS</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--purple)"></div>
+      <div class="c-ico">🏢</div>
+      <div class="c-name">Portal do Cliente</div>
+      <div class="c-desc">Detalha um cliente específico: tickets abertos, linha do tempo, SLA contratual e fila ativa. <strong>Use antes de uma reunião ou ligação com o cliente.</strong></div>
+      <div class="c-tag">1 CLIENTE · HISTÓRICO · SLA CONTRATUAL</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--teal)"></div>
+      <div class="c-ico">🤝</div>
+      <div class="c-name">Customer Success</div>
+      <div class="c-desc">Health Score, riscos identificados, chamados aguardando cliente e próximas ações recomendadas. <strong>Use para gestão de relacionamento e retenção.</strong></div>
+      <div class="c-tag">HEALTH SCORE · RISCOS · AÇÕES CS</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:var(--ok)"></div>
+      <div class="c-ico">📋</div>
+      <div class="c-name">Resumo de Gestão</div>
+      <div class="c-desc">KPIs consolidados do período com comparativos mensais. <strong>Use em reuniões de resultado ou apresentações para diretoria.</strong></div>
+      <div class="c-tag">EXECUTIVO · COMPARATIVO · SÍNTESE</div>
+    </div>
+    <div class="card">
+      <div class="card-bar" style="background:#E8541A"></div>
+      <div class="c-ico">📄</div>
+      <div class="c-name">Relatório Mensal</div>
+      <div class="c-desc">Relatório executivo formatado com semáforo de situação, métricas, radar de risco, saúde dos clientes e ações para o próximo mês. Possui filtro de mês próprio e botão <strong>Imprimir / PDF</strong>. <strong>Use para reunião de sócios ou envio por email.</strong></div>
+      <div class="c-tag">RELATÓRIO · MENSAL · IMPRESSÃO · PDF</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-bar" style="background:var(--purple)"></div>
+    <div class="c-ico">🤖</div>
+    <div class="c-name">IA — Inteligência Operacional</div>
+    <div class="c-desc">Análise automática gerada a cada 10min com base nos dados reais: riscos operacionais, clientes em atenção e insights de CS. <strong>Comece o dia por aqui para ver o que precisa de atenção imediata.</strong></div>
+    <div class="c-tag">ANÁLISE AUTOMÁTICA · RISCOS · INSIGHTS</div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     3. FILTROS
+────────────────────────────────────────── -->
+<div class="sec" id="filtros">
+  <div class="sec-hdr">
+    <div class="sec-num">3</div>
+    <div><div class="sec-ttl">Como funcionam os filtros</div><div class="sec-sub">Três filtros que trabalham juntos e se acumulam</div></div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-ico">⚠️</div>
+    <div class="callout-body">
+      <strong>Os filtros são cumulativos.</strong> Se você selecionar Cliente + Mês + Fila ao mesmo tempo, o dashboard mostra apenas tickets que atendem às três condições juntas.<br>
+      A <strong>barra colorida no topo</strong> da tela sempre mostra quais filtros estão ativos. Use o botão <strong>"limpar filtros"</strong> no canto superior direito para resetar tudo de uma vez.
+    </div>
+  </div>
+
+  <div class="callout ok" style="margin-top:12px">
+    <div class="callout-ico">💡</div>
+    <div class="callout-body">
+      <strong>Dica rápida dentro do dashboard:</strong> ao lado de cada label de filtro na sidebar há um ícone <strong>ⓘ</strong> — clique nele para ver uma explicação rápida do que aquele filtro faz e como combiná-lo com os demais, sem precisar sair do dashboard.
+    </div>
+  </div>
+
+  <!-- FILTRO MÊS -->
+  <div class="fbox">
+    <div class="fbox-hdr">
+      <div class="fbox-ico">📅</div>
+      <div class="fbox-name">Filtro de Mês</div>
+      <div class="fbox-where">Sidebar esquerda</div>
+    </div>
+    <div class="fbox-desc">Seleciona o período de análise. Por padrão mostra <strong>"Todos os meses"</strong> (acumulado do ano). Ao clicar em um mês, todos os KPIs, gráficos e contagens mudam para aquele período.</div>
+    <div class="flist">
+      <div class="fi"><div class="fi-dot" style="background:var(--teal)"></div><div class="fi-t"><strong>Todos os meses</strong> — soma acumulada do ano. O número ao lado do botão é o total geral.</div></div>
+      <div class="fi"><div class="fi-dot" style="background:var(--blue)"></div><div class="fi-t"><strong>Jan/26, Fev/26, Mar/26…</strong> — filtra apenas tickets criados naquele mês. O número ao lado mostra o total daquele mês.</div></div>
+      <div class="fi"><div class="fi-dot" style="background:var(--warn)"></div><div class="fi-t">Se um cliente estiver selecionado, os contadores de cada mês mostram apenas os tickets daquele cliente.</div></div>
+    </div>
+  </div>
+
+  <!-- FILTRO FILA -->
+  <div class="fbox">
+    <div class="fbox-hdr">
+      <div class="fbox-ico">🗂️</div>
+      <div class="fbox-name">Filtro de Fila</div>
+      <div class="fbox-where">Sidebar esquerda</div>
+    </div>
+    <div class="fbox-desc">Restringe a análise a uma área técnica específica. Útil para líderes de squads que querem ver somente a sua área.</div>
+    <div class="queue-grid">
+      <span class="q hi">SSG</span>
+      <span class="q hi">PROTHEUS</span>
+      <span class="q hi">DATASUL</span>
+      <span class="q hi">GWMS</span>
+      <span class="q">DBA</span>
+      <span class="q">INFRAESTUTURA</span>
+      <span class="q">SSG-MELHORIAS</span>
+    </div>
+    <div class="callout tip" style="margin-top:12px">
+      <div class="callout-ico">👤</div>
+      <div class="callout-body"><strong>Para gestores de área:</strong> ao filtrar pela sua fila (DBA, GWMS, etc), TODAS as métricas — inclusive Ações Prioritárias, Sem 1ª resposta, comparativos por cliente — passam a refletir só a sua fila. Cada gestor enxerga apenas o escopo que gerencia.</div>
+    </div>
+  </div>
+
+  <!-- FILTRO CLIENTE -->
+  <div class="fbox">
+    <div class="fbox-hdr">
+      <div class="fbox-ico">🏢</div>
+      <div class="fbox-name">Filtro de Cliente</div>
+      <div class="fbox-where">Rodapé da sidebar / aba Portal</div>
+    </div>
+    <div class="fbox-desc">Foca em um único cliente. Quando ativo, os KPIs da aba Operação também passam a mostrar apenas dados daquele cliente — combinado com Mês e Fila simultaneamente.</div>
+    <div class="flist">
+      <div class="fi"><div class="fi-dot" style="background:var(--teal)"></div><div class="fi-t"><strong>Todos os clientes</strong> — visão consolidada da operação.</div></div>
+      <div class="fi"><div class="fi-dot" style="background:var(--purple)"></div><div class="fi-t"><strong>Cliente selecionado</strong> — filtra ticket a ticket. O total exibido representa apenas aquele cliente no período/fila escolhidos.</div></div>
+      <div class="fi"><div class="fi-dot" style="background:var(--ok)"></div><div class="fi-t">Para limpar: clique em <strong>"limpar filtros"</strong> no canto superior direito da barra de status no topo da tela.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     4. KPIs
+────────────────────────────────────────── -->
+<div class="sec" id="kpis">
+  <div class="sec-hdr">
+    <div class="sec-num">4</div>
+    <div><div class="sec-ttl">O que cada indicador significa</div><div class="sec-sub">Referência rápida de todos os KPIs</div></div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-ico">💡</div>
+    <div class="callout-body"><strong>Mediana vs Média:</strong> O dashboard usa <strong>mediana</strong> no SLA de 1ª resposta — ela ignora outliers (um ticket esquecido por 5 dias não distorce o número). A <strong>média</strong> é usada no tempo de solução porque reflete o custo real de cada chamado.</div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+    <table class="ktbl">
+      <thead><tr><th>Indicador</th><th>O que mede</th><th>Meta / Referência</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="kdot" style="background:var(--blue)"></span><span class="kn">Total de chamados</span></td>
+          <td>Tickets criados no período selecionado</td>
+          <td class="kmeta">Base de comparação entre períodos</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--warn)"></span><span class="kn">Em aberto</span></td>
+          <td>Tickets ainda não concluídos (em atendimento, aguardando…)</td>
+          <td class="kmeta">Ideal: abaixo de 15% do total</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--ok)"></span><span class="kn">Taxa de resolução</span></td>
+          <td>% de tickets concluídos com êxito no período</td>
+          <td class="kmeta">Meta interna: ≥ 70%</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--danger)"></span><span class="kn">Prioridade Muito Alta</span></td>
+          <td>Tickets críticos abertos com prioridade máxima</td>
+          <td class="kmeta">Requer atenção imediata se &gt; 0</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--teal)"></span><span class="kn">SLA 1ª Resposta</span></td>
+          <td>Tempo até o primeiro contato com o cliente (mediana)</td>
+          <td class="kmeta">Meta contratual: ≤ 30 min</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--purple)"></span><span class="kn">Solução média</span></td>
+          <td>Tempo médio de resolução dos tickets fechados</td>
+          <td class="kmeta">Meta interna: ≤ 48h</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--orange)"></span><span class="kn">Bloqueados</span></td>
+          <td>Tickets parados — aguardando cliente, externo ou interno</td>
+          <td class="kmeta">Alto número indica gargalo</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--blue)"></span><span class="kn">Aguardando Cliente</span></td>
+          <td>Tickets que dependem de ação do cliente para avançar</td>
+          <td class="kmeta">Acompanhar semanalmente</td>
+        </tr>
+        <tr>
+          <td><span class="kdot" style="background:var(--teal)"></span><span class="kn">Health Score (CS)</span></td>
+          <td>Score 0–100: resolução + SLA + pendências + volume</td>
+          <td class="kmeta">≥70 Saudável · 50–69 Atenção · &lt;50 Risco</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     5. CENÁRIOS DE USO
+────────────────────────────────────────── -->
+<div class="sec" id="cenarios">
+  <div class="sec-hdr">
+    <div class="sec-num">5</div>
+    <div><div class="sec-ttl">Cenários do dia a dia</div><div class="sec-sub">Passo a passo para as situações mais comuns de um líder</div></div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">A</div>
+      <div class="scene-title">Verificar como foi o mês antes de uma reunião de resultado</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Abrir o dashboard → aba <strong>Resumo de Gestão</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">Na sidebar, clicar no mês desejado (ex: <strong class="hl">Mar/26</strong>)</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Verificar: total, taxa de resolução, SLA 1ª resposta, bloqueados</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Ir para a aba <strong>IA</strong> → ver alertas automáticos gerados no período</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">B</div>
+      <div class="scene-title">Preparar reunião com cliente (ex: AutoZone, TJBA…)</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Aba <strong>Customer Success</strong> → selecionar o cliente no seletor de conta</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">Selecionar o mês da reunião na sidebar (ex: <strong class="hl">Mar/26</strong>)</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Ver: <strong>Health Score</strong>, riscos ativos, chamados aguardando resposta do cliente</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Seção <strong>Próximas Ações CS</strong> — lista de ações recomendadas para a conta</div></div>
+        <div class="step"><div class="step-n">5</div><div class="step-t">Seção <strong>Histórico da Conta</strong> — todos os tickets do período para embasar a conversa</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">C</div>
+      <div class="scene-title">Ver performance de um atendente específico</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Aba <strong>Operação Interna</strong> → seção <strong>Painel de Atendentes</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">Filtrar pelo mês desejado na sidebar</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Cada card mostra: total de tickets, fechados, abertos, tempo médio de resposta e solução</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Para ver apenas uma fila: aplicar <strong>Filtro de Fila</strong> (ex: <span class="hl">SSG</span> ou <span class="hl">PROTHEUS</span>)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">D</div>
+      <div class="scene-title">Identificar quais clientes precisam de atenção esta semana</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Aba <strong>IA</strong> → seção <strong>Riscos de Cliente</strong> — lista automática de contas com sinais de alerta</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">Ou: aba <strong>Customer Success</strong> → <strong>Visão Geral</strong> — tabela de health score de todos os clientes em ordem</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">
+          Leia o score:
+          <span style="color:var(--danger);font-weight:700">&lt; 50 = Risco</span> ·
+          <span style="color:var(--warn);font-weight:700">50–69 = Atenção</span> ·
+          <span style="color:var(--ok);font-weight:700">≥ 70 = Saudável</span>
+        </div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Clicar no cliente para ver detalhes completos e ações recomendadas</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">E</div>
+      <div class="scene-title">Comparar volume entre filas (ex: SSG vs PROTHEUS)</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Aba <strong>Operação Interna</strong> → seção <strong>Comparativo Mensal</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">Sem filtro de fila: ver o total consolidado por mês</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Aplicar <strong class="hl">Fila = SSG</strong> → anotar os números → trocar para <strong class="hl">PROTHEUS</strong> → comparar</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-hdr">
+      <div class="scene-letter">F</div>
+      <div class="scene-title">Comparar 2 períodos lado a lado (Mar/26 × Abr/26 ou Q1 × Q2)</div>
+    </div>
+    <div class="scene-body">
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Header da dashboard → botão <strong>Gerar Relatório PDF</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">No modal, escolher a opção <strong class="hl">Comparativo Mensal</strong> (4ª opção)</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Marcar 1+ meses no <strong style="color:#22d3ee">Período A</strong> e 1+ meses no <strong style="color:#fb923c">Período B</strong>. Defaults já vêm pré-selecionados (penúltimo × último mês). Pode marcar 3 meses de cada lado pra comparar trimestres.</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Filtros de Cliente e Fila são compartilhados — comparação é sobre o MESMO escopo nos 2 períodos.</div></div>
+        <div class="step"><div class="step-n">5</div><div class="step-t">Gerar PDF: capa com Score Operacional A vs B + delta, tabela de 8 KPIs com tendência ▲▼ (verde = melhoria, vermelho = regressão), top 3 melhorias, top 3 regressões. Pronto pra reunião de sócios.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     6. SINCRONIZAÇÃO
+────────────────────────────────────────── -->
+<div class="sec" id="sync">
+  <div class="sec-hdr">
+    <div class="sec-num">6</div>
+    <div><div class="sec-ttl">Status de sincronização</div><div class="sec-sub">Como saber se os dados estão atualizados</div></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--sub);margin-bottom:16px">O <strong style="color:var(--text)">ponto colorido</strong> no canto inferior esquerdo da tela mostra o status da última atualização de dados. Confira o significado de cada estado:</p>
+
+  <div class="sync-list">
+    <div class="sync-row">
+      <div class="sdot g"></div>
+      <div class="slbl">Sync 14:30 · 2.320 tickets · dados de 26/03 18:20</div>
+      <div class="smeaning sm-ok">✅ Dados atualizados</div>
+    </div>
+    <div class="sync-row">
+      <div class="sdot g"></div>
+      <div class="slbl">Sync 14:40 · sem mudanças</div>
+      <div class="smeaning sm-ok">✅ Pipeline rodou, sem novos tickets</div>
+    </div>
+    <div class="sync-row">
+      <div class="sdot y"></div>
+      <div class="slbl">Sincronizando…</div>
+      <div class="smeaning sm-warn">⏳ Buscando dados novos</div>
+    </div>
+    <div class="sync-row">
+      <div class="sdot y"></div>
+      <div class="slbl">Sync 14:10 · ⚠ dados com 25min</div>
+      <div class="smeaning sm-warn">⚠️ Pipeline pode estar parado</div>
+    </div>
+    <div class="sync-row">
+      <div class="sdot r"></div>
+      <div class="slbl">Sync falhou: HTTP 404</div>
+      <div class="smeaning sm-danger">❌ Erro de rede ou servidor</div>
+    </div>
+    <div class="sync-row">
+      <div class="sdot gr"></div>
+      <div class="slbl">Aguardando sync…</div>
+      <div class="smeaning sm-muted">🔄 Primeira carga do dia</div>
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:16px">
+    <div class="callout-ico">🤖</div>
+    <div class="callout-body"><strong>Dot amarelo por mais de 30 minutos?</strong> Nenhuma ação necessária da sua parte — o sistema envia email automático para Fabio Tavares assim que detecta a falha. Ele já está ciente e resolvendo.</div>
+  </div>
+
+  <div class="callout warn" style="margin-top:12px">
+    <div class="callout-ico">🚨</div>
+    <div class="callout-body"><strong>Banner vermelho no topo "Dados parados há ___ min":</strong> aparece automaticamente quando o último sync tem mais de 30min. É um aviso visual reforçado pra você não tomar decisão olhando dados antigos. Some sozinho assim que o sync volta a rodar — ou pode fechar no ✕ se preferir.</div>
+  </div>
+
+  <div style="margin-top:20px">
+    <p style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;font-size:11px">Como o pipeline funciona</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-box">OTRS/Znuny<span>Banco de dados</span></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box">Extração<span>a cada 10min</span></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box">Análise IA<span>automática</span></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box hi">Vercel<span>deploy automático</span></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box hi">Dashboard<span>atualiza</span></div>
+      </div>
+    </div>
+    <div class="callout tip" style="margin-top:12px">
+      <div class="callout-ico">🕐</div>
+      <div class="callout-body"><strong>Funcionamento 24h/7 dias:</strong> O pipeline roda no <strong>GitHub Actions</strong>, de forma totalmente automática — independente do computador do Fabio. Os dados se atualizam a cada 10 minutos, todos os dias, sem interrupção.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     7. DICAS
+────────────────────────────────────────── -->
+<div class="sec" id="dicas">
+  <div class="sec-hdr">
+    <div class="sec-num">7</div>
+    <div><div class="sec-ttl">Dicas rápidas</div><div class="sec-sub">Para tirar o máximo do dashboard</div></div>
+  </div>
+
+  <div class="tip-list">
+    <div class="tip-row">
+      <div class="tip-ico">🔄</div>
+      <div class="tip-txt"><strong>Sempre limpe os filtros antes de mudar de análise</strong> — clique em "limpar filtros" na barra do topo. Evita interpretar dados filtrados como se fossem totais.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">🤖</div>
+      <div class="tip-txt"><strong>Comece o dia pela aba IA</strong> — ela condensa em segundos os riscos operacionais e clientes que precisam de atenção, sem precisar navegar em todas as seções.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">📸</div>
+      <div class="tip-txt"><strong>Print para apresentações</strong> — use <strong>Ctrl+P</strong> (Windows) ou <strong>Cmd+P</strong> (Mac) para salvar como PDF. Filtre o que quer mostrar antes de printar.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">🏷️</div>
+      <div class="tip-txt"><strong>A barra no topo confirma os filtros ativos</strong> — antes de interpretar qualquer número, verifique o que está escrito na barra amarela/verde no topo da tela.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">📱</div>
+      <div class="tip-txt"><strong>Instale como app no celular (PWA)</strong> — abra a URL no Chrome ou Safari do smartphone → toque no ícone de compartilhar → "Adicionar à tela inicial". O ícone laranja da Groundwork aparecerá na tela home.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">🔁</div>
+      <div class="tip-txt"><strong>Não precisa atualizar a página</strong> — o dashboard busca dados novos automaticamente a cada 10min. O dot verde confirma quando os dados foram atualizados.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">↗</div>
+      <div class="tip-txt"><strong>Tickets clicáveis em todo lugar</strong> — qualquer <code style="background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px">#numero</code> visível em modais, listas de Ações Prioritárias, perfis de atendente ou cards de cliente abre direto no OTRS. Os heroes (Capacidade da Equipe, Alertas, Clientes) também trazem botão <strong>↗ OTRS</strong> que filtra a busca pelo escopo ativo (fila/cliente/prioridade).</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-ico">🔍</div>
+      <div class="tip-txt"><strong>GWoogle — busca paralela TOTVS:</strong> ferramenta complementar em <a href="https://gw-command.vercel.app/gw-consult.html" target="_blank">gw-command.vercel.app/gw-consult.html</a>. Pesquisa simultânea em CST (Zendesk), Central de Atendimento e TDN (documentação técnica). Útil quando atendente precisa achar artigo/solução rápido sem trocar de aba 3 vezes.</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div style="text-align:center;color:var(--muted);font-size:12px;padding-bottom:8px">
+  Dúvidas ou sugestões sobre este guia? <strong style="color:var(--sub)">Fabio Tavares</strong> · Groundwork · Atualizado em 30/04/2026
+</div>
+
+</div><!-- /wrap -->
+
+<footer>SSG Operations Center · Groundwork · Documento interno — não compartilhar externamente</footer>
+
+</body>
+</html>
