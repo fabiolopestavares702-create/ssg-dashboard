@@ -2389,7 +2389,7 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
   <div id="cli-emp-bar" style="padding:18px 24px 0">
     <div class="emp-selector">
       <label>Selecione sua empresa</label>
-      <select id="sel-empresa" onchange="loadEmpresa(this.value)">
+      <select id="sel-empresa" onchange="setClienteGlobal(this.value)">
         <option value="">— Escolha sua empresa —</option>
       </select>
     </div>
@@ -2546,7 +2546,7 @@ body:not(.dark) .rpt-dlg{background:#fff;border-color:#e5e7eb}
   <div class="cs-header-strip">
     <div class="cs-empresa-sel">
       <label>Conta</label>
-      <select id="cs-sel-empresa" onchange="loadCS(this.value)">
+      <select id="cs-sel-empresa" onchange="setClienteGlobal(this.value)">
         <option value="">— Selecione a conta —</option>
       </select>
     </div>
