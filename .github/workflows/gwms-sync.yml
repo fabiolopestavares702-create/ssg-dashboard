@@ -48,5 +48,5 @@ jobs:
           GWMS_PASS:    ${{ secrets.GWMS_PASS }}
           DEPLOY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO:      ${{ secrets.GH_REPO }}
-          GH_BRANCH:    data   # commits vão pra branch 'data' (Vercel não observa)
+          GH_BRANCH:    main   # repo dedicado ssg-dashboard-data — Vercel não observa esse repo
         run: python scripts/gwms_sync.py
