@@ -4381,6 +4381,21 @@ function fetchUtilizacao(){
     .catch(function(){renderUtilizacao(null);});
 }
 
+// Atualiza heroes secundários (cli/at/bk) sem precisar navegar pra aba deles.
+// Sem isso, ao filtrar Mês/Fila/Cliente, esses heroes ficam estáticos no estado inicial.
+function _refreshAllHeroes(){
+  var op=(typeof getActiveOP==='function')?getActiveOP():(typeof OP!=='undefined'?OP:null);
+  try{if(typeof populateClHero==='function'&&op)populateClHero(op);}catch(e){console.warn('refreshHeroes cl:',e);}
+  try{if(typeof populateBkHero==='function'&&op)populateBkHero(op);}catch(e){console.warn('refreshHeroes bk:',e);}
+  try{
+    if(typeof UTIL_DATA!=='undefined'&&UTIL_DATA&&UTIL_DATA.rows){
+      if(typeof populateAtHero==='function')populateAtHero(UTIL_DATA);
+    } else if(typeof fetchUtilizacao==='function'){
+      fetchUtilizacao();
+    }
+  }catch(e){console.warn('refreshHeroes at:',e);}
+}
+
 // ─── Sinais Ao Vivo — renderiza gwms-insights.json ──────────────────────────
 var IAL_DATA=null;
 function _ialEscapeHtml(s){
@@ -5592,8 +5607,15 @@ function resolveCliId(raw){
   if(!raw)return'';var s=raw.trim();
   if(s.indexOf('@')!==-1){
     var dom=s.split('@')[1]||'';var domLow=dom.toLowerCase();
-    for(var ii=0;ii<INTERNAL_DOMAINS.length;ii++){if(domLow===INTERNAL_DOMAINS[ii]||domLow.indexOf(INTERNAL_DOMAINS[ii])!==-1)return'';}
-    if(EMAIL_DOM_MAP[domLow])return EMAIL_DOM_MAP[domLow];return'';
+    // Domínio interno → cliente sintético GROUNDWORK (era '' antes — causava "0 CLIENTES")
+    for(var ii=0;ii<INTERNAL_DOMAINS.length;ii++){if(domLow===INTERNAL_DOMAINS[ii]||domLow.indexOf(INTERNAL_DOMAINS[ii])!==-1)return'GROUNDWORK';}
+    // Mapa explícito de domínios conhecidos
+    if(EMAIL_DOM_MAP[domLow])return EMAIL_DOM_MAP[domLow];
+    // Fallback automático: subdomínio raiz uppercase (era '' antes — causava "0 CLIENTES")
+    // Ex: bentonit.com.br → BENTONIT, strati.com.br → STRATI, customer-service@neogrid.com → NEOGRID
+    var parts=domLow.split('.');
+    var first=(parts[0]||'').replace(/[^a-z0-9]/g,'');
+    return first?first.toUpperCase():'';
   }
   var up=s.toUpperCase().replace(/\s+/g,'_');
   if(ENM2[up])return up;if(ENM2[s.toUpperCase()])return s.toUpperCase();
@@ -5662,6 +5684,7 @@ function resetAllFilters(){
   if(typeof renderAlertas==='function') try{renderAlertas();}catch(e){console.warn('[resetAllFilters] renderAlertas:',e);}
   if(typeof computeInsights==='function') try{computeInsights();}catch(e){console.warn('[resetAllFilters] computeInsights:',e);}
   updateFilterChip();
+  if(typeof _refreshAllHeroes==='function') _refreshAllHeroes();
 }
 
 // Lista de bloqueados FIEL ao escopo ativo (cli + mês + fila + range customizado).
@@ -8252,6 +8275,7 @@ function setMonth(m) {
   if(vAcoes && vAcoes.classList.contains('on')) renderAcoes();
   computeInsights();
   if(typeof updateFilterChip==='function') updateFilterChip();
+  if(typeof _refreshAllHeroes==='function') _refreshAllHeroes();
 }
 
 // Filtered data getter
@@ -8337,6 +8361,9 @@ function getActiveOP() {
       var atendEmp = rawAtendEmp.map(function(a){
         return {n:a.n||'',t:a.t!=null?a.t:(a.total||0),f:a.f!=null?a.f:(a.fe||0),ab:a.ab||0,tm:a.tm||null,rm:a.rm||null,est:{}};
       });
+      // cli no branch de cliente: sempre {[activeCliente]: totalEmp} quando há ao menos 1 chamado
+      // Antes: emp.cli vinha vazio em alguns recortes → cli-hero mostrava "0 CLIENTES" mesmo com chamados.
+      var cliEmp = totalEmp > 0 ? (function(){var m={};m[activeCliente]=totalEmp;return m;})() : (emp.cli || {});
       return {
         total:    totalEmp,
         abertos:  abertosEmp,
@@ -8353,7 +8380,7 @@ function getActiveOP() {
         estado:   Object.keys(estadoEmp).length ? estadoEmp : (emp.estado || emp.estados || {}),
         prior:    priorEmp,
         svc:      emp.svc      || emp.servicos || {},
-        cli:      emp.cli      || {},
+        cli:      cliEmp,
         heat:     emp.heat     || {},
         volMes:   emp.volMes   || emp.by_mes   || {},
         atend:    atendEmp,
@@ -8379,6 +8406,19 @@ function getActiveOP() {
     base = (activeMonth === 'all') ? OP : (OP_MESES[activeMonth] || OP);
   }
   if(!base) base = OP;
+  // Fallback robusto: por_mes de OP_FILAS não tem 'cli' — quando filtra Fila+Mês,
+  // cli-hero zerava ("0 CLIENTES" mesmo com chamados). Recalcula do RAW_DATA quando ausente.
+  var cliFromBase = base.cli || {};
+  if(!Object.keys(cliFromBase).length && typeof RAW_DATA!=='undefined' && RAW_DATA && RAW_DATA.length){
+    var cliRecalc={};
+    RAW_DATA.forEach(function(t){
+      if(!t || !t.cli_id) return;
+      if(activeFilaOP!=='all' && t.fila!==activeFilaOP) return;
+      if(typeof ticketInFilter==='function' && !ticketInFilter(t)) return;
+      cliRecalc[t.cli_id] = (cliRecalc[t.cli_id]||0) + 1;
+    });
+    if(Object.keys(cliRecalc).length) cliFromBase = cliRecalc;
+  }
   // Normaliza atend apenas se necessário (OP_FILAS estático usa {total,fe} em vez de {t,f})
   var rawAtend = base.atend || [];
   var atend = rawAtend.map(function(a) {
@@ -8408,7 +8448,7 @@ function getActiveOP() {
     estado:   base.estado   || base.estados  || {},
     prior:    base.prior    || {},
     svc:      base.svc      || base.servicos || {},
-    cli:      base.cli      || {},
+    cli:      cliFromBase,
     heat:     base.heat     || {},
     volMes:   base.volMes   || base.by_mes   || {},
     atend:    atend,
@@ -8457,6 +8497,7 @@ function setFilaOP(fila) {
   if(vAcoesF && vAcoesF.classList.contains('on')) renderAcoes();
   computeInsights();
   if(typeof updateFilterChip==='function') updateFilterChip();
+  if(typeof _refreshAllHeroes==='function') _refreshAllHeroes();
 }
 
 function setFilaCli(fila) {
@@ -8618,6 +8659,7 @@ function setClienteGlobal(key) {
   if(vAcoesCG && vAcoesCG.classList.contains('on')) renderAcoes();
   computeInsights();
   if(typeof updateFilterChip==='function') updateFilterChip();
+  if(typeof _refreshAllHeroes==='function') _refreshAllHeroes();
 }
 
 // Filtered empresa getter - filters tickets by month
@@ -11177,6 +11219,7 @@ function autoFetchJSON(){
       var rows=(d.rows||[]).map(_adaptJsonRowToXlsx);
       var _sm=activeMonth,_sf=activeFilaOP,_sfc=activeFilaCli,_sc=activeCliente,_srs=activeRangeStart,_sre=activeRangeEnd;
       rebuildAll(parseR(rows));
+      if(typeof _refreshAllHeroes==='function') _refreshAllHeroes();
       if(_sm!=='all'||_sf!=='all'||_sc||_srs){
         activeMonth=_sm;activeFilaOP=_sf;activeFilaCli=_sfc;activeCliente=_sc;activeRangeStart=_srs;activeRangeEnd=_sre;
         buildMonthFilter();
