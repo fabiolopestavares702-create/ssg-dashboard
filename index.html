@@ -6157,7 +6157,7 @@ function rebuildAll(data){
               var diffD=Math.floor((now3-d.criado)/(1000*60*60*24));
               var idade=diffD===0?'hoje':diffD===1?'1 dia':diffD+' dias';
               var dt=pad3(d.criado.getDate())+'/'+pad3(d.criado.getMonth()+1)+' '+pad3(d.criado.getHours())+':'+pad3(d.criado.getMinutes());
-              return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:mk};
+              return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:mk,cli_id:d.cli_id||''};
             });
             por_mes[mk]={
               total:m.rows.length,
