@@ -3790,7 +3790,7 @@ function renderAlertas(){
       var p2=function(n){return n<10?'0'+n:String(n);};
       return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,
         criado:p2(d.criado.getDate())+'/'+p2(d.criado.getMonth()+1)+' '+p2(d.criado.getHours())+':'+p2(d.criado.getMinutes()),
-        idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+        idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7),cli_id:d.cli_id||''};
     });
   } else {
     var _opCrit = getActiveOP().criticos || [];
@@ -5957,7 +5957,7 @@ function rebuildAll(data){
       var diffDays=Math.floor((now2-d.criado)/(1000*60*60*24));
       var idade=diffDays===0?'hoje':diffDays===1?'1 dia':diffDays+' dias';
       var dt=pad2(d.criado.getDate())+'/'+pad2(d.criado.getMonth()+1)+' '+pad2(d.criado.getHours())+':'+pad2(d.criado.getMinutes());
-      return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+      return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:d.criado.toISOString().slice(0,7),cli_id:d.cli_id||''};
     });
 
     setProgress(60,'Construindo dados por empresa...');
@@ -6127,7 +6127,7 @@ function rebuildAll(data){
             var diffD=Math.floor((now3-d.criado)/(1000*60*60*24));
             var idade=diffD===0?'hoje':diffD===1?'1 dia':diffD+' dias';
             var dt=pad3(d.criado.getDate())+'/'+pad3(d.criado.getMonth()+1)+' '+pad3(d.criado.getHours())+':'+pad3(d.criado.getMinutes());
-            return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+            return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,criado:dt,idade:idade,fila:d.fila||'',mes:d.criado.toISOString().slice(0,7),cli_id:d.cli_id||''};
           });
 
           // por_mes breakdown
@@ -8196,7 +8196,7 @@ function buildOPFromRange() {
     var p2=function(n){return n<10?'0'+n:String(n);};
     return{num:d.num,assunto:d.assunto,atend:d.atend||'—',estado:d.estado,
       criado:p2(d.criado.getDate())+'/'+p2(d.criado.getMonth()+1)+' '+p2(d.criado.getHours())+':'+p2(d.criado.getMinutes()),
-      idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7)};
+      idade:diff===0?'hoje':diff===1?'1 dia':diff+' dias',fila:d.fila||'',mes:d.criado.toISOString().slice(0,7),cli_id:d.cli_id||''};
   });
   return{total:total,abertos:abertos,fechados:fechados,resp_med:resp_med,
     sol_med:sol_med,sol_med_bh:slaR.avg_h,sol_median:slaR.median_h,sol_p90:slaR.p90_h,
@@ -9453,10 +9453,11 @@ function renderOpActions(op) {
     var _shown=criticos.slice(0,5);
     var _links=_shown.map(function(c){
       var u=_OTRS+'?Action=AgentTicketZoom;TicketNumber='+encodeURIComponent(c.num);
-      return '<a href="'+u+'" target="_blank" rel="noopener" style="color:var(--teal);font-family:var(--mono);font-size:10px;text-decoration:none;margin-right:4px">#'+c.num+'</a>';
+      var _cli=c.cli_id?' <span style="color:var(--muted);font-family:var(--mono);font-size:10px">('+c.cli_id+')</span>':'';
+      return '<div style="margin-bottom:3px"><a href="'+u+'" target="_blank" rel="noopener" style="color:var(--teal);font-family:var(--mono);font-size:10px;text-decoration:none">#'+c.num+'</a>'+_cli+'</div>';
     }).join('');
     var _verTodos=criticos.length>5
-      ?'<a href="'+_OTRS+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open;PriorityIDs[]=5'+_filaQ+'" target="_blank" rel="noopener" style="color:var(--warn);font-size:10px;text-decoration:underline;margin-left:4px">ver todos ('+criticos.length+')</a>'
+      ?'<div style="margin-top:4px"><a href="'+_OTRS+'?Action=AgentTicketSearch;Subaction=Search;StateType=Open;PriorityIDs[]=5'+_filaQ+'" target="_blank" rel="noopener" style="color:var(--warn);font-size:10px;text-decoration:underline">ver todos ('+criticos.length+')</a></div>'
       :'';
     actions.push({level:'crit',
       title: criticos.length + ' chamado' + (criticos.length>1?'s':'') + ' Muito Alta sem resolução',
